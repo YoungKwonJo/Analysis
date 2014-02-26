@@ -24,7 +24,7 @@ void Event::Loop(char *Name,double weight,int isZ,const int v)
    TH1F  *hnbJet30_CSVT[u][v], *hnbJet30_CSVM[u][v];    
    TH1F  *haddjet1_bDisCSV[u][v],  *haddjet2_bDisCSV[u][v]; 
    TH2F  *haddjet2D_bDisCSV[u][v];
-   const char *ttNN[5] ={"ot","bb","1b","cc","LF"}
+   const char *ttNN[5] ={"_","bb","1b","cc","LF"}
 
    for(int i =0; i<u ; i++) for(int j =0; j<v ; j++)
    {
