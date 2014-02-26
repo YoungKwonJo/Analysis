@@ -24,7 +24,7 @@ void Event::Loop(char *Name,double weight,int isZ,const int v)
    TH1F  *hnbJet30_CSVT[u][v], *hnbJet30_CSVM[u][v];    
    TH1F  *haddjet1_bDisCSV[u][v],  *haddjet2_bDisCSV[u][v]; 
    TH2F  *haddjet2D_bDisCSV[u][v];
-   char *ttNN[5] ={"","bb","1b","cc","LF"}
+   const char *ttNN[5] ={"","bb","1b","cc","LF"}
 
    for(int i =0; i<u ; i++) for(int j =0; j<v ; j++)
    {
@@ -40,7 +40,7 @@ void Event::Loop(char *Name,double weight,int isZ,const int v)
 
        hMET[i][j]               = new TH1F(Form("hMET_S%d_%s%s",               i+1,Name,ttNN[j]),            "MET     ", 18, 0, 180 );
        hnJet[i][j]              = new TH1F(Form("hnJet_S%d_%s%s",              i+1,Name,ttNN[j]),            "nJet    ", 10, 0, 10  );
-       :hnVertex[i][j]           = new TH1F(Form("hnVertex_S%d_%s%s",           i+1,Name,ttNN[j]),            "nVertex ", 30, 0, 30  );
+       hnVertex[i][j]           = new TH1F(Form("hnVertex_S%d_%s%s",           i+1,Name,ttNN[j]),            "nVertex ", 30, 0, 30  );
                                                                                                     
        hjet1pt[i][j]            = new TH1F(Form("hjet1pt_S%d_%s%s",            i+1,Name,ttNN[j]),          "jet1pt    ", 19, 20, 400   );
        hjet1eta[i][j]           = new TH1F(Form("hjet1eta_S%d_%s%s",           i+1,Name,ttNN[j]),          "jet1eta   ", 35, -3.5, 3.5 );
