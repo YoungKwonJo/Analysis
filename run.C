@@ -1,4 +1,4 @@
-void run(char *str, char *sstr, double cx=1., int isZ=0,bool MC=true){
+void run(char *str, char *sstr, double cx=1., int isZ=0,const int v,bool MC=true){
     gROOT->ProcessLine(".L Event.C+g");
     TFile f(Form("/Volumes/youngjoMac/CMS/BigSize/KrAFT_20140224/%s.root",str));
 //    TFile f(Form("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140224/%s.root",str));
@@ -12,7 +12,7 @@ void run(char *str, char *sstr, double cx=1., int isZ=0,bool MC=true){
     {
         TFile fout(Form("result_%s.root",str), "RECREATE");
         Event t(atree);
-        t.Loop(sstr, weight, isZ);
+        t.Loop(sstr, weight, isZ, v);
         fout.Write();
         fout.Close();
     }

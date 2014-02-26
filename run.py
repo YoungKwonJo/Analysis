@@ -24,12 +24,18 @@ isZ = [1,2,
        0,0,
        0,0,
        0,0]
+v = [1,1,
+       5,1,1,
+       1,1,
+       1,1,
+       1,1]
 
 for i in range(len(Sample)) :
     cmd = "root -l run.C\\(\\\"%s\\\""% Sample[i]
     cmd = cmd+",\\\"%s\\\""% sSample[i]
     cmd = cmd+",%f"% CX[i]
     cmd = cmd+",%d"% isZ[i]
+    cmd = cmd+",%d"% v[i]
     cmd = cmd+",true\\)"
     print cmd
     os.system(cmd)
