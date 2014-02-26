@@ -8,8 +8,8 @@ Sample = ["DYJetsToLL_M-10To50filter_8TeV-madgraph","DYJetsToLL_M-50_TuneZ2Star_
 #"WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball","WW_TuneZ2star_8TeV_pythia6_tauola",
 #"WZ_TuneZ2star_8TeV_pythia6_tauola","ZZ_TuneZ2star_8TeV_pythia6_tauola"]
 
-sSample = ["DY","DY",
-           "TT2l","TThad","TT1l",
+sSample = ["DY","DY",          # DY10To50, DY50
+           "TT","TTot","TTot", # ttDiLep, ttHard, ttSemiLep
            "ST","ST", # "TtW","TbartW"
            "Wj","VV", # WW
            "VV","VV"] # WZ, ZZ
