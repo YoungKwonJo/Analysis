@@ -17,7 +17,7 @@ void Event::Loop(char *Name,double weight,int isZ,const int v)
    double wei=1.;
    bool S[u], G[v];
 
-   //ttbar others
+
    TH1F *hZMass[u][v], *hrelIso1[u][v], *hrelIso2[u][v], *hPt1[u][v], *hPt2[u][v], *hEta1[u][v], *hEta2[u][v];
    TH1F  *hMET[u][v], *hnJet[u][v], *hnVertex[u][v]; 
    TH1F  *hjet1pt[u][v], *hjet1eta[u][v], *hjet1phi[u][v], *hjet1_bDisCSV[u][v];    
