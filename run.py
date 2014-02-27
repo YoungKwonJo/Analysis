@@ -3,10 +3,10 @@
 import sys,os
 
 Sample = ["DYJetsToLL_M-10To50filter_8TeV-madgraph","DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball",
-"TTJets_FullLeptMGDecays_8TeV-madgraph-tauola","TTJets_HadronicMGDecays_8TeV-madgraph"]#,"TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola",
-#"T_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola","Tbar_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola",
-#"WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball","WW_TuneZ2star_8TeV_pythia6_tauola",
-#"WZ_TuneZ2star_8TeV_pythia6_tauola","ZZ_TuneZ2star_8TeV_pythia6_tauola"]
+"TTJets_FullLeptMGDecays_8TeV-madgraph-tauola","TTJets_HadronicMGDecays_8TeV-madgraph","TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola",
+"T_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola","Tbar_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola",
+"WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball","WW_TuneZ2star_8TeV_pythia6_tauola",
+"WZ_TuneZ2star_8TeV_pythia6_tauola","ZZ_TuneZ2star_8TeV_pythia6_tauola"]
 
 sSample = ["DY","DY",          # DY10To50, DY50
            "TT","TT","TT", # ttDiLep, ttHard, ttSemiLep

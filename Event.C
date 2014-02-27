@@ -28,9 +28,9 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
    for(int i =0; i<u ; i++) for(int j =0; j<v ; j++)
    {
-       hZMass[i][j]   = new TH1F(Form("hZMass_S%d_%s%s%s", i+1,Name,ttNN[j],DecayMode), "dilepton mass   ", 40, 0, 250);
-       hrelIso1[i][j] = new TH1F(Form("hrelIso1_S%d_%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 1 ", 40,0,0.4);
-       hrelIso2[i][j] = new TH1F(Form("hrelIso2_S%d_%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 2 ", 40,0,0.4);
+       hZMass[i][j]   = new TH1F(Form("hZMass_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "dilepton mass   ", 40, 0, 250);
+       hrelIso1[i][j] = new TH1F(Form("hrelIso1_S%d_%s%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 1 ", 40,0,0.4);
+       hrelIso2[i][j] = new TH1F(Form("hrelIso2_S%d_%s%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 2 ", 40,0,0.4);
    
        hPt1[i][j]     = new TH1F(Form("hPt1_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "leading lepton Pt ", 20,0,100);
        hPt2[i][j]     = new TH1F(Form("hPt2_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "second lepton Pt  ", 20,0,100);
@@ -119,16 +119,16 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       }
 
       bool precut = false;
-      if(DecayMode == "MuMu") precut = (muons_pt->size()>1);
-      if(DecayMode == "ElEl") precut = (electrons_pt->size()>1);
-      if(DecayMode == "MuEl") precut = (muons_pt->size()>0 && electrons_pt->size()>0);
+      if(!strcmp(DecayMode, "MuMu")) precut = (muons_pt->size()>1);
+      if(!strcmp(DecayMode, "ElEl")) precut = (electrons_pt->size()>1);
+      if(!strcmp(DecayMode, "MuEl")) precut = (muons_pt->size()>0 && electrons_pt->size()>0);
 
       for(int j =0; j<v ; j++) G[j]=true;
 
       int GBHardon=0, GCHardon=0;
       if(isMC)
       {
-          wei = weight*csvweight;
+          wei = weight*csvweight*puWeight;
           
           if(v==5)
           {
@@ -148,21 +148,21 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       if(precut)
       {
           TLorentzVector Z;
-          if(DecayMode == "MuMu") Z = ((muons[0])+(muons[1]));
-          if(DecayMode == "ElEl") Z = ((electrons[0])+(electrons[1]));
-          if(DecayMode == "MuEl") Z = ((muons[0])+(electrons[0])); 
+          if(!strcmp(DecayMode, "MuMu")) Z = ((muons[0])+(muons[1]));
+          if(!strcmp(DecayMode, "ElEl")) Z = ((electrons[0])+(electrons[1]));
+          if(!strcmp(DecayMode, "MuEl")) Z = ((muons[0])+(electrons[0])); 
 
           if(isZ==2 && Z.M()<50) continue;
           if(isZ==1 && Z.M()>=50) continue;
 
           //std::cout << "Zmass = " << Z.M() << endl;
 
-          if(DecayMode == "MuMu") S[0] = (muons_Q->at(0)*muons_Q->at(1)<0 && muons_relIso->at(0)<0.15 && muons_relIso->at(1)<0.15 && Z.M()>12. && muons_pt->at(0)>20. && muons_pt->at(1)>20.);
-          if(DecayMode == "ElEl") S[0] = (electrons_Q->at(0)*electrons_Q->at(1)<0 && electrons_relIso->at(0)<0.15 && electrons_relIso->at(1)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && electrons_pt->at(1)>20.);
-          if(DecayMode == "MuEl") S[0] = (electrons_Q->at(0)*muons_Q->at(0)<0 && electrons_relIso->at(0)<0.15 && muons_relIso->at(0)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && muons_pt->at(0)>20.);
+          if(!strcmp(DecayMode, "MuMu")) S[0] = (muons_Q->at(0)*muons_Q->at(1)<0 && muons_relIso->at(0)<0.15 && muons_relIso->at(1)<0.15 && Z.M()>12. && muons_pt->at(0)>20. && muons_pt->at(1)>20.);
+          if(!strcmp(DecayMode, "ElEl")) S[0] = (electrons_Q->at(0)*electrons_Q->at(1)<0 && electrons_relIso->at(0)<0.15 && electrons_relIso->at(1)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && electrons_pt->at(1)>20.);
+          if(!strcmp(DecayMode, "MuEl")) S[0] = (electrons_Q->at(0)*muons_Q->at(0)<0 && electrons_relIso->at(0)<0.15 && muons_relIso->at(0)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && muons_pt->at(0)>20.);
 
           S[1] = S[0] && (std::abs(91.2-Z.M())>15.0);
-          S[2] = S[1] && (met_pt>30.);
+          if(strcmp(DecayMode, "MuEl")) S[2] = S[1] && (met_pt>30.); else S[2] = S[1];
           S[3] = S[2] && (njet>3);
           S[4] = S[3] && (nBtagT>1);
      
@@ -170,7 +170,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           {
               hZMass[i][j]   ->Fill(Z.M()              , wei); 
 
-              if(DecayMode == "MuMu")
+              if(!strcmp(DecayMode, "MuMu"))
               {
                  hrelIso1[i][j] ->Fill(muons_relIso->at(0), wei);
                  hrelIso2[i][j] ->Fill(muons_relIso->at(1), wei);
@@ -179,7 +179,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                  hEta1[i][j]    ->Fill(muons_pt->at(0)    , wei);
                  hEta2[i][j]    ->Fill(muons_pt->at(1)    , wei);
               }
-              if(DecayMode == "ElEl")
+              if(!strcmp(DecayMode, "ElEl"))
               {
                  hrelIso1[i][j] ->Fill(electrons_relIso->at(0), wei);
                  hrelIso2[i][j] ->Fill(electrons_relIso->at(1), wei);
@@ -188,7 +188,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                  hEta1[i][j]    ->Fill(electrons_pt->at(0)    , wei);
                  hEta2[i][j]    ->Fill(electrons_pt->at(1)    , wei);
               }
-              if(DecayMode == "MuMu")
+              if(!strcmp(DecayMode, "MuEl"))
               {
                  hrelIso2[i][j] ->Fill(electrons_relIso->at(0), wei);
                  hrelIso1[i][j] ->Fill(muons_relIso->at(0)    , wei);
