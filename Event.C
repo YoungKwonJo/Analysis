@@ -10,7 +10,7 @@
 #include <TH1D.h>
 #include <TH2D.h>
 
-void Event::Loop(char *Name,double weight,int isZ,const int v)
+void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC)
 {
 
    const int u=5;//, v=5;
@@ -28,32 +28,32 @@ void Event::Loop(char *Name,double weight,int isZ,const int v)
 
    for(int i =0; i<u ; i++) for(int j =0; j<v ; j++)
    {
-       hZMass[i][j]   = new TH1F(Form("hZMass_S%d_%s%s",   i+1,Name,ttNN[j]), "dilepton mass   ", 40, 0, 250);
-       hrelIso1[i][j] = new TH1F(Form("hrelIso1_S%d_%s%s", i+1,Name,ttNN[j]), "rel Isolation 1 ", 40,0,0.4);
-       hrelIso2[i][j] = new TH1F(Form("hrelIso2_S%d_%s%s", i+1,Name,ttNN[j]), "rel Isolation 2 ", 40,0,0.4);
+       hZMass[i][j]   = new TH1F(Form("hZMass_S%d_%s%s%s", i+1,Name,ttNN[j],DecayMode), "dilepton mass   ", 40, 0, 250);
+       hrelIso1[i][j] = new TH1F(Form("hrelIso1_S%d_%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 1 ", 40,0,0.4);
+       hrelIso2[i][j] = new TH1F(Form("hrelIso2_S%d_%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 2 ", 40,0,0.4);
    
-       hPt1[i][j]     = new TH1F(Form("hPt1_S%d_%s%s", i+1,Name,ttNN[j]), "leading lepton Pt ", 20,0,100);
-       hPt2[i][j]     = new TH1F(Form("hPt2_S%d_%s%s", i+1,Name,ttNN[j]), "second lepton Pt  ", 20,0,100);
+       hPt1[i][j]     = new TH1F(Form("hPt1_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "leading lepton Pt ", 20,0,100);
+       hPt2[i][j]     = new TH1F(Form("hPt2_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "second lepton Pt  ", 20,0,100);
    
-       hEta1[i][j]    = new TH1F(Form("hEta1_S%d_%s%s", i+1,Name,ttNN[j]), "leading lepton eta ", 35, -3.5, 3.5);
-       hEta2[i][j]    = new TH1F(Form("hEta2_S%d_%s%s", i+1,Name,ttNN[j]), "second lepton eta  ", 35, -3.5, 3.5);
+       hEta1[i][j]    = new TH1F(Form("hEta1_S%d_%s%s%s",  i+1,Name,ttNN[j],DecayMode), "leading lepton eta ", 35, -3.5, 3.5);
+       hEta2[i][j]    = new TH1F(Form("hEta2_S%d_%s%s%s",  i+1,Name,ttNN[j],DecayMode), "second lepton eta  ", 35, -3.5, 3.5);
 
-       hMET[i][j]               = new TH1F(Form("hMET_S%d_%s%s",               i+1,Name,ttNN[j]),            "MET     ", 18, 0, 180 );
-       hnJet[i][j]              = new TH1F(Form("hnJet_S%d_%s%s",              i+1,Name,ttNN[j]),            "nJet    ", 10, 0, 10  );
-       hnVertex[i][j]           = new TH1F(Form("hnVertex_S%d_%s%s",           i+1,Name,ttNN[j]),            "nVertex ", 30, 0, 30  );
+       hMET[i][j]               = new TH1F(Form( "hMET_S%d_%s%s%s",              i+1,Name,ttNN[j],DecayMode),            "MET     ", 18, 0, 180 );
+       hnJet[i][j]              = new TH1F(Form("hnJet_S%d_%s%s%s",              i+1,Name,ttNN[j],DecayMode),            "nJet    ", 10, 0, 10  );
+       hnVertex[i][j]           = new TH1F(Form("hnVertex_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),            "nVertex ", 30, 0, 30  );
                                                                                                     
-       hjet1pt[i][j]            = new TH1F(Form("hjet1pt_S%d_%s%s",            i+1,Name,ttNN[j]),          "jet1pt    ", 19, 20, 400   );
-       hjet1eta[i][j]           = new TH1F(Form("hjet1eta_S%d_%s%s",           i+1,Name,ttNN[j]),          "jet1eta   ", 35, -3.5, 3.5 );
-       hjet1phi[i][j]           = new TH1F(Form("hjet1phi_S%d_%s%s",           i+1,Name,ttNN[j]),          "jet1phi   ", 35, -3.5, 3.5 );
-       hjet1_bDisCSV[i][j]      = new TH1F(Form("hjet1_bDisCSV_S%d_%s%s",      i+1,Name,ttNN[j]),     "jet1_bDisCSV   ", 20, 0.0, 1.0  );
+       hjet1pt[i][j]            = new TH1F(Form( "hjet1pt_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),          "jet1pt    ", 19, 20, 400   );
+       hjet1eta[i][j]           = new TH1F(Form("hjet1eta_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),          "jet1eta   ", 35, -3.5, 3.5 );
+       hjet1phi[i][j]           = new TH1F(Form("hjet1phi_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),          "jet1phi   ", 35, -3.5, 3.5 );
+       hjet1_bDisCSV[i][j]      = new TH1F(Form("hjet1_bDisCSV_S%d_%s%s%s",      i+1,Name,ttNN[j],DecayMode),     "jet1_bDisCSV   ", 20, 0.0, 1.0  );
                                                                                  
-       hnbJet30_CSVT[i][j]      = new TH1F(Form("hnbJet30_CSVT_S%d_%s%s",      i+1,Name,ttNN[j]),     "nbJet30_CSVT   ", 5, 0, 5 );
-       hnbJet30_CSVM[i][j]      = new TH1F(Form("hnbJet30_CSVM_S%d_%s%s",      i+1,Name,ttNN[j]),     "nbJet30_CSVM   ", 5, 0, 5 );
+       hnbJet30_CSVT[i][j]      = new TH1F(Form("hnbJet30_CSVT_S%d_%s%s%s",      i+1,Name,ttNN[j],DecayMode),     "nbJet30_CSVT   ", 5, 0, 5 );
+       hnbJet30_CSVM[i][j]      = new TH1F(Form("hnbJet30_CSVM_S%d_%s%s%s",      i+1,Name,ttNN[j],DecayMode),     "nbJet30_CSVM   ", 5, 0, 5 );
                                                                               
-       haddjet1_bDisCSV[i][j]   = new TH1F(Form("haddjet1_bDisCSV_S%d_%s%s",   i+1,Name,ttNN[j]),  "addjet1_bDisCSV   ", 10, 0.0, 1.0);
-       haddjet2_bDisCSV[i][j]   = new TH1F(Form("haddjet2_bDisCSV_S%d_%s%s",   i+1,Name,ttNN[j]),  "addjet2_bDisCSV   ", 10, 0.0, 1.0);
+       haddjet1_bDisCSV[i][j]   = new TH1F(Form("haddjet1_bDisCSV_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode),  "addjet1_bDisCSV   ", 10, 0.0, 1.0);
+       haddjet2_bDisCSV[i][j]   = new TH1F(Form("haddjet2_bDisCSV_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode),  "addjet2_bDisCSV   ", 10, 0.0, 1.0);
 
-       haddjet2D_bDisCSV[i][j]  = new TH2F(Form("haddjet2D_bDisCSV_S%d_%s%s",  i+1,Name,ttNN[j]), "addjet2D_bDisCSV   ", 10, 0.0, 1.0, 10, 0.0, 1.0);
+       haddjet2D_bDisCSV[i][j]  = new TH2F(Form("haddjet2D_bDisCSV_S%d_%s%s%s",  i+1,Name,ttNN[j],DecayMode), "addjet2D_bDisCSV   ", 10, 0.0, 1.0, 10, 0.0, 1.0);
    }
    TLorentzVector muons[15], electrons[15], jets[30];
 
@@ -117,34 +117,50 @@ void Event::Loop(char *Name,double weight,int isZ,const int v)
          }
 
       }
-      bool precut = (muons_pt->size()>1);
-      wei = weight*csvweight;
-      int GBHardon=0, GCHardon=0;
 
-      if(v==5)
+      bool precut = false;
+      if(DecayMode == "MuMu") precut = (muons_pt->size()>1);
+      if(DecayMode == "ElEl") precut = (electrons_pt->size()>1);
+      if(DecayMode == "MuEl") precut = (muons_pt->size()>0 && electrons_pt->size()>0);
+
+      for(int j =0; j<v ; j++) G[j]=true;
+
+      int GBHardon=0, GCHardon=0;
+      if(isMC)
       {
-          for(int i=0;i<genJets_decayFromBHadron->size();i++ )
+          wei = weight*csvweight;
+          
+          if(v==5)
           {
-            if(genJets_decayFromBHadron->at(i)==1) GBHardon++;
-            if(genJets_decayFromCHadron->at(i)==1) GCHardon++;
+              for(int i=0;i<genJets_decayFromBHadron->size();i++ )
+              {
+                if(genJets_decayFromBHadron->at(i)==1) GBHardon++;
+                if(genJets_decayFromCHadron->at(i)==1) GCHardon++;
+              }
+              G[1] = (GBHardon>3);          // ttbar bb
+              G[2] = !G[1] && (GBHardon>2); // ttbar 1b
+              G[3] = !G[1] && !G[2] && (GBHardon>1) && (GCHardon>1); // ttbar cc
+              G[4] = !G[1] && !G[2] && !G[3] && (GBHardon>1); // ttbar LF
+              G[0] = !G[1] && !G[2] && !G[3] && !G[4];  // ttbar others
           }
-          G[1] = (GBHardon>3);          // ttbar bb
-          G[2] = !G[1] && (GBHardon>2); // ttbar 1b
-          G[3] = !G[1] && !G[2] && (GBHardon>1) && (GCHardon>1); // ttbar cc
-          G[4] = !G[1] && !G[2] && !G[3] && (GBHardon>1); // ttbar LF
-          G[0] = !G[1] && !G[2] && !G[3] && !G[4];  // ttbar others
       }
-      else { for(int j =0; j<v ; j++) G[j]=true;}
 
       if(precut)
       {
-          TLorentzVector Z = ((muons[0])+(muons[1])); 
+          TLorentzVector Z;
+          if(DecayMode == "MuMu") Z = ((muons[0])+(muons[1]));
+          if(DecayMode == "ElEl") Z = ((electrons[0])+(electrons[1]));
+          if(DecayMode == "MuEl") Z = ((muons[0])+(electrons[0])); 
+
           if(isZ==2 && Z.M()<50) continue;
-          if(isZ==1 && Z.M()>50) continue;
+          if(isZ==1 && Z.M()>=50) continue;
 
           //std::cout << "Zmass = " << Z.M() << endl;
 
-          S[0] = (muons_Q->at(0)*muons_Q->at(1) && muons_relIso->at(0)<0.15 && muons_relIso->at(1)<0.15 && Z.M()>12. && muons_pt->at(0)>20. && muons_pt->at(1)>20.);
+          if(DecayMode == "MuMu") S[0] = (muons_Q->at(0)*muons_Q->at(1)<0 && muons_relIso->at(0)<0.15 && muons_relIso->at(1)<0.15 && Z.M()>12. && muons_pt->at(0)>20. && muons_pt->at(1)>20.);
+          if(DecayMode == "ElEl") S[0] = (electrons_Q->at(0)*electrons_Q->at(1)<0 && electrons_relIso->at(0)<0.15 && electrons_relIso->at(1)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && electrons_pt->at(1)>20.);
+          if(DecayMode == "MuEl") S[0] = (electrons_Q->at(0)*muons_Q->at(0)<0 && electrons_relIso->at(0)<0.15 && muons_relIso->at(0)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && muons_pt->at(0)>20.);
+
           S[1] = S[0] && (std::abs(91.2-Z.M())>15.0);
           S[2] = S[1] && (met_pt>30.);
           S[3] = S[2] && (njet>3);
@@ -153,14 +169,34 @@ void Event::Loop(char *Name,double weight,int isZ,const int v)
           for(int i =0; i<u ; i++)for(int j =0; j<v ; j++) if(S[i] && G[j])
           {
               hZMass[i][j]   ->Fill(Z.M()              , wei); 
-              hrelIso1[i][j] ->Fill(muons_relIso->at(0), wei);
-              hrelIso2[i][j] ->Fill(muons_relIso->at(1), wei);
-              
-              hPt1[i][j]     ->Fill(muons_pt->at(0)    , wei);
-              hPt2[i][j]     ->Fill(muons_pt->at(1)    , wei);
-              
-              hEta1[i][j]    ->Fill(muons_pt->at(0)    , wei);
-              hEta2[i][j]    ->Fill(muons_pt->at(1)    , wei);
+
+              if(DecayMode == "MuMu")
+              {
+                 hrelIso1[i][j] ->Fill(muons_relIso->at(0), wei);
+                 hrelIso2[i][j] ->Fill(muons_relIso->at(1), wei);
+                 hPt1[i][j]     ->Fill(muons_pt->at(0)    , wei);
+                 hPt2[i][j]     ->Fill(muons_pt->at(1)    , wei);
+                 hEta1[i][j]    ->Fill(muons_pt->at(0)    , wei);
+                 hEta2[i][j]    ->Fill(muons_pt->at(1)    , wei);
+              }
+              if(DecayMode == "ElEl")
+              {
+                 hrelIso1[i][j] ->Fill(electrons_relIso->at(0), wei);
+                 hrelIso2[i][j] ->Fill(electrons_relIso->at(1), wei);
+                 hPt1[i][j]     ->Fill(electrons_pt->at(0)    , wei);
+                 hPt2[i][j]     ->Fill(electrons_pt->at(1)    , wei);
+                 hEta1[i][j]    ->Fill(electrons_pt->at(0)    , wei);
+                 hEta2[i][j]    ->Fill(electrons_pt->at(1)    , wei);
+              }
+              if(DecayMode == "MuMu")
+              {
+                 hrelIso2[i][j] ->Fill(electrons_relIso->at(0), wei);
+                 hrelIso1[i][j] ->Fill(muons_relIso->at(0)    , wei);
+                 hPt2[i][j]     ->Fill(electrons_pt->at(0)    , wei);
+                 hPt1[i][j]     ->Fill(muons_pt->at(0)        , wei);
+                 hEta2[i][j]    ->Fill(electrons_pt->at(0)    , wei);
+                 hEta1[i][j]    ->Fill(muons_pt->at(0)        , wei);
+              }
               
               hMET[i][j]     ->Fill(met_pt             , wei);             
               hnJet[i][j]    ->Fill(njet               , wei);         

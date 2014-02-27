@@ -36,7 +36,30 @@ for i in range(len(Sample)) :
     cmd = cmd+",%f"% CX[i]
     cmd = cmd+",%d"% isZ[i]
     cmd = cmd+",%d"% v[i]
-    cmd = cmd+"\\)"
+    cmd = cmd+",\\\"MuMu\\\""
+    cmd = cmd+",true\\)"
+    print cmd
+    os.system(cmd)
+
+for i in range(len(Sample)) :
+    cmd = "root -b -q run.C\\(\\\"%s\\\""% Sample[i]
+    cmd = cmd+",\\\"%s\\\""% sSample[i]
+    cmd = cmd+",%f"% CX[i]
+    cmd = cmd+",%d"% isZ[i]
+    cmd = cmd+",%d"% v[i]
+    cmd = cmd+",\\\"ElEl\\\""
+    cmd = cmd+",true\\)"
+    print cmd
+    os.system(cmd)
+
+for i in range(len(Sample)) :
+    cmd = "root -b -q run.C\\(\\\"%s\\\""% Sample[i]
+    cmd = cmd+",\\\"%s\\\""% sSample[i]
+    cmd = cmd+",%f"% CX[i]
+    cmd = cmd+",%d"% isZ[i]
+    cmd = cmd+",%d"% v[i]
+    cmd = cmd+",\\\"MuEl\\\""
+    cmd = cmd+",true\\)"
     print cmd
     os.system(cmd)
 
