@@ -2,14 +2,14 @@
 
 import sys,os
 
-Sample = ["DYJetsToLL_M-10To50filter_8TeV-madgraph","DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball"]#,
-#"TTJets_FullLeptMGDecays_8TeV-madgraph-tauola","TTJets_HadronicMGDecays_8TeV-madgraph","TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola",
+Sample = ["DYJetsToLL_M-10To50filter_8TeV-madgraph","DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball",
+"TTJets_FullLeptMGDecays_8TeV-madgraph-tauola","TTJets_HadronicMGDecays_8TeV-madgraph"]#,"TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola",
 #"T_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola","Tbar_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola",
 #"WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball","WW_TuneZ2star_8TeV_pythia6_tauola",
 #"WZ_TuneZ2star_8TeV_pythia6_tauola","ZZ_TuneZ2star_8TeV_pythia6_tauola"]
 
 sSample = ["DY","DY",          # DY10To50, DY50
-           "TT","TTot","TTot", # ttDiLep, ttHard, ttSemiLep
+           "TT","TT","TT", # ttDiLep, ttHard, ttSemiLep
            "ST","ST", # "TtW","TbartW"
            "Wj","VV", # WW
            "VV","VV"] # WZ, ZZ
@@ -31,12 +31,12 @@ v = [1,1,
        1,1]
 
 for i in range(len(Sample)) :
-    cmd = "root -l run.C\\(\\\"%s\\\""% Sample[i]
+    cmd = "root -b -q run.C\\(\\\"%s\\\""% Sample[i]
     cmd = cmd+",\\\"%s\\\""% sSample[i]
     cmd = cmd+",%f"% CX[i]
     cmd = cmd+",%d"% isZ[i]
     cmd = cmd+",%d"% v[i]
-    cmd = cmd+",true\\)"
+    cmd = cmd+"\\)"
     print cmd
     os.system(cmd)
 
