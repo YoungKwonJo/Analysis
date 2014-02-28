@@ -180,7 +180,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
               for(int i=0;i<genJets_decayFromBHadron->size();i++ )
               {
                 if(genJets_decayFromBHadron->at(i)==1 && genJets_pt->at(i)>20.) GBHardon++;
-                if(genJets_decayFromCHadron->at(i)==1 && genJets_pt->at(i)>20.) GCHardon++;
+                else if(genJets_decayFromCHadron->at(i)==1 && genJets_pt->at(i)>20.) GCHardon++;
               }
               G[1] = (GBHardon>3 && GLep>1);          // ttbar bb
               G[2] = !G[1] && (GBHardon>2 && GLep>1); // ttbar 1b
