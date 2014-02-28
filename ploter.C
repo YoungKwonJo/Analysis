@@ -231,7 +231,9 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
    pad1EE->Draw();   pad2EE->Draw();
    pad1EE->cd();
 
-   if ( doLogY ){ pad1EE->SetLogy(); h2[0]->SetMinimum(0.5); h2[0]->SetMaximum(h2[0]->GetMaximum()*50); }
+   double LogMinEE=0.5;
+   if(h[nBkg][0]->GetMinimum()<0.5) LogMinEE=0.05;
+   if ( doLogY ){ pad1EE->SetLogy(); h2[0]->SetMinimum(LogMinEE); h2[0]->SetMaximum(h2[0]->GetMaximum()*50); }
 
    h2[0]->GetYaxis()->SetTitleSize(0.065);
    h2[0]->GetYaxis()->SetLabelSize(0.05);
