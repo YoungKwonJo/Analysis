@@ -121,8 +121,8 @@ TLegend* buildLegend(double y)
 
 TPaveText* getHeader(double lumi, TString channelName)
 {
-//  TPaveText *pt = new TPaveText(0.21,0.70,0.21,0.86,"brNDC");
-  TPaveText *pt = new TPaveText(0.21,0.70,0.21,0.86,"brNDC");
+  //TPaveText *pt = new TPaveText(0.21,0.70,0.21,0.86,"brNDC"); //for two rows
+  TPaveText *pt = new TPaveText(0.21,0.647,0.21,0.86,"brNDC");  //for three rows
 
   pt->SetBorderSize(1);
   pt->SetTextFont(42);
@@ -135,7 +135,7 @@ TPaveText* getHeader(double lumi, TString channelName)
   pt->SetTextAlign(12);
   pt->AddText("CMS Preliminary");
   pt->AddText(Form("%.1f fb^{-1} at  #sqrt{s} = 8 TeV", lumi));
-  pt->AddText("");
+  pt->AddText(Form("%s",channelName.Data()));
 
   return pt;
 }
@@ -152,7 +152,7 @@ void ploter()
    gSystem->Exec("mkdir "+outDirName+"/linear");
 
    plot("S5",addjet1_bDisCSV,true,false);
- //  plot("S5",addjet2_bDisCSV);
+   plot("S5",addjet2_bDisCSV,true,true);
 
 
 }
@@ -167,112 +167,135 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
    const char* xTitle = histNameTitle[2];
    const char* yTitle = histNameTitle[3];
 
-   TH1F *h[nBkg+2][4], *h2[4];
+   TH1F *h[nBkg+2][4], *h2[4], *h3[4], *h4[nBkg+2];
+   THStack* hStack[4];
+   TLegend* leg[4];
+   const char *NN[4] = {"EE","MM","ME","LL"};
 
-   THStack* hStackEE = new THStack(TString("hEE_")+cutStep+"_"+histName, histTitle);
-   THStack* hStackMM = new THStack(TString("hMM_")+cutStep+"_"+histName, histTitle);
-   THStack* hStackME = new THStack(TString("hME_")+cutStep+"_"+histName, histTitle);
-
-   TLegend* legEE = buildLegend( (double) nExclude*0.02);
-   TLegend* legMM = buildLegend( (double) nExclude*0.02);
-   TLegend* legME = buildLegend( (double) nExclude*0.02);
+   //for LL
+   hStack[3] = new THStack(TString("h")+"_"+NN[3]+cutStep+"_"+histName, histTitle);
+   leg[3] = buildLegend( (double) nExclude*0.02);
 
    for(int j=0;j<3;j++)
    {
+        hStack[j] = new THStack(TString("h")+"_"+NN[j]+cutStep+"_"+histName, histTitle);
+        leg[j] = buildLegend( (double) nExclude*0.02);
+
         //for signal
         h[nBkg][j] = (TH1F*)f->Get(Form("h%s_%s_%s%s",histName, cutStep, sigNames[0],DecayMode[j] ));
         h[nBkg][j]->SetFillColor(color_sig);
         h[nBkg][j]->SetLineColor(kBlack);
         h[nBkg][j]->SetFillStyle(style_sig);
 
-        if(j==0 && isSS) hStackEE->Add(h[nBkg][j]);
-        if(j==1 && isSS) hStackMM->Add(h[nBkg][j]);
-        if(j==2 && isSS) hStackME->Add(h[nBkg][j]);
-        if(j==0 && h[nBkg][j]->GetEntries() > 0) legEE->AddEntry(h[nBkg][j], sigLabels[0], "f");
-        if(j==1 && h[nBkg][j]->GetEntries() > 0) legMM->AddEntry(h[nBkg][j], sigLabels[0], "f");
-        if(j==2 && h[nBkg][j]->GetEntries() > 0) legME->AddEntry(h[nBkg][j], sigLabels[0], "f");
+        if(isSS) hStack[j]->Add(h[nBkg][j]);
+        if(h[nBkg][j]->GetEntries() > 0) leg[j]->AddEntry(h[nBkg][j], sigLabels[0], "f");
+
+        //for LL
+        if(j==0) h4[nBkg] = (TH1F*) h[nBkg][j]->Clone(Form("%sLL",sigNames[0]));
+        else     h4[nBkg]->Add(h[nBkg][j]);
+
         //for data 
         //h[nBkg+1][j]= (TH1F*)f->Get(Form("h%s_%s_data_%s",histName, cutStep, DecayMode[j] ));
    }
+   //for LL
+   hStack[3]->Add(h4[nBkg]);
+   leg[3]->AddEntry(h4[nBkg], sigLabels[0], "f");
 
-   for(int i=0;i<nBkg;i++) for(int j=0;j<3;j++)
+
+   for(int i=0;i<nBkg;i++) 
    {
-        //for background
-        h[i][j]= (TH1F*)f->Get(Form("h%s_%s_%s%s",histName, cutStep, bkgNames[i], DecayMode[j] ));
-        h[i][j]->SetFillColor(color[i]);
-        h[i][j]->SetLineColor(kBlack);
-        h[i][j]->SetFillStyle(style[i]);
-
-        if(j==0) { hStackEE->Add(h[i][j]); if(i==0) h2[j] = (TH1F*) h[i][j]->Clone("bkgee"); }
-        if(j==1) { hStackMM->Add(h[i][j]); if(i==0) h2[j] = (TH1F*) h[i][j]->Clone("bkgmm"); }
-        if(j==2) { hStackME->Add(h[i][j]); if(i==0) h2[j] = (TH1F*) h[i][j]->Clone("bkgme"); }
-
-        if(i!=0) h2[j]->Add(h[i][j]);
-
-        if(j==0) legEE->AddEntry(h[i][j], bkgLabels[i], "f");
-        if(j==1) legME->AddEntry(h[i][j], bkgLabels[i], "f");
-        if(j==2) legMM->AddEntry(h[i][j], bkgLabels[i], "f");
-
+       for(int j=0;j<3;j++)
+       {
+            //for background
+            h[i][j]= (TH1F*)f->Get(Form("h%s_%s_%s%s",histName, cutStep, bkgNames[i], DecayMode[j] ));
+            h[i][j]->SetFillColor(color[i]);
+            h[i][j]->SetLineColor(kBlack);
+            h[i][j]->SetFillStyle(style[i]);
+       
+            hStack[j]->Add(h[i][j]); 
+            leg[j]->AddEntry(h[i][j], bkgLabels[i], "f");
+       
+            if(i==0) h2[j] = (TH1F*) h[i][j]->Clone(Form("bkg%s",NN[j]));
+            else     h2[j]->Add(h[i][j]);
+       
+            //for LL
+            if(i==0 && j==0) h2[3] = (TH1F*) h[i][j]->Clone(Form("bkg%s",NN[3]));
+            else             h2[3]->Add(h[i][j]);
+            if(j==0) h4[i] = (TH1F*) h[i][j]->Clone(Form("%sLL",bkgNames[i]));
+            else     h4[i]->Add(h[i][j]);
+       }
+       //for LL
+       hStack[3]->Add(h4[i]);
+       leg[3]->AddEntry(h4[i], bkgLabels[i], "f");
    }
-   h2[0]->SetTitle("");
-   h2[0]->GetXaxis()->SetTitle( xTitle );
-   h2[0]->GetYaxis()->SetTitle( yTitle );
-
-   h2[0]->SetMaximum(h2[0]->GetMaximum()*1.5);
 
 ///////////
-   TCanvas *cEE = new TCanvas("cEE","cEE",1);
-   TPad *pad1EE = new TPad("pad1","",0,0.3,1,1);
-   TPad *pad2EE = new TPad("pad2","",0,0,1,0.3);
-   pad1EE->Divide(1,1,0,0); pad2EE->Divide(1,1,0,0);
-   pad1EE->SetBottomMargin(0);
-   pad2EE->SetTopMargin(0);
-   pad2EE->SetBottomMargin(0.3);
-   pad1EE->Draw();   pad2EE->Draw();
-   pad1EE->cd();
+   const char *Na[4] ={"ee","#mu#mu","e#mu","All"};
+   TCanvas *c[4];
+   TPad *pad1[4], *pad2[4];
+   double LogMin[4];
 
-   double LogMinEE=0.5;
-   if(h[nBkg][0]->GetMinimum()<0.5) LogMinEE=0.05;
-   if ( doLogY ){ pad1EE->SetLogy(); h2[0]->SetMinimum(LogMinEE); h2[0]->SetMaximum(h2[0]->GetMaximum()*50); }
+   for(int i=0;i<4;i++)
+   {
+     c[i] = new TCanvas(Form("c%s",NN[i]),Form("c%s",NN[i]),1);
+     pad1[i] = new TPad(Form("pad1%s",NN[i]),"",0,0.3,1,1);
+     pad2[i] = new TPad(Form("pad2%s",NN[i]),"",0,0,1,0.3);
+     pad1[i]->Divide(1,1,0,0); pad2[i]->Divide(1,1,0,0);
+     pad1[i]->SetBottomMargin(0);
+     pad2[i]->SetTopMargin(0);
+     pad2[i]->SetBottomMargin(0.3);
+     pad1[i]->Draw();   pad2[i]->Draw();
+     pad1[i]->cd();
 
-   h2[0]->GetYaxis()->SetTitleSize(0.065);
-   h2[0]->GetYaxis()->SetLabelSize(0.05);
-   h2[0]->Draw();
-   getHeader(19.6, "ee channel")->Draw(); legEE->Draw(); 
-   hStackEE->Draw("same");
+     h2[i]->SetTitle("");
+     h2[i]->GetXaxis()->SetTitle( xTitle );
+     h2[i]->GetYaxis()->SetTitle( yTitle );
 
-   pad1EE->Draw();
-   pad1EE->Update(); //this will force the generation of the "stats" box
-   pad2EE->cd();
+     h2[i]->SetMaximum(h2[i]->GetMaximum()*1.5);
+     LogMin[i]=0.5;
+     if( i<3 && h[nBkg][i]->GetMinimum()<0.5) LogMin[i]=0.05;
+     if( i==3 && h4[nBkg]->GetMinimum()<0.5) LogMin[i]=0.05;
+     if ( doLogY ){ pad1[i]->SetLogy(); h2[i]->SetMinimum(LogMin[i]); h2[i]->SetMaximum(h2[i]->GetMaximum()*50); }
 
+     h2[i]->GetYaxis()->SetTitleSize(0.065);
+     h2[i]->GetYaxis()->SetLabelSize(0.05);
+     h2[i]->Draw();
+     getHeader(19.6, Form("%s channel",Na[i]))->Draw(); leg[i]->Draw(); 
+     hStack[i]->Draw("same");
 
-   TH1F* h3 = (TH1F*) h2[0]->Clone("EE"); ///
-   h3->Sumw2();
-   h3->Divide(h2[0]);
-   h3->SetTitle("");
-   h3->GetYaxis()->SetTitle("Data/MC");
-   h3->SetNdivisions( 505, "Y" );
-   h3->SetMarkerStyle(20);
-   h3->SetMaximum(2);
-   h3->SetMinimum(0);
-   h3->GetXaxis()->SetTitleSize(0.14);
-   h3->GetYaxis()->SetTitleSize(0.14);
-   h3->GetYaxis()->SetTitleOffset(0.4);
-   h3->GetYaxis()->SetLabelSize(0.1);
-   h3->GetXaxis()->SetLabelSize(0.13);
+     pad1[i]->Draw();
+     pad1[i]->Update(); 
+     pad2[i]->cd();
 
-   h3->GetXaxis()->SetTitle(xTitle);
-   h3->Draw("ex0");
-
-   h3->Draw();
-   TLine *line = new TLine(h3->GetXaxis()->GetXmin() ,1,h3->GetXaxis()->GetXmax(),1);
-   line->SetLineColor(kRed);
-   line->Draw();
-
-   pad2EE->Draw();
-   pad2EE->Update();
-
-   cEE->Print(Form("%s/log/cEE_%s_%s.eps", outDirName.Data(), cutStep, histName));
+     h3[i] = (TH1F*) h2[i]->Clone(Form("new%s",NN[i])); ///
+     h3[i]->Sumw2();
+     h3[i]->Divide(h2[i]);
+     h3[i]->SetTitle("");
+     h3[i]->GetYaxis()->SetTitle("Data/MC");
+     h3[i]->SetNdivisions( 505, "Y" );
+     h3[i]->SetMarkerStyle(20);
+     h3[i]->SetMaximum(2);
+     h3[i]->SetMinimum(0);
+     h3[i]->GetXaxis()->SetTitleSize(0.14);
+     h3[i]->GetYaxis()->SetTitleSize(0.14);
+     h3[i]->GetYaxis()->SetTitleOffset(0.4);
+     h3[i]->GetYaxis()->SetLabelSize(0.1);
+     h3[i]->GetXaxis()->SetLabelSize(0.13);
+     
+     h3[i]->GetXaxis()->SetTitle(xTitle);
+     h3[i]->Draw("ex0");
+     
+     h3[i]->Draw();
+     TLine *line = new TLine(h3[i]->GetXaxis()->GetXmin() ,1,h3[i]->GetXaxis()->GetXmax(),1);
+     line->SetLineColor(kRed);
+     line->Draw();
+     
+     pad2[i]->Draw();
+     pad2[i]->Update();
+     
+     if ( doLogY ) c[i]->Print(Form("%s/log/c%s_%s_%s.eps", outDirName.Data(), NN[i], cutStep, histName));
+     else          c[i]->Print(Form("%s/linear/c%s_%s_%s.eps", outDirName.Data(), NN[i], cutStep, histName));
+   }
 }
 
 
