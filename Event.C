@@ -22,8 +22,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    TH1F  *hMET[u][v], *hnJet[u][v], *hnVertex[u][v]; 
    TH1F  *hjet1pt[u][v], *hjet1eta[u][v], *hjet1phi[u][v], *hjet1_bDisCSV[u][v];    
    TH1F  *hnbJet30_CSVT[u][v], *hnbJet30_CSVM[u][v];    
-   TH1F  *haddjet1_bDisCSV[u][v],  *haddjet2_bDisCSV[u][v]; 
-   TH2F  *haddjet2D_bDisCSV[u][v];
+   TH1F  *haddjet1_bDisCSV[u][v],  *haddjet2_bDisCSV[u][v], *haddjet1_bDisCSV2[u][v],  *haddjet2_bDisCSV2[u][v]; 
+   TH2F  *haddjet2D_bDisCSV[u][v], *haddjet2D_bDisCSV2[u][v];
    const char *ttNN[5] ={"_","bb","1b","cc","LF"};
 
    for(int i =0; i<u ; i++) for(int j =0; j<v ; j++)
@@ -54,6 +54,44 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
        haddjet2_bDisCSV[i][j]   = new TH1F(Form("haddjet2_bDisCSV_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode),  "addjet2_bDisCSV   ", 10, 0.0, 1.0);
 
        haddjet2D_bDisCSV[i][j]  = new TH2F(Form("haddjet2D_bDisCSV_S%d_%s%s%s",  i+1,Name,ttNN[j],DecayMode), "addjet2D_bDisCSV   ", 10, 0.0, 1.0, 10, 0.0, 1.0);
+
+       haddjet1_bDisCSV2[i][j]   = new TH1F(Form("haddjet1_bDisCSV_S%d_%s%s",   i+1,Name,ttNN[j]),  "addjet1_bDisCSV   ", 10, 0.0, 1.0);
+       haddjet2_bDisCSV2[i][j]   = new TH1F(Form("haddjet2_bDisCSV_S%d_%s%s",   i+1,Name,ttNN[j]),  "addjet2_bDisCSV   ", 10, 0.0, 1.0);
+       haddjet2D_bDisCSV2[i][j]  = new TH2F(Form("haddjet2D_bDisCSV_S%d_%s%s",  i+1,Name,ttNN[j]), "addjet2D_bDisCSV   ", 10, 0.0, 1.0, 10, 0.0, 1.0);
+/*
+       hZMass[i][j]            ->Sumw2();
+       hrelIso1[i][j]          ->Sumw2();
+       hrelIso2[i][j]          ->Sumw2();
+
+       hPt1[i][j]              ->Sumw2();
+       hPt2[i][j]              ->Sumw2();
+
+       hEta1[i][j]             ->Sumw2();
+       hEta2[i][j]             ->Sumw2();
+
+       hMET[i][j]              ->Sumw2();
+       hnJet[i][j]             ->Sumw2();
+       hnVertex[i][j]          ->Sumw2();
+
+       hjet1pt[i][j]           ->Sumw2();
+       hjet1eta[i][j]          ->Sumw2();
+       hjet1phi[i][j]          ->Sumw2();
+       hjet1_bDisCSV[i][j]     ->Sumw2();
+
+       hnbJet30_CSVT[i][j]     ->Sumw2();
+       hnbJet30_CSVM[i][j]     ->Sumw2();
+
+       haddjet1_bDisCSV[i][j]  ->Sumw2();
+       haddjet2_bDisCSV[i][j]  ->Sumw2();
+
+       haddjet2D_bDisCSV[i][j] ->Sumw2(); 
+
+       haddjet1_bDisCSV2[i][j]  ->Sumw2();
+       haddjet2_bDisCSV2[i][j]  ->Sumw2();
+
+       haddjet2D_bDisCSV2[i][j] ->Sumw2(); 
+*/
+
    }
    TLorentzVector muons[15], electrons[15], jets[30];
 
@@ -125,22 +163,29 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       for(int j =0; j<v ; j++) G[j]=true;
 
-      int GBHardon=0, GCHardon=0;
+      int GBHardon=0, GCHardon=0, GLep=0;
       if(isMC)
       {
           wei = weight*csvweight*puWeight;
-          
+ 
           if(v==5)
           {
+
+              for(int i=0;i<genParticles_pdgId->size();i++ )
+              {
+                  if( (std::abs(genParticles_pdgId->at(i))==11 || std::abs(genParticles_pdgId->at(i))==13 ) && 
+                      genParticles_pt->at(i)>20. &&  std::abs(genParticles_eta->at(i)) < 2.5 ) GLep++;
+                  
+              }
               for(int i=0;i<genJets_decayFromBHadron->size();i++ )
               {
-                if(genJets_decayFromBHadron->at(i)==1) GBHardon++;
-                if(genJets_decayFromCHadron->at(i)==1) GCHardon++;
+                if(genJets_decayFromBHadron->at(i)==1 && genJets_pt->at(i)>20.) GBHardon++;
+                if(genJets_decayFromCHadron->at(i)==1 && genJets_pt->at(i)>20.) GCHardon++;
               }
-              G[1] = (GBHardon>3);          // ttbar bb
-              G[2] = !G[1] && (GBHardon>2); // ttbar 1b
-              G[3] = !G[1] && !G[2] && (GBHardon>1) && (GCHardon>1); // ttbar cc
-              G[4] = !G[1] && !G[2] && !G[3] && (GBHardon>1); // ttbar LF
+              G[1] = (GBHardon>3 && GLep>1);          // ttbar bb
+              G[2] = !G[1] && (GBHardon>2 && GLep>1); // ttbar 1b
+              G[3] = !G[1] && !G[2] && (GBHardon>1) && (GCHardon>1) && (GLep>1); // ttbar cc
+              G[4] = !G[1] && !G[2] && !G[3] && (GBHardon>1 && GLep>1); // ttbar LF
               G[0] = !G[1] && !G[2] && !G[3] && !G[4];  // ttbar others
           }
       }
@@ -176,8 +221,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                  hrelIso2[i][j] ->Fill(muons_relIso->at(1), wei);
                  hPt1[i][j]     ->Fill(muons_pt->at(0)    , wei);
                  hPt2[i][j]     ->Fill(muons_pt->at(1)    , wei);
-                 hEta1[i][j]    ->Fill(muons_pt->at(0)    , wei);
-                 hEta2[i][j]    ->Fill(muons_pt->at(1)    , wei);
+                 hEta1[i][j]    ->Fill(muons_eta->at(0)    , wei);
+                 hEta2[i][j]    ->Fill(muons_eta->at(1)    , wei);
               }
               if(!strcmp(DecayMode, "ElEl"))
               {
@@ -185,8 +230,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                  hrelIso2[i][j] ->Fill(electrons_relIso->at(1), wei);
                  hPt1[i][j]     ->Fill(electrons_pt->at(0)    , wei);
                  hPt2[i][j]     ->Fill(electrons_pt->at(1)    , wei);
-                 hEta1[i][j]    ->Fill(electrons_pt->at(0)    , wei);
-                 hEta2[i][j]    ->Fill(electrons_pt->at(1)    , wei);
+                 hEta1[i][j]    ->Fill(electrons_eta->at(0)    , wei);
+                 hEta2[i][j]    ->Fill(electrons_eta->at(1)    , wei);
               }
               if(!strcmp(DecayMode, "MuEl"))
               {
@@ -194,8 +239,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                  hrelIso1[i][j] ->Fill(muons_relIso->at(0)    , wei);
                  hPt2[i][j]     ->Fill(electrons_pt->at(0)    , wei);
                  hPt1[i][j]     ->Fill(muons_pt->at(0)        , wei);
-                 hEta2[i][j]    ->Fill(electrons_pt->at(0)    , wei);
-                 hEta1[i][j]    ->Fill(muons_pt->at(0)        , wei);
+                 hEta2[i][j]    ->Fill(electrons_eta->at(0)    , wei);
+                 hEta1[i][j]    ->Fill(muons_eta->at(0)        , wei);
               }
               
               hMET[i][j]     ->Fill(met_pt             , wei);             
@@ -216,6 +261,11 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                   haddjet2_bDisCSV[i][j] ->Fill(jets_bTag->at(jidx[3]) , wei); 
                                  
                   haddjet2D_bDisCSV[i][j] ->Fill(jets_bTag->at(jidx[2]),jets_bTag->at(jidx[3]) , wei);
+
+                  haddjet1_bDisCSV2[i][j] ->Fill(jets_bTag->at(jidx[2]) , wei); 
+                  haddjet2_bDisCSV2[i][j] ->Fill(jets_bTag->at(jidx[3]) , wei); 
+                  haddjet2D_bDisCSV2[i][j] ->Fill(jets_bTag->at(jidx[2]),jets_bTag->at(jidx[3]) , wei);
+
               }
           } // cut loop
 /////////////////
