@@ -167,7 +167,8 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
    const char* xTitle = histNameTitle[2];
    const char* yTitle = histNameTitle[3];
 
-   TH1F *h[nBkg+2][4], *h2[4], *h3[4], *h4[nBkg+2];
+   const int nNN=nBkg+2, nD=nBkg+1;
+   TH1F *h[nNN][4], *h2[4], *h3[4], *h4[nNN];
    THStack* hStack[4];
    TLegend* leg[4];
    const char *NN[4] = {"EE","MM","ME","LL"};
@@ -181,6 +182,12 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
         hStack[j] = new THStack(TString("h")+"_"+NN[j]+cutStep+"_"+histName, histTitle);
         leg[j] = buildLegend( (double) nExclude*0.02);
 
+        //for data
+        //std::cout << "test " <<  "h" << histName << "_" << cutStep << "_data_"<< DecayMode[j] << std::endl;
+        h[nD][j] = (TH1F*)f->Get(Form("h%s_%s_data_%s",histName, cutStep,DecayMode[j] ));
+        h[nD][j]->SetMarkerStyle(20);
+        if(h[nD][j]->GetEntries() > 0) leg[j]->AddEntry(h[nD][j], "DATA", "p");
+
         //for signal
         h[nBkg][j] = (TH1F*)f->Get(Form("h%s_%s_%s%s",histName, cutStep, sigNames[0],DecayMode[j] ));
         h[nBkg][j]->SetFillColor(color_sig);
@@ -191,14 +198,15 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
         if(h[nBkg][j]->GetEntries() > 0) leg[j]->AddEntry(h[nBkg][j], sigLabels[0], "f");
 
         //for LL
+        if(j==0) h4[nD] = (TH1F*) h[nD][j]->Clone(Form("dataLL"));
+        else     h4[nD]->Add(h[nD][j]);
         if(j==0) h4[nBkg] = (TH1F*) h[nBkg][j]->Clone(Form("%sLL",sigNames[0]));
         else     h4[nBkg]->Add(h[nBkg][j]);
 
-        //for data 
-        //h[nBkg+1][j]= (TH1F*)f->Get(Form("h%s_%s_data_%s",histName, cutStep, DecayMode[j] ));
    }
    //for LL
    hStack[3]->Add(h4[nBkg]);
+   leg[3]->AddEntry(h4[nBkg+1], "DATA", "p");
    leg[3]->AddEntry(h4[nBkg], sigLabels[0], "f");
 
 
@@ -260,14 +268,19 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
      h2[i]->GetYaxis()->SetTitleSize(0.065);
      h2[i]->GetYaxis()->SetLabelSize(0.05);
      h2[i]->Draw();
+
      getHeader(19.6, Form("%s channel",Na[i]))->Draw(); leg[i]->Draw(); 
      hStack[i]->Draw("same");
+     if(i<3) { h[nBkg+1][i]->Sumw2(); h[nBkg+1][i]->Draw("same");  h[nBkg][i]->Draw("same"); }
+     else    { h4[nBkg+1]->Sumw2();   h4[nBkg+1]->Draw("same");    h4[nBkg]->Draw("same"); }
 
      pad1[i]->Draw();
      pad1[i]->Update(); 
      pad2[i]->cd();
 
-     h3[i] = (TH1F*) h2[i]->Clone(Form("new%s",NN[i])); ///
+     if(i<3) h3[i] = (TH1F*) h[nBkg+1][i]->Clone(Form("new%s",NN[i])); ///
+     else    h3[i] = (TH1F*) h4[nBkg+1]->Clone(Form("new%s",NN[i]));
+
      h3[i]->Sumw2();
      h3[i]->Divide(h2[i]);
      h3[i]->SetTitle("");

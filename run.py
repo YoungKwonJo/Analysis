@@ -63,3 +63,14 @@ for i in range(len(Sample)) :
     print cmd
     os.system(cmd)
 
+cmd2 ="root -b -q run.C\\(\\\"DiLepton_Run2012_22Jan2013\\\",\\\"data\\\",1,0,1,\\\"MuMu\\\",false\\)"
+print cmd2
+os.system(cmd2)
+
+cmd2 ="root -b -q run.C\\(\\\"DiLepton_Run2012_22Jan2013\\\",\\\"data\\\",1,0,1,\\\"ElEl\\\",false\\)"
+print cmd2
+os.system(cmd2)
+
+cmd2 ="root -b -q run.C\\(\\\"DiLepton_Run2012_22Jan2013\\\",\\\"data\\\",1,0,1,\\\"MuEl\\\",false\\)"
+print cmd2
+os.system(cmd2)
