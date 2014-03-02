@@ -76,7 +76,7 @@ const char* bkgNames[] = {"TT1b",
  "ST_", "DY_"
 //,"hDataBkg_QCD"
 };
-const char* bkgLabels[] = {"t#bar{t}+b",
+const char* bkgLabels[] = {"t#bar{t}+bj",
   "t#bar{t}+cc", "t#bar{t}+LF","t#bar{t} others",
 //"W #rightarrow l#nu", "Dibosons",
  "Single top", "Z/#gamma* #rightarrow ll"
@@ -151,8 +151,8 @@ void ploter()
    gSystem->Exec("mkdir "+outDirName+"/log");
    gSystem->Exec("mkdir "+outDirName+"/linear");
 
-   plot("S5",addjet1_bDisCSV,true,false);
-   plot("S5",addjet2_bDisCSV,true,true);
+   plot("S5",addjet1_bDisCSV,true,true);
+  // plot("S5",addjet2_bDisCSV,true,true);
 
 
 }
@@ -195,7 +195,7 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
         h[nBkg][j]->SetFillStyle(style_sig);
 
         if(isSS) hStack[j]->Add(h[nBkg][j]);
-        if(h[nBkg][j]->GetEntries() > 0) leg[j]->AddEntry(h[nBkg][j], sigLabels[0], "f");
+//        if(h[nBkg][j]->GetEntries() > 0) leg[j]->AddEntry(h[nBkg][j], sigLabels[0], "f");
 
         //for LL
         if(j==0) h4[nD] = (TH1F*) h[nD][j]->Clone(Form("dataLL"));
@@ -207,7 +207,7 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
    //for LL
    hStack[3]->Add(h4[nBkg]);
    leg[3]->AddEntry(h4[nBkg+1], "DATA", "p");
-   leg[3]->AddEntry(h4[nBkg], sigLabels[0], "f");
+//   leg[3]->AddEntry(h4[nBkg], sigLabels[0], "f");
 
 
    for(int i=0;i<nBkg;i++) 
@@ -221,7 +221,7 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
             h[i][j]->SetFillStyle(style[i]);
        
             hStack[j]->Add(h[i][j]); 
-            leg[j]->AddEntry(h[i][j], bkgLabels[i], "f");
+            //leg[j]->AddEntry(h[i][j], bkgLabels[i], "f");
        
             if(i==0) h2[j] = (TH1F*) h[i][j]->Clone(Form("bkg%s",NN[j]));
             else     h2[j]->Add(h[i][j]);
@@ -234,8 +234,18 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
        }
        //for LL
        hStack[3]->Add(h4[i]);
-       leg[3]->AddEntry(h4[i], bkgLabels[i], "f");
+       //leg[3]->AddEntry(h4[i], bkgLabels[i], "f");
    }
+//////////
+  
+   for(int i=nBkg-1;i>=0;i--) 
+   {
+      for(int j=0;j<3;j++)
+         leg[j]->AddEntry(h[i][j], bkgLabels[i], "f");
+      leg[3]->AddEntry(h4[i], bkgLabels[i], "f");
+   }
+   for(int j=0;j<3;j++) if(h[nBkg][j]->GetEntries() > 0) leg[j]->AddEntry(h[nBkg][j], sigLabels[0], "f"); // signal label
+   leg[3]->AddEntry(h4[nBkg], sigLabels[0], "f");// signal label for LL
 
 ///////////
    const char *Na[4] ={"ee","#mu#mu","e#mu","All"};
