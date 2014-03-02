@@ -14,12 +14,15 @@
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
+#include "CSVWeight.h"
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 using namespace std;
 
 class Event {
 public :
+   CSVWeight *csvWgt;// = new CSVWeight();
+
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
 
@@ -215,6 +218,7 @@ Event::Event(TTree *tree) : fChain(0)
 
    }
    Init(tree);
+   csvWgt = new CSVWeight();
 }
 
 Event::~Event()

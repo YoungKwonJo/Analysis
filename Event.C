@@ -17,7 +17,6 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    double wei=1.;
    bool S[u], G[v];
 
-
    TH1F *hZMass[u][v], *hrelIso1[u][v], *hrelIso2[u][v], *hPt1[u][v], *hPt2[u][v], *hEta1[u][v], *hEta2[u][v];
    TH1F  *hMET[u][v], *hnJet[u][v], *hnVertex[u][v]; 
    TH1F  *hjet1pt[u][v], *hjet1eta[u][v], *hjet1phi[u][v], *hjet1_bDisCSV[u][v];    
@@ -93,7 +92,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 */
 
    }
-   TLorentzVector muons[15], electrons[15], jets[30];
+   TLorentzVector muons[15], electrons[15], jets[30], genjets[50], genparticles[50], genjetsB[50], genjetsC[50];
 
    if (fChain == 0) return;
 
@@ -118,13 +117,20 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       }
       int njet =0, nBtagT=0, nBtagM=0, jidx[4];
-      double jidxV[4], csvweight=1.;
+      double jidxV[4], csvweight=1., leptonweight=1.0;
       for(int i=0;i<4;i++){ jidx[i]=-100; jidxV[i]=-100.; }
       for(int i=0;i<jets_pt->size();i++ )
       {
          //std::cout << "jets"<< muons_pt->size()  <<" : " <<  jets_pt->at(i) << std::endl;
          jets[i].SetPtEtaPhiM( jets_pt->at(i),  jets_eta->at(i),  jets_phi->at(i),jets_m->at(i));
-         if(jets_pt->at(i)>30)
+
+         bool overlapMu=false, overlapEl=false;  // jet cleaning..
+         for(int j=0;j<electrons_pt->size();j++ )  
+         if( std::abs( jets[i].DeltaR(electrons[j]) )< 0.5 ) overlapEl=true;
+         for(int j=0;j<muons_pt->size();j++ )
+         if( std::abs( jets[i].DeltaR(muons[j]) )< 0.5 )     overlapMu=true;
+
+         if(jets_pt->at(i)>30 && !overlapEl && !overlapMu)
          {
             njet++;
             if(jets_bTag->at(i)>0.898) nBtagT++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
@@ -156,6 +162,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       }
 
+
       bool precut = false;
       if(!strcmp(DecayMode, "MuMu")) precut = (muons_pt->size()>1);
       if(!strcmp(DecayMode, "ElEl")) precut = (electrons_pt->size()>1);
@@ -166,48 +173,138 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       int GBHardon=0, GCHardon=0, GLep=0;
       if(isMC)
       {
-          wei = weight*csvweight*puWeight;
+
+          //for ttbb analysis ////////////
+          csvweight = csvWgt->GetCSVweight(*jets_pt,*jets_eta,*jets_bTag,*jets_partonflavor,sysType::NA);
+          wei = weight*csvweight*puWeight*leptonweight;
  
           if(v==5)
           {
 
               for(int i=0;i<genParticles_pdgId->size();i++ )
               {
-                  if( (std::abs(genParticles_pdgId->at(i))==11 || std::abs(genParticles_pdgId->at(i))==13 ) && 
-                      genParticles_pt->at(i)>20. &&  std::abs(genParticles_eta->at(i)) < 2.5 ) GLep++;
-                  
+                  genparticles[i].SetPtEtaPhiM( genParticles_pt->at(i), genParticles_eta->at(i), genParticles_phi->at(i), genParticles_m->at(i));
+                  if( (std::abs(genParticles_pdgId->at(i))==11 || std::abs(genParticles_pdgId->at(i))==13  || std::abs(genParticles_pdgId->at(i))==15 ) &&
+                         genParticles_pt->at(i)>20. &&  std::abs(genParticles_eta->at(i)) < 2.5 ) GLep++;
               }
+              int k=0,l=0;
               for(int i=0;i<genJets_decayFromBHadron->size();i++ )
               {
-                if(genJets_decayFromBHadron->at(i)==1 && genJets_pt->at(i)>20.) GBHardon++;
-                else if(genJets_decayFromCHadron->at(i)==1 && genJets_pt->at(i)>20.) GCHardon++;
+                  genjets[i].SetPtEtaPhiM( genJets_pt->at(i), genJets_eta->at(i), genJets_phi->at(i), genJets_m->at(i));
+
+                  double minDRlep=999, minDRbq=999, minDRcq=999;
+                  bool isBHad=false, isCHad=false;
+                  for(int j=0;j<genParticles_pdgId->size();j++ ) 
+                  { 
+                      if(abs(genParticles_pdgId->at(j))==11 || abs(genParticles_pdgId->at(j))==13 || abs(genParticles_pdgId->at(j))==15 ||
+                         abs(genParticles_pdgId->at(j))==12 || abs(genParticles_pdgId->at(j))==14 || abs(genParticles_pdgId->at(j))==16 )
+                      {
+                         double dR = std::abs( genjets[i].DeltaR(genparticles[j]) );
+                         if(dR<minDRlep ) minDRlep=dR;
+                      }
+                      if(abs(genParticles_pdgId->at(j))==5 )
+                      {
+                         double dR = std::abs( genjets[i].DeltaR(genparticles[j]) );
+                         if(dR<minDRbq ) minDRbq=dR;
+                      } 
+                      if(abs(genParticles_pdgId->at(j))==4 )
+                      {
+                         double dR = std::abs( genjets[i].DeltaR(genparticles[j]) );
+                         if(dR<minDRcq ) minDRcq=dR;
+                      }
+                  }
+                  if     (genJets_decayFromBHadron->at(i)==1 && genJets_pt->at(i)>20.) isBHad=true;
+                  else if(genJets_decayFromCHadron->at(i)==1 && genJets_pt->at(i)>20.) isCHad=true;
+
+                  if     (minDRlep>0.5 && minDRbq < 0.5 && isBHad ) {genjetsB[k]=genjets[i]; k++;} 
+                  else if(minDRlep>0.5 && minDRcq < 0.5 && isCHad ) {genjetsC[l]=genjets[i]; l++;} 
               }
+              for(int i=0;i<genParticles_pdgId->size();i++ )
+              {
+                  double minDRbq=999, minDRcq=999;
+                  if(abs(genParticles_pdgId->at(i))==5 )
+                  for(int j=0;j<k;j++ )
+                  {
+                        double dR = std::abs( genjetsB[j].DeltaR(genparticles[i]) );
+                        if(dR<minDRbq ) minDRbq=dR;
+                  }
+                  if(abs(genParticles_pdgId->at(i))==4 )
+                  for(int j=0;j<l;j++ )
+                  {
+                     double dR = std::abs( genjetsC[j].DeltaR(genparticles[i]) );
+                     if(dR<minDRcq ) minDRcq=dR;
+                  }
+                  if     ( minDRbq < 0.5 ) GBHardon++;
+                  else if( minDRcq < 0.5 ) GCHardon++;                   
+              }
+
               G[1] = (GBHardon>3 && GLep>1);          // ttbar bb
               G[2] = !G[1] && (GBHardon>2 && GLep>1); // ttbar 1b
               G[3] = !G[1] && !G[2] && (GBHardon>1) && (GCHardon>1) && (GLep>1); // ttbar cc
               G[4] = !G[1] && !G[2] && !G[3] && (GBHardon>1 && GLep>1); // ttbar LF
               G[0] = !G[1] && !G[2] && !G[3] && !G[4];  // ttbar others
           }
+          //////////////////////////
       }
 
       if(precut)
       {
           TLorentzVector Z;
-          if(!strcmp(DecayMode, "MuMu")) Z = ((muons[0])+(muons[1]));
-          if(!strcmp(DecayMode, "ElEl")) Z = ((electrons[0])+(electrons[1]));
-          if(!strcmp(DecayMode, "MuEl")) Z = ((muons[0])+(electrons[0])); 
+          int L1x=-1,L2x=-1;
+          bool Zsel=false;
+          if(!strcmp(DecayMode, "MuMu"))
+          {
+                for(int i=0;i<muons_pt->size()-1;i++ )
+                for(int j=i+1;j<muons_pt->size();j++ )
+                {
+                   Z = ((muons[i])+(muons[j]));
+                   bool iso = ((muons_relIso->at(i)<0.15) && (muons_relIso->at(j)<0.15));
+                   bool opp = (muons_Q->at(i)*muons_Q->at(j)<0) && (Z.M()>12.);
+                   if(iso && opp) {   L1x=i; L2x=j; Zsel=true; break; }
+                }
+          }
+          if(!strcmp(DecayMode, "ElEl"))
+          {
+                for(int i=0;i<electrons_pt->size()-1;i++ )
+                for(int j=i+1;j<electrons_pt->size();j++ )
+                {
+                   Z = ((electrons[i])+(electrons[j]));
+                   bool iso = ((electrons_relIso->at(i)<0.15) && (electrons_relIso->at(j)<0.15));
+                   bool opp = (electrons_Q->at(i)*electrons_Q->at(j)<0) && (Z.M()>12.);
+                   if(iso && opp) {   L1x=i; L2x=j; Zsel=true; break; }
+                }
+          }
+          if(!strcmp(DecayMode, "MuEl"))
+          {
+                for(int i=0;i<muons_pt->size();i++ )
+                for(int j=0;j<electrons_pt->size();j++ )
+                {
+                   Z = ((muons[i])+(electrons[j]));
+                   bool iso = ((muons_relIso->at(i)<0.15) && (electrons_relIso->at(j)<0.15));
+                   bool opp = (muons_Q->at(i)*electrons_Q->at(j)<0) && (Z.M()>12.);
+                   if(iso && opp) {   L1x=i; L2x=j; Zsel=true; break; }
+                }
+          }
+          if( !Zsel && !strcmp(DecayMode, "MuMu")){ Z = ((muons[0])+(muons[1]));            L1x=0, L2x=1;}
+          if( !Zsel && !strcmp(DecayMode, "ElEl")){ Z = ((electrons[0])+(electrons[1]));    L1x=0, L2x=1;}   
+          if( !Zsel && !strcmp(DecayMode, "MuEl")){ Z = ((muons[0])+(electrons[0]));        L1x=0, L2x=0;}
 
           if(isZ==2 && Z.M()<50) continue;
           if(isZ==1 && Z.M()>=50) continue;
 
           //std::cout << "Zmass = " << Z.M() << endl;
+          if(!strcmp(DecayMode, "MuMu")) 
+               S[0] = (muons_Q->at(L1x)*muons_Q->at(L2x)<0 && muons_relIso->at(L1x)<0.15 && muons_relIso->at(L2x)<0.15 
+                         && Z.M()>12. && muons_pt->at(L1x)>20. && muons_pt->at(L2x)>20.);
+          if(!strcmp(DecayMode, "ElEl")) 
+               S[0] = (electrons_Q->at(L1x)*electrons_Q->at(L2x)<0 && electrons_relIso->at(L1x)<0.15 && electrons_relIso->at(L2x)<0.15 
+                         && Z.M()>12. && electrons_pt->at(L1x)>20. && electrons_pt->at(L2x)>20.);
+          if(!strcmp(DecayMode, "MuEl")) 
+               S[0] = (electrons_Q->at(L2x)*muons_Q->at(L1x)<0 && electrons_relIso->at(L2x)<0.15 && muons_relIso->at(L1x)<0.15 
+                         && Z.M()>12. && electrons_pt->at(L2x)>20. && muons_pt->at(L1x)>20.);
 
-          if(!strcmp(DecayMode, "MuMu")) S[0] = (muons_Q->at(0)*muons_Q->at(1)<0 && muons_relIso->at(0)<0.15 && muons_relIso->at(1)<0.15 && Z.M()>12. && muons_pt->at(0)>20. && muons_pt->at(1)>20.);
-          if(!strcmp(DecayMode, "ElEl")) S[0] = (electrons_Q->at(0)*electrons_Q->at(1)<0 && electrons_relIso->at(0)<0.15 && electrons_relIso->at(1)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && electrons_pt->at(1)>20.);
-          if(!strcmp(DecayMode, "MuEl")) S[0] = (electrons_Q->at(0)*muons_Q->at(0)<0 && electrons_relIso->at(0)<0.15 && muons_relIso->at(0)<0.15 && Z.M()>12. && electrons_pt->at(0)>20. && muons_pt->at(0)>20.);
-
-          S[1] = S[0] && (std::abs(91.2-Z.M())>15.0);
-          if(strcmp(DecayMode, "MuEl")) S[2] = S[1] && (met_pt>30.); else S[2] = S[1];
+          if(strcmp(DecayMode, "MuEl")) S[1] = S[0] && (std::abs(91.2-Z.M())>15.0); else S[1] = S[0];
+          if(strcmp(DecayMode, "MuEl")) S[2] = S[1] && (met_pt>30.);                else S[2] = S[1];
           S[3] = S[2] && (njet>3);
           S[4] = S[3] && (nBtagT>1);
      

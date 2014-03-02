@@ -176,6 +176,7 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
    //for LL
    hStack[3] = new THStack(TString("h")+"_"+NN[3]+cutStep+"_"+histName, histTitle);
    leg[3] = buildLegend( (double) nExclude*0.02);
+   int nBins=0;
 
    for(int j=0;j<3;j++)
    {
@@ -185,11 +186,14 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
         //for data
         //std::cout << "test " <<  "h" << histName << "_" << cutStep << "_data_"<< DecayMode[j] << std::endl;
         h[nD][j] = (TH1F*)f->Get(Form("h%s_%s_data_%s",histName, cutStep,DecayMode[j] ));
+        nBins = h[nD][j]->GetNbinsX(); 
+        h[nD][j]->AddBinContent(nBins, h[nD][j]->GetBinContent(nBins+1));
         h[nD][j]->SetMarkerStyle(20);
         if(h[nD][j]->GetEntries() > 0) leg[j]->AddEntry(h[nD][j], "DATA", "p");
 
         //for signal
         h[nBkg][j] = (TH1F*)f->Get(Form("h%s_%s_%s%s",histName, cutStep, sigNames[0],DecayMode[j] ));
+        h[nBkg][j]->AddBinContent(nBins, h[nBkg][j]->GetBinContent(nBins+1));
         h[nBkg][j]->SetFillColor(color_sig);
         h[nBkg][j]->SetLineColor(kBlack);
         h[nBkg][j]->SetFillStyle(style_sig);
@@ -216,6 +220,7 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
        {
             //for background
             h[i][j]= (TH1F*)f->Get(Form("h%s_%s_%s%s",histName, cutStep, bkgNames[i], DecayMode[j] ));
+            h[i][j]->AddBinContent(nBins, h[i][j]->GetBinContent(nBins+1));
             h[i][j]->SetFillColor(color[i]);
             h[i][j]->SetLineColor(kBlack);
             h[i][j]->SetFillStyle(style[i]);
