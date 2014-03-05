@@ -10,6 +10,13 @@
 #include <TH1D.h>
 #include <TH2D.h>
 
+  typedef std::vector<int> ints;
+  typedef std::vector<unsigned int> uints;
+  typedef std::vector<double> doubles;
+  typedef ints* intsP;
+  typedef uints* uintsP;
+  typedef doubles* doublesP;
+
 void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC)
 {
 
@@ -93,6 +100,14 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
    }
    TLorentzVector muons[15], electrons[15], jets[30], genjets[50], genparticles[50], genjetsB[50], genjetsC[50];
+   doublesP jets_pt_,   jets_eta_, jets_phi_, jets_m_;
+   doublesP jets_bTag_, jets_partonflavor_;
+   jets_pt_  = new doubles;
+   jets_eta_ = new doubles;
+   jets_phi_ = new doubles;
+   jets_m_   = new doubles;
+   jets_bTag_ = new doubles;
+   jets_partonflavor_ = new doubles;
 
    if (fChain == 0) return;
 
@@ -105,6 +120,13 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
+      jets_pt_->clear();
+      jets_eta_->clear();
+      jets_phi_->clear();
+      jets_m_->clear();
+      jets_bTag_->clear();
+      jets_partonflavor_->clear();
+
       for(int i=0;i<electrons_pt->size();i++ )
       {
          //std::cout << "electron"<< electrons_pt->size()  <<" : " <<  electrons_pt->at(i) << std::endl;
@@ -114,10 +136,10 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       {
          //std::cout << "muon "<< muons_pt->size()  <<" : " <<  muons_pt->at(i) << std::endl;
          muons[i].SetPtEtaPhiM( muons_pt->at(i),  muons_eta->at(i),  muons_phi->at(i),0);
-
       }
       int njet =0, nBtagT=0, nBtagM=0, jidx[4];
       double jidxV[4], csvweight=1., leptonweight=1.0;
+
       for(int i=0;i<4;i++){ jidx[i]=-100; jidxV[i]=-100.; }
       for(int i=0;i<jets_pt->size();i++ )
       {
@@ -132,9 +154,16 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
          if(muons_type->at(j)>9 && muons_pt->at(j)>20. && abs(muons_eta->at(j))<2.4)
          if( std::abs( jets[i].DeltaR(muons[j]) )< 0.5 )     overlapMu=true;
 
-         if(jets_pt->at(i)>30 && !overlapEl && !overlapMu)
+         if(jets_pt->at(i)>30 && abs(jets_eta->at(i))<2.5 && !overlapEl && !overlapMu)
          {
             njet++;
+            jets_pt_->push_back(jets_pt->at(i));
+            jets_eta_->push_back(jets_eta->at(i));
+            //jets_phi_->push_back(jets_phi->at(i));
+            //jets_m_->push_back(jets_m->at(i));
+            jets_bTag_->push_back(jets_bTag->at(i));
+            jets_partonflavor_->push_back(jets_partonflavor->at(i));
+
             if(jets_bTag->at(i)>0.898) nBtagT++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
             if(jets_bTag->at(i)>0.679) nBtagM++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
             
@@ -177,7 +206,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       {
 
           //for ttbb analysis ////////////
-          csvweight = csvWgt->GetCSVweight(*jets_pt,*jets_eta,*jets_bTag,*jets_partonflavor,sysType::NA);
+          csvweight = csvWgt->GetCSVweight(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_,sysType::NA);
           wei = weight*csvweight*puWeight*leptonweight;
  
           if(v==5)
