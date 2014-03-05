@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Feb 26 15:17:07 2014 by ROOT version 5.34/02
+// Wed Mar  5 07:45:59 2014 by ROOT version 5.32/00
 // from TTree event/Mixed event tree
-// found on file: /Volumes/youngjoMac/CMS/BigSize/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola.root
+// found on file: /afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola_396.root
 //////////////////////////////////////////////////////////
 
 #ifndef Event_h
@@ -13,6 +13,8 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
+#include <vector>
+#include <vector>
 #include <vector>
 #include "CSVWeight.h"
 
@@ -80,6 +82,7 @@ public :
    vector<int>     *jpsis_nPixHits1;
    vector<int>     *jpsis_nPixHits2;
    vector<double>  *pdfWeights;
+   Int_t           gluon2t_N;
    vector<double>  *jets_JER;
    vector<double>  *jets_JERUp;
    vector<double>  *jets_JERDn;
@@ -107,6 +110,20 @@ public :
    vector<double>  *genParticles_m;
    vector<int>     *genParticles_pdgId;
    vector<int>     *genParticles_mother;
+   Double_t        genttbarM;
+   Int_t           nGenJet20;
+   Int_t           nGenbJet20;
+   Int_t           nGenaddbJet20;
+   Int_t           nGencJet20;
+   Int_t           nGenJet40;
+   Int_t           nGenbJet40;
+   Int_t           nGenaddbJet40;
+   Int_t           nGencJet40;
+   Int_t           ttbarGen_dileptonic;
+   Double_t        genLep1_pt;
+   Double_t        genLep2_pt;
+   Double_t        genLep1_eta;
+   Double_t        genLep2_eta;
 
    // List of branches
    TBranch        *b_run;   //!
@@ -162,6 +179,7 @@ public :
    TBranch        *b_jpsis_nPixHits1;   //!
    TBranch        *b_jpsis_nPixHits2;   //!
    TBranch        *b_pdfWeights;   //!
+   TBranch        *b_gluon2t_N;   //!
    TBranch        *b_jets_JER;   //!
    TBranch        *b_jets_JERUp;   //!
    TBranch        *b_jets_JERDn;   //!
@@ -189,6 +207,20 @@ public :
    TBranch        *b_genParticles_m;   //!
    TBranch        *b_genParticles_pdgId;   //!
    TBranch        *b_genParticles_mother;   //!
+   TBranch        *b_genttbarM;   //!
+   TBranch        *b_nGenJet20;   //!
+   TBranch        *b_nGenbJet20;   //!
+   TBranch        *b_nGenaddbJet20;   //!
+   TBranch        *b_nGencJet20;   //!
+   TBranch        *b_nGenJet40;   //!
+   TBranch        *b_nGenbJet40;   //!
+   TBranch        *b_nGenaddbJet40;   //!
+   TBranch        *b_nGencJet40;   //!
+   TBranch        *b_ttbarGen_dileptonic;   //!
+   TBranch        *b_genLep1_pt;   //!
+   TBranch        *b_genLep2_pt;   //!
+   TBranch        *b_genLep1_eta;   //!
+   TBranch        *b_genLep2_eta;   //!
 
    Event(TTree *tree=0);
    virtual ~Event();
@@ -209,11 +241,11 @@ Event::Event(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/Volumes/youngjoMac/CMS/BigSize/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola_396.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/Volumes/youngjoMac/CMS/BigSize/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola.root");
+         f = new TFile("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola_396.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/Volumes/youngjoMac/CMS/BigSize/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola.root:/MuMu");
+      TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140224/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola_396.root:/MuMu");
       dir->GetObject("event",tree);
 
    }
@@ -370,6 +402,7 @@ void Event::Init(TTree *tree)
    fChain->SetBranchAddress("jpsis_nPixHits1", &jpsis_nPixHits1, &b_jpsis_nPixHits1);
    fChain->SetBranchAddress("jpsis_nPixHits2", &jpsis_nPixHits2, &b_jpsis_nPixHits2);
    fChain->SetBranchAddress("pdfWeights", &pdfWeights, &b_pdfWeights);
+   fChain->SetBranchAddress("gluon2t_N", &gluon2t_N, &b_gluon2t_N);
    fChain->SetBranchAddress("jets_JER", &jets_JER, &b_jets_JER);
    fChain->SetBranchAddress("jets_JERUp", &jets_JERUp, &b_jets_JERUp);
    fChain->SetBranchAddress("jets_JERDn", &jets_JERDn, &b_jets_JERDn);
@@ -397,6 +430,20 @@ void Event::Init(TTree *tree)
    fChain->SetBranchAddress("genParticles_m", &genParticles_m, &b_genParticles_m);
    fChain->SetBranchAddress("genParticles_pdgId", &genParticles_pdgId, &b_genParticles_pdgId);
    fChain->SetBranchAddress("genParticles_mother", &genParticles_mother, &b_genParticles_mother);
+   fChain->SetBranchAddress("genttbarM", &genttbarM, &b_genttbarM);
+   fChain->SetBranchAddress("nGenJet20", &nGenJet20, &b_nGenJet20);
+   fChain->SetBranchAddress("nGenbJet20", &nGenbJet20, &b_nGenbJet20);
+   fChain->SetBranchAddress("nGenaddbJet20", &nGenaddbJet20, &b_nGenaddbJet20);
+   fChain->SetBranchAddress("nGencJet20", &nGencJet20, &b_nGencJet20);
+   fChain->SetBranchAddress("nGenJet40", &nGenJet40, &b_nGenJet40);
+   fChain->SetBranchAddress("nGenbJet40", &nGenbJet40, &b_nGenbJet40);
+   fChain->SetBranchAddress("nGenaddbJet40", &nGenaddbJet40, &b_nGenaddbJet40);
+   fChain->SetBranchAddress("nGencJet40", &nGencJet40, &b_nGencJet40);
+   fChain->SetBranchAddress("ttbarGen_dileptonic", &ttbarGen_dileptonic, &b_ttbarGen_dileptonic);
+   fChain->SetBranchAddress("genLep1_pt", &genLep1_pt, &b_genLep1_pt);
+   fChain->SetBranchAddress("genLep2_pt", &genLep2_pt, &b_genLep2_pt);
+   fChain->SetBranchAddress("genLep1_eta", &genLep1_eta, &b_genLep1_eta);
+   fChain->SetBranchAddress("genLep2_eta", &genLep2_eta, &b_genLep2_eta);
    Notify();
 }
 

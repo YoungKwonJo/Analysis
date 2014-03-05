@@ -170,7 +170,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       for(int j =0; j<v ; j++) G[j]=true;
 
-      int GBHardon=0, GCHardon=0, GLep=0;
+      int Gnjet=0,GBHardon=0, GCHardon=0, GLep=0;
       if(isMC)
       {
 
@@ -180,8 +180,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
  
           if(v==5)
           {
-
-              for(int i=0;i<genParticles_pdgId->size();i++ )
+              
+              /*for(int i=0;i<genParticles_pdgId->size();i++ )
               {
                   genparticles[i].SetPtEtaPhiM( genParticles_pt->at(i), genParticles_eta->at(i), genParticles_phi->at(i), genParticles_m->at(i));
                   if( (std::abs(genParticles_pdgId->at(i))==11 || std::abs(genParticles_pdgId->at(i))==13  || std::abs(genParticles_pdgId->at(i))==15 ) &&
@@ -190,36 +190,39 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
               int k=0,l=0;
               for(int i=0;i<genJets_decayFromBHadron->size();i++ )
               {
+                  if(genJets_pt->at(i)>20.) Gnjet++;
+
                   genjets[i].SetPtEtaPhiM( genJets_pt->at(i), genJets_eta->at(i), genJets_phi->at(i), genJets_m->at(i));
 
                   double minDRlep=999, minDRbq=999, minDRcq=999;
                   bool isBHad=false, isCHad=false;
+                  if     (genJets_decayFromBHadron->at(i)==1 && genJets_pt->at(i)>20.)  isBHad=true;
+                  else if(genJets_decayFromCHadron->at(i)==1 && genJets_pt->at(i)>20.)  isCHad=true;
+
                   for(int j=0;j<genParticles_pdgId->size();j++ ) 
                   { 
-                      if(abs(genParticles_pdgId->at(j))==11 || abs(genParticles_pdgId->at(j))==13 || abs(genParticles_pdgId->at(j))==15 ||
-                         abs(genParticles_pdgId->at(j))==12 || abs(genParticles_pdgId->at(j))==14 || abs(genParticles_pdgId->at(j))==16 )
+                      if(abs(genParticles_pdgId->at(j))==11 || abs(genParticles_pdgId->at(j))==13 || abs(genParticles_pdgId->at(j))==15)// ||
+              //           abs(genParticles_pdgId->at(j))==12 || abs(genParticles_pdgId->at(j))==14 || abs(genParticles_pdgId->at(j))==16 )
                       {
                          double dR = std::abs( genjets[i].DeltaR(genparticles[j]) );
-                         if(dR<minDRlep ) minDRlep=dR;
+                  //       if(dR<minDRlep ) minDRlep=dR;
                       }
-                      if(abs(genParticles_pdgId->at(j))==5 )
+                      if(abs(genParticles_pdgId->at(j))==5 && genparticles[j].Pt()>20)
                       {
                          double dR = std::abs( genjets[i].DeltaR(genparticles[j]) );
                          if(dR<minDRbq ) minDRbq=dR;
                       } 
-                      if(abs(genParticles_pdgId->at(j))==4 )
+                      if(abs(genParticles_pdgId->at(j))==4 && genparticles[j].Pt()>20)
                       {
                          double dR = std::abs( genjets[i].DeltaR(genparticles[j]) );
                          if(dR<minDRcq ) minDRcq=dR;
                       }
                   }
-                  if     (genJets_decayFromBHadron->at(i)==1 && genJets_pt->at(i)>20.) isBHad=true;
-                  else if(genJets_decayFromCHadron->at(i)==1 && genJets_pt->at(i)>20.) isCHad=true;
-
-                  if     (minDRlep>0.5 && minDRbq < 0.5 && isBHad ) {genjetsB[k]=genjets[i]; k++;} 
-                  else if(minDRlep>0.5 && minDRcq < 0.5 && isCHad ) {genjetsC[l]=genjets[i]; l++;} 
+                  if     (minDRlep>0.5 && minDRbq < 0.5 && isBHad ) GBHardon++;//{genjetsB[k]=genjets[i]; k++;}  //GBHardon++;//
+                  else if(minDRlep>0.5 && minDRcq < 0.5 && isCHad ) GCHardon++;//{genjetsC[l]=genjets[i]; l++;}  //GCHardon++;//
               }
-              for(int i=0;i<genParticles_pdgId->size();i++ )
+              */
+              /*for(int i=0;i<genParticles_pdgId->size();i++ )
               {
                   double minDRbq=999, minDRcq=999;
                   if(abs(genParticles_pdgId->at(i))==5 )
@@ -236,13 +239,21 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                   }
                   if     ( minDRbq < 0.5 ) GBHardon++;
                   else if( minDRcq < 0.5 ) GCHardon++;                   
-              }
-
-              G[1] = (GBHardon>3 && GLep>1);          // ttbar bb
-              G[2] = !G[1] && (GBHardon>2 && GLep>1); // ttbar 1b
-              G[3] = !G[1] && !G[2] && (GBHardon>1) && (GCHardon>1) && (GLep>1); // ttbar cc
-              G[4] = !G[1] && !G[2] && !G[3] && (GBHardon>1 && GLep>1); // ttbar LF
+              }*/
+              /*
+              G[1] = (GBHardon>3 && Gnjet>3 && GLep>1);          // ttbar bb
+              G[2] = !G[1] && (GBHardon>2 && Gnjet>3 && GLep>1); // ttbar 1b
+              G[3] = !G[1] && !G[2] && (GBHardon>1) && (GCHardon>1) && Gnjet>3 && (GLep>1); // ttbar cc
+              G[4] = !G[1] && !G[2] && !G[3] && (GBHardon>1 ) && Gnjet>3 && (GLep>1); // ttbar LF
               G[0] = !G[1] && !G[2] && !G[3] && !G[4];  // ttbar others
+             */
+              bool visible = (nGenJet20 >= 4 && nGenbJet20 >=2 && genLep1_pt > 20 && genLep2_pt > 20 && abs( genLep1_eta ) < 2.4 && abs( genLep2_eta ) < 2.4);
+              G[1] = visible && (nGenbJet20 >= 4);          // ttbar bb
+              G[2] = visible && (nGenbJet20 >= 3) && !(nGenbJet20 >= 4); // ttbar 1b
+              G[3] = visible && (nGencJet20 >= 2) && !(nGenbJet20 >= 4) && !(nGenbJet20 >= 3); // ttbar cc
+              G[4] = visible && !(nGencJet20 >= 2) && !(nGenbJet20 >= 4) && !(nGenbJet20 >= 3); // ttbar LF
+              G[0] = !visible;  // ttbar others
+ 
           }
           //////////////////////////
       }

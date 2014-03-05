@@ -133,7 +133,8 @@ TPaveText* getHeader(double lumi, TString channelName)
   pt->SetFillColor(0);
   pt->SetFillStyle(1001);
   pt->SetTextAlign(12);
-  pt->AddText("CMS Preliminary");
+  //pt->AddText("CMS Preliminary");
+  pt->AddText("Preliminary");
   pt->AddText(Form("%.1f fb^{-1} at  #sqrt{s} = 8 TeV", lumi));
   pt->AddText(Form("%s",channelName.Data()));
 
@@ -151,8 +152,12 @@ void ploter()
    gSystem->Exec("mkdir "+outDirName+"/log");
    gSystem->Exec("mkdir "+outDirName+"/linear");
 
+   plot("S1",ZMass,true,true);
+   plot("S2",MET,true,true);
+   plot("S3",nJet,true,true);
+   plot("S4",nbJet30_CSVT,true,true);
    plot("S5",addjet1_bDisCSV,true,true);
-  // plot("S5",addjet2_bDisCSV,true,true);
+   plot("S5",addjet2_bDisCSV,true,true);
 
 
 }
@@ -198,6 +203,9 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
         h[nBkg][j]->SetLineColor(kBlack);
         h[nBkg][j]->SetFillStyle(style_sig);
 
+        h2[j] = (TH1F*) h[nBkg][j]->Clone(Form("bkg%s",NN[j]));
+        if(j==0) h2[3] = (TH1F*) h[nBkg][j]->Clone(Form("bkg%s",NN[3]));
+
         if(isSS) hStack[j]->Add(h[nBkg][j]);
 //        if(h[nBkg][j]->GetEntries() > 0) leg[j]->AddEntry(h[nBkg][j], sigLabels[0], "f");
 
@@ -228,12 +236,12 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
             hStack[j]->Add(h[i][j]); 
             //leg[j]->AddEntry(h[i][j], bkgLabels[i], "f");
        
-            if(i==0) h2[j] = (TH1F*) h[i][j]->Clone(Form("bkg%s",NN[j]));
-            else     h2[j]->Add(h[i][j]);
+            //if(i==0) h2[j] = (TH1F*) h[i][j]->Clone(Form("bkg%s",NN[j]));
+             h2[j]->Add(h[i][j]);
        
             //for LL
-            if(i==0 && j==0) h2[3] = (TH1F*) h[i][j]->Clone(Form("bkg%s",NN[3]));
-            else             h2[3]->Add(h[i][j]);
+           // if(i==0 && j==0) h2[3] = (TH1F*) h[i][j]->Clone(Form("bkg%s",NN[3]));
+            h2[3]->Add(h[i][j]);
             if(j==0) h4[i] = (TH1F*) h[i][j]->Clone(Form("%sLL",bkgNames[i]));
             else     h4[i]->Add(h[i][j]);
        }
@@ -265,7 +273,7 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
      pad2[i] = new TPad(Form("pad2%s",NN[i]),"",0,0,1,0.3);
      pad1[i]->Divide(1,1,0,0); pad2[i]->Divide(1,1,0,0);
      pad1[i]->SetBottomMargin(0);
-     pad2[i]->SetTopMargin(0);
+     pad2[i]->SetTopMargin(0.1);
      pad2[i]->SetBottomMargin(0.3);
      pad1[i]->Draw();   pad2[i]->Draw();
      pad1[i]->cd();
@@ -284,10 +292,10 @@ void plot(const char* cutStep, const char* histNameTitle[4], bool isSS=true, boo
      h2[i]->GetYaxis()->SetLabelSize(0.05);
      h2[i]->Draw();
 
-     getHeader(19.6, Form("%s channel",Na[i]))->Draw(); leg[i]->Draw(); 
+     getHeader(19.8, Form("%s channel",Na[i]))->Draw(); leg[i]->Draw(); 
      hStack[i]->Draw("same");
-     if(i<3) { h[nBkg+1][i]->Sumw2(); h[nBkg+1][i]->Draw("same");  h[nBkg][i]->Draw("same"); }
-     else    { h4[nBkg+1]->Sumw2();   h4[nBkg+1]->Draw("same");    h4[nBkg]->Draw("same"); }
+     if(i<3) { h[nBkg+1][i]->Sumw2(); h[nBkg+1][i]->Draw("same");  h[nBkg][i]->Draw("sameaxis"); }
+     else    { h4[nBkg+1]->Sumw2();   h4[nBkg+1]->Draw("same");    h4[nBkg]->Draw("sameaxis"); }
 
      pad1[i]->Draw();
      pad1[i]->Update(); 
