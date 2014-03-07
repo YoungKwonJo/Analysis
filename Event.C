@@ -99,6 +99,32 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 */
 
    }
+////////////
+   const float HFbinPt[] = {30.,40.,60.,100.,160.,10000};
+   const float LFbinPt[] = {30.,40.,60.,10000};
+   const float LFbinEta[] = {0.,0.8,1.6,2.4};
+
+   const float HFbin[] ={0., 0.122,  0.244, 0.331, 0.418,0.505, 0.592,0.679,0.7228,0.7666,0.8104,0.8542,0.898,0.9184,0.9388,0.9592,0.9796,1.}; 
+   const float LFbin[] ={0., 0.0488,0.0976,0.1464,0.1952,0.244, 0.331,0.418, 0.505, 0.592, 0.679, 0.752,0.825, 0.898, 0.949,1.};
+   const int HFNbin = sizeof(HFbin)/sizeof(float) -1;
+   const int LFNbin = sizeof(LFbin)/sizeof(float) -1;
+
+   TH1F *hHF_CSV[4], *hLF_CSV[3][3];
+   TH1F *hHF_CSVbF[4], *hLF_CSVHF[3][3];
+   TH1F *hHF_CSVnbF[4], *hLF_CSVLF[3][3];
+   for(int i=0;i<4;i++)
+   {
+      hHF_CSVbF[i] = new TH1F(Form("hHF_CSVbF_Pt%d_MC",i), Form("HF CSV bF Pt Bin %d MC",i), HFNbin, HFbin);
+      hHF_CSVnbF[i] = new TH1F(Form("hHF_CSVnbF_Pt%d_MC",i), Form("HF CSV nonbF Pt Bin %d MC",i), HFNbin, HFbin);
+      hHF_CSV[i]   = new TH1F(Form("hHF_CSV_Pt%d_data",i), Form("HF CSV Pt Bin %d  data",i), HFNbin, HFbin);
+   }
+   for(int i=0;i<3;i++) for(int j=0;j<3;j++)
+   {
+      hLF_CSVHF[i][j] = new TH1F(Form("hLF_CSVHF_Pt%d_Eta%d_MC",i,j), Form("LF CSVHF Pt Bin %d Eta Bin %d MC",i,j), LFNbin, LFbin );
+      hLF_CSVLF[i][j] = new TH1F(Form("hLF_CSVLF_Pt%d_Eta%d_MC",i,j), Form("LF CSVLF Pt Bin %d Eta Bin %d MC",i,j), LFNbin, LFbin );
+      hLF_CSV[i][j]   = new TH1F(Form("hLF_CSV_Pt%d_Eta%d_data",i,j), Form("LF CSV Pt Bin %d Eta Bin %d data",i,j), LFNbin, LFbin );
+   }
+////////////
    TLorentzVector muons[15], electrons[15], jets[30], genjets[50], genparticles[50], genjetsB[50], genjetsC[50];
    doublesP jets_pt_,   jets_eta_, jets_phi_, jets_m_;
    doublesP jets_bTag_, jets_partonflavor_;
@@ -127,17 +153,20 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       jets_bTag_->clear();
       jets_partonflavor_->clear();
 
+      int nLep=0;
       for(int i=0;i<electrons_pt->size();i++ )
       {
+         if(electrons_type->at(i)>100 && electrons_mva->at(i)>0.5 ) nLep++;
          //std::cout << "electron"<< electrons_pt->size()  <<" : " <<  electrons_pt->at(i) << std::endl;
          electrons[i].SetPtEtaPhiM( electrons_pt->at(i),  electrons_eta->at(i),  electrons_phi->at(i),0);
       }
       for(int i=0;i<muons_pt->size();i++ )
       {
+         if(muons_type->at(i)>9) nLep++;
          //std::cout << "muon "<< muons_pt->size()  <<" : " <<  muons_pt->at(i) << std::endl;
          muons[i].SetPtEtaPhiM( muons_pt->at(i),  muons_eta->at(i),  muons_phi->at(i),0);
       }
-      int njet =0, nBtagT=0, nBtagM=0, jidx[4];
+      int njet =0, nBtagT=0, nBtagM=0, nBtagL=0, jidx[4];
       double jidxV[4], csvweight=1., leptonweight=1.0;
 
       for(int i=0;i<4;i++){ jidx[i]=-100; jidxV[i]=-100.; }
@@ -166,6 +195,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
             if(jets_bTag->at(i)>0.898) nBtagT++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
             if(jets_bTag->at(i)>0.679) nBtagM++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
+            if(jets_bTag->at(i)>0.244) nBtagL++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
             
             if(jidxV[0]<jets_bTag->at(i))
             {
@@ -280,7 +310,6 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                   Zsel=true;
               }
           }   
-
           if( !Zsel && !strcmp(DecayMode, "MuEl"))
           {
               if(muons_type->at(0)>9 && electrons_type->at(0)>100 && electrons_mva->at(0)>0.5)
@@ -293,6 +322,52 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
           if(!Zsel) continue;
 
+///////////////////////
+          if(njet==2) //&& nLep==2)
+          {
+             bool zveto   = ( Z.M()<(65.5 +3*met_pt/8) || Z.M()>(108.-met_pt/4) || Z.M()<(79.-3.*met_pt/4) ||  Z.M()>(99.+met_pt/2) );
+             bool zselcut = (std::abs(Z.M()-91.) < 10.);
+             bool highMET = (met_pt > 50.);
+             bool lowMET  = (met_pt < 30.);
+             bool HFtag   = (jidxV[0]>0.679);
+             bool LFtag   = (jidxV[1]<0.244);
+
+             bool LFcut = !zveto && zselcut && lowMET && LFtag;
+             bool HFcut = zveto && highMET && HFtag;
+
+             int HF_i = -1, LF_i=-1, LF_j=-1; 
+             for(int i=0;i<4;i++) if(HFbinPt[i] < jets_pt->at(jidx[1])) HF_i=i;
+             for(int i=0;i<3;i++) if(LFbinPt[i] < jets_pt->at(jidx[0])) LF_i=i;
+             for(int i=0;i<3;i++) if(LFbinEta[i]< jets_eta->at(jidx[0])) LF_j=i;
+
+             
+             //if(jets_pt->at(jidx[1])>140 || jets_pt->at(jidx[0]) >140)
+             //std::cout << "HF_i pt=" <<  jets_pt->at(jidx[1]) << ", LF_i pt="<< jets_pt->at(jidx[0]) 
+             //          <<", HF_i=" << HF_i << ", LF_i="<< LF_i <<", LF_j="<<LF_j << endl;
+             if(HFcut && jidxV[1]>-1 && HF_i>-1)
+             {
+                if(!isMC)  hHF_CSV[HF_i]->Fill( jidxV[1]);
+                else 
+                {
+                    if(abs(jets_partonflavor->at(jidx[1])) ==5) 
+                         hHF_CSVbF[HF_i]->Fill( jidxV[1], weight);
+                    else hHF_CSVnbF[HF_i]->Fill( jidxV[1], weight);
+                }        
+                //std::cout <<"HF test CSV SF" << endl;
+             }
+             if(LFcut && jidxV[0]>-1 && LF_i>-1 && LF_j>-1)
+             {
+                 if(!isMC) hLF_CSV[LF_i][LF_j]->Fill( jidxV[0]);
+                 else 
+                 {
+                     if( abs(jets_partonflavor->at(jidx[0])) ==4 || abs(jets_partonflavor->at(jidx[0])) ==5)
+                          hLF_CSVHF[LF_i][LF_j]->Fill( jidxV[0],weight);
+                     else hLF_CSVLF[LF_i][LF_j]->Fill( jidxV[0],weight);
+                 }
+                 //std::cout <<"LF test CSV SF" << endl;
+             }
+          }          
+///////////////////////
           if(isZ==2 && Z.M()<50) continue;
           if(isZ==1 && Z.M()>=50) continue;
 
