@@ -221,13 +221,13 @@ TH1F* ratio(const TH1F* hdata2, const TH1F* hMC2, const TH1F* hMCsub2, const TH1
    TH1F* hMC = (TH1F*) hMC2->Clone();
 
    hdata->Add(hMCsub,-1);
-   TH1F* hdata2 = check(hdata);
+   TH1F* hdata3 = check(hdata);
 
-   TString name = hdata2->GetName();
+   TString name = hdata3->GetName();
    name.ReplaceAll("data",Form("IT%d",i));
 
-   hdata2->Divide(hMC);   TH1F *temp = (TH1F*) hdata2->Clone(name);
-   TString title = hdata2->GetTitle();
+   hdata3->Divide(hMC);   TH1F *temp = (TH1F*) hdata3->Clone(name);
+   TString title = hdata3->GetTitle();
    title.ReplaceAll("data",Form("IT %d",i));
    temp->SetTitle(title);
 
@@ -240,13 +240,13 @@ TH1F* ratio(const TH1F* hdata2, const TH1F* hMC2, const TH1F* hMCsub2, const int
    TH1F* hMC = (TH1F*) hMC2->Clone();
 
    hdata->Add(hMCsub,-1);
-   TH1F* hdata2 = check(hdata);
+   TH1F* hdata3 = check(hdata);
 
-   TString name = hdata2->GetName();
+   TString name = hdata3->GetName();
    name.ReplaceAll("data",Form("IT%d",i));
 
-   hdata2->Divide(hMC); TH1F *temp = (TH1F*) hdata2->Clone(name);
-   TString title = hdata2->GetTitle();
+   hdata3->Divide(hMC); TH1F *temp = (TH1F*) hdata3->Clone(name);
+   TString title = hdata3->GetTitle();
    title.ReplaceAll("data",Form("IT %d",i));
    temp->SetTitle(title);
 
