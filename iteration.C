@@ -14,11 +14,11 @@ void iteration()
   TString outDirName = "./bbb";
   gSystem->Exec("mkdir "+outDirName);
 
-  TH1F *HFMCb[4], *HFMCnb[4], *HFdata[4];
+  TH1F *HFMCb[5], *HFMCnb[5], *HFdata[5];
   TH1F *LFMCHF[3][3], *LFMCLF[3][3], *LFdata[3][3];  
-  TCanvas *cHF[4], *cLF[3][3];
-  THStack *sHF[4], *sLF[3][3];
-  for(int i=0;i<4;i++)
+  TCanvas *cHF[5], *cLF[3][3];
+  THStack *sHF[5], *sLF[3][3];
+  for(int i=0;i<5;i++)
   {
     HFMCb[i]  = (TH1F*) f->Get(Form("hHF_CSVbF_Pt%d_MC", i));
     HFMCnb[i] = (TH1F*) f->Get(Form("hHF_CSVnbF_Pt%d_MC",i));
@@ -27,7 +27,7 @@ void iteration()
     HFdata[i]->GetXaxis()->SetTitle("CSV");
     HFdata[i]->GetYaxis()->SetTitle("Events");
 
-    cHF[i] = new TCanvas(Form("cHF%d",i),"",500,500);
+    cHF[i] = new TCanvas(Form("cHF%d",i),"",500,400);
     HFdata[i]->Sumw2();
     HFdata[i]->SetLineColor(kBlack);
     HFdata[i]->SetMaximum(HFdata[i]->GetMaximum()*1.5);
@@ -51,7 +51,7 @@ void iteration()
     LFdata[i][j]->GetXaxis()->SetTitle("CSV");
     LFdata[i][j]->GetYaxis()->SetTitle("Events");
 
-    cLF[i][j] = new TCanvas(Form("cLF%d%d",i,j),"",500,500);
+    cLF[i][j] = new TCanvas(Form("cLF%d%d",i,j),"",500,400);
     LFdata[i][j]->Sumw2();
     LFdata[i][j]->SetLineColor(kBlack);
     LFdata[i][j]->SetMaximum(LFdata[i][j]->GetMaximum()*1.5);
@@ -67,7 +67,7 @@ void iteration()
   }
 
   const int ll=4;
-  TH1F *LFratio[3][3][ll], *HFratio[4][ll], *LFratioM[3][ll], *HFratioM[ll];
+  TH1F *LFratio[3][3][ll], *HFratio[5][ll], *LFratioM[3][ll], *HFratioM[ll];
   for(int i=0;i<2;i++)
   {
      for(int l=0;l<ll;l++)
@@ -84,12 +84,12 @@ void iteration()
 
   for(int l=0;l<ll;l++)
   {
-     for(int i=2;i<4;i++)
+     for(int i=2;i<5;i++)
      {
        if(l==0) HFratio[i][l]= (TH1F*) ratio(HFdata[i],HFMCb[i] , HFMCnb[i],l);
        else     HFratio[i][l]= (TH1F*) ratio(HFdata[i],HFMCb[i] , HFMCnb[i],LFratioM[2][l-1],l);
      }
-     HFratioM[l]=(TH1F*) weightMerge(HFratio[2][l],HFratio[3][l]);
+     HFratioM[l]=(TH1F*) weightMerge(HFratio[2][l],HFratio[3][l],HFratio[4][l]);
     
      for(int j=0;j<3;j++)
      {
@@ -98,15 +98,15 @@ void iteration()
      LFratioM[2][l]=(TH1F*) weightMerge(LFratio[2][0][l],LFratio[2][1][l],LFratio[2][2][l]);
   }
  
-  TCanvas *cLPHF[4], *cLPLF[3][3];
-  TF1 *FitHF[4], *FitLF[3][3];
-  TH1D *hFitHF[4], *hFitLF[3][3];
-  TH1D *hFitHF2[4], *hFitLF2[3][3];
+  TCanvas *cLPHF[5], *cLPLF[3][3];
+  TF1 *FitHF[5], *FitLF[3][3];
+  TH1D *hFitHF[5], *hFitLF[3][3];
+  TH1D *hFitHF2[5], *hFitLF2[3][3];
 
   for(int l=0;l<ll;l++)
-  for(int i=0;i<4;i++)
+  for(int i=0;i<5;i++)
   {
-     if(l==0) { cLPHF[i] = new TCanvas(Form("cLPHF%d",i),"",500,500);}
+     if(l==0) { cLPHF[i] = new TCanvas(Form("cLPHF%d",i),"",500,400);}
 
      HFratio[i][l]->SetLineColor(l+1);
      HFratio[i][l]->GetXaxis()->SetTitle("CSV");
@@ -136,7 +136,7 @@ void iteration()
   for(int i=0;i<3;i++)
   for(int j=0;j<3;j++)
   {
-     if(l==0) { cLPLF[i][j] = new TCanvas(Form("cLPLF%d%d",i,j),"",500,500); }
+     if(l==0) { cLPLF[i][j] = new TCanvas(Form("cLPLF%d%d",i,j),"",500,400); }
 
      LFratio[i][j][l]->SetLineColor(l+1);
      LFratio[i][j][l]->GetXaxis()->SetTitle("CSV");
@@ -162,6 +162,19 @@ void iteration()
          cLPLF[i][j]->Print(Form("./%s/fit_%s.eps",outDirName.Data(),name.Data()));
      }
   }
+
+  TFile fout(Form("SF.root"), "RECREATE");
+  for(int i=0;i<5;i++)
+  {
+     hFitHF2[i]->Write();
+  }
+  for(int i=0;i<3;i++)
+  for(int j=0;j<3;j++)
+  {
+     hFitLF2[i][j]->Write();
+  }
+  fout.Write();
+  fout.Close();
 
 }
 
@@ -221,13 +234,13 @@ TH1F* ratio(const TH1F* hdata2, const TH1F* hMC2, const TH1F* hMCsub2, const TH1
    TH1F* hMC = (TH1F*) hMC2->Clone();
 
    hdata->Add(hMCsub,-1);
-   TH1F* hdata3 = check(hdata);
+   TH1F* hdata2 = check(hdata);
 
-   TString name = hdata3->GetName();
+   TString name = hdata2->GetName();
    name.ReplaceAll("data",Form("IT%d",i));
 
-   hdata3->Divide(hMC);   TH1F *temp = (TH1F*) hdata3->Clone(name);
-   TString title = hdata3->GetTitle();
+   hdata2->Divide(hMC);   TH1F *temp = (TH1F*) hdata2->Clone(name);
+   TString title = hdata2->GetTitle();
    title.ReplaceAll("data",Form("IT %d",i));
    temp->SetTitle(title);
 
@@ -240,13 +253,13 @@ TH1F* ratio(const TH1F* hdata2, const TH1F* hMC2, const TH1F* hMCsub2, const int
    TH1F* hMC = (TH1F*) hMC2->Clone();
 
    hdata->Add(hMCsub,-1);
-   TH1F* hdata3 = check(hdata);
+   TH1F* hdata2 = check(hdata);
 
-   TString name = hdata3->GetName();
+   TString name = hdata2->GetName();
    name.ReplaceAll("data",Form("IT%d",i));
 
-   hdata3->Divide(hMC); TH1F *temp = (TH1F*) hdata3->Clone(name);
-   TString title = hdata3->GetTitle();
+   hdata2->Divide(hMC); TH1F *temp = (TH1F*) hdata2->Clone(name);
+   TString title = hdata2->GetTitle();
    title.ReplaceAll("data",Form("IT %d",i));
    temp->SetTitle(title);
 
@@ -295,7 +308,7 @@ TH1D* check2(const TH1D* data)
    //hSF->GetXaxis()->SetTitle(xtitle);
    //hSF->GetYaxis()->SetTitle("Efficiency");
    //hSF->SetStats(0);
-   TCanvas *cfit = new TCanvas("cfit","",500,500);
+   TCanvas *cfit = new TCanvas("cfit","",500,400);
    hSF->Draw("AXIS");
    TH1F* hSF2 = hSF->Clone(); 
    (TVirtualFitter::GetFitter())->GetConfidenceIntervals(hSF2,0.68);

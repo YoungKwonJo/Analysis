@@ -3,7 +3,8 @@
 import sys,os
 
 
-isTest = True
+#isTest = True
+isTest = False
 
 Sample = ["DYJetsToLL_M-10To50filter_8TeV-madgraph","DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball",
 "TTJets_FullLeptMGDecays_8TeV-madgraph-tauola","TTJets_HadronicMGDecays_8TeV-madgraph","TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola",

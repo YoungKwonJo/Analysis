@@ -56,6 +56,7 @@ void SetUpCSVreweighting(){
 //  f_CSVwgt_LF = TFile::Open ("csv_rwt_lf_IT.root");
   f_CSVwgt_HF = TFile::Open ("csv_rwt_hf.root");
   f_CSVwgt_LF = TFile::Open ("csv_rwt_lf.root");
+  f_SF = TFile::Open ("SF.root");
 
 ///////////////////////
   // CSV reweighting
@@ -115,6 +116,12 @@ void SetUpCSVreweighting(){
       for( int iEta=0; iEta<3; iEta++ )h_csv_wgt_lf[iSys][iPt][iEta] = (TH1D*)f_CSVwgt_LF->Get( Form("csv_ratio_Pt%i_Eta%i_%s",iPt,iEta,syst_csv_suffix_lf.Data()) );
     }
 
+  }
+///////////
+  for( int iPt=0; iPt<5; iPt++ ) h_csv_sf_hf[iPt] = (TH1D*)f_SF->Get( Form("hHF_CSV_Pt%d_IT3New",iPt) );
+
+  for( int iPt=0; iPt<3; iPt++ ){
+    for( int iEta=0; iEta<3; iEta++ )h_csv_sf_lf[iPt][iEta] = (TH1D*)f_SF->Get( Form("hLF_CSV_Pt%d_Eta%d_IT3New",iPt,iEta) );
   }
 
 }
@@ -186,7 +193,7 @@ double GetCSVweight( vector<double>  &jets_pt, vector<double>  &jets_eta,  vecto
     double jetAbsEta = fabs( jets_eta.at(i));//iJet->p4().eta() );
     int flavor = abs(jets_partonflavor.at(i) );//iJet->partonFlavour());
     int iPt = -1; int iEta = -1;
-    if(jetPt<30. || jetAbsEta<0. || jetAbsEta > 2.5 || csv<-0.001) continue;
+    if(jetPt<30. || jetAbsEta<0. || jetAbsEta > 2.5 ) continue;
 
     if (jetPt >=30 && jetPt<40) iPt = 0;
     else if (jetPt >=40 && jetPt<60) iPt = 1;
@@ -231,7 +238,71 @@ double GetCSVweight( vector<double>  &jets_pt, vector<double>  &jets_eta,  vecto
 
   return csvWgtTotal;
 }
+///////////
+double GetCSVweight2( vector<double>  &jets_pt, vector<double>  &jets_eta,  vector<double>  &jets_bTag,  vector<double>  &jets_partonflavor){
+  //if (isData) return 1.0;
 
+  //CheckSetUp();
+  // IMPORTANT! iJets is the *SELECTED* jet collection which you use for your analysis
+  double bupdw = 1.0;
+//  bool usAdEr = false;
+
+  double csvWgthf = 1.;
+  double csvWgtC  = 1.;
+  double csvWgtlf = 1.;
+
+  for(int i=0;i<jets_pt.size();i++ )
+  {
+
+    double csv = jets_bTag.at(i);// iJet->bDiscriminator("combinedSecondaryVertexBJetTags");
+
+    double jetPt = jets_pt.at(i);// iJet->p4().pt();
+    double jetAbsEta = fabs( jets_eta.at(i));//iJet->p4().eta() );
+    int flavor = abs(jets_partonflavor.at(i) );//iJet->partonFlavour());
+    int iPt = -1; int iEta = -1;
+    if(jetPt<30. || jetAbsEta<0. || jetAbsEta > 2.5 || csv<-0.001) continue;
+
+    if (jetPt >=30 && jetPt<40) iPt = 0;
+    else if (jetPt >=40 && jetPt<60) iPt = 1;
+    else if (jetPt >=60 && jetPt<100) iPt = 2;
+    else if (jetPt >=100 && jetPt<160) iPt = 3;
+    else if (jetPt >=160 ) iPt = 4;
+
+    if (jetAbsEta >=0 &&  jetAbsEta<0.8) iEta = 0;
+    else if ( jetAbsEta>=0.8 && jetAbsEta<1.6) iEta = 1;
+    else if ( jetAbsEta>=1.6 && jetAbsEta<2.5) iEta = 2;
+
+
+//       printf(" iJet,\t flavor=%d,\t pt=%.1f,\t abseta=%.2f,\t csv=%.3f",  flavor, jetPt, jetAbsEta, csv );
+    if ( (abs(flavor) == 5)  ){// || abs(flavor) == 4 ) {
+      int useCSVBin = (csv>=0.) ? h_csv_sf_hf[iPt]->FindBin(csv) : 1;
+      double iCSVWgtHF = h_csv_sf_hf[iPt]->GetBinContent(useCSVBin);
+
+      if( iCSVWgtHF!=0 )                      csvWgthf *= iCSVWgtHF*bupdw;
+
+//       printf(",\t wgt=%.2f \n",iCSVWgtHF );
+    }
+    else if( abs(flavor) == 4 ){
+      // do nothing
+      
+    }
+    else {
+      if (iPt >=2) iPt=2;       /// [30-40], [40-60] and [60-10000] only 3 Pt bins for lf
+      int useCSVBin = (csv>=0.) ? h_csv_sf_lf[iPt][iEta]->FindBin(csv) : 1;
+      double iCSVWgtLF = h_csv_sf_lf[iPt][iEta]->GetBinContent(useCSVBin);
+      if( iCSVWgtLF!=0 ) csvWgtlf *= iCSVWgtLF;
+
+    //   printf(",\t wgt=%.2f \n", iCSVWgtLF );
+    }
+  }
+
+  double csvWgtTotal = csvWgthf * csvWgtC * csvWgtlf;
+
+
+  return csvWgtTotal;
+}
+
+///////////
 
   private:
         // CSV reweighting
@@ -241,6 +312,10 @@ double GetCSVweight( vector<double>  &jets_pt, vector<double>  &jets_eta,  vecto
        TFile* f_CSVwgt_HF;
        TFile* f_CSVwgt_LF;
 
+       TH1D* h_csv_sf_hf[5];
+//       TH1D* c_csv_sf_hf[5];
+       TH1D* h_csv_sf_lf[3][3];
+       TFile* f_SF;
 };
 #endif
 

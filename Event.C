@@ -24,13 +24,27 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    double wei=1.;
    bool S[u], G[v];
 
+   const char *ttNN[5] ={"_","bb","1b","cc","LF"};
+   TH1F *hStepAll[v], *hStep[v];
+   TH1F *hStepAll2[v], *hStep2[v];
+   for(int j =0; j<v ; j++)
+   {
+
+      hStepAll[j]  = new TH1F(Form("hStep_all_%s%s_Sumw2", Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u+1,0,u+1);
+      hStepAll2[j] = new TH1F(Form("hStep_all_%s%s",       Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u+1,0,u+1);
+      hStepAll[j]->Sumw2();
+
+      hStep[j]  = new TH1F(Form("hStep_%s_%s%s_Sumw2", DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u+1,0,u+1); 
+      hStep2[j] = new TH1F(Form("hStep_%s_%s%s",       DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u+1,0,u+1); 
+      hStep[j]->Sumw2();
+   }
+
    TH1F *hZMass[u][v], *hrelIso1[u][v], *hrelIso2[u][v], *hPt1[u][v], *hPt2[u][v], *hEta1[u][v], *hEta2[u][v];
    TH1F  *hMET[u][v], *hnJet[u][v], *hnVertex[u][v]; 
    TH1F  *hjet1pt[u][v], *hjet1eta[u][v], *hjet1phi[u][v], *hjet1_bDisCSV[u][v];    
    TH1F  *hnbJet30_CSVT[u][v], *hnbJet30_CSVM[u][v];    
    TH1F  *haddjet1_bDisCSV[u][v],  *haddjet2_bDisCSV[u][v], *haddjet1_bDisCSV2[u][v],  *haddjet2_bDisCSV2[u][v]; 
    TH2F  *haddjet2D_bDisCSV[u][v], *haddjet2D_bDisCSV2[u][v];
-   const char *ttNN[5] ={"_","bb","1b","cc","LF"};
 
    for(int i =0; i<u ; i++) for(int j =0; j<v ; j++)
    {
@@ -109,10 +123,10 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    const int HFNbin = sizeof(HFbin)/sizeof(float) -1;
    const int LFNbin = sizeof(LFbin)/sizeof(float) -1;
 
-   TH1F *hHF_CSV[4], *hLF_CSV[3][3];
-   TH1F *hHF_CSVbF[4], *hLF_CSVHF[3][3];
-   TH1F *hHF_CSVnbF[4], *hLF_CSVLF[3][3];
-   for(int i=0;i<4;i++)
+   TH1F *hHF_CSV[5], *hLF_CSV[3][3];
+   TH1F *hHF_CSVbF[5], *hLF_CSVHF[3][3];
+   TH1F *hHF_CSVnbF[5], *hLF_CSVLF[3][3];
+   for(int i=0;i<5;i++)
    {
       hHF_CSVbF[i] = new TH1F(Form("hHF_CSVbF_Pt%d_MC",i), Form("HF CSV bF Pt Bin %d MC",i), HFNbin, HFbin);
       hHF_CSVnbF[i] = new TH1F(Form("hHF_CSVnbF_Pt%d_MC",i), Form("HF CSV nonbF Pt Bin %d MC",i), HFNbin, HFbin);
@@ -183,7 +197,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
          if(muons_type->at(j)>9 && muons_pt->at(j)>20. && abs(muons_eta->at(j))<2.4)
          if( std::abs( jets[i].DeltaR(muons[j]) )< 0.5 )     overlapMu=true;
 
-         if(jets_pt->at(i)>30 && abs(jets_eta->at(i))<2.5 && !overlapEl && !overlapMu)
+         if(jets_pt->at(i)>30 && abs(jets_eta->at(i))<2.5 )//&& !overlapEl && !overlapMu)
          {
             njet++;
             jets_pt_->push_back(jets_pt->at(i));
@@ -231,14 +245,9 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       for(int j =0; j<v ; j++) G[j]=true;
 
-      int Gnjet=0,GBHardon=0, GCHardon=0, GLep=0;
       if(isMC)
       {
 
-          //for ttbb analysis ////////////
-          csvweight = csvWgt->GetCSVweight(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_,sysType::NA);
-          wei = weight*csvweight*puWeight*leptonweight;
- 
           if(v==5)
           {
               
@@ -321,7 +330,30 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           }
 
           if(!Zsel) continue;
-
+          if(isMC)
+          {
+             double lep1weight=1., lep2weight=1.;
+             if(!strcmp(DecayMode, "MuMu"))
+             { 
+                 lep1weight = SF(muons_pt->at(L1x),abs(muons_eta->at(L1x)), Muon);
+                 lep2weight = SF(muons_pt->at(L2x),abs(muons_eta->at(L2x)), Muon);
+             }
+             if(!strcmp(DecayMode, "ElEl"))
+             {
+                 lep1weight = SF(electrons_pt->at(L1x),abs(electrons_eta->at(L1x)), Electron);
+                 lep2weight = SF(electrons_pt->at(L2x),abs(electrons_eta->at(L2x)), Electron);
+             }
+             if(!strcmp(DecayMode, "MuEl"))
+             {
+                 lep1weight = SF(muons_pt->at(L1x)    ,    abs(muons_eta->at(L1x)), Muon);
+                 lep2weight = SF(electrons_pt->at(L2x),abs(electrons_eta->at(L2x)), Electron);
+             }
+             leptonweight=lep1weight*lep2weight;
+             //for ttbb analysis ////////////
+             csvweight = csvWgt->GetCSVweight(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_,sysType::NA);
+             //csvweight = csvWgt->GetCSVweight2(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_);
+             wei = weight*csvweight*puWeight*leptonweight;
+          }
 ///////////////////////
           if(njet==2) //&& nLep==2)
           {
@@ -336,7 +368,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
              bool HFcut = zveto && highMET && HFtag;
 
              int HF_i = -1, LF_i=-1, LF_j=-1; 
-             for(int i=0;i<4;i++) if(HFbinPt[i] < jets_pt->at(jidx[1])) HF_i=i;
+             for(int i=0;i<5;i++) if(HFbinPt[i] < jets_pt->at(jidx[1])) HF_i=i;
              for(int i=0;i<3;i++) if(LFbinPt[i] < jets_pt->at(jidx[0])) LF_i=i;
              for(int i=0;i<3;i++) if(LFbinEta[i]< jets_eta->at(jidx[0])) LF_j=i;
 
@@ -344,14 +376,15 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
              //if(jets_pt->at(jidx[1])>140 || jets_pt->at(jidx[0]) >140)
              //std::cout << "HF_i pt=" <<  jets_pt->at(jidx[1]) << ", LF_i pt="<< jets_pt->at(jidx[0]) 
              //          <<", HF_i=" << HF_i << ", LF_i="<< LF_i <<", LF_j="<<LF_j << endl;
+             double weightSF = weight*puWeight;
              if(HFcut && jidxV[1]>-1 && HF_i>-1)
              {
                 if(!isMC)  hHF_CSV[HF_i]->Fill( jidxV[1]);
                 else 
                 {
                     if(abs(jets_partonflavor->at(jidx[1])) ==5) 
-                         hHF_CSVbF[HF_i]->Fill( jidxV[1], weight);
-                    else hHF_CSVnbF[HF_i]->Fill( jidxV[1], weight);
+                         hHF_CSVbF[HF_i]->Fill( jidxV[1], weightSF);
+                    else hHF_CSVnbF[HF_i]->Fill( jidxV[1], weightSF);
                 }        
                 //std::cout <<"HF test CSV SF" << endl;
              }
@@ -361,8 +394,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                  else 
                  {
                      if( abs(jets_partonflavor->at(jidx[0])) ==4 || abs(jets_partonflavor->at(jidx[0])) ==5)
-                          hLF_CSVHF[LF_i][LF_j]->Fill( jidxV[0],weight);
-                     else hLF_CSVLF[LF_i][LF_j]->Fill( jidxV[0],weight);
+                          hLF_CSVHF[LF_i][LF_j]->Fill( jidxV[0],weightSF);
+                     else hLF_CSVLF[LF_i][LF_j]->Fill( jidxV[0],weightSF);
                  }
                  //std::cout <<"LF test CSV SF" << endl;
              }
@@ -390,6 +423,10 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           for(int i =0; i<u ; i++)for(int j =0; j<v ; j++) if(S[i] && G[j])
           {
               hZMass[i][j]   ->Fill(Z.M()              , wei); 
+              hStepAll[j]->Fill(i+1,wei);
+              hStep[j]   ->Fill(i+1,wei);
+              hStepAll2[j]->Fill(i+1,wei);
+              hStep2[j]   ->Fill(i+1,wei);
 
               if(!strcmp(DecayMode, "MuMu"))
               {
@@ -447,4 +484,60 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 /////////////////
       } // precut
    } 
+}
+double Event::SF(double pt, double eta, LeptonType type)
+{
+    double scale = 1.0;
+    if(type == Muon){
+      if( pt < 30 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.9 ) scale = 0.980;  
+        if( fabs(eta) >= 0.9 && fabs(eta) < 1.2 ) scale = 0.972;  
+        if( fabs(eta) >= 1.2 && fabs(eta) < 2.1 ) scale = 0.996;
+        if( fabs(eta) >= 2.1 && fabs(eta) < 2.5 ) scale = 1.019;
+      }
+      if( pt >= 30 && pt < 40 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.9 ) scale = 0.988;
+        if( fabs(eta) >= 0.9 && fabs(eta) < 1.2 ) scale = 0.994;
+        if( fabs(eta) >= 1.2 && fabs(eta) < 2.1 ) scale = 0.982;
+        if( fabs(eta) >= 2.1 && fabs(eta) < 2.5 ) scale = 1.018;
+      }
+      if( pt >= 40 && pt < 50 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.9 ) scale = 0.982;
+        if( fabs(eta) >= 0.9 && fabs(eta) < 1.2 ) scale = 0.979;
+        if( fabs(eta) >= 1.2 && fabs(eta) < 2.1 ) scale = 0.986;
+        if( fabs(eta) >= 2.1 && fabs(eta) < 2.5 ) scale = 1.000;
+      }
+      if( pt >= 50 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.9 ) scale = 0.992;
+        if( fabs(eta) >= 0.9 && fabs(eta) < 1.2 ) scale = 0.988;
+        if( fabs(eta) >= 1.2 && fabs(eta) < 2.1 ) scale = 1.000;
+        if( fabs(eta) >= 2.1 && fabs(eta) < 2.5 ) scale = 1.024;
+      }
+    }else if(type == Electron){
+      if( pt < 30 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.8 )   scale = 0.971;      
+        if( fabs(eta) >= 0.8 && fabs(eta) < 1.479 ) scale = 0.962;      
+        if( fabs(eta) >= 1.479 && fabs(eta) < 2.5 ) scale = 0.921;
+      }
+      if( pt >= 30 && pt < 40 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.8 )   scale = 0.942;
+        if( fabs(eta) >= 0.8 && fabs(eta) < 1.479 ) scale = 0.956;
+        if( fabs(eta) >= 1.479 && fabs(eta) < 2.5 ) scale = 0.921;
+      }
+      if( pt >= 40 && pt < 50 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.8 )   scale = 0.967;
+        if( fabs(eta) >= 0.8 && fabs(eta) < 1.479 ) scale = 0.961;
+        if( fabs(eta) >= 1.479 && fabs(eta) < 2.5 ) scale = 0.959;
+      }
+      if( pt >= 50 ){
+        if( fabs(eta) >= 0.0 && fabs(eta) < 0.8 )   scale = 0.964;
+        if( fabs(eta) >= 0.8 && fabs(eta) < 1.479 ) scale = 0.963;
+        if( fabs(eta) >= 1.479 && fabs(eta) < 2.5 ) scale = 0.963;
+      }
+    }else{
+      return scale = 1;
+    }
+
+    return scale;
+
 }

@@ -17,9 +17,14 @@
 #include <vector>
 #include <vector>
 #include "CSVWeight.h"
+#include <TLorentzVector.h>
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 using namespace std;
+enum LeptonType {
+    Muon,
+    Electron
+};
 
 class Event {
 public :
@@ -229,6 +234,7 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
    virtual void     Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC);
+   virtual double   SF(double pt, double eta, LeptonType type);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 };
