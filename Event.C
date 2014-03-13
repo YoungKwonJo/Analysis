@@ -10,12 +10,24 @@
 #include <TH1D.h>
 #include <TH2D.h>
 
+#include "Jet.h"
+#include "Lepton.h"
+
   typedef std::vector<int> ints;
   typedef std::vector<unsigned int> uints;
   typedef std::vector<double> doubles;
   typedef ints* intsP;
   typedef uints* uintsP;
   typedef doubles* doublesP;
+
+  typedef std::vector<Lepton> Leptons;
+  typedef Leptons* LeptonsP;
+
+  bool compByPtLep(Lepton a, Lepton b)
+  {
+     return a.Pt() > b.Pt();
+  };
+
 
 void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC)
 {
@@ -30,12 +42,12 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    for(int j =0; j<v ; j++)
    {
 
-      hStepAll[j]  = new TH1F(Form("hStep_all_%s%s_Sumw2", Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u+1,0,u+1);
-      hStepAll2[j] = new TH1F(Form("hStep_all_%s%s",       Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u+1,0,u+1);
+      hStepAll[j]  = new TH1F(Form("hStep_all_%s%s_Sumw2", Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
+      hStepAll2[j] = new TH1F(Form("hStep_all_%s%s",       Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
       hStepAll[j]->Sumw2();
 
-      hStep[j]  = new TH1F(Form("hStep_%s_%s%s_Sumw2", DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u+1,0,u+1); 
-      hStep2[j] = new TH1F(Form("hStep_%s_%s%s",       DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u+1,0,u+1); 
+      hStep[j]  = new TH1F(Form("hStep_%s_%s%s_Sumw2", DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
+      hStep2[j] = new TH1F(Form("hStep_%s_%s%s",       DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
       hStep[j]->Sumw2();
    }
 
@@ -140,14 +152,23 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    }
 ////////////
    TLorentzVector muons[15], electrons[15], jets[30], genjets[50], genparticles[50], genjetsB[50], genjetsC[50];
-   doublesP jets_pt_,   jets_eta_, jets_phi_, jets_m_;
-   doublesP jets_bTag_, jets_partonflavor_;
-   jets_pt_  = new doubles;
-   jets_eta_ = new doubles;
-   jets_phi_ = new doubles;
-   jets_m_   = new doubles;
-   jets_bTag_ = new doubles;
-   jets_partonflavor_ = new doubles;
+//   doublesP jets_pt_,   jets_eta_, jets_phi_, jets_m_;
+//   doublesP jets_bTag_, jets_partonflavor_;
+ //   TLorentzVectorsP muons_ = new TLorentzVectors;
+ //  TLorentzVectorsP electrons_ = new TLorentzVectors;
+   LeptonsP muons_;
+   LeptonsP electrons_;
+   muons_ = new Leptons;
+   electrons_ = new Leptons;
+   JetsP jets_;
+   jets_ = new Jets; 
+
+//   jets_pt_  = new doubles;
+//   jets_eta_ = new doubles;
+//   jets_phi_ = new doubles;
+//   jets_m_   = new doubles;
+//   jets_bTag_ = new doubles;
+//   jets_partonflavor_ = new doubles;
 
    if (fChain == 0) return;
 
@@ -160,26 +181,50 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-      jets_pt_->clear();
-      jets_eta_->clear();
-      jets_phi_->clear();
-      jets_m_->clear();
-      jets_bTag_->clear();
-      jets_partonflavor_->clear();
+      muons_->clear();
+      electrons_->clear();
+      jets_->clear();
+      //jets_m_->clear();
+      //jets_bTag_->clear();
+      //jets_partonflavor_->clear();
 
       int nLep=0;
       for(int i=0;i<electrons_pt->size();i++ )
       {
-         if(electrons_type->at(i)>100 && electrons_mva->at(i)>0.5 ) nLep++;
+         if(electrons_type->at(i)>100 && electrons_mva->at(i)>0.5 && electrons_pt->at(i)>20. && abs(electrons_eta->at(i))<2.4) 
+         {
+            nLep++;
+            double x_ = electrons_pt->at(i)*TMath::Cos(electrons_phi->at(i));
+            double y_ = electrons_pt->at(i)*TMath::Sin(electrons_phi->at(i));
+            double z_ = electrons_pt->at(i)*sinh(electrons_eta->at(i));
+            double e_ = TMath::Sqrt(x_*x_+y_*y_+z_*z_+electrons_m->at(i)*electrons_m->at(i));
+            Lepton el_(TLorentzVector( x_,y_,z_,e_), electrons_relIso->at(i), electrons_Q->at(i));   
+            electrons_->push_back(el_); 
+         }
          //std::cout << "electron"<< electrons_pt->size()  <<" : " <<  electrons_pt->at(i) << std::endl;
-         electrons[i].SetPtEtaPhiM( electrons_pt->at(i),  electrons_eta->at(i),  electrons_phi->at(i),0);
+//         electrons[i].SetPtEtaPhiM( electrons_pt->at(i),  electrons_eta->at(i),  electrons_phi->at(i),0);
       }
+      std::sort(electrons_->begin(), electrons_->end(), compByPtLep);
+
       for(int i=0;i<muons_pt->size();i++ )
       {
-         if(muons_type->at(i)>9) nLep++;
+
+         if(muons_type->at(i)>9 && muons_pt->at(i)>20. && abs(muons_eta->at(i))<2.4) 
+         {
+            nLep++; 
+            double x_ = muons_pt->at(i)*TMath::Cos(muons_phi->at(i));
+            double y_ = muons_pt->at(i)*TMath::Sin(muons_phi->at(i));
+            double z_ = muons_pt->at(i)*sinh(muons_eta->at(i));
+            double e_ = TMath::Sqrt(x_*x_+y_*y_+z_*z_+muons_m->at(i)*muons_m->at(i));
+            Lepton mu_(TLorentzVector( x_,y_,z_,e_), muons_relIso->at(i), muons_Q->at(i));
+            muons_->push_back(mu_); 
+         }
          //std::cout << "muon "<< muons_pt->size()  <<" : " <<  muons_pt->at(i) << std::endl;
-         muons[i].SetPtEtaPhiM( muons_pt->at(i),  muons_eta->at(i),  muons_phi->at(i),0);
+//         muons[i].SetPtEtaPhiM( muons_pt->at(i),  muons_eta->at(i),  muons_phi->at(i),0);
       }
+
+      std::sort(muons_->begin(), muons_->end(), compByPtLep);
+
       int njet =0, nBtagT=0, nBtagM=0, nBtagL=0, jidx[4];
       double jidxV[4], csvweight=1., leptonweight=1.0;
 
@@ -190,22 +235,32 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
          jets[i].SetPtEtaPhiM( jets_pt->at(i),  jets_eta->at(i),  jets_phi->at(i),jets_m->at(i));
 
          bool overlapMu=false, overlapEl=false;  // jet cleaning..
-         for(int j=0;j<electrons_pt->size();j++ ) 
-         if(electrons_type->at(j)>100 && electrons_mva->at(j)>0.5 && electrons_pt->at(j)>20. && abs(electrons_eta->at(j))<2.4 ) 
-         if( std::abs( jets[i].DeltaR(electrons[j]) )< 0.5 ) overlapEl=true;
-         for(int j=0;j<muons_pt->size();j++ )     
-         if(muons_type->at(j)>9 && muons_pt->at(j)>20. && abs(muons_eta->at(j))<2.4)
-         if( std::abs( jets[i].DeltaR(muons[j]) )< 0.5 )     overlapMu=true;
+//         for(int j=0;j<electrons_pt->size();j++ ) 
+//         if(electrons_type->at(j)>100 && electrons_mva->at(j)>0.5 && electrons_pt->at(j)>20. && abs(electrons_eta->at(j))<2.4 && electrons_relIso->at(j)<0.15 ) 
+         for(int j=0;j<electrons_->size();j++ ) 
+         if( std::abs( jets[i].DeltaR(electrons_->at(j).vec_) )< 0.5 ) overlapEl=true;
+
+//         for(int j=0;j<muons_pt->size();j++ )     
+//         if(muons_type->at(j)>9 && muons_pt->at(j)>20. && abs(muons_eta->at(j))<2.4 && muons_relIso->at(j)<0.15)
+         for(int j=0;j<muons_->size();j++ )     
+         if( std::abs( jets[i].DeltaR(muons_->at(j).vec_) )< 0.5 )     overlapMu=true;
 
          if(jets_pt->at(i)>30 && abs(jets_eta->at(i))<2.5 )//&& !overlapEl && !overlapMu)
          {
             njet++;
-            jets_pt_->push_back(jets_pt->at(i));
-            jets_eta_->push_back(jets_eta->at(i));
+            double x_ = jets_pt->at(i)*TMath::Cos(jets_phi->at(i));
+            double y_ = jets_pt->at(i)*TMath::Sin(jets_phi->at(i));
+            double z_ = jets_pt->at(i)*sinh(jets_eta->at(i));
+            double e_ = TMath::Sqrt(x_*x_+y_*y_+z_*z_+jets_m->at(i)*jets_m->at(i));
+            Jet jet_(TLorentzVector( x_,y_,z_,e_),jets_bTag->at(i),jets_partonflavor->at(i));
+            jets_->push_back(jet_);
+
+//            jets_pt_->push_back(jets_pt->at(i));
+//            jets_eta_->push_back(jets_eta->at(i));
             //jets_phi_->push_back(jets_phi->at(i));
             //jets_m_->push_back(jets_m->at(i));
-            jets_bTag_->push_back(jets_bTag->at(i));
-            jets_partonflavor_->push_back(jets_partonflavor->at(i));
+//            jets_bTag_->push_back(jets_bTag->at(i));
+//            jets_partonflavor_->push_back(jets_partonflavor->at(i));
 
             if(jets_bTag->at(i)>0.898) nBtagT++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
             if(jets_bTag->at(i)>0.679) nBtagM++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
@@ -236,12 +291,12 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
          }
 
       }
-
+//      GreaterByCSVJet jets(jets_);
 
       bool precut = false;
-      if(!strcmp(DecayMode, "MuMu")) precut = (muons_pt->size()>1);
-      if(!strcmp(DecayMode, "ElEl")) precut = (electrons_pt->size()>1);
-      if(!strcmp(DecayMode, "MuEl")) precut = (muons_pt->size()>0 && electrons_pt->size()>0);
+      if(!strcmp(DecayMode, "MuMu")) precut = (muons_->size()>1);
+      if(!strcmp(DecayMode, "ElEl")) precut = (electrons_->size()>1);
+      if(!strcmp(DecayMode, "MuEl")) precut = (muons_->size()>0 && electrons_->size()>0);
 
       for(int j =0; j<v ; j++) G[j]=true;
 
@@ -262,6 +317,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           //////////////////////////
       }
 
+      //std::cout << "precut = " << precut << endl;
       if(precut)
       {
           TLorentzVector Z;
@@ -269,91 +325,88 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           bool Zsel=false;
           if(!strcmp(DecayMode, "MuMu"))
           {
-                for(int i=0;i<muons_pt->size()-1;i++ ) if(muons_type->at(i)>9)
-                for(int j=i+1;j<muons_pt->size();j++ ) if(muons_type->at(j)>9)
+                for(int i=0;i<muons_->size()-1;i++ ) if(Zsel==false)
+                for(int j=i+1;j<muons_->size();j++ ) if(Zsel==false)
                 {
-                   Z = ((muons[i])+(muons[j]));
-                   bool iso = ((muons_relIso->at(i)<0.15) && (muons_relIso->at(j)<0.15));
-                   bool opp = (muons_Q->at(i)*muons_Q->at(j)<0) && (Z.M()>12.);
+                   Z = ((muons_->at(i).vec_)+(muons_->at(j).vec_));
+                   bool iso = ((muons_->at(i).Iso_<0.15) && (muons_->at(j).Iso_<0.15));
+                   bool opp = (muons_->at(i).Q_*muons_->at(j).Q_<0) && (Z.M()>12.);
                    if(iso && opp) {   L1x=i; L2x=j; Zsel=true; break; }
+
+                   //std::cout << "Zsel-loop,  Zmass="<< Z.M() << endl;
                 }
           }
           if(!strcmp(DecayMode, "ElEl"))
           {
-                for(int i=0;i<electrons_pt->size()-1;i++ ) if(electrons_type->at(i)>100 && electrons_mva->at(i)>0.5 )
-                for(int j=i+1;j<electrons_pt->size();j++ ) if(electrons_type->at(j)>100 && electrons_mva->at(j)>0.5 )
+                for(int i=0;i<electrons_->size()-1;i++ ) if(Zsel==false)
+                for(int j=i+1;j<electrons_->size();j++ ) if(Zsel==false)
                 {
-                   Z = ((electrons[i])+(electrons[j]));
-                   bool iso = ((electrons_relIso->at(i)<0.15) && (electrons_relIso->at(j)<0.15));
-                   bool opp = (electrons_Q->at(i)*electrons_Q->at(j)<0) && (Z.M()>12.);
+                   Z = ((electrons_->at(i).vec_)+(electrons_->at(j).vec_));
+                   bool iso = ((electrons_->at(i).Iso_<0.15) && (electrons_->at(j).Iso_<0.15));
+                   bool opp = (electrons_->at(i).Q_*electrons_->at(j).Q_<0) && (Z.M()>12.);
                    if(iso && opp) {   L1x=i; L2x=j; Zsel=true; break; }
                 }
           }
 
           if(!strcmp(DecayMode, "MuEl"))
           {
-                for(int i=0;i<muons_pt->size();i++ )     if(muons_type->at(i)>9)
-                for(int j=0;j<electrons_pt->size();j++ ) if(electrons_type->at(j)>100 && electrons_mva->at(j)>0.5 )
+                for(int i=0;i<muons_->size();i++ )     if(Zsel==false)
+                for(int j=0;j<electrons_->size();j++ ) if(Zsel==false )
                 {
-                   Z = ((muons[i])+(electrons[j]));
-                   bool iso = ((muons_relIso->at(i)<0.15) && (electrons_relIso->at(j)<0.15));
-                   bool opp = (muons_Q->at(i)*electrons_Q->at(j)<0) && (Z.M()>12.);
+                   Z = ((muons_->at(i).vec_)+(electrons_->at(j).vec_));
+                   bool iso = ((muons_->at(i).Iso_<0.15) && (electrons_->at(j).Iso_<0.15));
+                   bool opp = (muons_->at(i).Q_*electrons_->at(j).Q_<0) && (Z.M()>12.);
                    if(iso && opp) {   L1x=i; L2x=j; Zsel=true; break; }
                 }
           }
           if( !Zsel && !strcmp(DecayMode, "MuMu"))
           {
-              if(muons_type->at(0)>9 && muons_type->at(1)>9) 
-              {
-                  Z = ((muons[0])+(muons[1]));
-                  L1x=0; L2x=1;
-                  Zsel=true;
-              }
+              Z = ((muons_->at(0).vec_)+(muons_->at(1).vec_));
+              L1x=0; L2x=1;
+              Zsel=true;
+              //std::cout << "!Zsel,  Zmass="<< Z.M() << endl;
           }
           if( !Zsel && !strcmp(DecayMode, "ElEl"))
           {
-              if(electrons_type->at(0)>100 && electrons_mva->at(0)>0.5 && electrons_type->at(1)>100 && electrons_mva->at(1)>0.5)
-              {
-                  Z = ((electrons[0])+(electrons[1]));    
-                  L1x=0; L2x=1;
-                  Zsel=true;
-              }
+              Z = ((electrons_->at(0).vec_)+(electrons_->at(1).vec_));    
+              L1x=0; L2x=1;
+              Zsel=true;
           }   
           if( !Zsel && !strcmp(DecayMode, "MuEl"))
           {
-              if(muons_type->at(0)>9 && electrons_type->at(0)>100 && electrons_mva->at(0)>0.5)
-              { 
-                  Z = ((muons[0])+(electrons[0]));
-                  L1x=0; L2x=0;
-                  Zsel=true;
-              }
+              Z = ((muons_->at(0).vec_)+(electrons_->at(0).vec_));
+              L1x=0; L2x=0;
+              Zsel=true;
           }
 
+          //std::cout << "Zsel = " << Zsel << endl;
           if(!Zsel) continue;
           if(isMC)
           {
              double lep1weight=1., lep2weight=1.;
              if(!strcmp(DecayMode, "MuMu"))
              { 
-                 lep1weight = SF(muons_pt->at(L1x),abs(muons_eta->at(L1x)), Muon);
-                 lep2weight = SF(muons_pt->at(L2x),abs(muons_eta->at(L2x)), Muon);
+                 lep1weight = SF(muons_->at(L1x).Pt(),abs(muons_->at(L1x).Eta()), Muon);
+                 lep2weight = SF(muons_->at(L2x).Pt(),abs(muons_->at(L2x).Eta()), Muon);
              }
              if(!strcmp(DecayMode, "ElEl"))
              {
-                 lep1weight = SF(electrons_pt->at(L1x),abs(electrons_eta->at(L1x)), Electron);
-                 lep2weight = SF(electrons_pt->at(L2x),abs(electrons_eta->at(L2x)), Electron);
+                 lep1weight = SF(electrons_->at(L1x).Pt(),abs(electrons_->at(L1x).Eta()), Electron);
+                 lep2weight = SF(electrons_->at(L2x).Pt(),abs(electrons_->at(L2x).Eta()), Electron);
              }
              if(!strcmp(DecayMode, "MuEl"))
              {
-                 lep1weight = SF(muons_pt->at(L1x)    ,    abs(muons_eta->at(L1x)), Muon);
-                 lep2weight = SF(electrons_pt->at(L2x),abs(electrons_eta->at(L2x)), Electron);
+                 lep1weight = SF(muons_->at(L1x).Pt(),    abs(muons_->at(L1x).Eta()),     Muon    );
+                 lep2weight = SF(electrons_->at(L2x).Pt(),abs(electrons_->at(L2x).Eta()), Electron);
              }
              leptonweight=lep1weight*lep2weight;
              //for ttbb analysis ////////////
-             csvweight = csvWgt->GetCSVweight(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_,sysType::NA);
+//             csvweight = csvWgt->GetCSVweight(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_,sysType::NA);
+             csvweight = csvWgt->GetCSVweight(jets_, sysType::NA);
              //csvweight = csvWgt->GetCSVweight2(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_);
              wei = weight*csvweight*puWeight*leptonweight;
           }
+
 ///////////////////////
           if(njet==2) //&& nLep==2)
           {
@@ -401,19 +454,24 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
              }
           }          
 ///////////////////////
+
+          //std::cout << "Zmass = " << Z.M() << endl;
           if(isZ==2 && Z.M()<50) continue;
           if(isZ==1 && Z.M()>=50) continue;
 
-          //std::cout << "Zmass = " << Z.M() << endl;
+
+          //if(!strcmp(DecayMode, "MuMu"))
+          //  std::cout << "opp : " << (muons_->at(L1x).Q_*muons_->at(L2x).Q_<0)<<", Iso1: "<< muons_->at(L1x).Iso_ << ", Pt1: " << muons_->at(L1x).Pt() << endl;
+
           if(!strcmp(DecayMode, "MuMu")) 
-               S[0] = (muons_Q->at(L1x)*muons_Q->at(L2x)<0 && muons_relIso->at(L1x)<0.15 && muons_relIso->at(L2x)<0.15 
-                         && Z.M()>12. && muons_pt->at(L1x)>20. && muons_pt->at(L2x)>20. && abs(muons_eta->at(L1x))<2.4 && abs(muons_eta->at(L2x))<2.4);
+               S[0] = (muons_->at(L1x).Q_*muons_->at(L2x).Q_<0 && muons_->at(L1x).Iso_<0.15 && muons_->at(L2x).Iso_<0.15 
+                        && Z.M()>12. && muons_->at(L1x).Pt()>20. && muons_->at(L2x).Pt()>20. && abs(muons_->at(L1x).Eta())<2.4 && abs(muons_->at(L2x).Eta())<2.4);
           if(!strcmp(DecayMode, "ElEl")) 
-               S[0] = (electrons_Q->at(L1x)*electrons_Q->at(L2x)<0 && electrons_relIso->at(L1x)<0.15 && electrons_relIso->at(L2x)<0.15 
-                         && Z.M()>12. && electrons_pt->at(L1x)>20. && electrons_pt->at(L2x)>20. && abs(electrons_eta->at(L1x))<2.4 && abs(electrons_eta->at(L2x))<2.4);
+               S[0] = (electrons_->at(L1x).Q_*electrons_->at(L2x).Q_<0 && electrons_->at(L1x).Iso_<0.15 && electrons_->at(L2x).Iso_<0.15 
+                        && Z.M()>12. && electrons_->at(L1x).Pt()>20. && electrons_->at(L2x).Pt()>20. && abs(electrons_->at(L1x).Eta())<2.4 && abs(electrons_->at(L2x).Eta())<2.4);
           if(!strcmp(DecayMode, "MuEl")) 
-               S[0] = (electrons_Q->at(L2x)*muons_Q->at(L1x)<0 && electrons_relIso->at(L2x)<0.15 && muons_relIso->at(L1x)<0.15 
-                         && Z.M()>12. && electrons_pt->at(L2x)>20. && muons_pt->at(L1x)>20. && abs(electrons_eta->at(L2x))<2.4 && abs(muons_eta->at(L1x))<2.4);
+               S[0] = (electrons_->at(L2x).Q_*muons_->at(L1x).Q_<0 && electrons_->at(L2x).Iso_<0.15 && muons_->at(L1x).Iso_<0.15 
+                        && Z.M()>12. && electrons_->at(L2x).Pt()>20. && muons_->at(L1x).Pt()>20. && abs(electrons_->at(L2x).Eta())<2.4 && abs(muons_->at(L1x).Eta())<2.4);
 
           if(strcmp(DecayMode, "MuEl")) S[1] = S[0] && (std::abs(91.2-Z.M())>15.0); else S[1] = S[0];
           if(strcmp(DecayMode, "MuEl")) S[2] = S[1] && (met_pt>30.);                else S[2] = S[1];
@@ -422,6 +480,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
      
           for(int i =0; i<u ; i++)for(int j =0; j<v ; j++) if(S[i] && G[j])
           {
+              //std::cout << "S"<<i<< "  pass" << endl;
               hZMass[i][j]   ->Fill(Z.M()              , wei); 
               hStepAll[j]->Fill(i+1,wei);
               hStep[j]   ->Fill(i+1,wei);
@@ -430,30 +489,30 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
               if(!strcmp(DecayMode, "MuMu"))
               {
-                 hrelIso1[i][j] ->Fill(muons_relIso->at(0), wei);
-                 hrelIso2[i][j] ->Fill(muons_relIso->at(1), wei);
-                 hPt1[i][j]     ->Fill(muons_pt->at(0)    , wei);
-                 hPt2[i][j]     ->Fill(muons_pt->at(1)    , wei);
-                 hEta1[i][j]    ->Fill(muons_eta->at(0)    , wei);
-                 hEta2[i][j]    ->Fill(muons_eta->at(1)    , wei);
+                 hrelIso1[i][j] ->Fill(muons_->at(L1x).Iso_    , wei);
+                 hrelIso2[i][j] ->Fill(muons_->at(L2x).Iso_    , wei);
+                 hPt1[i][j]     ->Fill(muons_->at(L1x).Pt()    , wei);
+                 hPt2[i][j]     ->Fill(muons_->at(L2x).Pt()    , wei);
+                 hEta1[i][j]    ->Fill(muons_->at(L1x).Eta()   , wei);
+                 hEta2[i][j]    ->Fill(muons_->at(L2x).Eta()   , wei);
               }
               if(!strcmp(DecayMode, "ElEl"))
               {
-                 hrelIso1[i][j] ->Fill(electrons_relIso->at(0), wei);
-                 hrelIso2[i][j] ->Fill(electrons_relIso->at(1), wei);
-                 hPt1[i][j]     ->Fill(electrons_pt->at(0)    , wei);
-                 hPt2[i][j]     ->Fill(electrons_pt->at(1)    , wei);
-                 hEta1[i][j]    ->Fill(electrons_eta->at(0)    , wei);
-                 hEta2[i][j]    ->Fill(electrons_eta->at(1)    , wei);
+                 hrelIso1[i][j] ->Fill(electrons_->at(L1x).Iso_    , wei);
+                 hrelIso2[i][j] ->Fill(electrons_->at(L2x).Iso_    , wei);
+                 hPt1[i][j]     ->Fill(electrons_->at(L1x).Pt()    , wei);
+                 hPt2[i][j]     ->Fill(electrons_->at(L2x).Pt()    , wei);
+                 hEta1[i][j]    ->Fill(electrons_->at(L1x).Eta()   , wei);
+                 hEta2[i][j]    ->Fill(electrons_->at(L2x).Eta()   , wei);
               }
               if(!strcmp(DecayMode, "MuEl"))
               {
-                 hrelIso2[i][j] ->Fill(electrons_relIso->at(0), wei);
-                 hrelIso1[i][j] ->Fill(muons_relIso->at(0)    , wei);
-                 hPt2[i][j]     ->Fill(electrons_pt->at(0)    , wei);
-                 hPt1[i][j]     ->Fill(muons_pt->at(0)        , wei);
-                 hEta2[i][j]    ->Fill(electrons_eta->at(0)    , wei);
-                 hEta1[i][j]    ->Fill(muons_eta->at(0)        , wei);
+                 hrelIso1[i][j] ->Fill(muons_->at(L1x).Iso_    , wei);
+                 hrelIso2[i][j] ->Fill(electrons_->at(L2x).Iso_    , wei);
+                 hPt1[i][j]     ->Fill(muons_->at(L1x).Pt()    , wei);
+                 hPt2[i][j]     ->Fill(electrons_->at(L2x).Pt()    , wei);
+                 hEta1[i][j]    ->Fill(muons_->at(L1x).Eta()   , wei);
+                 hEta2[i][j]    ->Fill(electrons_->at(L2x).Eta()   , wei);
               }
               
               hMET[i][j]     ->Fill(met_pt             , wei);             
@@ -481,6 +540,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
               }
           } // cut loop
+
+          
 /////////////////
       } // precut
    } 

@@ -18,6 +18,22 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
+#include "Jet.h"
+
+typedef std::vector<Jet> Jets;
+typedef Jets* JetsP;
+
+bool compByPtJet(Jet a, Jet b)
+{
+   return a.Pt() > b.Pt();
+};
+
+bool compByCSVJet(Jet a, Jet b)
+{
+   return a.CSV_ > b.CSV_;
+};
+
+
 //typedef vector<cmg::PFJet>::const_iterator JI;
 
 namespace sysType{ enum sysType{ NA, JERup, JERdown, JESup, JESdown, hfSFup, hfSFdown, lfSFdown, lfSFup, TESup, TESdown, CSVLFup, CSVLFdown, CSVHFup, CSVHFdown, CSVHFStats1up, CSVHFStats1down, CSVLFStats1up, CSVLFStats1down, CSVHFStats2up, CSVHFStats2down, CSVLFStats2up, CSVLFStats2down, CSVup, CSVdown, CSVup2, CSVdown2, CSVCErr1up, CSVCErr1down, CSVCErr2up, CSVCErr2down,bOrigin, HFStats3up, HFStats3dw }; }
@@ -128,7 +144,9 @@ void SetUpCSVreweighting(){
 ////////////////////////
 
 /////////////////////////
-double GetCSVweight( vector<double>  &jets_pt, vector<double>  &jets_eta,  vector<double>  &jets_bTag,  vector<double>  &jets_partonflavor,const sysType::sysType iSysType){
+//double GetCSVweight( vector<double>  &jets_pt, vector<double>  &jets_eta,  vector<double>  &jets_bTag,  vector<double>  &jets_partonflavor,const sysType::sysType iSysType)
+double GetCSVweight(JetsP jets, const sysType::sysType iSysType)
+{
   //if (isData) return 1.0;
 
   //CheckSetUp();
@@ -185,13 +203,13 @@ double GetCSVweight( vector<double>  &jets_pt, vector<double>  &jets_eta,  vecto
   double csvWgtC  = 1.;
   double csvWgtlf = 1.;
 
-  for(int i=0;i<jets_pt.size();i++ )
+  for(int i=0;i<jets->size();i++ )
   {
  
-    double csv = jets_bTag.at(i);// iJet->bDiscriminator("combinedSecondaryVertexBJetTags");
-    double jetPt = jets_pt.at(i);// iJet->p4().pt();
-    double jetAbsEta = fabs( jets_eta.at(i));//iJet->p4().eta() );
-    int flavor = abs(jets_partonflavor.at(i) );//iJet->partonFlavour());
+    double csv = jets->at(i).CSV_;// iJet->bDiscriminator("combinedSecondaryVertexBJetTags");
+    double jetPt = jets->at(i).Pt();// iJet->p4().pt();
+    double jetAbsEta = fabs( jets->at(i).Eta());//iJet->p4().eta() );
+    int flavor = abs(jets->at(i).flavor_ );//iJet->partonFlavour());
     int iPt = -1; int iEta = -1;
     if(jetPt<30. || jetAbsEta<0. || jetAbsEta > 2.5 ) continue;
 

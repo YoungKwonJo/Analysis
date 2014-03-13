@@ -149,9 +149,9 @@ void cutflow()
         if(h[nD][j]->GetEntries() > 0) leg[j]->AddEntry(h[nD][j], "DATA", "p");
         for(int i=0;i<5;i++) 
         {
-           stat[nD][j][i] = h[nD][j]->GetBinContent(i+2); 
-           if(j==0) stat[nD][3][i] = h[nD][j]->GetBinContent(i+2); 
-           else     stat[nD][3][i] = h[nD][j]->GetBinContent(i+2)+stat[nD][3][i]; 
+           stat[nD][j][i] = h[nD][j]->GetBinContent(i+1); 
+           if(j==0) stat[nD][3][i] = h[nD][j]->GetBinContent(i+1); 
+           else     stat[nD][3][i] = h[nD][j]->GetBinContent(i+1)+stat[nD][3][i]; 
         }
 
         //for signal
@@ -162,8 +162,8 @@ void cutflow()
         h[nBkg][j]->SetFillStyle(style_sig);
         for(int i=0;i<5;i++) 
         {
-           stat[nBkg][j][i] = h11[nBkg][j]->GetBinContent(i+2);
-           statError[nBkg][j][i] = h11[nBkg][j]->GetBinError(i+2);
+           stat[nBkg][j][i] = h11[nBkg][j]->GetBinContent(i+1);
+           statError[nBkg][j][i] = h11[nBkg][j]->GetBinError(i+1);
            if(j==0) statError[nBkg][3][i] = statError[nBkg][j][i];
            else     statError[nBkg][3][i] = sqrt(statError[nBkg][j][i]*statError[nBkg][j][i] +statError[nBkg][3][i]*statError[nBkg][3][i] );
 
@@ -186,8 +186,8 @@ void cutflow()
    hStack[3]->Add(h4[nBkg]);
    leg[3]->AddEntry(h4[nBkg+1], "DATA", "p");
    //leg[3]->AddEntry(h4[nBkg], sigLabels[0], "f");
-   for(int i=0;i<5;i++) stat[nD][3][i] = h4[nD]->GetBinContent(i+2);
-   for(int i=0;i<5;i++) stat[nBkg][3][i] = h4[nBkg]->GetBinContent(i+2);
+   for(int i=0;i<5;i++) stat[nD][3][i] = h4[nD]->GetBinContent(i+1);
+   for(int i=0;i<5;i++) stat[nBkg][3][i] = h4[nBkg]->GetBinContent(i+1);
 
    for(int i=0;i<nBkg;i++) 
    {
@@ -203,10 +203,10 @@ void cutflow()
             hStack[j]->Add(h[i][j]); 
             for(int k=0;k<5;k++)
             {
-                stat[i][j][k] = h11[i][j]->GetBinContent(k+2);       
-                statError[i][j][k] = h11[i][j]->GetBinError(k+2);       
-                if(j==0) statError[i][3][k] = h11[i][j]->GetBinError(k+2);       
-                else     statError[i][3][k] = sqrt(h11[i][j]->GetBinError(k+2)*h11[i][j]->GetBinError(k+2)+statError[i][3][k]*statError[i][3][k] );
+                stat[i][j][k] = h11[i][j]->GetBinContent(k+1);       
+                statError[i][j][k] = h11[i][j]->GetBinError(k+1);       
+                if(j==0) statError[i][3][k] = h11[i][j]->GetBinError(k+1);       
+                else     statError[i][3][k] = sqrt(h11[i][j]->GetBinError(k+1)*h11[i][j]->GetBinError(k+1)+statError[i][3][k]*statError[i][3][k] );
             }
 
             h2[j]->Add(h[i][j]);
@@ -218,7 +218,7 @@ void cutflow()
        }
        //for LL
        hStack[3]->Add(h4[i]);
-       for(int k=0;k<5;k++) stat[i][3][k] = h4[i]->GetBinContent(k+2);
+       for(int k=0;k<5;k++) stat[i][3][k] = h4[i]->GetBinContent(k+1);
    }
 //////////
   

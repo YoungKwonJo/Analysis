@@ -1,4 +1,7 @@
 void run( char *str,const  char *sstr,  double cx,  int isZ,const  int v,const  char* DecayMode,  bool isMC){
+
+    gROOT->ProcessLine(".L Lepton.h+g");
+    gROOT->ProcessLine(".L Jet.h+g");
     gROOT->ProcessLine(".L CSVWeight.h+g");
     gROOT->ProcessLine(".L Event.C+g");
 //    TFile f(Form("/Volumes/youngjoMac/CMS/BigSize/KrAFT_20140224/%s.root",str));
