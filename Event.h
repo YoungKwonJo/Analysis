@@ -233,7 +233,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC);
+   virtual void     Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC, int totalEvents);
    virtual double   SF(double pt, double eta, LeptonType type);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);

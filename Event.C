@@ -29,7 +29,7 @@
   };
 
 
-void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC)
+void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isMC, int totalEvents)
 {
 
    const int u=5;//, v=5;
@@ -38,17 +38,24 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
    const char *ttNN[5] ={"_","bb","1b","cc","LF"};
    TH1F *hStepAll[v], *hStep[v];
+   TH1F *hStepAllnw[v], *hStepnw[v];
    TH1F *hStepAll2[v], *hStep2[v];
    for(int j =0; j<v ; j++)
    {
 
-      hStepAll[j]  = new TH1F(Form("hStep_all_%s%s_Sumw2", Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
-      hStepAll2[j] = new TH1F(Form("hStep_all_%s%s",       Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
+      hStepAll[j]    = new TH1F(Form("hStep_all_%s%s_Sumw2", Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
+      hStepAllnw[j]  = new TH1F(Form("hStep_all_%s%s_nw",    Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u+2,-0.5,u+1.5);
+      hStepAll2[j]   = new TH1F(Form("hStep_all_%s%s",       Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
       hStepAll[j]->Sumw2();
 
-      hStep[j]  = new TH1F(Form("hStep_%s_%s%s_Sumw2", DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
-      hStep2[j] = new TH1F(Form("hStep_%s_%s%s",       DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
+      hStep[j]    = new TH1F(Form("hStep_%s_%s%s_Sumw2", DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
+      hStepnw[j]  = new TH1F(Form("hStep_%s_%s%s_nw",    DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u+1,-0.5,u+0.5); 
+      hStep2[j]   = new TH1F(Form("hStep_%s_%s%s",       DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
       hStep[j]->Sumw2();
+
+      hStepAllnw[j]->Fill(u+1, totalEvents);
+      hStepnw[j]   ->Fill(u+1, totalEvents);
+
    }
 
    TH1F *hZMass[u][v], *hrelIso1[u][v], *hrelIso2[u][v], *hPt1[u][v], *hPt2[u][v], *hEta1[u][v], *hEta2[u][v];
@@ -316,6 +323,11 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           }
           //////////////////////////
       }
+      for(int j =0; j<v ; j++) if(G[j])
+      {
+              hStepAllnw[j]->Fill(0);
+              hStepnw[j]   ->Fill(0);
+      }
 
       //std::cout << "precut = " << precut << endl;
       if(precut)
@@ -483,7 +495,9 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
               //std::cout << "S"<<i<< "  pass" << endl;
               hZMass[i][j]   ->Fill(Z.M()              , wei); 
               hStepAll[j]->Fill(i+1,wei);
+              hStepAllnw[j]->Fill(i+1);
               hStep[j]   ->Fill(i+1,wei);
+              hStepnw[j]   ->Fill(i+1);
               hStepAll2[j]->Fill(i+1,wei);
               hStep2[j]   ->Fill(i+1,wei);
 
