@@ -1,11 +1,14 @@
 void run( char *str,const  char *sstr,  double cx,  int isZ,const  int v,const  char* DecayMode,  bool isMC){
 
+    gROOT->ProcessLine(".L TtFullLepKinSolver.C+g");
     gROOT->ProcessLine(".L Lepton.h+g");
     gROOT->ProcessLine(".L Jet.h+g");
     gROOT->ProcessLine(".L CSVWeight.h+g");
     gROOT->ProcessLine(".L Event.C+g");
 //    TFile f(Form("/Volumes/youngjoMac/CMS/BigSize/KrAFT_20140224/%s.root",str));
-    TFile f(Form("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140224/%s.root",str));
+//    TFile f(Form("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140224/%s.root",str));
+//    TFile f(Form("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140425/%s.root",str));
+    TFile f(Form("/afs/cern.ch/work/y/youngjo/public/For8Tev/KrAFT_20140505/%s.root",str));
     TTree *atree = dynamic_cast<TTree *>(f.Get( Form("%s/event",DecayMode) ));
     TH1F *hevents = dynamic_cast<TH1F *>(f.Get( Form("%s/hEventCounter",DecayMode) ));
     int nEvents = hevents->GetBinContent(1);

@@ -12,6 +12,7 @@
 
 #include "Jet.h"
 #include "Lepton.h"
+#include "TtFullLepKinSolver.C"
 
   typedef std::vector<int> ints;
   typedef std::vector<unsigned int> uints;
@@ -157,8 +158,33 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       hLF_CSVLF[i][j] = new TH1F(Form("hLF_CSVLF_Pt%d_Eta%d_MC",i,j), Form("LF CSVLF Pt Bin %d Eta Bin %d MC",i,j), LFNbin, LFbin );
       hLF_CSV[i][j]   = new TH1F(Form("hLF_CSV_Pt%d_Eta%d_data",i,j), Form("LF CSV Pt Bin %d Eta Bin %d data",i,j), LFNbin, LFbin );
    }
+ 
+
 ////////////
    TLorentzVector muons[15], electrons[15], jets[30], genjets[50], genparticles[50], genjetsB[50], genjetsC[50];
+
+//kin solution////////
+    TLorentzVector met;
+    double tmassbegin_= 100;
+    double tmassend_  = 300;
+    double tmassstep_ = 1;
+    double myints[] = {30.7137,56.2880,23.0744,59.1015,24.9145};
+    std::vector<double> nupars_ (myints, myints + sizeof(myints) / sizeof(int) );
+    TtFullLepKinSolver* solver = new TtFullLepKinSolver(tmassbegin_, tmassend_, tmassstep_, nupars_);
+
+
+   TTree *tmass = new TTree("tmass","");
+   double tM, tMbar, weightT, csvT, csvTbar, MET; 
+   tmass->Branch("tM",&tM,"tM/d");
+   tmass->Branch("tMbar",&tMbar,"tMbar/d");
+   tmass->Branch("weight",&weightT,"weight/d");
+   tmass->Branch("csvT",&csvT,"csvT/d");
+   tmass->Branch("csvTbar",&csvTbar,"csvTbar/d");
+   tmass->Branch("MET",&MET,"MET/d");
+
+///////////////
+
+
 //   doublesP jets_pt_,   jets_eta_, jets_phi_, jets_m_;
 //   doublesP jets_bTag_, jets_partonflavor_;
  //   TLorentzVectorsP muons_ = new TLorentzVectors;
@@ -194,6 +220,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       //jets_m_->clear();
       //jets_bTag_->clear();
       //jets_partonflavor_->clear();
+
+      met.SetPtEtaPhiM(met_pt, 0,met_phi,0);
 
       int nLep=0;
       for(int i=0;i<electrons_pt->size();i++ )
@@ -298,6 +326,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
          }
 
       }
+      std::sort(jets_->begin(), jets_->end(), compByCSVJet);
 //      GreaterByCSVJet jets(jets_);
 
       bool precut = false;
@@ -535,6 +564,59 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
              
               if(S[3])
               {        
+////////////
+                  double xconstraint=0, yconstraint=0;
+                  if(!strcmp(DecayMode, "MuMu"))
+                  {
+                      xconstraint = muons_->at(L1x).Px()+muons_->at(L2x).Px()+ jets_->at(0).Px() + jets_->at(1).Px() +met.Px();
+                      yconstraint = muons_->at(L1x).Py()+muons_->at(L2x).Py()+ jets_->at(0).Py() + jets_->at(1).Py() +met.Py();
+                      solver->SetConstraints(xconstraint, yconstraint);
+                      TtFullLepKinSolver::NeutrinoSolution nuSol= solver->getNuSolution( muons_->at(L1x).vec_, muons_->at(L2x).vec_, jets_->at(0).vec_, jets_->at(1).vec_);
+                      TtFullLepKinSolver::NeutrinoSolution nuSol2= solver->getNuSolution( muons_->at(L1x).vec_, muons_->at(L2x).vec_, jets_->at(1).vec_, jets_->at(0).vec_);
+
+                      if(nuSol.weight > nuSol2.weight && nuSol.weight>0)
+                      {
+                        if(muons_->at(L1x).Q_>0 && muons_->at(L2x).Q_<0)
+                        {
+                          tM   = (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                          tMbar= (muons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();;
+                          csvT   = jets_->at(0).CSV_;
+                          csvTbar= jets_->at(1).CSV_;
+                        }
+                        else
+                        {
+                          tMbar= (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                          tM   = (muons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();
+                          csvTbar= jets_->at(0).CSV_;
+                          csvT   = jets_->at(1).CSV_;
+                        }             
+                        weightT= nuSol.weight;
+                        MET= met_pt;
+                        tmass->Fill();
+                      }
+                      else if(nuSol.weight < nuSol2.weight && nuSol2.weight>0)
+                      {
+                        if(muons_->at(L1x).Q_>0 && muons_->at(L2x).Q_<0)
+                        {
+                          tM   = (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                          tMbar= (muons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();;
+                          csvT   = jets_->at(0).CSV_;
+                          csvTbar= jets_->at(1).CSV_;
+                        }
+                        else
+                        {
+                          tMbar= (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                          tM   = (muons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();
+                          csvTbar= jets_->at(0).CSV_;
+                          csvT   = jets_->at(1).CSV_;
+                        }
+                        weightT= nuSol2.weight;
+                        MET= met_pt;  
+                        tmass->Fill();        
+                      }     
+                  }
+/////////////
+
                   hjet1pt[i][j]       ->Fill(jets_pt  ->at(jidx[0]) , wei);    
                   hjet1eta[i][j]      ->Fill(jets_eta ->at(jidx[0]) , wei);    
                   hjet1phi[i][j]      ->Fill(jets_phi ->at(jidx[0]) , wei);    
