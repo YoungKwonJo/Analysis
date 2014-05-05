@@ -15,6 +15,10 @@ class Jet{
    double Eta() { return vec_.Eta(); };
    double Phi() { return vec_.Phi(); };
 
+   double Px() { return vec_.Px(); };
+   double Py() { return vec_.Py(); };
+   double Pz() { return vec_.Pz(); };
+
    TLorentzVector vec_; 
    double CSV_;
    int flavor_;
