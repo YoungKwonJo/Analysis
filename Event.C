@@ -13,6 +13,7 @@
 #include "Jet.h"
 #include "Lepton.h"
 #include "TtFullLepKinSolver.C"
+#include "FlatNtuple.h"
 
   typedef std::vector<int> ints;
   typedef std::vector<unsigned int> uints;
@@ -38,103 +39,9 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    bool S[u], G[v];
 
    const char *ttNN[5] ={"_","bb","1b","cc","LF"};
-   TH1F *hStepAll[v], *hStep[v];
-   TH1F *hStepAllnw[v], *hStepnw[v];
-   TH1F *hStepAll2[v], *hStep2[v];
-   for(int j =0; j<v ; j++)
-   {
 
-      hStepAll[j]    = new TH1F(Form("hStep_all_%s%s_Sumw2", Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
-      hStepAllnw[j]  = new TH1F(Form("hStep_all_%s%s_nw",    Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u+2,-0.5,u+1.5);
-      hStepAll2[j]   = new TH1F(Form("hStep_all_%s%s",       Name,ttNN[j]),Form("Step 1~5 all %s",ttNN[j]),u,0.5,u+0.5);
-      hStepAll[j]->Sumw2();
-
-      hStep[j]    = new TH1F(Form("hStep_%s_%s%s_Sumw2", DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
-      hStepnw[j]  = new TH1F(Form("hStep_%s_%s%s_nw",    DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u+1,-0.5,u+0.5); 
-      hStep2[j]   = new TH1F(Form("hStep_%s_%s%s",       DecayMode,Name,ttNN[j]),Form("Step 1~5 %s %s%s",DecayMode,Name,ttNN[j]),u,0.5,u+0.5); 
-      hStep[j]->Sumw2();
-
-      hStepAllnw[j]->Fill(u+1, totalEvents);
-      hStepnw[j]   ->Fill(u+1, totalEvents);
-
-   }
-
-   TH1F *hZMass[u][v], *hrelIso1[u][v], *hrelIso2[u][v], *hPt1[u][v], *hPt2[u][v], *hEta1[u][v], *hEta2[u][v];
-   TH1F  *hMET[u][v], *hnJet[u][v], *hnVertex[u][v]; 
-   TH1F  *hjet1pt[u][v], *hjet1eta[u][v], *hjet1phi[u][v], *hjet1_bDisCSV[u][v];    
-   TH1F  *hnbJet30_CSVT[u][v], *hnbJet30_CSVM[u][v];    
-   TH1F  *haddjet1_bDisCSV[u][v],  *haddjet2_bDisCSV[u][v], *haddjet1_bDisCSV2[u][v],  *haddjet2_bDisCSV2[u][v]; 
-   TH2F  *haddjet2D_bDisCSV[u][v], *haddjet2D_bDisCSV2[u][v];
-
-   for(int i =0; i<u ; i++) for(int j =0; j<v ; j++)
-   {
-       hZMass[i][j]   = new TH1F(Form("hZMass_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "dilepton mass   ", 40, 0, 250);
-       hrelIso1[i][j] = new TH1F(Form("hrelIso1_S%d_%s%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 1 ", 40,0,0.4);
-       hrelIso2[i][j] = new TH1F(Form("hrelIso2_S%d_%s%s%s", i+1,Name,ttNN[j],DecayMode), "rel Isolation 2 ", 40,0,0.4);
-   
-       hPt1[i][j]     = new TH1F(Form("hPt1_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "leading lepton Pt ", 20,0,100);
-       hPt2[i][j]     = new TH1F(Form("hPt2_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode), "second lepton Pt  ", 20,0,100);
-   
-       hEta1[i][j]    = new TH1F(Form("hEta1_S%d_%s%s%s",  i+1,Name,ttNN[j],DecayMode), "leading lepton eta ", 35, -3.5, 3.5);
-       hEta2[i][j]    = new TH1F(Form("hEta2_S%d_%s%s%s",  i+1,Name,ttNN[j],DecayMode), "second lepton eta  ", 35, -3.5, 3.5);
-
-       hMET[i][j]               = new TH1F(Form( "hMET_S%d_%s%s%s",              i+1,Name,ttNN[j],DecayMode),            "MET     ", 18, 0, 180 );
-       hnJet[i][j]              = new TH1F(Form("hnJet_S%d_%s%s%s",              i+1,Name,ttNN[j],DecayMode),            "nJet    ", 10, 0, 10  );
-       hnVertex[i][j]           = new TH1F(Form("hnVertex_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),            "nVertex ", 30, 0, 30  );
-                                                                                                    
-       hjet1pt[i][j]            = new TH1F(Form( "hjet1pt_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),          "jet1pt    ", 19, 20, 400   );
-       hjet1eta[i][j]           = new TH1F(Form("hjet1eta_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),          "jet1eta   ", 35, -3.5, 3.5 );
-       hjet1phi[i][j]           = new TH1F(Form("hjet1phi_S%d_%s%s%s",           i+1,Name,ttNN[j],DecayMode),          "jet1phi   ", 35, -3.5, 3.5 );
-       hjet1_bDisCSV[i][j]      = new TH1F(Form("hjet1_bDisCSV_S%d_%s%s%s",      i+1,Name,ttNN[j],DecayMode),     "jet1_bDisCSV   ", 20, 0.0, 1.0  );
-                                                                                 
-       hnbJet30_CSVT[i][j]      = new TH1F(Form("hnbJet30_CSVT_S%d_%s%s%s",      i+1,Name,ttNN[j],DecayMode),     "nbJet30_CSVT   ", 5, 0, 5 );
-       hnbJet30_CSVM[i][j]      = new TH1F(Form("hnbJet30_CSVM_S%d_%s%s%s",      i+1,Name,ttNN[j],DecayMode),     "nbJet30_CSVM   ", 5, 0, 5 );
-                                                                              
-       haddjet1_bDisCSV[i][j]   = new TH1F(Form("haddjet1_bDisCSV_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode),  "addjet1_bDisCSV   ", 10, 0.0, 1.0);
-       haddjet2_bDisCSV[i][j]   = new TH1F(Form("haddjet2_bDisCSV_S%d_%s%s%s",   i+1,Name,ttNN[j],DecayMode),  "addjet2_bDisCSV   ", 10, 0.0, 1.0);
-
-       haddjet2D_bDisCSV[i][j]  = new TH2F(Form("haddjet2D_bDisCSV_S%d_%s%s%s",  i+1,Name,ttNN[j],DecayMode), "addjet2D_bDisCSV   ", 10, 0.0, 1.0, 10, 0.0, 1.0);
-
-       haddjet1_bDisCSV2[i][j]   = new TH1F(Form("haddjet1_bDisCSV_S%d_%s%s",   i+1,Name,ttNN[j]),  "addjet1_bDisCSV   ", 10, 0.0, 1.0);
-       haddjet2_bDisCSV2[i][j]   = new TH1F(Form("haddjet2_bDisCSV_S%d_%s%s",   i+1,Name,ttNN[j]),  "addjet2_bDisCSV   ", 10, 0.0, 1.0);
-       haddjet2D_bDisCSV2[i][j]  = new TH2F(Form("haddjet2D_bDisCSV_S%d_%s%s",  i+1,Name,ttNN[j]), "addjet2D_bDisCSV   ", 10, 0.0, 1.0, 10, 0.0, 1.0);
-/*
-       hZMass[i][j]            ->Sumw2();
-       hrelIso1[i][j]          ->Sumw2();
-       hrelIso2[i][j]          ->Sumw2();
-
-       hPt1[i][j]              ->Sumw2();
-       hPt2[i][j]              ->Sumw2();
-
-       hEta1[i][j]             ->Sumw2();
-       hEta2[i][j]             ->Sumw2();
-
-       hMET[i][j]              ->Sumw2();
-       hnJet[i][j]             ->Sumw2();
-       hnVertex[i][j]          ->Sumw2();
-
-       hjet1pt[i][j]           ->Sumw2();
-       hjet1eta[i][j]          ->Sumw2();
-       hjet1phi[i][j]          ->Sumw2();
-       hjet1_bDisCSV[i][j]     ->Sumw2();
-
-       hnbJet30_CSVT[i][j]     ->Sumw2();
-       hnbJet30_CSVM[i][j]     ->Sumw2();
-
-       haddjet1_bDisCSV[i][j]  ->Sumw2();
-       haddjet2_bDisCSV[i][j]  ->Sumw2();
-
-       haddjet2D_bDisCSV[i][j] ->Sumw2(); 
-
-       haddjet1_bDisCSV2[i][j]  ->Sumw2();
-       haddjet2_bDisCSV2[i][j]  ->Sumw2();
-
-       haddjet2D_bDisCSV2[i][j] ->Sumw2(); 
-*/
-
-   }
-////////////
-   const float HFbinPt[] = {30.,40.,60.,100.,160.,10000};
+///////////////////////////
+/*   const float HFbinPt[] = {30.,40.,60.,100.,160.,10000};
    const float LFbinPt[] = {30.,40.,60.,10000};
    const float LFbinEta[] = {0.,0.8,1.6,2.4};
 
@@ -158,7 +65,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       hLF_CSVLF[i][j] = new TH1F(Form("hLF_CSVLF_Pt%d_Eta%d_MC",i,j), Form("LF CSVLF Pt Bin %d Eta Bin %d MC",i,j), LFNbin, LFbin );
       hLF_CSV[i][j]   = new TH1F(Form("hLF_CSV_Pt%d_Eta%d_data",i,j), Form("LF CSV Pt Bin %d Eta Bin %d data",i,j), LFNbin, LFbin );
    }
- 
+*/
+ //////////////////////////
 
 ////////////
    TLorentzVector muons[15], electrons[15], jets[30], genjets[50], genparticles[50], genjetsB[50], genjetsC[50];
@@ -172,40 +80,20 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
     std::vector<double> nupars_ (myints, myints + sizeof(myints) / sizeof(int) );
     TtFullLepKinSolver* solver = new TtFullLepKinSolver(tmassbegin_, tmassend_, tmassstep_, nupars_);
 
-
-   TTree *tmass = new TTree("tmass","");
-   double tM, tMbar, weightT, csvT, csvTbar, MET; 
-   tmass->Branch("tM",&tM,"tM/d");
-   tmass->Branch("tMbar",&tMbar,"tMbar/d");
-   tmass->Branch("weight",&weightT,"weight/d");
-   tmass->Branch("csvT",&csvT,"csvT/d");
-   tmass->Branch("csvTbar",&csvTbar,"csvTbar/d");
-   tmass->Branch("MET",&MET,"MET/d");
+   TTree *tree_ = new TTree("tmass","");
+   FlatNtuple* fevent_ = new FlatNtuple(isMC);
+   fevent_->book(tree_);
 
 ///////////////
-
-
-//   doublesP jets_pt_,   jets_eta_, jets_phi_, jets_m_;
-//   doublesP jets_bTag_, jets_partonflavor_;
- //   TLorentzVectorsP muons_ = new TLorentzVectors;
- //  TLorentzVectorsP electrons_ = new TLorentzVectors;
-   LeptonsP muons_;
-   LeptonsP electrons_;
-   muons_ = new Leptons;
-   electrons_ = new Leptons;
-   JetsP jets_;
-   jets_ = new Jets; 
-
-//   jets_pt_  = new doubles;
-//   jets_eta_ = new doubles;
-//   jets_phi_ = new doubles;
-//   jets_m_   = new doubles;
-//   jets_bTag_ = new doubles;
-//   jets_partonflavor_ = new doubles;
+   LeptonsP muons_;        muons_ = new Leptons;
+   LeptonsP electrons_;    electrons_ = new Leptons;
+   JetsP jets_;            jets_ = new Jets; 
 
    if (fChain == 0) return;
 
    Long64_t nentries = fChain->GetEntriesFast();
+
+   int Testing =0;
 
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -214,12 +102,23 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
+//      Testing++; if(Testing>1500) break;
+
+      fevent_->clear();
+
+      fevent_->run_ = run;
+      fevent_->lumi_ = lumi;
+      fevent_->event_ = event;
+
+      fevent_->puweight_ = puWeight;
+      fevent_->puweightUp_ = puWeightUp;
+      fevent_->puweightDw_ = puWeightDn;
+
+      if(isMC) fevent_->nVertex_ = nVertex;
+
       muons_->clear();
       electrons_->clear();
       jets_->clear();
-      //jets_m_->clear();
-      //jets_bTag_->clear();
-      //jets_partonflavor_->clear();
 
       met.SetPtEtaPhiM(met_pt, 0,met_phi,0);
 
@@ -260,23 +159,18 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
 
-      int njet =0, nBtagT=0, nBtagM=0, nBtagL=0, jidx[4];
-      double jidxV[4], csvweight=1., leptonweight=1.0;
+      int njet =0, nBtagT=0, nBtagM=0, nBtagL=0;//, jidx[4];
+      double csvweight=1., leptonweight=1.0;
 
-      for(int i=0;i<4;i++){ jidx[i]=-100; jidxV[i]=-100.; }
       for(int i=0;i<jets_pt->size();i++ )
       {
          //std::cout << "jets"<< muons_pt->size()  <<" : " <<  jets_pt->at(i) << std::endl;
          jets[i].SetPtEtaPhiM( jets_pt->at(i),  jets_eta->at(i),  jets_phi->at(i),jets_m->at(i));
 
          bool overlapMu=false, overlapEl=false;  // jet cleaning..
-//         for(int j=0;j<electrons_pt->size();j++ ) 
-//         if(electrons_type->at(j)>100 && electrons_mva->at(j)>0.5 && electrons_pt->at(j)>20. && abs(electrons_eta->at(j))<2.4 && electrons_relIso->at(j)<0.15 ) 
          for(int j=0;j<electrons_->size();j++ ) 
          if( std::abs( jets[i].DeltaR(electrons_->at(j).vec_) )< 0.5 ) overlapEl=true;
 
-//         for(int j=0;j<muons_pt->size();j++ )     
-//         if(muons_type->at(j)>9 && muons_pt->at(j)>20. && abs(muons_eta->at(j))<2.4 && muons_relIso->at(j)<0.15)
          for(int j=0;j<muons_->size();j++ )     
          if( std::abs( jets[i].DeltaR(muons_->at(j).vec_) )< 0.5 )     overlapMu=true;
 
@@ -290,44 +184,14 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
             Jet jet_(TLorentzVector( x_,y_,z_,e_),jets_bTag->at(i),jets_partonflavor->at(i));
             jets_->push_back(jet_);
 
-//            jets_pt_->push_back(jets_pt->at(i));
-//            jets_eta_->push_back(jets_eta->at(i));
-            //jets_phi_->push_back(jets_phi->at(i));
-            //jets_m_->push_back(jets_m->at(i));
-//            jets_bTag_->push_back(jets_bTag->at(i));
-//            jets_partonflavor_->push_back(jets_partonflavor->at(i));
-
-            if(jets_bTag->at(i)>0.898) nBtagT++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
-            if(jets_bTag->at(i)>0.679) nBtagM++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
-            if(jets_bTag->at(i)>0.244) nBtagL++; //CSVT 0.898 , CSVM 0.679,  , CSVL 0.244 
+            if(jets_bTag->at(i)>0.898) nBtagT++; // CSVT 0.898 
+            if(jets_bTag->at(i)>0.679) nBtagM++; // CSVM 0.679 
+            if(jets_bTag->at(i)>0.244) nBtagL++; // CSVL 0.244 
             
-            if(jidxV[0]<jets_bTag->at(i))
-            {
-                jidx[3]=jidx[2]; jidxV[3]=jidxV[2];  
-                jidx[2]=jidx[1]; jidxV[2]=jidxV[1];  
-                jidx[1]=jidx[0]; jidxV[1]=jidxV[0]; 
-                jidx[0]=i;       jidxV[0]=jets_bTag->at(i); 
-            }
-            else if(jidxV[1]<jets_bTag->at(i))
-            {
-                jidx[3]=jidx[2]; jidxV[3]=jidxV[2];
-                jidx[2]=jidx[1]; jidxV[2]=jidxV[1];
-                jidx[1]=i;       jidxV[1]=jets_bTag->at(i);
-            }
-            else if(jidxV[2]<jets_bTag->at(i))
-            {
-                jidx[3]=jidx[2]; jidxV[3]=jidxV[2];
-                jidx[2]=i;       jidxV[2]=jets_bTag->at(i);
-            }
-            else if(jidxV[3]<jets_bTag->at(i))
-            {
-                jidx[3]=i;       jidxV[3]=jets_bTag->at(i);
-            }
          }
 
       }
       std::sort(jets_->begin(), jets_->end(), compByCSVJet);
-//      GreaterByCSVJet jets(jets_);
 
       bool precut = false;
       if(!strcmp(DecayMode, "MuMu")) precut = (muons_->size()>1);
@@ -351,11 +215,12 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
  
           }
           //////////////////////////
-      }
-      for(int j =0; j<v ; j++) if(G[j])
-      {
-              hStepAllnw[j]->Fill(0);
-              hStepnw[j]   ->Fill(0);
+          for(int j =v-1; j>-1 ; j--)
+          {
+             //if(j>1 && G[j])cout << "G["<<j<<"] = " << G[j] << endl;
+             if(G[j]) fevent_->ttIndex_ = j; 
+          }
+          //////////////////////////
       }
 
       //std::cout << "precut = " << precut << endl;
@@ -446,55 +311,57 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
              csvweight = csvWgt->GetCSVweight(jets_, sysType::NA);
              //csvweight = csvWgt->GetCSVweight2(*jets_pt_,*jets_eta_,*jets_bTag_,*jets_partonflavor_);
              wei = weight*csvweight*puWeight*leptonweight;
+
+             fevent_->csvweight_= csvweight;
+             fevent_->leptonweight_= leptonweight;
           }
 
 ///////////////////////
-          if(njet==2) //&& nLep==2)
+/*          if(njet==2) //&& nLep==2)
           {
              bool zveto   = ( Z.M()<(65.5 +3*met_pt/8) || Z.M()>(108.-met_pt/4) || Z.M()<(79.-3.*met_pt/4) ||  Z.M()>(99.+met_pt/2) );
              bool zselcut = (std::abs(Z.M()-91.) < 10.);
              bool highMET = (met_pt > 50.);
              bool lowMET  = (met_pt < 30.);
-             bool HFtag   = (jidxV[0]>0.679);
-             bool LFtag   = (jidxV[1]<0.244);
+             bool HFtag   = (jets_->at(0).CSV_>0.679);
+             bool LFtag   = (jets_->at(njet-1).CSV_<0.244);
 
              bool LFcut = !zveto && zselcut && lowMET && LFtag;
              bool HFcut = zveto && highMET && HFtag;
 
              int HF_i = -1, LF_i=-1, LF_j=-1; 
-             for(int i=0;i<5;i++) if(HFbinPt[i] < jets_pt->at(jidx[1])) HF_i=i;
-             for(int i=0;i<3;i++) if(LFbinPt[i] < jets_pt->at(jidx[0])) LF_i=i;
-             for(int i=0;i<3;i++) if(LFbinEta[i]< jets_eta->at(jidx[0])) LF_j=i;
+             for(int i=0;i<5;i++) if(HFbinPt[i] < jets_->at(1).Pt()) HF_i=i;
+             for(int i=0;i<3;i++) if(LFbinPt[i] < jets_->at(0).Pt()) LF_i=i;
+             for(int i=0;i<3;i++) if(LFbinEta[i]< jets_->at(0).Pt()) LF_j=i;
 
-             
-             //if(jets_pt->at(jidx[1])>140 || jets_pt->at(jidx[0]) >140)
-             //std::cout << "HF_i pt=" <<  jets_pt->at(jidx[1]) << ", LF_i pt="<< jets_pt->at(jidx[0]) 
-             //          <<", HF_i=" << HF_i << ", LF_i="<< LF_i <<", LF_j="<<LF_j << endl;
              double weightSF = weight*puWeight;
-             if(HFcut && jidxV[1]>-1 && HF_i>-1)
+             if(HFcut && jets_->at(njet-1).CSV_>-1 && HF_i>-1)
              {
-                if(!isMC)  hHF_CSV[HF_i]->Fill( jidxV[1]);
+                if(!isMC)  hHF_CSV[HF_i]->Fill( jets_->at(njet-1).CSV_);
                 else 
                 {
-                    if(abs(jets_partonflavor->at(jidx[1])) ==5) 
-                         hHF_CSVbF[HF_i]->Fill( jidxV[1], weightSF);
-                    else hHF_CSVnbF[HF_i]->Fill( jidxV[1], weightSF);
+                    if(abs(jets_->at(njet-1).flavor_) ==5) 
+                         hHF_CSVbF[HF_i]->Fill( jets_->at(njet-1).CSV_, weightSF);
+                    else hHF_CSVnbF[HF_i]->Fill( jets_->at(njet-1).CSV_, weightSF);
                 }        
                 //std::cout <<"HF test CSV SF" << endl;
              }
-             if(LFcut && jidxV[0]>-1 && LF_i>-1 && LF_j>-1)
+             if(LFcut && jets_->at(0).CSV_>-1 && LF_i>-1 && LF_j>-1)
              {
-                 if(!isMC) hLF_CSV[LF_i][LF_j]->Fill( jidxV[0]);
+                 if(!isMC) hLF_CSV[LF_i][LF_j]->Fill( jets_->at(0).CSV_);
                  else 
                  {
-                     if( abs(jets_partonflavor->at(jidx[0])) ==4 || abs(jets_partonflavor->at(jidx[0])) ==5)
-                          hLF_CSVHF[LF_i][LF_j]->Fill( jidxV[0],weightSF);
-                     else hLF_CSVLF[LF_i][LF_j]->Fill( jidxV[0],weightSF);
+                     if( abs(jets_->at(0).flavor_) ==4 || abs(jets_->at(0).flavor_) ==5)
+                          hLF_CSVHF[LF_i][LF_j]->Fill( jets_->at(0).CSV_,weightSF);
+                     else hLF_CSVLF[LF_i][LF_j]->Fill( jets_->at(0).CSV_,weightSF);
                  }
                  //std::cout <<"LF test CSV SF" << endl;
              }
           }          
+*/
 ///////////////////////
+
+//continue; // code for debug
 
           //std::cout << "Zmass = " << Z.M() << endl;
           if(isZ==2 && Z.M()<50) continue;
@@ -519,126 +386,201 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           S[3] = S[2] && (njet>3);
           S[4] = S[3] && (nBtagT>1);
      
-          for(int i =0; i<u ; i++)for(int j =0; j<v ; j++) if(S[i] && G[j])
-          {
-              //std::cout << "S"<<i<< "  pass" << endl;
-              hZMass[i][j]   ->Fill(Z.M()              , wei); 
-              hStepAll[j]->Fill(i+1,wei);
-              hStepAllnw[j]->Fill(i+1);
-              hStep[j]   ->Fill(i+1,wei);
-              hStepnw[j]   ->Fill(i+1);
-              hStepAll2[j]->Fill(i+1,wei);
-              hStep2[j]   ->Fill(i+1,wei);
+          for(int i=0;i<u;i++) if(S[i]) fevent_->cutSteps_=i;
 
+          fevent_->MET_     = met_pt;
+          fevent_->ZMass_   = Z.M();
+          fevent_->nJet30_  = njet;
+          fevent_->nJet50_  = -10;
+          fevent_->nbJet30T_= nBtagT; 
+          fevent_->nbJet50T_= -10;
+
+          if(!strcmp(DecayMode, "MuMu"))
+          {
+              fevent_->lep1_pt_    = muons_->at(L1x).Pt();
+              fevent_->lep1_eta_   = muons_->at(L1x).Eta();
+              fevent_->lep1_relIso_= muons_->at(L1x).Iso_;
+              fevent_->lep2_pt_    = muons_->at(L2x).Pt();
+              fevent_->lep2_eta_   = muons_->at(L2x).Eta();
+              fevent_->lep2_relIso_= muons_->at(L2x).Iso_;
+          }
+          if(!strcmp(DecayMode, "ElEl"))
+          {
+              fevent_->lep1_pt_    = electrons_->at(L1x).Pt();
+              fevent_->lep1_eta_   = electrons_->at(L1x).Eta();
+              fevent_->lep1_relIso_= electrons_->at(L1x).Iso_;
+              fevent_->lep2_pt_    = electrons_->at(L2x).Pt();
+              fevent_->lep2_eta_   = electrons_->at(L2x).Eta();
+              fevent_->lep2_relIso_= electrons_->at(L2x).Iso_;
+          }
+          if(!strcmp(DecayMode, "MuEl"))
+          {
+              fevent_->lep1_pt_    = muons_->at(L1x).Pt();
+              fevent_->lep1_eta_   = muons_->at(L1x).Eta();
+              fevent_->lep1_relIso_= muons_->at(L1x).Iso_;
+              fevent_->lep2_pt_    = electrons_->at(L2x).Pt();
+              fevent_->lep2_eta_   = electrons_->at(L2x).Eta();
+              fevent_->lep2_relIso_= electrons_->at(L2x).Iso_;
+          }
+
+          if(njet>0) {  fevent_->jet1_pt_ =jets_->at(0).Pt();  fevent_->jet1_eta_=jets_->at(0).Eta();   
+                        fevent_->jet1_csv_=jets_->at(0).CSV_; fevent_->jet1_flavor_=jets_->at(0).flavor_; }
+          if(njet>1) {  fevent_->jet2_pt_ =jets_->at(1).Pt();  fevent_->jet2_eta_=jets_->at(1).Eta();   
+                        fevent_->jet2_csv_=jets_->at(1).CSV_; fevent_->jet2_flavor_=jets_->at(1).flavor_; }
+          if(njet>2) {  fevent_->jet3_pt_ =jets_->at(2).Pt();  fevent_->jet3_eta_=jets_->at(2).Eta();   
+                        fevent_->jet3_csv_=jets_->at(2).CSV_; fevent_->jet3_flavor_=jets_->at(2).flavor_; }
+          if(njet>3) {  fevent_->jet4_pt_ =jets_->at(3).Pt();  fevent_->jet4_eta_=jets_->at(3).Eta();   
+                        fevent_->jet4_csv_=jets_->at(3).CSV_; fevent_->jet4_flavor_=jets_->at(3).flavor_; }
+
+///////////////////////////////////////////
+          if(njet>1) // for kin solution
+          {        
+              double xconstraint=0, yconstraint=0;
               if(!strcmp(DecayMode, "MuMu"))
               {
-                 hrelIso1[i][j] ->Fill(muons_->at(L1x).Iso_    , wei);
-                 hrelIso2[i][j] ->Fill(muons_->at(L2x).Iso_    , wei);
-                 hPt1[i][j]     ->Fill(muons_->at(L1x).Pt()    , wei);
-                 hPt2[i][j]     ->Fill(muons_->at(L2x).Pt()    , wei);
-                 hEta1[i][j]    ->Fill(muons_->at(L1x).Eta()   , wei);
-                 hEta2[i][j]    ->Fill(muons_->at(L2x).Eta()   , wei);
-              }
+                  xconstraint = muons_->at(L1x).Px()+muons_->at(L2x).Px()+ jets_->at(0).Px() + jets_->at(1).Px() +met.Px();
+                  yconstraint = muons_->at(L1x).Py()+muons_->at(L2x).Py()+ jets_->at(0).Py() + jets_->at(1).Py() +met.Py();
+                  solver->SetConstraints(xconstraint, yconstraint);
+                  TtFullLepKinSolver::NeutrinoSolution nuSol= solver->getNuSolution( muons_->at(L1x).vec_, muons_->at(L2x).vec_, jets_->at(0).vec_, jets_->at(1).vec_);
+                  TtFullLepKinSolver::NeutrinoSolution nuSol2= solver->getNuSolution( muons_->at(L1x).vec_, muons_->at(L2x).vec_, jets_->at(1).vec_, jets_->at(0).vec_);
+
+                  if(nuSol.weight > nuSol2.weight && nuSol.weight>0)
+                  {
+                    if(muons_->at(L1x).Q_>0 && muons_->at(L2x).Q_<0)
+                    {
+                      fevent_->tMass_     = (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                      fevent_->tbarMass_  = (muons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();;
+                      fevent_->kinweight_ = nuSol.weight;
+                      fevent_->kinNuEt_   = nuSol.neutrino.Et();
+                      fevent_->kinNubarEt_= nuSol.neutrinoBar.Et();
+                    }
+                    else
+                    {
+                     fevent_->tbarMass_  = (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                     fevent_->tMass_     = (muons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();
+                     fevent_->kinweight_ = nuSol.weight; 
+                     fevent_->kinNubarEt_= nuSol.neutrino.Et();
+                     fevent_->kinNuEt_   = nuSol.neutrinoBar.Et();
+                    }             
+                  }
+                  else if(nuSol.weight < nuSol2.weight && nuSol2.weight>0)
+                  {
+                    if(muons_->at(L1x).Q_>0 && muons_->at(L2x).Q_<0)
+                    {
+                      fevent_->tMass_     = (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                      fevent_->tbarMass_  = (muons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();;
+                      fevent_->kinweight_ = nuSol2.weight;
+                      fevent_->kinNuEt_   = nuSol2.neutrino.Et();
+                      fevent_->kinNubarEt_= nuSol2.neutrinoBar.Et();
+                    }
+                    else
+                    {
+                     fevent_->tbarMass_  = (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                     fevent_->tMass_     = (muons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();
+                     fevent_->kinweight_ = nuSol2.weight; 
+                     fevent_->kinNubarEt_= nuSol2.neutrino.Et();
+                     fevent_->kinNuEt_   = nuSol2.neutrinoBar.Et();
+                    }
+                  }     
+              }// close() for if(MuMu)
               if(!strcmp(DecayMode, "ElEl"))
               {
-                 hrelIso1[i][j] ->Fill(electrons_->at(L1x).Iso_    , wei);
-                 hrelIso2[i][j] ->Fill(electrons_->at(L2x).Iso_    , wei);
-                 hPt1[i][j]     ->Fill(electrons_->at(L1x).Pt()    , wei);
-                 hPt2[i][j]     ->Fill(electrons_->at(L2x).Pt()    , wei);
-                 hEta1[i][j]    ->Fill(electrons_->at(L1x).Eta()   , wei);
-                 hEta2[i][j]    ->Fill(electrons_->at(L2x).Eta()   , wei);
-              }
+                  xconstraint = electrons_->at(L1x).Px()+electrons_->at(L2x).Px()+ jets_->at(0).Px() + jets_->at(1).Px() +met.Px();
+                  yconstraint = electrons_->at(L1x).Py()+electrons_->at(L2x).Py()+ jets_->at(0).Py() + jets_->at(1).Py() +met.Py();
+                  solver->SetConstraints(xconstraint, yconstraint);
+                  TtFullLepKinSolver::NeutrinoSolution nuSol= solver->getNuSolution( electrons_->at(L1x).vec_, electrons_->at(L2x).vec_, jets_->at(0).vec_, jets_->at(1).vec_);
+                  TtFullLepKinSolver::NeutrinoSolution nuSol2= solver->getNuSolution( electrons_->at(L1x).vec_, electrons_->at(L2x).vec_, jets_->at(1).vec_, jets_->at(0).vec_);
+
+                  if(nuSol.weight > nuSol2.weight && nuSol.weight>0)
+                  {
+                    if(electrons_->at(L1x).Q_>0 && electrons_->at(L2x).Q_<0)
+                    {
+                      fevent_->tMass_     = (electrons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                      fevent_->tbarMass_  = (electrons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();;
+                      fevent_->kinweight_ = nuSol.weight;
+                      fevent_->kinNuEt_   = nuSol.neutrino.Et();
+                      fevent_->kinNubarEt_= nuSol.neutrinoBar.Et();
+                    }
+                    else
+                    {
+                     fevent_->tbarMass_  = (electrons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                     fevent_->tMass_     = (electrons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();
+                     fevent_->kinweight_ = nuSol.weight; 
+                     fevent_->kinNubarEt_= nuSol.neutrino.Et();
+                     fevent_->kinNuEt_   = nuSol.neutrinoBar.Et();
+                    }             
+                  }
+                  else if(nuSol.weight < nuSol2.weight && nuSol2.weight>0)
+                  {
+                    if(electrons_->at(L1x).Q_>0 && electrons_->at(L2x).Q_<0)
+                    {
+                      fevent_->tMass_     = (electrons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                      fevent_->tbarMass_  = (electrons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();;
+                      fevent_->kinweight_ = nuSol2.weight;
+                      fevent_->kinNuEt_   = nuSol2.neutrino.Et();
+                      fevent_->kinNubarEt_= nuSol2.neutrinoBar.Et();
+                    }
+                    else
+                    {
+                     fevent_->tbarMass_  = (electrons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                     fevent_->tMass_     = (electrons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();
+                     fevent_->kinweight_ = nuSol2.weight; 
+                     fevent_->kinNubarEt_= nuSol2.neutrino.Et();
+                     fevent_->kinNuEt_   = nuSol2.neutrinoBar.Et();
+                    }
+                  }     
+              }// close() for if(ElEl)
               if(!strcmp(DecayMode, "MuEl"))
               {
-                 hrelIso1[i][j] ->Fill(muons_->at(L1x).Iso_    , wei);
-                 hrelIso2[i][j] ->Fill(electrons_->at(L2x).Iso_    , wei);
-                 hPt1[i][j]     ->Fill(muons_->at(L1x).Pt()    , wei);
-                 hPt2[i][j]     ->Fill(electrons_->at(L2x).Pt()    , wei);
-                 hEta1[i][j]    ->Fill(muons_->at(L1x).Eta()   , wei);
-                 hEta2[i][j]    ->Fill(electrons_->at(L2x).Eta()   , wei);
-              }
-              
-              hMET[i][j]     ->Fill(met_pt             , wei);             
-              hnJet[i][j]    ->Fill(njet               , wei);         
-              hnVertex[i][j] ->Fill(nVertex            , wei);         
-             
-              if(S[3])
-              {        
-////////////
-                  double xconstraint=0, yconstraint=0;
-                  if(!strcmp(DecayMode, "MuMu"))
+                  xconstraint = muons_->at(L1x).Px()+electrons_->at(L2x).Px()+ jets_->at(0).Px() + jets_->at(1).Px() +met.Px();
+                  yconstraint = muons_->at(L1x).Py()+electrons_->at(L2x).Py()+ jets_->at(0).Py() + jets_->at(1).Py() +met.Py();
+                  solver->SetConstraints(xconstraint, yconstraint);
+                  TtFullLepKinSolver::NeutrinoSolution nuSol= solver->getNuSolution( muons_->at(L1x).vec_, electrons_->at(L2x).vec_, jets_->at(0).vec_, jets_->at(1).vec_);
+                  TtFullLepKinSolver::NeutrinoSolution nuSol2= solver->getNuSolution( muons_->at(L1x).vec_, electrons_->at(L2x).vec_, jets_->at(1).vec_, jets_->at(0).vec_);
+
+                  if(nuSol.weight > nuSol2.weight && nuSol.weight>0)
                   {
-                      xconstraint = muons_->at(L1x).Px()+muons_->at(L2x).Px()+ jets_->at(0).Px() + jets_->at(1).Px() +met.Px();
-                      yconstraint = muons_->at(L1x).Py()+muons_->at(L2x).Py()+ jets_->at(0).Py() + jets_->at(1).Py() +met.Py();
-                      solver->SetConstraints(xconstraint, yconstraint);
-                      TtFullLepKinSolver::NeutrinoSolution nuSol= solver->getNuSolution( muons_->at(L1x).vec_, muons_->at(L2x).vec_, jets_->at(0).vec_, jets_->at(1).vec_);
-                      TtFullLepKinSolver::NeutrinoSolution nuSol2= solver->getNuSolution( muons_->at(L1x).vec_, muons_->at(L2x).vec_, jets_->at(1).vec_, jets_->at(0).vec_);
-
-                      if(nuSol.weight > nuSol2.weight && nuSol.weight>0)
-                      {
-                        if(muons_->at(L1x).Q_>0 && muons_->at(L2x).Q_<0)
-                        {
-                          tM   = (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
-                          tMbar= (muons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();;
-                          csvT   = jets_->at(0).CSV_;
-                          csvTbar= jets_->at(1).CSV_;
-                        }
-                        else
-                        {
-                          tMbar= (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
-                          tM   = (muons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();
-                          csvTbar= jets_->at(0).CSV_;
-                          csvT   = jets_->at(1).CSV_;
-                        }             
-                        weightT= nuSol.weight;
-                        MET= met_pt;
-                        tmass->Fill();
-                      }
-                      else if(nuSol.weight < nuSol2.weight && nuSol2.weight>0)
-                      {
-                        if(muons_->at(L1x).Q_>0 && muons_->at(L2x).Q_<0)
-                        {
-                          tM   = (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
-                          tMbar= (muons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();;
-                          csvT   = jets_->at(0).CSV_;
-                          csvTbar= jets_->at(1).CSV_;
-                        }
-                        else
-                        {
-                          tMbar= (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
-                          tM   = (muons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();
-                          csvTbar= jets_->at(0).CSV_;
-                          csvT   = jets_->at(1).CSV_;
-                        }
-                        weightT= nuSol2.weight;
-                        MET= met_pt;  
-                        tmass->Fill();        
-                      }     
+                    if(muons_->at(L1x).Q_>0 && electrons_->at(L2x).Q_<0)
+                    {
+                      fevent_->tMass_     = (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                      fevent_->tbarMass_  = (electrons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();;
+                      fevent_->kinweight_ = nuSol.weight;
+                      fevent_->kinNuEt_   = nuSol.neutrino.Et();
+                      fevent_->kinNubarEt_= nuSol.neutrinoBar.Et();
+                    }
+                    else
+                    {
+                     fevent_->tbarMass_  = (muons_->at(L1x).vec_+jets_->at(0).vec_+nuSol.neutrino).M();
+                     fevent_->tMass_     = (electrons_->at(L2x).vec_+jets_->at(1).vec_+nuSol.neutrinoBar).M();
+                     fevent_->kinweight_ = nuSol.weight; 
+                     fevent_->kinNubarEt_= nuSol.neutrino.Et();
+                     fevent_->kinNuEt_   = nuSol.neutrinoBar.Et();
+                    }             
                   }
-/////////////
+                  else if(nuSol.weight < nuSol2.weight && nuSol2.weight>0)
+                  {
+                    if(muons_->at(L1x).Q_>0 && electrons_->at(L2x).Q_<0)
+                    {
+                      fevent_->tMass_     = (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                      fevent_->tbarMass_  = (electrons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();;
+                      fevent_->kinweight_ = nuSol2.weight;
+                      fevent_->kinNuEt_   = nuSol2.neutrino.Et();
+                      fevent_->kinNubarEt_= nuSol2.neutrinoBar.Et();
+                    }
+                    else
+                    {
+                     fevent_->tbarMass_  = (muons_->at(L1x).vec_+jets_->at(1).vec_+nuSol2.neutrino).M();
+                     fevent_->tMass_     = (electrons_->at(L2x).vec_+jets_->at(0).vec_+nuSol2.neutrinoBar).M();
+                     fevent_->kinweight_ = nuSol2.weight; 
+                     fevent_->kinNubarEt_= nuSol2.neutrino.Et();
+                     fevent_->kinNuEt_   = nuSol2.neutrinoBar.Et();
+                    }
+                  }     
+              }// close() for if(MuEl)
 
-                  hjet1pt[i][j]       ->Fill(jets_pt  ->at(jidx[0]) , wei);    
-                  hjet1eta[i][j]      ->Fill(jets_eta ->at(jidx[0]) , wei);    
-                  hjet1phi[i][j]      ->Fill(jets_phi ->at(jidx[0]) , wei);    
-                  hjet1_bDisCSV[i][j] ->Fill(jets_bTag->at(jidx[0]) , wei);    
-                                       
-                  hnbJet30_CSVT[i][j] ->Fill(nBtagT , wei);    
-                  hnbJet30_CSVM[i][j] ->Fill(nBtagM , wei);    
-                                       
-                  haddjet1_bDisCSV[i][j] ->Fill(jets_bTag->at(jidx[2]) , wei); 
-                  haddjet2_bDisCSV[i][j] ->Fill(jets_bTag->at(jidx[3]) , wei); 
-                                 
-                  haddjet2D_bDisCSV[i][j] ->Fill(jets_bTag->at(jidx[2]),jets_bTag->at(jidx[3]) , wei);
-
-                  haddjet1_bDisCSV2[i][j] ->Fill(jets_bTag->at(jidx[2]) , wei); 
-                  haddjet2_bDisCSV2[i][j] ->Fill(jets_bTag->at(jidx[3]) , wei); 
-                  haddjet2D_bDisCSV2[i][j] ->Fill(jets_bTag->at(jidx[2]),jets_bTag->at(jidx[3]) , wei);
-
-              }
-          } // cut loop
-
-          
-/////////////////
+          } // for if(njet>1) // for kin solution
+/////////////////////////////////////
+          tree_->Fill();
       } // precut
    } 
 }

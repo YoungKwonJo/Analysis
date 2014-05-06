@@ -6,7 +6,7 @@ import sys,os
 #isTest = True
 isTest = False
 
-Sample = ["TTJets_FullLeptMGDecays_8TeV-madgraph-tauola_595"]#,"TTTo2L2Nu2B_8TeV-powheg-pythia6","TT_8TeV-mcatnlo"]
+Sample = ["TTJets_FullLeptMGDecays_8TeV-madgraph-tauola"]#,"TTTo2L2Nu2B_8TeV-powheg-pythia6","TT_8TeV-mcatnlo"]
 
 #ttbar for pp 8TeV
 #245*Br :
