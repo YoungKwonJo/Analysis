@@ -1,6 +1,7 @@
 void run( char *str,const  char *sstr,  double cx,  int isZ,const  int v,const  char* DecayMode,  bool isMC){
 
     gROOT->ProcessLine(".L TtFullLepKinSolver.C+g");
+    gROOT->ProcessLine(".L FlatNtuple.h+g");
     gROOT->ProcessLine(".L Lepton.h+g");
     gROOT->ProcessLine(".L Jet.h+g");
     gROOT->ProcessLine(".L CSVWeight.h+g");
