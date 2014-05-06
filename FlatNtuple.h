@@ -22,7 +22,7 @@ public:
 
   double lep1_pt_, lep2_pt_, lep1_eta_, lep2_eta_, lep1_relIso_, lep2_relIso_;
   double MET_, ZMass_;
-  int nJet30_, nJet50_, nbJet30T_, nbJet50T_;
+  int nVertex_, nJet30_, nJet50_, nbJet30T_, nbJet50T_;
 
   double jet1_pt_, jet2_pt_, jet3_pt_, jet4_pt_;
   double jet1_eta_, jet2_eta_, jet3_eta_, jet4_eta_;
@@ -32,7 +32,8 @@ public:
   double tMass_, tbarMass_, kinweight_, kinNuEt_, kinNubarEt_;
 
   bool isMC_;
-  int  ttIndex_, nVertex_;
+  int  ttIndex_, gNJet20_, gNJet30_, gNJet40_;
+
   double puweight_,puweightUp_, puweightDw_, csvweight_, leptonweight_;
 
 };
@@ -60,6 +61,7 @@ void FlatNtuple::book(TTree* tree)
   tree_->Branch("lep1_relIso", &lep1_relIso_, "lep1_relIso/D");
   tree_->Branch("lep2_relIso", &lep2_relIso_, "lep2_relIso/D");
 
+  tree_->Branch("nVertex" ,  &nVertex_ , "nVertex/I" );    
   tree_->Branch("MET"     ,  &MET_     , "MET/D"     );
   tree_->Branch("ZMass"   ,  &ZMass_   , "ZMass/D"   ); 
   tree_->Branch("nJet30"  ,  &nJet30_  , "nJet30/I"  );
@@ -94,7 +96,9 @@ void FlatNtuple::book(TTree* tree)
   if(isMC_)
   {
      tree_->Branch("ttIndex"   ,     &ttIndex_      , "ttIndex/I"    );    
-     tree_->Branch("nVertex"   ,     &nVertex_      , "nVertex/I"    );    
+     tree_->Branch("gNJet20"   ,     &gNJet20_      , "gNJet20/I"    );    
+     tree_->Branch("gNJet30"   ,     &gNJet30_      , "gNJet30/I"    );    
+     tree_->Branch("gNJet40"   ,     &gNJet40_      , "gNJet40/I"    );    
      tree_->Branch("puweight"  ,     &puweight_     , "puweight/D"   );    
      tree_->Branch("puweightUp",     &puweightUp_   , "puweightUp/D" ); 
      tree_->Branch("puweightDw",     &puweightDw_   , "puweightDw/D" ); 
@@ -107,17 +111,18 @@ void FlatNtuple::clear()
 {
    cutSteps_=-999;
    lep1_pt_=-999;   lep2_pt_=-999;   lep1_eta_=-999;   lep2_eta_=-999;   lep1_relIso_=-999;   lep2_relIso_=-999;
-   MET_=-999;   ZMass_=-999;
+
+   nVertex_=-999;  MET_=-999;      ZMass_=-999;
    nJet30_=-999;   nJet50_=-999;   nbJet30T_=-999;   nbJet50T_=-999;
 
-   jet1_pt_=-999;    jet2_pt_=-999;    jet3_pt_=-999;    jet4_pt_=-999;
-   jet1_eta_=-999;   jet2_eta_=-999;   jet3_eta_=-999;   jet4_eta_=-999;
-   jet1_csv_=-999;   jet2_csv_=-999;   jet3_csv_=-999;   jet4_csv_=-999;
+   jet1_pt_=-999;       jet2_pt_=-999;       jet3_pt_=-999;       jet4_pt_=-999;
+   jet1_eta_=-999;      jet2_eta_=-999;      jet3_eta_=-999;      jet4_eta_=-999;
+   jet1_csv_=-999;      jet2_csv_=-999;      jet3_csv_=-999;      jet4_csv_=-999;
    jet1_flavor_=-999;   jet2_flavor_=-999;   jet3_flavor_=-999;   jet4_flavor_=-999;
 
    tMass_=-999;   tbarMass_=-999;   kinweight_=-999;   kinNuEt_=-999;   kinNubarEt_=-999;
 
-   nVertex_=-999;
+   gNJet20_=-999;   gNJet30_=-999;      gNJet40_=-999;
    puweight_=-999;  puweightUp_=-999;   puweightDw_=-999;   csvweight_=-999;
 
 }

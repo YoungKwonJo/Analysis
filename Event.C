@@ -68,7 +68,6 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 */
  //////////////////////////
 
-////////////
    TLorentzVector muons[15], electrons[15], jets[30], genjets[50], genparticles[50], genjetsB[50], genjetsC[50];
 
 //kin solution////////
@@ -84,7 +83,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
    FlatNtuple* fevent_ = new FlatNtuple(isMC);
    fevent_->book(tree_);
 
-///////////////
+////////////////////////
    LeptonsP muons_;        muons_ = new Leptons;
    LeptonsP electrons_;    electrons_ = new Leptons;
    JetsP jets_;            jets_ = new Jets; 
@@ -102,7 +101,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-//      Testing++; if(Testing>1500) break;
+      //Testing++; if(Testing>1500) break;
 
       fevent_->clear();
 
@@ -110,16 +109,20 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       fevent_->lumi_ = lumi;
       fevent_->event_ = event;
 
-      fevent_->puweight_ = puWeight;
-      fevent_->puweightUp_ = puWeightUp;
-      fevent_->puweightDw_ = puWeightDn;
-
-      if(isMC) fevent_->nVertex_ = nVertex;
+      if(isMC)
+      {
+           fevent_->puweight_ = puWeight;
+           fevent_->puweightUp_ = puWeightUp;
+           fevent_->puweightDw_ = puWeightDn;
+      }
+      fevent_->nVertex_ = nVertex;
 
       muons_->clear();
       electrons_->clear();
       jets_->clear();
 
+//////////////////////////
+// reconstructed level
       met.SetPtEtaPhiM(met_pt, 0,met_phi,0);
 
       int nLep=0;
@@ -192,14 +195,35 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       }
       std::sort(jets_->begin(), jets_->end(), compByCSVJet);
-
-      bool precut = false;
+//////////////////////
+//generated level
+      if(isMC)
+      {
+          int gnjet20=0, gnjet30=0, gnjet40=0 ;
+          for(int i=0;i<genJets_pt->size();i++ )
+          {
+             if( abs(genJets_eta->at(i))<2.5 )
+             {
+                if(genJets_pt->at(i)>20 ) gnjet20++;
+                if(genJets_pt->at(i)>30 ) gnjet30++;
+                if(genJets_pt->at(i)>40 ) gnjet40++;
+             }
+          
+          }
+          fevent_->gNJet20_=gnjet20;
+          fevent_->gNJet30_=gnjet30;
+          fevent_->gNJet40_=gnjet40;
+      } 
+///////////////////////
+       bool precut = false;
       if(!strcmp(DecayMode, "MuMu")) precut = (muons_->size()>1);
       if(!strcmp(DecayMode, "ElEl")) precut = (electrons_->size()>1);
       if(!strcmp(DecayMode, "MuEl")) precut = (muons_->size()>0 && electrons_->size()>0);
 
       for(int j =0; j<v ; j++) G[j]=true;
 
+////////////////////
+// for TTBB signal definition
       if(isMC)
       {
 
@@ -207,25 +231,25 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           {
               
               bool visible = (nGenJet20 >= 4 && nGenbJet20 >=2 && genLep1_pt > 20 && genLep2_pt > 20 && abs( genLep1_eta ) < 2.4 && abs( genLep2_eta ) < 2.4);
-              G[1] = visible && (nGenbJet20 >= 4);          // ttbar bb
-              G[2] = visible && (nGenbJet20 >= 3) && !(nGenbJet20 >= 4); // ttbar 1b
-              G[3] = visible && (nGencJet20 >= 2) && !(nGenbJet20 >= 4) && !(nGenbJet20 >= 3); // ttbar cc
+              G[1] = visible && (nGenbJet20 >= 4);                                              // ttbar bb
+              G[2] = visible && (nGenbJet20 >= 3) && !(nGenbJet20 >= 4);                        // ttbar 1b
+              G[3] = visible && (nGencJet20 >= 2) && !(nGenbJet20 >= 4) && !(nGenbJet20 >= 3);  // ttbar cc
               G[4] = visible && !(nGencJet20 >= 2) && !(nGenbJet20 >= 4) && !(nGenbJet20 >= 3); // ttbar LF
-              G[0] = !visible;  // ttbar others
+              G[0] = !visible;                                                                  // ttbar others
  
           }
-          //////////////////////////
           for(int j =v-1; j>-1 ; j--)
           {
              //if(j>1 && G[j])cout << "G["<<j<<"] = " << G[j] << endl;
              if(G[j]) fevent_->ttIndex_ = j; 
           }
-          //////////////////////////
       }
+//////////////////////////
 
       //std::cout << "precut = " << precut << endl;
       if(precut)
       {
+          bool accept = false;
           TLorentzVector Z;
           int L1x=-1,L2x=-1;
           bool Zsel=false;
@@ -317,6 +341,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           }
 
 ///////////////////////
+// estimation for heavy and light flavor jet in MC(ttbar or zjets)/DATA
 /*          if(njet==2) //&& nLep==2)
           {
              bool zveto   = ( Z.M()<(65.5 +3*met_pt/8) || Z.M()>(108.-met_pt/4) || Z.M()<(79.-3.*met_pt/4) ||  Z.M()>(99.+met_pt/2) );
@@ -367,7 +392,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           if(isZ==2 && Z.M()<50) continue;
           if(isZ==1 && Z.M()>=50) continue;
 
-
+          accept=true;
           //if(!strcmp(DecayMode, "MuMu"))
           //  std::cout << "opp : " << (muons_->at(L1x).Q_*muons_->at(L2x).Q_<0)<<", Iso1: "<< muons_->at(L1x).Iso_ << ", Pt1: " << muons_->at(L1x).Pt() << endl;
 
@@ -433,7 +458,8 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                         fevent_->jet4_csv_=jets_->at(3).CSV_; fevent_->jet4_flavor_=jets_->at(3).flavor_; }
 
 ///////////////////////////////////////////
-          if(njet>1) // for kin solution
+// for kin solution 
+          if(njet>1) 
           {        
               double xconstraint=0, yconstraint=0;
               if(!strcmp(DecayMode, "MuMu"))
@@ -578,9 +604,10 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
                   }     
               }// close() for if(MuEl)
 
-          } // for if(njet>1) // for kin solution
+          } // for if(njet>1) 
+// close() for kin solution
 /////////////////////////////////////
-          tree_->Fill();
+          if(accept) tree_->Fill();
       } // precut
    } 
 }
