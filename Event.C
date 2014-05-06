@@ -101,7 +101,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-      //Testing++; if(Testing>1500) break;
+      Testing++; if(Testing>1500) break;
 
       fevent_->clear();
 
@@ -162,7 +162,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
 
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
 
-      int njet =0, nBtagT=0, nBtagM=0, nBtagL=0;//, jidx[4];
+      int njet =0, njet50=0, nBtagT=0, nBtagT50=0, nBtagM=0, nBtagL=0;//, jidx[4];
       double csvweight=1., leptonweight=1.0;
 
       for(int i=0;i<jets_pt->size();i++ )
@@ -180,6 +180,9 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
          if(jets_pt->at(i)>30 && abs(jets_eta->at(i))<2.5 && !overlapEl && !overlapMu)
          {
             njet++;
+            if(jets_pt->at(i)>50) njet50++;
+            if(jets_pt->at(i)>50 && jets_bTag->at(i)>0.898) nBtagT50++; // CSVT 0.898
+
             double x_ = jets_pt->at(i)*TMath::Cos(jets_phi->at(i));
             double y_ = jets_pt->at(i)*TMath::Sin(jets_phi->at(i));
             double z_ = jets_pt->at(i)*sinh(jets_eta->at(i));
@@ -416,9 +419,9 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
           fevent_->MET_     = met_pt;
           fevent_->ZMass_   = Z.M();
           fevent_->nJet30_  = njet;
-          fevent_->nJet50_  = -10;
+          fevent_->nJet50_  = njet50;
           fevent_->nbJet30T_= nBtagT; 
-          fevent_->nbJet50T_= -10;
+          fevent_->nbJet50T_= nBtagT50;
 
           if(!strcmp(DecayMode, "MuMu"))
           {
