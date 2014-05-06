@@ -23,6 +23,10 @@ void run( char *str,const  char *sstr,  double cx,  int isZ,const  int v,const  
 //        dir->ls();    
  
         TFile fout(Form("result_%s_%s.root",DecayMode,str), "RECREATE");
+
+        TDirectory* dirN = fout.mkdir(DecayMode);
+        dirN.cd();
+        hevents->Write();
         t.Loop(sstr, weight, isZ, v, DecayMode, isMC, nEvents);
         if(!strcmp(DecayMode,"MuMu") && !strcmp(str, "TTJets_FullLeptMGDecays_8TeV-madgraph-tauola"))
         {

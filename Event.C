@@ -79,7 +79,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
     std::vector<double> nupars_ (myints, myints + sizeof(myints) / sizeof(int) );
     TtFullLepKinSolver* solver = new TtFullLepKinSolver(tmassbegin_, tmassend_, tmassstep_, nupars_);
 
-   TTree *tree_ = new TTree("tmass","");
+   TTree *tree_ = new TTree("ntuple","");
    FlatNtuple* fevent_ = new FlatNtuple(isMC);
    fevent_->book(tree_);
 
@@ -177,7 +177,7 @@ void Event::Loop(char *Name,double weight,int isZ,int v,char* DecayMode,bool isM
          for(int j=0;j<muons_->size();j++ )     
          if( std::abs( jets[i].DeltaR(muons_->at(j).vec_) )< 0.5 )     overlapMu=true;
 
-         if(jets_pt->at(i)>30 && abs(jets_eta->at(i))<2.5 )//&& !overlapEl && !overlapMu)
+         if(jets_pt->at(i)>30 && abs(jets_eta->at(i))<2.5 && !overlapEl && !overlapMu)
          {
             njet++;
             double x_ = jets_pt->at(i)*TMath::Cos(jets_phi->at(i));
