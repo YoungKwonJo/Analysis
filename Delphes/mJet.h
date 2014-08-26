@@ -29,6 +29,9 @@ class mJet{
    double CSV_;
    int flavor_;
    double bHDR_;
+
+   std::vector<int> BQid;
+
 };
 
 #endif

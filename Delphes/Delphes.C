@@ -66,6 +66,9 @@ void Delphes::Loop()
    GenParticlesP gDCTQ_;      gDCTQ_    = new GenParticles;
    GenParticlesP gDCHiggs_;   gDCHiggs_ = new GenParticles;
 
+//   std::vector< std::vector<int> > BQjet;
+   double dr_=0.5;
+
    int Testing =0;
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -74,13 +77,14 @@ void Delphes::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
       Testing++;
-      // if(Testing>200) break;
+      if(Testing>20) break;
       if(Testing%100==0) cout << "event: " << Testing << endl;
 
       fevent_->clear();
       //gBHad_->clear();
       gDBHad_->clear(); gDBQ_->clear(); gDBTQ_->clear(); gDBHiggs_->clear(); 
       gDCHad_->clear(); gDCQ_->clear(); gDCTQ_->clear(); gDCHiggs_->clear();
+      //BQjet.clear();
 ////////
 //      fevent_->nVertex_ =
       fevent_->MET_     = MissingET_MET[0];
@@ -94,9 +98,11 @@ void Delphes::Loop()
       int muonic=0, electronic=0, taunic=0;
       for(int i=0;i<Particle_size;i++ )
       {
-        // if(Particle_Status[i]>2 &&)
-//         if( abs(Particle_PID[i]) >10 && abs(Particle_PID[i])<20) cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
-
+         if(Particle_Status[i]<30 && Particle_Status[i]>10)
+//         if( abs(Particle_PID[i]) >10 && abs(Particle_PID[i])<20)
+              cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
+         if(Particle_Status[i]>70 && Particle_Status[i]<90)
+              cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          /*
          if( abs(Particle_PID[i])==6 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
            cout << "event:"<< ientry <<", idx:"<< i << ", top, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << endl;
@@ -222,6 +228,8 @@ void Delphes::Loop()
              }
          }
       }
+
+
 //////////
 // choose genjet
       gjets_->clear();
@@ -230,6 +238,7 @@ void Delphes::Loop()
       int gnjetCH=0, gnjetCQ=0, gnjetCTQ=0, gnjetCHiggs=0;
       for(int i=0;i<GenJet_size;i++ )
       {
+         //std::vector<int> aBQjet;
          bool overlapMu=false, overlapEl=false;  // jet cleaning..
          if(GenJet_PT[i]>30 && abs(GenJet_Eta[i])<2.5)
          {
@@ -238,64 +247,174 @@ void Delphes::Loop()
             double z_ = GenJet_PT[i]*sinh(GenJet_Eta[i]);
             double e_ = TMath::Sqrt(x_*x_+y_*y_+z_*z_+GenJet_Mass[i]*GenJet_Mass[i]);
             TLorentzVector Ajet_(x_,y_,z_,e_);
-            if(GenJet_Particles[i].GetEntries()>0) cout << "genjet particle:"<<" idx:"<< i << ", entries:" <<  GenJet_Particles[i].GetEntries() << endl;
+//            if(GenJet_Particles[i].GetEntries()>0) cout << "genjet particle:"<<" idx:"<< i << ", entries:" <<  GenJet_Particles[i].GetEntries() << endl;
             /*for(int j=0;j<electrons_->size();j++ )
-            if( fabs( Ajet_.DeltaR(electrons_->at(j).vec_) )< 0.5 ) overlapEl=true;
+            if( fabs( Ajet_.DeltaR(electrons_->at(j).vec_) )< dr_ ) overlapEl=true;
             for(int j=0;j<muons_->size();j++ )
-            if( fabs( Ajet_.DeltaR(muons_->at(j).vec_) )< 0.5 )     overlapMu=true;*/
+            if( fabs( Ajet_.DeltaR(muons_->at(j).vec_) )< dr_ )     overlapMu=true;*/
             //if(overlapEl || overlapMu) continue;
             
+            mJet gjet_(TLorentzVector( x_,y_,z_,e_),GenJet_BTag[i],0, 999);
             double DRBH_ = 999, DRBQ_=999, DRBTQ_=999, DRBHiggs_=999;
             double DRCH_ = 999, DRCQ_=999, DRCTQ_=999, DRCHiggs_=999;
             for(int j=0;j<gDBHad_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBHad_->at(j).vec_)); if(DRBH_>DR1_) DRBH_=DR1_;   if(DRBH_<0.5) break;  }
-            for(int j=0;j<gDBQ_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBQ_->at(j).vec_));   if(DRBQ_>DR1_) DRBQ_=DR1_;   if(DRBQ_<0.5) break;  }
-            for(int j=0;j<gDBTQ_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_; if(DRBTQ_<0.5) break;  }
-            for(int j=0;j<gDBHiggs_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<0.5) break;  }
+            {  double DR1_=fabs(Ajet_.DeltaR(gDBHad_->at(j).vec_)); if(DRBH_>DR1_) DRBH_=DR1_;           if(DRBH_<dr_)  break;  }
+            for(int j=0;j<gDBQ_->size();j++)                                                                                                                           
+            { 
+                double DR1_=fabs(Ajet_.DeltaR(gDBQ_->at(j).vec_));   
+                if(DRBQ_>DR1_) DRBQ_=DR1_;           
+                if(DRBQ_<dr_ && DRBH_<dr_)
+                {
+                 //  aBQjet.push_back( gDBQ_->at(j).mid_ ); 
+                   gjet_.BQid.push_back( gDBQ_->at(j).mid_ );    
+                } 
+            }
+//            for(int j=0;j<gDBTQ_->size();j++)                                                                                                           
+//            {  double DR1_=fabs(Ajet_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_;         if(DRBTQ_<dr_) break;     }
+//            for(int j=0;j<gDBHiggs_->size();j++)
+//            {  double DR1_=fabs(Ajet_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<dr_) break;  }
 
-            if(DRBH_>0.5)
+/*            if(DRBH_>dr_)
             {
                for(int j=0;j<gDCHad_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCHad_->at(j).vec_)); if(DRCH_>DR1_) DRCH_=DR1_;   if(DRCH_<0.5) break;  }
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCHad_->at(j).vec_)); if(DRCH_>DR1_) DRCH_=DR1_;   if(DRCH_<dr_) break;  }
                for(int j=0;j<gDCQ_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCQ_->at(j).vec_));   if(DRCQ_>DR1_) DRCQ_=DR1_;   if(DRCQ_<0.5) break;  }
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCQ_->at(j).vec_));   if(DRCQ_>DR1_) DRCQ_=DR1_;   if(DRCQ_<dr_) break;  }
                for(int j=0;j<gDCTQ_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCTQ_->at(j).vec_));  if(DRCTQ_>DR1_) DRCTQ_=DR1_; if(DRCTQ_<0.5) break;  }
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCTQ_->at(j).vec_));  if(DRCTQ_>DR1_) DRCTQ_=DR1_; if(DRCTQ_<dr_) break;  }
                for(int j=0;j<gDCHiggs_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCHiggs_->at(j).vec_)); if(DRCHiggs_>DR1_) DRCHiggs_=DR1_; if(DRCHiggs_<0.5) break;  }
-            }
-
-            mJet gjet_(TLorentzVector( x_,y_,z_,e_),GenJet_BTag[i],0, DRBQ_);
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCHiggs_->at(j).vec_)); if(DRCHiggs_>DR1_) DRCHiggs_=DR1_; if(DRCHiggs_<dr_) break;  }
+            }*/
+            gjet_.bHDR_ = DRBQ_;
+            //BQjet.push_back(aBQjet);
             gjets_->push_back(gjet_);
 
             gnjet++;
-            if(DRBH_<0.5)     gnjetBH++;
-            if(DRBQ_<0.5)     gnjetBQ++;
-            if(DRBTQ_<0.5)    gnjetBTQ++;
-            if(DRBHiggs_<0.5) gnjetBHiggs++;
+            if(DRBH_<dr_)     gnjetBH++;
+            if(DRBQ_<dr_)     gnjetBQ++;
+            if(DRBTQ_<dr_)    gnjetBTQ++;
+            if(DRBHiggs_<dr_) gnjetBHiggs++;
 
-            if(DRCH_<0.5)     gnjetCH++;
-            if(DRCQ_<0.5)     gnjetCQ++;
-            if(DRCTQ_<0.5)    gnjetCTQ++;
-            if(DRCHiggs_<0.5) gnjetCHiggs++;
-
+/*
+            if(DRCH_<dr_)     gnjetCH++;
+            if(DRCQ_<dr_)     gnjetCQ++;
+            if(DRCTQ_<dr_)    gnjetCTQ++;
+            if(DRCHiggs_<dr_) gnjetCHiggs++;
+*/
             if(GenJet_PT[i]>50) gnjet50++;
          }
       }
       std::sort(gjets_->begin(), gjets_->end(), compByPtJet);
+
+//////////
+//check double-count about matching
+      int j=0;
+      /*for( std::vector< std::vector<int> >::const_iterator vec1 = BQjet.begin() ; vec1 != BQjet.end(); vec1++, j++)
+      {
+        	cout << endl << "gjet " << j << ": " ;
+	for( std::vector< int >::const_iterator vv = vec1->begin() ; vv != vec1->end() ; vv++) {
+        	//std::vector<int> *gBQ_ = BQjet->at(i); 
+        	//for(int j=0;j<gBQ_->size();j++)
+           if((*vv)>0) cout << " " <<  *vv << ", ";
+        }
+      }
+      */
+      std::vector<int> bids;
+      int gnJetOverlap =0;
+      int gnJetBNTQ=0; 
+      int gnJetBNTQOverlap=0;
+      gnjetBQ=0;
+      gnjetBTQ=0;
+      gnjetBHiggs=0;
+      int gnjetBTHiggs=0;
+
+      std::vector<int> bbb;
+      for( mJets::const_iterator vec1 = gjets_->begin() ; vec1 != gjets_->end(); vec1++, j++)
+      {
+         bbb.clear();
+         mJet vec11 = *vec1;
+//         cout << endl << "gjet " << j << ": Pt:"<< vec11.Pt() << ": ";
+         std::vector<int> vec2 = vec1->BQid;
+
+         ///////////
+         //check double counts
+         bool isDoubleCount =false; int bid_=0;
+         bool isBQ=false;
+         bool isCheckOverlap=false;
+         for( std::vector< int >::const_iterator vv = vec2.begin() ; vv != vec2.end() ; vv++) 
+         {
+            if((*vv)>0) 
+            {
+              isBQ=true;
+//               cout << " " <<  *vv << ", "; 
+              for(int i=0;i<bids.size();i++) 
+              if(bids.at(i)==(*vv)) 
+              {
+                  isDoubleCount=true;
+              }
+
+              bid_=(*vv);
+              if(!isDoubleCount) bids.push_back(bid_); 
+
+              /////////
+              //check overlap
+              for(int i=0;i<bbb.size();i++)
+              { if(bbb.at(i)!=(*vv)) isCheckOverlap=true; }    
+              if(isCheckOverlap || bbb.size()==0)
+              { bbb.push_back( (*vv) ); }
+              ////////
+            }
+         }
+         if(isBQ && bbb.size()>0 && isCheckOverlap)
+         {
+            cout << endl << "gjet " << j << ": Pt:"<< vec11.Pt() << ": ";
+            for(int i=0;i<bbb.size();i++)
+            {
+               if(i>0) cout << ", "; 
+               cout << bbb.at(i) ;
+            }
+         }
+         //if(!isDoubleCount && isBQ)
+         if(isBQ)
+         {
+            gnjetBQ++;
+            if(isCheckOverlap) gnJetOverlap++;
+
+//////////
+// count again about "t to b", "higgs to b"
+            double DRBTQ_=999, DRBHiggs_=999;
+            for(int j=0;j<gDBTQ_->size();j++)
+            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_;         if(DRBTQ_<dr_) break;  }
+            for(int j=0;j<gDBHiggs_->size();j++)
+            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<dr_) break;  }
+            if(DRBTQ_<dr_)    gnjetBTQ++;
+            else{
+              gnJetBNTQ++;
+              if(isCheckOverlap) gnJetBNTQOverlap++;
+            }
+            if(DRBHiggs_<dr_) gnjetBHiggs++;
+            if(DRBTQ_<dr_ || DRBHiggs_<dr_) gnjetBTHiggs++;
+         }
+//////////
+
+      }
+
+//////////
       fevent_->gnJet30_  = gnjet;
 //      fevent_->gnbJet30_  = gnbjet;
       fevent_->gnJet30BH_  = gnjetBH;
       fevent_->gnJet30BQ_  = gnjetBQ;
       fevent_->gnJet30BTQ_ = gnjetBTQ;
       fevent_->gnJet30BHiggs_  = gnjetBHiggs;
-      fevent_->gnJet30CH_  = gnjetCH;
+      fevent_->gnJet30BTHiggs_  = gnjetBTHiggs;
+/*      fevent_->gnJet30CH_  = gnjetCH;
       fevent_->gnJet30CQ_  = gnjetCQ;
       fevent_->gnJet30CTQ_ = gnjetCTQ;
       fevent_->gnJet30CHiggs_  = gnjetCHiggs;
+*/
+      fevent_->gnJetBNTQ_ = gnJetBNTQ;
+      fevent_->gnJetBNTQOverlap_ = gnJetBNTQOverlap;
+      fevent_->gnJetOverlap_   = gnJetOverlap;
 
       if(gnjet>0) { fevent_->gjet1_pt_ =gjets_->at(0).Pt();  fevent_->gjet1_eta_=gjets_->at(0).Eta();
                     fevent_->gjet1_bDR_ = gjets_->at(0).bHDR_;
@@ -399,9 +518,9 @@ void Delphes::Loop()
             TLorentzVector Ajet_(x_,y_,z_,e_);
 
             for(int j=0;j<electrons_->size();j++ )
-            if( fabs( Ajet_.DeltaR(electrons_->at(j).vec_) )< 0.5 ) overlapEl=true;
+            if( fabs( Ajet_.DeltaR(electrons_->at(j).vec_) )< dr_ ) overlapEl=true;
             for(int j=0;j<muons_->size();j++ )
-            if( fabs( Ajet_.DeltaR(muons_->at(j).vec_) )< 0.5 )     overlapMu=true;
+            if( fabs( Ajet_.DeltaR(muons_->at(j).vec_) )< dr_ )     overlapMu=true;
             //if(overlapEl || overlapMu) continue;
 
             /*double DR_ = 999;
@@ -409,51 +528,58 @@ void Delphes::Loop()
             {
                 double DR1_=fabs(Ajet_.DeltaR(gDBHad_->at(j).vec_));
                 if(DR_>DR1_) DR_=DR1_;
-                if(DR_<0.5) break;
+                if(DR_<dr_) break;
             }*/
 
+            mJet jet_(TLorentzVector( x_,y_,z_,e_),Jet_BTag[i],0,999);
             double DRBH_ = 999, DRBQ_=999, DRBTQ_=999, DRBHiggs_=999;
             double DRCH_ = 999, DRCQ_=999, DRCTQ_=999, DRCHiggs_=999;
             for(int j=0;j<gDBHad_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBHad_->at(j).vec_)); if(DRBH_>DR1_) DRBH_=DR1_;   if(DRBH_<0.5) break;  }
-            for(int j=0;j<gDBQ_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBQ_->at(j).vec_));   if(DRBQ_>DR1_) DRBQ_=DR1_;   if(DRBQ_<0.5) break;  }
-            for(int j=0;j<gDBTQ_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_; if(DRBTQ_<0.5) break;  }
-            for(int j=0;j<gDBHiggs_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<0.5) break;  }
+            {  double DR1_=fabs(Ajet_.DeltaR(gDBHad_->at(j).vec_)); if(DRBH_>DR1_) DRBH_=DR1_;           if(DRBH_<dr_)      break;  }
+            for(int j=0;j<gDBQ_->size();j++)                                                                                  
+            {  double DR1_=fabs(Ajet_.DeltaR(gDBQ_->at(j).vec_));   if(DRBQ_>DR1_) DRBQ_=DR1_;           if(DRBQ_<dr_)      break;  }
+            for(int j=0;j<gDBTQ_->size();j++)                                                                                  
+            {  double DR1_=fabs(Ajet_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_;         if(DRBTQ_<dr_)     break;  }
+            for(int j=0;j<gDBHiggs_->size();j++)                                                                               
+            {  double DR1_=fabs(Ajet_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<dr_)  break;  }
 
-            if(DRBH_>0.5)
+            if(DRBH_>dr_)
             {
                for(int j=0;j<gDCHad_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCHad_->at(j).vec_)); if(DRCH_>DR1_) DRCH_=DR1_;   if(DRCH_<0.5) break;  }
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCHad_->at(j).vec_)); if(DRCH_>DR1_) DRCH_=DR1_;   if(DRCH_<dr_) break;  }
                for(int j=0;j<gDCQ_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCQ_->at(j).vec_));   if(DRCQ_>DR1_) DRCQ_=DR1_;   if(DRCQ_<0.5) break;  }
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCQ_->at(j).vec_));   if(DRCQ_>DR1_) DRCQ_=DR1_;   if(DRCQ_<dr_) break;  }
                for(int j=0;j<gDCTQ_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCTQ_->at(j).vec_));  if(DRCTQ_>DR1_) DRCTQ_=DR1_; if(DRCTQ_<0.5) break;  }
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCTQ_->at(j).vec_));  if(DRCTQ_>DR1_) DRCTQ_=DR1_; if(DRCTQ_<dr_) break;  }
                for(int j=0;j<gDCHiggs_->size();j++)
-               {  double DR1_=fabs(Ajet_.DeltaR(gDCHiggs_->at(j).vec_)); if(DRCHiggs_>DR1_) DRCHiggs_=DR1_; if(DRCHiggs_<0.5) break;  }
+               {  double DR1_=fabs(Ajet_.DeltaR(gDCHiggs_->at(j).vec_)); if(DRCHiggs_>DR1_) DRCHiggs_=DR1_; if(DRCHiggs_<dr_) break;  }
             }
-            mJet jet_(TLorentzVector( x_,y_,z_,e_),Jet_BTag[i],0,DRBQ_);
+            jet_.bHDR_ = DRBQ_;
             jets_->push_back(jet_);
 
             njet++;
-//            if(DR_<0.5) njetbg++;
-            if(DRBH_<0.5)     njetBH++;
-            if(DRBQ_<0.5)     njetBQ++;
-            if(DRBTQ_<0.5)    njetBTQ++;
-            if(DRBHiggs_<0.5) njetBHiggs++;
+//            if(DR_<dr_) njetbg++;
+            if(DRBH_<dr_)     njetBH++;
+            if(DRBQ_<dr_)     njetBQ++;
+            if(DRBTQ_<dr_)    njetBTQ++;
+            if(DRBHiggs_<dr_) njetBHiggs++;
 
-            if(DRCH_<0.5)     njetCH++;
-            if(DRCQ_<0.5)     njetCQ++;
-            if(DRCTQ_<0.5)    njetCTQ++;
-            if(DRCHiggs_<0.5) njetCHiggs++;
+            if(DRCH_<dr_)     njetCH++;
+            if(DRCQ_<dr_)     njetCQ++;
+            if(DRCTQ_<dr_)    njetCTQ++;
+            if(DRCHiggs_<dr_) njetCHiggs++;
 
             if(Jet_BTag[i]==1) nbjet++;
             if(Jet_PT[i]>50) njet50++;
          }
       }
       std::sort(jets_->begin(), jets_->end(), compByPtJet);
+/////////
+//check double-count about matching
+
+
+/////////
+
       fevent_->nJet30_    = njet;
       fevent_->nbJet30T_  = nbjet; 
       fevent_->nJet30BH_  = njetBH;
@@ -493,13 +619,13 @@ int Delphes::getLastIdX(int idx, int x)
    if(x==0)
    {while(i==0)
    {
-      if(Particle_PID[Particle_D1[idx_]] != Particle_PID[idx_]) { i=1; break; }
+      if(Particle_PID[Particle_D1[idx_]] != Particle_PID[idx_]) { i=1;  }
       else idx_=Particle_D1[idx_];
    }}
    else 
    {while(i==0)
    {
-      if(Particle_PID[Particle_D2[idx_]] != Particle_PID[idx_]) { i=1; break; }
+      if(Particle_PID[Particle_D2[idx_]] != Particle_PID[idx_]) { i=1;  }
       else idx_=Particle_D2[idx_];
    }}
 
@@ -512,13 +638,13 @@ int Delphes::get1stIdX(int idx, int x)
    if(x==0)
    {while(i==0)
    {
-      if(Particle_PID[Particle_M1[idx_]] != Particle_PID[idx_]) { i=1; break; }
+      if(Particle_PID[Particle_M1[idx_]] != Particle_PID[idx_]) { i=1;  }
       else idx_=Particle_M1[idx_];
    }}
    else{
    while(i==0)
    {
-      if(Particle_PID[Particle_M2[idx_]] != Particle_PID[idx_]) { i=1; break; }
+      if(Particle_PID[Particle_M2[idx_]] != Particle_PID[idx_]) { i=1;  }
       else idx_=Particle_M2[idx_];
    }}
 
@@ -529,24 +655,24 @@ int Delphes::get1stIdX(int idx, int x)
 int Delphes::isFromAny(int idx, int x, int id)
 {
    int idx_=idx;
-   int i=0, j=0;
+   int i=-1;//, j=0;
 
    if(x==0)
-   {while(i==0)
-   {  j++;
-      double idx2_=Particle_M1[get1stIdX(idx_,0)];
+   {while(i==-1)
+   {  //j++;
+      int idx2_=Particle_M1[get1stIdX(idx_,0)];
       if(abs(Particle_PID[idx_])==id) i=2;
-      if(idx<0) i=-1;
-      if(idx_<idx2_) i=-1;
+      if(idx<0) i=-2;
+      if(idx_<idx2_) i=-2;
       idx_=idx2_;
    }}
    else
-   {while(i==0)
-   {  j++;
-      double idx2_=Particle_M2[get1stIdX(idx_,0)];
+   {while(i==-1)
+   {  //j++;
+      int idx2_=Particle_M2[get1stIdX(idx_,0)];
       if(abs(Particle_PID[idx_])==id) i=2;
-      if(idx<0) i=-1;
-      if(idx_<idx2_) i=-1;
+      if(idx<0) i=-2;
+      if(idx_<idx2_) i=-2;
       idx_=idx2_;
    }}
    if(i==2) i=idx_;
@@ -611,24 +737,24 @@ bool Delphes::HasCHad(int PDGID )
 int Delphes::isFromAnyHad(int idx, int x, int id)
 {
    int idx_=idx;
-   int i=0, j=0;
+   int i=-1;//, j=0;
 
    if(x==0)
-   {while(i==0)
-   {  j++;
-      double idx2_=Particle_M1[get1stIdX(idx_,0)];
+   {while(i==-1)
+   {  //j++;
+      int idx2_=Particle_M1[get1stIdX(idx_,0)];
       if(HasAnyHadron(Particle_PID[idx_], id)) i=2;
-      if(idx<0) i=-1;
-      if(idx_<idx2_) i=-1;
+      if(idx<0) i=-2;
+      if(idx_<idx2_) i=-2;
       idx_=idx2_;
    }}
    else
-   {while(i==0)
-   {  j++;
-      double idx2_=Particle_M2[get1stIdX(idx_,0)];
+   {while(i==-1)
+   {  //j++;
+      int idx2_=Particle_M2[get1stIdX(idx_,0)];
       if(HasAnyHadron(Particle_PID[idx_], id)) i=2;
-      if(idx<0) i=-1;
-      if(idx_<idx2_) i=-1;
+      if(idx<0) i=-2;
+      if(idx_<idx2_) i=-2;
       idx_=idx2_;
    }}
 
@@ -651,12 +777,27 @@ int Delphes::isFromCHad(int idx, int x)
   #b hadron
   #b hadron and gen jet matching
  
+ 
 // todo list
   the bjet is from top?
   the bjet is from b?
   double coutting?
 
+  ovelap check as one jet within b and b~
+  and in each level(b, t/h)
+
  !genjet and recojet matching
+
+code range explanation (PHYTHIA8)
+11 – 19 beam particles
+21 – 29 particles of the hardest subprocess
+31 – 39 particles of subsequent subprocesses in multiparton interactions
+41 – 49 particles produced by initial-state-showers
+51 – 59 particles produced by final-state-showers
+61 – 69 particles produced by beam-remnant treatment
+71 – 79 partons in preparation of hadronization process
+81 – 89 primary hadrons produced by hadronization process
+91 – 99 particles produced in decay process, or by Bose-Einstein effects
 
 */
 

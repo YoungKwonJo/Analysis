@@ -49,7 +49,10 @@ public:
   //int gnbJet30_;
   int gnJet30BH_, gnJet30BQ_, gnJet30BTQ_, gnJet30BHiggs_;
   int gnJet30CH_, gnJet30CQ_, gnJet30CTQ_, gnJet30CHiggs_;
-  
+  int gnJetOverlap_; 
+  int gnJetBNTQ_, gnJetBNTQOverlap_;
+  int gnJet30BTHiggs_;
+ 
   int gnJet30_;
   int leptonic_;
   int electronic_;
@@ -113,6 +116,11 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("gnJet30BQ"  ,   &gnJet30BQ_  ,  "gnJet30BQ/I"  );
   tree_->Branch("gnJet30BTQ"  ,  &gnJet30BTQ_  , "gnJet30BTQ/I"  );
   tree_->Branch("gnJet30BHiggs", &gnJet30BHiggs_,"gnJet30BHiggs/I"  );
+  tree_->Branch("gnJet30BTHiggs", &gnJet30BTHiggs_,"gnJet30BTHiggs/I"  );
+  tree_->Branch("gnJetOverlap", &gnJetOverlap_,"gnJetOverlap/I"  );
+  tree_->Branch("gnJetBNTQ", &gnJetBNTQ_,"gnJetBNTQ/I"  );
+  tree_->Branch("gnJetBNTQOverlap", &gnJetBNTQOverlap_,"gnJetBNTQOverlap/I"  );
+
   tree_->Branch("gnJet30CH"  ,   &gnJet30CH_  ,  "gnJet30CH/I"  );
   tree_->Branch("gnJet30CQ"  ,   &gnJet30CQ_  ,  "gnJet30CQ/I"  );
   tree_->Branch("gnJet30CTQ"  ,  &gnJet30CTQ_  , "gnJet30CTQ/I"  );
@@ -225,7 +233,12 @@ void FlatTree::clear()
    nJet30BH_=-999; nJet30BQ_=-999; nJet30BTQ_=-999; nJet30BHiggs_=-999;
    nJet30CH_=-999; nJet30CQ_=-999; nJet30CTQ_=-999; nJet30CHiggs_=-999;
 
-   gnJet30BH_=-999; gnJet30BQ_=-999; gnJet30BTQ_=-999; gnJet30BHiggs_=-999;
+   gnJet30BH_=-999; gnJet30BQ_=-999; gnJet30BTQ_=-999; 
+gnJet30BHiggs_=-999;
+gnJet30BTHiggs_=-999;
+   gnJetOverlap_=-999;
+   gnJetBNTQ_=-999;
+   gnJetBNTQOverlap_=-999;
    gnJet30CH_=-999; gnJet30CQ_=-999; gnJet30CTQ_=-999; gnJet30CHiggs_=-999;
 
    nbJet30T_=-999;
