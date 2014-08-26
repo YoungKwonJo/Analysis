@@ -34,7 +34,7 @@ void ploter(int pp=0)
   MonitorPlot eta2 = MonitorPlot("eta2", "lep2_eta", "Second leading lepton #eta;#eta;Events/0.2", 35, -3.5, 3.5);
 
   MonitorPlot jet1pt30 = MonitorPlot("jet1pt30", "jet1_pt", "Leading Jet p_{T}; p_{T}^{jet1} (GeV/c);Events/10 GeV/c",24, 20, 500);
-  MonitorPlot jet1eta30 = MonitorPlot("jet1eta30", "jet1_eta", "Leading #eta;#eta^{jet1};Events/0.2", 35, -3.5, 3.5);
+  MonitorPlot jet1eta30 = MonitorPlot("jet1eta30", "jet1_eta", "Leading #eta;#eta^{jet1};Events/0.2", 20, -3.5, 3.5);
   MonitorPlot jet1phi30 = MonitorPlot("jet1phi30", "jet1_phi", "Leading #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
 
   MonitorPlot jet2pt30 = MonitorPlot("jet2pt30", "jet2_pt", "Second leading Jet p_{T}; p_{T}^{jet2} (GeV/c);Events/10 GeV/c",24, 20, 500);
@@ -78,7 +78,7 @@ void ploter(int pp=0)
   TCut dileptonic = "(leptonic>0)"; 
   TCut reco_njet4 = "nJet30>3";
   TCut reco_njet0 = "nJet30>-1";
-  TCut selction  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic && reco_njet0; 
+  TCut selction  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic && reco_njet4; 
   for(int i=0;i<mcN;i++)
   {
     cout <<"opening file : "<< fname[i].Data() ;
@@ -104,7 +104,7 @@ void ploter(int pp=0)
 
     if(ymax < h[i]->GetMaximum() ) ymax = h[i]->GetMaximum();
   }
-  h[0]->SetMaximum(ymax*1.5);
+  h[0]->SetMaximum(ymax*1.6);
   h[0]->SetMinimum(ymin);
   double xmax = h[0]->GetXaxis()->GetXmax();
   double xmin = h[0]->GetXaxis()->GetXmin();
@@ -123,14 +123,18 @@ void ploter(int pp=0)
 //  h[0]->GetYaxis()->SetLabelOffset(yo);
 
 //////
-  bool logy = false;
+  bool logy = true;
   TCanvas *c1 = new TCanvas();
-  if(logy) c1->SetLogy();
-
+  if(logy){  c1->SetLogy(); h[0]->SetMaximum(h[0]->GetMaximum()*100); }
+ 
 //////
-  double weighty=1.; if(logy) weighty=0.01;
-  double legxmin=(xmax+xmin)*0.60, legxmax=xmax*0.97, legymin=h[0]->GetMaximum()*0.65*weighty, legymax=h[0]->GetMaximum()*0.95;
-  TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax, NULL,"");
+  //double weighty=1.; if(logy) weighty=0.01;
+  //double legxmin=(xmax+xmin)*0.80, legxmax=xmax*0.97, legymin=h[0]->GetMaximum()*0.65*weighty, legymax=h[0]->GetMaximum()*0.95;
+  //TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax,, NULL,"");
+
+  double legxmin=0.6, legxmax=0.94, legymin=0.6, legymax=0.89;
+//  if(logy) { legymin=0.80; legymax=0.94; }
+  TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax);
   leg->SetBorderSize(1);  leg->SetTextFont(62);  leg->SetTextSize(0.04);
   leg->SetLineColor(0);  leg->SetLineStyle(1);  leg->SetLineWidth(1);  leg->SetFillColor(0);
   leg->SetFillStyle(1001);
