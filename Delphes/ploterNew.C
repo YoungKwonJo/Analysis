@@ -68,8 +68,8 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 // Cut Steps as Event selection  
   Cut cuts = Cut();
   cuts.addCut("1","1"); //S0
-  cuts.addCut("(leptonic>1)","1"); // S1 : dileptonic in generate level
-  cuts.addCut("(lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5)","1"); // S2
+  cuts.addCut("leptonic>1","1"); // S1 : dileptonic in generate level
+  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5","1"); // S2
   cuts.addCut("nJet30>3","1");   //S3
   cuts.addCut("nbJet30T>2","1"); //S4
 
@@ -106,11 +106,11 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   }
 
 ////////////////////
-  double ymax=0.1, ymin=0.0001;
+  double ymax=0.1, ymin=1000;
   //bool norm = false;
   bool logy = false;
- if(!norm) {logy = true;}
-  if(logy) { ymin=0.01; }
+  if(!norm) {logy = true;}
+  if(logy) { ymin=1; }
   for(int i=0;i<mcN;i++)
   {
     //h[i]->SetTitle("");
@@ -121,12 +121,14 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
  
     h[i]->SetLineColor(MC[i].color);    h[i]->SetLineWidth(MC[i].width);    h[i]->SetLineStyle(MC[i].style);
   }
+  if(ymin>0.001) ymin=ymin*0.1;
   h[0]->SetMaximum(ymax); h[0]->SetMinimum(ymin);
   double xmax = h[0]->GetXaxis()->GetXmax();
   double xmin = h[0]->GetXaxis()->GetXmin();
-  bool canMvleg=false;
-  if(h[0]->Integral(xmin,(xmax-xmin)/2)==0) canMvleg=true;
+  int xbins = h[0]->GetNbinsX();
 
+  bool canMvleg=false;
+  if( h[2]->Integral(1,xbins/2)==0)              canMvleg=true;
   if( h[2]->GetBinContent((h[2]->GetMinimumBin()))>1000 ) canMvleg=true;
 
 ///////////////////
@@ -150,7 +152,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 
 // add legend
   double legxmin=0.6, legxmax=0.93, legymin=0.6, legymax=0.89;
-  if(canMvleg) { legxmin=0.25, legxmax=0.55, legymin=0.2, legymax=0.49; }
+  if(canMvleg) { legxmin=0.25, legxmax=0.55, legymin=0.2, legymax=0.49; h[0]->SetMinimum(ymin*0.1); }
   TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax);
   leg->SetBorderSize(1);  leg->SetTextFont(62);  leg->SetTextSize(0.04);
   leg->SetLineColor(0);  leg->SetLineStyle(1);  leg->SetLineWidth(1);  leg->SetFillColor(0);
