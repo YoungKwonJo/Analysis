@@ -28,10 +28,10 @@ void ploter2()
 
   MonitorPlot2 nJetvgnJet = MonitorPlot2("nJetvgnJet", "gnJet30:nJet30","Gen. vs. Reco.;Reco. Jet Multiplicity;Gen. Jet Multiplicity", 13, 0, 13, 13, 0, 13 );
 
-  TFile* f[4];  TTree* tree[4];  TH2F*  h[4];
-  int mcN=4;
-  TString fname[4] = {"ttbb_loop_sm","ttbb_loop_sm_cut_bq","tth_loop_sm","tth_loop_sm_cut_bq"};
-  TString label[4] = {"t#bar{t} + b#bar{b}","t#bar{t} + b#bar{b} w/ cut","t#bar{t} + H","t#bar{t} + H w/ cut"};
+  TFile* f[5];  TTree* tree[5];  TH2F*  h[5];
+  int mcN=5;
+  TString fname[5] = {"ttbb_loop_sm","ttbb_loop_sm_cut_bq","tth_loop_sm","tth_loop_sm_cut_bq","ttjj_loop_sm"};
+  TString label[5] = {"t#bar{t} + b#bar{b}","t#bar{t} + b#bar{b} w/ cut","t#bar{t} + H","t#bar{t} + H w/ cut","t#bar{t} + jj"};
 /*  const Color_t color[] = {
     kRed,kRed-7,kBlue,kBlue-7
   };
@@ -42,15 +42,16 @@ void ploter2()
   gStyle->SetOptStat(0); //remove statistics box
   gROOT->ProcessLine(".L ./tdrstyle.C");
   defaultStyle();
-  gStyle->SetCanvasDefH(800);
-  gStyle->SetCanvasDefW(800);
+  gStyle->SetCanvasDefH(610);
+  gStyle->SetCanvasDefW(900);
   //gStyle->SetPadGridX(true);
   //gStyle->SetPadGridY(true);
   //gStyle->SetGridColor(kGray+1);
 /////////
   TCut dileptonic = "(leptonic>0)"; 
-  TCut reco_njet4 = "nJet30>-1";
-  TCut selction  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic && reco_njet4; 
+  TCut reco_njet4 = "nJet30>3";
+  //TCut selction  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic && reco_njet4; 
+  TCut selction  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic ;//&& reco_njet4; 
   for(int i=0;i<mcN;i++)
   {
     cout <<"opening file : "<< fname[i].Data() ;
@@ -62,7 +63,7 @@ void ploter2()
 //////
   //bool logy = false;
   TCanvas *c1 = new TCanvas();
-  c1->Divide(2,2);
+  c1->Divide(3,2);
   //if(logy) c1->SetLogy();
 
 //////
@@ -70,7 +71,7 @@ void ploter2()
   double xmax = h[0]->GetXaxis()->GetXmax();
   double ymax = h[0]->GetYaxis()->GetXmax();
   double legxmin=xmax*0.60, legxmax=xmax*0.97, legymin=ymax*1.01*weighty, legymax=ymax*1.15;
-  TLegend* leg[4];
+  TLegend* leg[5];
 
   for(int i=0;i<mcN;i++)
   {

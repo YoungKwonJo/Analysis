@@ -94,14 +94,16 @@ void ploter1D()
   gROOT->ProcessLine(".L ./tdrstyle.C");
   defaultStyle();
   gStyle->SetCanvasDefH(610);
-  gStyle->SetCanvasDefW(1200);
+  gStyle->SetCanvasDefW(900);
 //  gStyle->SetPadGridX(true);
 //  gStyle->SetPadGridY(true);
 //  gStyle->SetGridColor(kGray+1);
 /////////
-  TCut dileptonic = "(leptonic>0)"; 
-  TCut reco_njet4 = "nJet30>-1";
-  TCut selction  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic && reco_njet4; 
+  TCut dileptonic = "(leptonic>1)"; 
+  TCut reco_njet4 = "nJet30>3";
+  TCut reco_sel  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic && reco_njet4; 
+  TCut selection = dileptonic;
+
   for(int i=0;i<mcN;i++)
   {
     cout <<"opening file : "<< fname[i].Data() ;
@@ -109,27 +111,27 @@ void ploter1D()
     cout <<", getting the tree. ";
     tree[i] = (TTree*) f[i]->Get(Form("ntuple"));
 /*
-    h[i] = plot(nJet,fname[i],tree[i],selction);  
-    h2[i] = plot(nJetBH,fname[i],tree[i],selction);  
-    h3[i] = plot(nJetBQ,fname[i],tree[i],selction);  
-    h4[i] = plot(nJetBTQ,fname[i],tree[i],selction);  
-    h5[i] = plot(nJetBHiggs,fname[i],tree[i],selction);  
+    h[i] = plot(nJet,fname[i],tree[i],selection);  
+    h2[i] = plot(nJetBH,fname[i],tree[i],selection);  
+    h3[i] = plot(nJetBQ,fname[i],tree[i],selection);  
+    h4[i] = plot(nJetBTQ,fname[i],tree[i],selection);  
+    h5[i] = plot(nJetBHiggs,fname[i],tree[i],selection);  
 */
-    h[i] = plot(gnJet,fname[i],tree[i],selction);  
-    h2[i] = plot(gnJetBH,fname[i],tree[i],selction);  
-    h3[i] = plot(gnJetBQ,fname[i],tree[i],selction);  
-    h4[i] = plot(gnJetBTQ,fname[i],tree[i],selction);  
-    h5[i] = plot(gnJetBHiggs,fname[i],tree[i],selction);  
-    h6[i] = plot(gnJetBOverlap,fname[i],tree[i],selction);  
-    h7[i] = plot(gnJetBTQHiggs,fname[i],tree[i],selction);  
-    h8[i] = plot(gnJetBNTQ,fname[i],tree[i],selction);  
-    h9[i] = plot(gnJetBNTQOverlap,fname[i],tree[i],selction);  
+    h[i] = plot(gnJet,fname[i],tree[i],selection);  
+    h2[i] = plot(gnJetBH,fname[i],tree[i],selection);  
+    h3[i] = plot(gnJetBQ,fname[i],tree[i],selection);  
+    h4[i] = plot(gnJetBTQ,fname[i],tree[i],selection);  
+    h5[i] = plot(gnJetBHiggs,fname[i],tree[i],selection);  
+    h6[i] = plot(gnJetBOverlap,fname[i],tree[i],selection);  
+    h7[i] = plot(gnJetBTQHiggs,fname[i],tree[i],selection);  
+    h8[i] = plot(gnJetBNTQ,fname[i],tree[i],selection);  
+    h9[i] = plot(gnJetBNTQOverlap,fname[i],tree[i],selection);  
 
   }
 ////////
 
 
-  double ymax=0.1, ymin=0.0001;
+  double ymax=0.1, ymax2=0.1, ymin=0.0001;
   for(int i=0;i<mcN;i++)
   {
     h[i]->GetYaxis()->SetTitle("Normalized to unity");  h[i]->SetTitle("");   h[i]->Scale(1/h[i]->Integral());   
@@ -157,10 +159,12 @@ void ploter1D()
     if(ymax < h2[i]->GetMaximum() ) ymax = h2[i]->GetMaximum();
     if(ymax < h3[i]->GetMaximum() ) ymax = h3[i]->GetMaximum();
     if(ymax < h4[i]->GetMaximum() ) ymax = h4[i]->GetMaximum();
-    if(ymax < h6[i]->GetMaximum() ) ymax = h6[i]->GetMaximum();
-    if(ymax < h7[i]->GetMaximum() ) ymax = h7[i]->GetMaximum();
-    if(ymax < h8[i]->GetMaximum() ) ymax = h8[i]->GetMaximum();
-    if(ymax < h9[i]->GetMaximum() ) ymax = h9[i]->GetMaximum();
+
+    if(ymax2 < h6[i]->GetMaximum() ) ymax2 = h6[i]->GetMaximum();   
+    if(ymax2 < h7[i]->GetMaximum() ) ymax2 = h7[i]->GetMaximum();
+    if(ymax2 < h8[i]->GetMaximum() ) ymax2 = h8[i]->GetMaximum();
+    if(ymax2 < h9[i]->GetMaximum() ) ymax2 = h9[i]->GetMaximum();
+
     if(i>1) if(ymax < h5[i]->GetMaximum() ) ymax = h5[i]->GetMaximum();
   }
   if(ymax>0.4) ymax=0.4;
@@ -168,10 +172,11 @@ void ploter1D()
   h2[0]->SetMaximum(ymax*1.2);  h2[0]->SetMinimum(ymin);
   h3[0]->SetMaximum(ymax*1.2);  h3[0]->SetMinimum(ymin);
   h4[0]->SetMaximum(ymax*1.2);  h4[0]->SetMinimum(ymin);
-  h6[0]->SetMaximum(ymax*1.2);  h6[0]->SetMinimum(ymin);
-  h7[0]->SetMaximum(ymax*1.2);  h7[0]->SetMinimum(ymin);
-  h8[0]->SetMaximum(ymax*1.2);  h8[0]->SetMinimum(ymin);
-  h9[0]->SetMaximum(ymax*1.2);  h9[0]->SetMinimum(ymin);
+
+  h6[0]->SetMaximum(ymax2*1.2);  h6[0]->SetMinimum(ymin);
+  h7[0]->SetMaximum(ymax2*1.2);  h7[0]->SetMinimum(ymin);
+  h8[0]->SetMaximum(ymax2*1.2);  h8[0]->SetMinimum(ymin);
+  h9[0]->SetMaximum(ymax2*1.2);  h9[0]->SetMinimum(ymin);
   h5[2]->SetMaximum(ymax*1.2);  h5[2]->SetMinimum(ymin);
 
   double xmax = h[0]->GetXaxis()->GetXmax();
@@ -192,7 +197,7 @@ void ploter1D()
 //////
   bool logy = false;
   TCanvas *c1 = new TCanvas();
-  c1->Divide(5,2);
+  c1->Divide(4,2);
 //  if(logy) c1->SetLogy();
 
 //////
@@ -259,7 +264,7 @@ void ploter1D()
   }
   leg->Draw();
 
-  c1->cd(7);
+/*  c1->cd(7);
   for(int i=0;i<mcN;i++)
   {
     if(i==0) h7[i]->Draw();
@@ -267,8 +272,8 @@ void ploter1D()
 //    leg->AddEntry(h[i], label[i], "l");
   }
   leg->Draw();
-
-  c1->cd(8);
+*/
+  c1->cd(7);
   for(int i=0;i<mcN;i++)
   {
     if(i==0) h8[i]->Draw();
@@ -277,7 +282,7 @@ void ploter1D()
   }
   leg->Draw();
 
-  c1->cd(9);
+  c1->cd(8);
   for(int i=0;i<mcN;i++)
   {
     if(i==0) h9[i]->Draw();
@@ -287,6 +292,7 @@ void ploter1D()
   leg->Draw();
 
 
+  c1->Print("GenJet.eps");
 }
 
 

@@ -30,6 +30,55 @@ class MonitorPlot
   int xBins;    double xmin;    double xmax;
 };
 
+class Sample
+{
+ public:
+  explicit Sample(const string fileName_, const string treeName_, const string name_, 
+   const string label_,const Color_t color_,  const int style_, const double width_, 
+   const bool isMC_=false,  const double xsec_=1)
+  {
+     name   = name_;    label = label_;
+     color  = color_;   style = style_;   width = width_;
+     isMC = isMC_;      xsec = xsec_;
+
+     chain = new TChain(treeName_.c_str(), treeName_.c_str());
+     TFile* f = TFile::Open(fileName_.c_str());
+     if ( !f || !f->IsOpen() ) cout << "Cannot open file\n";
+     else
+     {
+       chain->Add(fileName_.c_str());
+     }
+     
+     nEvents = chain->GetEntries(); 
+  }
+  ~Sample(){}
+  TChain* chain;
+  string name;  string label;  Color_t color;  int style; double width;
+  bool isMC; int nEvents; double  xsec; // xsec unit : pb 
+};
+class Cut
+{
+ public:
+  explicit Cut(){  }
+  ~Cut(){}
+
+  void addCut(const string cut_, const string weight_) { cut.push_back(cut_.c_str()); weight.push_back(weight_.c_str()); }
+  TCut useCut(int i) { return cut.at(i) && weight.at(i); }
+  TCut useCut2(int i) 
+  {
+     TCut cut_;
+     for(int j=0;j<cut.size();j++)
+     if(j<=i){
+        cut_+=cut.at(j);
+     }
+     return cut_ && weight.at(i);
+  }
+  int Entries() { return cut.size(); }
+  std::vector<TCut> cut; 
+  std::vector<TCut> weight; 
+};
+
+
 TH1F* plot(MonitorPlot mplot,TString fname, TTree* tree, TCut selection)
 {
   const string name = mplot.name;
