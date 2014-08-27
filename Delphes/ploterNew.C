@@ -96,12 +96,12 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   gStyle->SetTitleW(1);  gStyle->SetTitleH(0);
 
 /////////////////////
-  double lumi= 30000; // 100 /fb
+  double lumi= 30000; // 30 /fb
   for(int i=0;i<mcN;i++)
   {
     //h[i] = plot(MyPlots[pp],MC[i].name,MC[i].chain,cuts.useCut(ppp));  
     h[i] = plot(MyPlots[pp],MC[i].name,MC[i].chain,cuts.useCut2(ppp));  
-    h[i]->Sumw2();
+    if(!norm) h[i]->Sumw2();
     h[i]->Scale(MC[i].xsec/MC[i].nEvents*lumi);
   }
 
@@ -126,6 +126,8 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   double xmin = h[0]->GetXaxis()->GetXmin();
   bool canMvleg=false;
   if(h[0]->Integral(xmin,(xmax-xmin)/2)==0) canMvleg=true;
+
+  if( h[2]->GetBinContent((h[2]->GetMinimumBin()))>1000 ) canMvleg=true;
 
 ///////////////////
   const double xs=0.05, ys=0.05;
@@ -177,7 +179,8 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   else     pt->AddText(Form("%.0f fb^{-1} at #sqrt{s} = 13 TeV", lumi/1000));
   pt->Draw();
 
-  c1->Print(Form("%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  if(norm) c1->Print(Form("./plots/Norm_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  else     c1->Print(Form("./plots/Log_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
 }
 
 
