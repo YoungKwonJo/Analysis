@@ -101,8 +101,8 @@ void ploter1D()
 /////////
   TCut dileptonic = "(leptonic>1)"; 
   TCut reco_njet4 = "nJet30>3";
-  TCut reco_sel  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5" && dileptonic && reco_njet4; 
-  TCut selection = dileptonic;
+  TCut reco_sel  = "lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5";// && dileptonic && reco_njet4; 
+  TCut selection = dileptonic && reco_sel;
 
   for(int i=0;i<mcN;i++)
   {
