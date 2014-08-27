@@ -24,12 +24,13 @@
 #include "plot.h"
 //#include "plot2.h"
 
-void ploterNew(int pp=0, int ppp=0, bool norm = false)
+void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 {
 
-  MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass", "Dilepton mass;Dilepton Mass (GeV/c^{2});Events/10 GeV/c^{2}", 30, 0, 300);
-  MonitorPlot nJet = MonitorPlot("nJet", "nJet30", "Jet Multiplicity;Jet Multiplicity;Events", 13, 0, 13);
+  MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass"   , "Dilepton mass;Dilepton Mass (GeV/c^{2});Events/10 GeV/c^{2}", 30, 0, 300);
+  MonitorPlot nJet = MonitorPlot("nJet"  , "nJet30"  , "Jet Multiplicity;Jet Multiplicity;Events", 13, 0, 13);
   MonitorPlot nbJet = MonitorPlot("nbJet", "nbJet30T", "# of b-tagged Jets;# of b-tagged Jets;Events", 5, 0, 5);
+  MonitorPlot MET   = MonitorPlot("MET"  ,  "MET"    , "Missing E_{T};Missing E_{T} (GeV);Events",20,0,200);
 
   MonitorPlot pt1 = MonitorPlot("pt1", "lep1_pt", "Leading lepton p_{T};p_{T}^{lep1} (GeV/c);Events/10 GeV/c", 20, 0, 200);
   MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T}^{lep2} (GeV/c);Events/10 GeV/c", 20, 0, 200);
@@ -72,8 +73,16 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)
   cuts.addCut("nJet30>3","1");   //S3
   cuts.addCut("nbJet30T>2","1"); //S4
 
-////////////                 0   1     2     3         4       5         6         7      8     9     10   11
-  MonitorPlot MyPlots[] = {nLepG,nMuG,nElG, jet1pt30,jet2pt30,jet3pt30, jet4pt30, ZMass, nJet, nbJet, pt1, pt2};
+////////////                 
+  MonitorPlot MyPlots[] = {nLepG,nMuG,nElG,           // 0, 1, 2
+                           ZMass, nJet, nbJet, MET,   // 3, 4, 5, 6
+                           pt1, pt2,                  // 7,8
+                           eta1, eta2,                // 9,10
+                           //phi1, phi2,                // 
+                           jet1pt30,jet2pt30,jet3pt30, jet4pt30,     // 11, 12, 13, 14
+                           jet1eta30,jet2eta30,jet3eta30, jet4eta30, // 15, 16, 17, 18
+                           jet1phi30,jet2phi30,jet3phi30, jet4phi30, // 19, 20, 21, 22
+                          };
   Sample MC[] = {ttbb_1, ttbb_2, tth_1, tth_2, ttjj_1};
   int mcN=(sizeof(MC)/sizeof(*MC));
   int cutN = cuts.Entries();
@@ -85,21 +94,23 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)
   gStyle->SetCanvasDefH(500);  gStyle->SetCanvasDefW(500);
   gStyle->SetPadGridX(true);   gStyle->SetPadGridY(true);  gStyle->SetGridColor(kGray+1);
   gStyle->SetTitleW(1);  gStyle->SetTitleH(0);
-/////////
 
+/////////////////////
   double lumi= 30000; // 100 /fb
   for(int i=0;i<mcN;i++)
   {
-//    h[i] = plot(MyPlots[pp],MC[i].name,MC[i].chain,cuts.useCut(ppp));  
+    //h[i] = plot(MyPlots[pp],MC[i].name,MC[i].chain,cuts.useCut(ppp));  
     h[i] = plot(MyPlots[pp],MC[i].name,MC[i].chain,cuts.useCut2(ppp));  
     h[i]->Sumw2();
     h[i]->Scale(MC[i].xsec/MC[i].nEvents*lumi);
   }
-////////
 
+////////////////////
   double ymax=0.1, ymin=0.0001;
   //bool norm = false;
-  bool logy = false; if(!norm) {logy = true; ymin=0.01; }
+  bool logy = false;
+ if(!norm) {logy = true;}
+  if(logy) { ymin=0.01; }
   for(int i=0;i<mcN;i++)
   {
     //h[i]->SetTitle("");
@@ -109,12 +120,14 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)
     if(ymin > h[i]->GetMinimum() && h[i]->GetMinimum()!=0) ymin = h[i]->GetMinimum();
  
     h[i]->SetLineColor(MC[i].color);    h[i]->SetLineWidth(MC[i].width);    h[i]->SetLineStyle(MC[i].style);
- }
+  }
   h[0]->SetMaximum(ymax); h[0]->SetMinimum(ymin);
   double xmax = h[0]->GetXaxis()->GetXmax();
   double xmin = h[0]->GetXaxis()->GetXmin();
+  bool canMvleg=false;
+  if(h[0]->Integral(xmin,(xmax-xmin)/2)==0) canMvleg=true;
 
-////////
+///////////////////
   const double xs=0.05, ys=0.05;
   const double xo=1.2,  yo=0.0;
   h[0]->GetXaxis()->SetTitleSize(xs*1.1);
@@ -130,11 +143,12 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)
 //////
   TCanvas *c1 = new TCanvas();
   double yscale = 1.6;
-  if(logy){  c1->SetLogy(); yscale=1000; }
+  if(logy){  c1->SetLogy(); yscale=5000; }
   h[0]->SetMaximum(h[0]->GetMaximum()*yscale);
 
 // add legend
-  double legxmin=0.6, legxmax=0.94, legymin=0.6, legymax=0.89;
+  double legxmin=0.6, legxmax=0.93, legymin=0.6, legymax=0.89;
+  if(canMvleg) { legxmin=0.25, legxmax=0.55, legymin=0.2, legymax=0.49; }
   TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax);
   leg->SetBorderSize(1);  leg->SetTextFont(62);  leg->SetTextSize(0.04);
   leg->SetLineColor(0);  leg->SetLineStyle(1);  leg->SetLineWidth(1);  leg->SetFillColor(0);
@@ -149,7 +163,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)
   leg->Draw();
 
 // add header
-  double headxmin=0.04*(xmax-xmin)+xmin, headxmax=0.6*(xmax-xmin)+xmin;
+  double headxmin=0.04*(xmax-xmin)+xmin, headxmax=0.55*(xmax-xmin)+xmin;
 //  double yscale2=1.;
   double headymin=0.8*(ymax*yscale-ymin)+ymin, headymax=0.99*(ymax*yscale-ymin)+ymin;
   if(logy) { headymin=headymin*0.01; headymax=headymax*0.5; }
