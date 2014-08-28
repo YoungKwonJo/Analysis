@@ -22,7 +22,7 @@ public:
   double  MET_, METPHI_, ZMass_, Zdphi_;
   int     nVertex_, nJet30_, nbJet30T_;
   double M_j12_, M_j34_;
-  double gM_j12_, gM_j34+;
+  double gM_j12_, gM_j34_;
 
   int nJet30BH_, nJet30BQ_, nJet30BTQ_, nJet30BHiggs_;
   int nJet30CH_, nJet30CQ_, nJet30CTQ_, nJet30CHiggs_;
