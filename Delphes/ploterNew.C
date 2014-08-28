@@ -32,6 +32,12 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot nbJet = MonitorPlot("nbJet", "nbJet30T", "# of b-tagged Jets;# of b-tagged Jets;Events", 5, 0, 5);
   MonitorPlot MET   = MonitorPlot("MET"  ,  "MET"    , "Missing E_{T};Missing E_{T} (GeV);Events",20,0,200);
 
+
+  MonitorPlot  M_j12 = MonitorPlot("M_j12", "M_j12"   , "invariant mass of jet1+jet2;  (GeV/c^{2})^{(jet1+jet2)_M};Events/10 GeV/c^{2}", 30, 0, 300);
+  MonitorPlot  M_j34 = MonitorPlot("M_j34", "M_j34"   , "invariant mass of jet3+jet4;  (GeV/c^{2})^{(jet3+jet4)_M};Events/10 GeV/c^{2}", 30, 0, 300);
+  MonitorPlot gM_j12 = MonitorPlot("gM_j12", "gM_j12" , "invariant mass of jet1+jet2; GEN (GeV/c^{2})^{(jet1+jet2)_M};Events/10 GeV/c^{2}", 30, 0, 300);
+  MonitorPlot gM_j12 = MonitorPlot("gM_j12", "gM_j12" , "invariant mass of jet3+jet4; GEN (GeV/c^{2})^{(jet3+jet4)_M};Events/10 GeV/c^{2}", 30, 0, 300);
+
   MonitorPlot pt1 = MonitorPlot("pt1", "lep1_pt", "Leading lepton p_{T};p_{T}^{lep1} (GeV/c);Events/10 GeV/c", 20, 0, 200);
   MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T}^{lep2} (GeV/c);Events/10 GeV/c", 20, 0, 200);
   MonitorPlot eta1 = MonitorPlot("eta1", "lep1_eta", "Leading #eta;#eta^{lep1};Events/0.2", 35, -3.5, 3.5);
@@ -82,7 +88,8 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
                            //phi1, phi2,                // 
                            jet1pt30,jet2pt30,jet3pt30, jet4pt30,     // 11, 12, 13, 14
                            jet1eta30,jet2eta30,jet3eta30, jet4eta30, // 15, 16, 17, 18
-                           jet1phi30,jet2phi30,jet3phi30, jet4phi30 // 19, 20, 21, 22
+                           M_j12, M_j34, gM_j12, gM_j34 
+                           //jet1phi30,jet2phi30,jet3phi30, jet4phi30 // 19, 20, 21, 22
                           };
   Sample MC[] = {ttbb_1, ttbb_2, tth_1, tth_2, ttjj_1};
   int mcN=(sizeof(MC)/sizeof(*MC));
