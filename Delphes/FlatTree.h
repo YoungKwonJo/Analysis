@@ -21,6 +21,8 @@ public:
   int     lep1_Q_,  lep2_Q_;
   double  MET_, METPHI_, ZMass_, Zdphi_;
   int     nVertex_, nJet30_, nbJet30T_;
+  double M_j12_, M_j34_;
+  double gM_j12_, gM_j34+;
 
   int nJet30BH_, nJet30BQ_, nJet30BTQ_, nJet30BHiggs_;
   int nJet30CH_, nJet30CQ_, nJet30CTQ_, nJet30CHiggs_;
@@ -129,6 +131,10 @@ void FlatTree::book(TTree* tree)
 
 //  tree_->Branch("nJet50"  ,  &nJet50_  , "nJet50/I"  );
   tree_->Branch("nbJet30T",  &nbJet30T_, "nbJet30T/I");
+  tree_->Branch("M_j12",  &M_j12_, "M_j12/D");
+  tree_->Branch("M_j34",  &M_j34_, "M_j34/D");
+  tree_->Branch("gM_j12",  &gM_j12_, "gM_j12/D");
+  tree_->Branch("gM_j34",  &gM_j34_, "gM_j34/D");
 //  tree_->Branch("nbJet50T",  &nbJet50T_, "nbJet50T/I");
 
   tree_->Branch("jet1_pt" ,  &jet1_pt_ , "jet1_pt/D" ); 
@@ -242,6 +248,10 @@ gnJet30BTHiggs_=-999;
    gnJet30CH_=-999; gnJet30CQ_=-999; gnJet30CTQ_=-999; gnJet30CHiggs_=-999;
 
    nbJet30T_=-999;
+   M_j12_=-999;
+   M_j34_=-999;
+   gM_j12_=-999;
+   gM_j34_=-999;
 
    jet1_pt_=-999;       jet2_pt_=-999;       jet3_pt_=-999;       jet4_pt_=-999;
    jet1_eta_=-999;      jet2_eta_=-999;      jet3_eta_=-999;      jet4_eta_=-999;

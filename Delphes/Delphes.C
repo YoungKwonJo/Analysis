@@ -423,6 +423,7 @@ void Delphes::Loop()
       if(gnjet>1) { fevent_->gjet2_pt_ =gjets_->at(1).Pt();  fevent_->gjet2_eta_=gjets_->at(1).Eta();
                     fevent_->gjet2_bDR_ = gjets_->at(1).bHDR_;
       //              fevent_->gjet2_bTag_=gjets_->at(1).CSV_; fevent_->gjet2_flavor_=gjets_->at(1).flavor_; 
+                    fevent_->gM_j12_ = (gjets_->at(0).vec_+gjets_->at(1).vec_).M();
       }
       if(gnjet>2) { fevent_->gjet3_pt_ =gjets_->at(2).Pt();  fevent_->gjet3_eta_=gjets_->at(2).Eta();
                     fevent_->gjet3_bDR_ = gjets_->at(2).bHDR_;
@@ -430,6 +431,7 @@ void Delphes::Loop()
       }
       if(gnjet>3) { fevent_->gjet4_pt_ =gjets_->at(3).Pt();  fevent_->gjet4_eta_=gjets_->at(3).Eta();
                     fevent_->gjet4_bDR_ = gjets_->at(3).bHDR_;
+                    fevent_->gM_j34_ = (gjets_->at(2).vec_+gjets_->at(3).vec_).M();
       //              fevent_->gjet4_bTag_=gjets_->at(3).CSV_; fevent_->gjet4_flavor_=gjets_->at(3).flavor_; 
       }
 
@@ -596,13 +598,17 @@ void Delphes::Loop()
                     fevent_->jet1_bTag_=jets_->at(0).CSV_; fevent_->jet1_flavor_=jets_->at(0).flavor_; }
       if(njet>1) {  fevent_->jet2_pt_ =jets_->at(1).Pt();  fevent_->jet2_eta_=jets_->at(1).Eta();
                     fevent_->jet2_bDR_ = jets_->at(1).bHDR_;
-                    fevent_->jet2_bTag_=jets_->at(1).CSV_; fevent_->jet2_flavor_=jets_->at(1).flavor_; }
+                    fevent_->jet2_bTag_=jets_->at(1).CSV_; fevent_->jet2_flavor_=jets_->at(1).flavor_; 
+                    fevent_->M_j12_ = (jets_->at(0).vec_+jets_->at(1).vec_).M();
+                 }
       if(njet>2) {  fevent_->jet3_pt_ =jets_->at(2).Pt();  fevent_->jet3_eta_=jets_->at(2).Eta();
                     fevent_->jet3_bDR_ = jets_->at(2).bHDR_;
                     fevent_->jet3_bTag_=jets_->at(2).CSV_; fevent_->jet3_flavor_=jets_->at(2).flavor_; }
       if(njet>3) {  fevent_->jet4_pt_ =jets_->at(3).Pt();  fevent_->jet4_eta_=jets_->at(3).Eta();
                     fevent_->jet4_bDR_ = jets_->at(3).bHDR_;
-                    fevent_->jet4_bTag_=jets_->at(3).CSV_; fevent_->jet4_flavor_=jets_->at(3).flavor_; }
+                    fevent_->jet4_bTag_=jets_->at(3).CSV_; fevent_->jet4_flavor_=jets_->at(3).flavor_; 
+                    fevent_->M_j34_ = (jets_->at(2).vec_+jets_->at(3).vec_).M();
+                 }
 
       tree_->Fill();
 
