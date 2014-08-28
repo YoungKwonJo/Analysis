@@ -69,9 +69,10 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   Cut cuts = Cut();
   cuts.addCut("1","1"); //S0
   cuts.addCut("leptonic>1","1"); // S1 : dileptonic in generate level
-  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.5 && abs(lep2_eta)<2.5","1"); // S2
+  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
   cuts.addCut("nJet30>3","1");   //S3
   cuts.addCut("nbJet30T>2","1"); //S4
+  cuts.addCut("nbJet30T>=4","1"); //S4
 
 ////////////                 
   MonitorPlot MyPlots[] = {nLepG,nMuG,nElG,           // 0, 1, 2

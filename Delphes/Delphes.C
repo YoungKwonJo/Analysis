@@ -240,7 +240,7 @@ void Delphes::Loop()
       {
          //std::vector<int> aBQjet;
          bool overlapMu=false, overlapEl=false;  // jet cleaning..
-         if(GenJet_PT[i]>30 && abs(GenJet_Eta[i])<2.5)
+         if(GenJet_PT[i]>30 && fabs(GenJet_Eta[i])<2.5)
          {
             double x_ = GenJet_PT[i]*TMath::Cos(GenJet_Phi[i]);
             double y_ = GenJet_PT[i]*TMath::Sin(GenJet_Phi[i]);
@@ -439,7 +439,7 @@ void Delphes::Loop()
       muons_->clear(); electrons_->clear(); jets_->clear();
       for(int i=0;i<Electron_size;i++ )
       {
-         if( Electron_PT[i]>20. && abs(Electron_Eta[i])<2.4)
+         if( Electron_PT[i]>20. && fabs(Electron_Eta[i])<2.4)
          {
             double x_ = Electron_PT[i]*TMath::Cos(Electron_Eta[i]);
             double y_ = Electron_PT[i]*TMath::Sin(Electron_Eta[i]);
@@ -452,7 +452,7 @@ void Delphes::Loop()
       std::sort(electrons_->begin(), electrons_->end(), compByPtLep);      
       for(int i=0;i<Muon_size;i++ )
       {
-         if( Muon_PT[i]>20. && abs(Muon_Eta[i])<2.4)
+         if( Muon_PT[i]>20. && fabs(Muon_Eta[i])<2.4)
          {
             double x_ = Muon_PT[i]*TMath::Cos(Muon_Phi[i]);
             double y_ = Muon_PT[i]*TMath::Sin(Muon_Phi[i]);
@@ -509,7 +509,7 @@ void Delphes::Loop()
       for(int i=0;i<Jet_size;i++ )
       {
          bool overlapMu=false, overlapEl=false;  // jet cleaning..
-         if(Jet_PT[i]>30 && abs(Jet_Eta[i])<2.5)
+         if(Jet_PT[i]>30 && fabs(Jet_Eta[i])<2.5)
          {
             double x_ = Jet_PT[i]*TMath::Cos(Jet_Phi[i]);
             double y_ = Jet_PT[i]*TMath::Sin(Jet_Phi[i]);
