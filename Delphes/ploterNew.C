@@ -43,14 +43,14 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot jet4pt30 = MonitorPlot("jet4pt30", "jet4_pt", "Fourth Jet p_{T}; p_{T}^{jet4} (GeV/c);Events/20 GeV/c",25, 30, 530);
 
   MonitorPlot jet1eta30 = MonitorPlot("jet1eta30", "jet1_eta", "Leading #eta;#eta^{jet1};Events/0.2", 20, -3.5, 3.5);
-  MonitorPlot jet2eta30 = MonitorPlot("jet2eta30", "jet2_eta", "Second leading Jet #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-  MonitorPlot jet3eta30 = MonitorPlot("jet3eta30", "jet3_eta", "Third Jet #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-  MonitorPlot jet4eta30 = MonitorPlot("jet4eta30", "jet4_eta", "Fourth Jet #eta;#eta;Events/0.2", 35, -3.5, 3.5);
+  MonitorPlot jet2eta30 = MonitorPlot("jet2eta30", "jet2_eta", "Second leading Jet #eta;#eta^{jet2};Events/0.2", 35, -3.5, 3.5);
+  MonitorPlot jet3eta30 = MonitorPlot("jet3eta30", "jet3_eta", "Third Jet #eta;#eta^{jet3};Events/0.2", 35, -3.5, 3.5);
+  MonitorPlot jet4eta30 = MonitorPlot("jet4eta30", "jet4_eta", "Fourth Jet #eta;#eta^{jet4};Events/0.2", 35, -3.5, 3.5);
 
-  MonitorPlot jet1phi30 = MonitorPlot("jet1phi30", "jet1_phi", "Leading #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
-  MonitorPlot jet2phi30 = MonitorPlot("jet2phi30", "jet2_phi", "Second leading Jet #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
-  MonitorPlot jet3phi30 = MonitorPlot("jet3phi30", "jet3_phi", "Third Jet#phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
-  MonitorPlot jet4phi30 = MonitorPlot("jet4phi30", "jet4_phi", "Fourth Jet #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
+  MonitorPlot jet1phi30 = MonitorPlot("jet1phi30", "jet1_phi", "Leading #phi;#phi^{jet1} (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
+  MonitorPlot jet2phi30 = MonitorPlot("jet2phi30", "jet2_phi", "Second leading Jet #phi;#phi^{jet2} (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
+  MonitorPlot jet3phi30 = MonitorPlot("jet3phi30", "jet3_phi", "Third Jet#phi;#phi^{jet3} (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
+  MonitorPlot jet4phi30 = MonitorPlot("jet4phi30", "jet4_phi", "Fourth Jet #phi;#phi^{jet4} (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
 
   MonitorPlot nLepG = MonitorPlot("nLepG", "leptonic", "# of lepton in gen;# of lepton^{GEN};Events", 3, 0, 3);
   MonitorPlot nMuG = MonitorPlot("nMuG", "muonic", "# of muon in gen;# of #mu^{GEN};Events", 3, 0, 3);
@@ -81,7 +81,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
                            //phi1, phi2,                // 
                            jet1pt30,jet2pt30,jet3pt30, jet4pt30,     // 11, 12, 13, 14
                            jet1eta30,jet2eta30,jet3eta30, jet4eta30, // 15, 16, 17, 18
-                           jet1phi30,jet2phi30,jet3phi30, jet4phi30, // 19, 20, 21, 22
+                           jet1phi30,jet2phi30,jet3phi30, jet4phi30 // 19, 20, 21, 22
                           };
   Sample MC[] = {ttbb_1, ttbb_2, tth_1, tth_2, ttjj_1};
   int mcN=(sizeof(MC)/sizeof(*MC));
@@ -106,7 +106,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   }
 
 ////////////////////
-  double ymax=0.1, ymin=1000;
+  double ymax=0.01, ymin=0.001;
   //bool norm = false;
   bool logy = false;
   if(!norm) {logy = true;}
@@ -121,7 +121,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
  
     h[i]->SetLineColor(MC[i].color);    h[i]->SetLineWidth(MC[i].width);    h[i]->SetLineStyle(MC[i].style);
   }
-  if(ymin>0.001) ymin=ymin*0.1;
+  if(ymin>0.01) ymin=ymin*0.1;
   h[0]->SetMaximum(ymax); h[0]->SetMinimum(ymin);
   double xmax = h[0]->GetXaxis()->GetXmax();
   double xmin = h[0]->GetXaxis()->GetXmin();
@@ -170,7 +170,12 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   double headxmin=0.04*(xmax-xmin)+xmin, headxmax=0.55*(xmax-xmin)+xmin;
 //  double yscale2=1.;
   double headymin=0.8*(ymax*yscale-ymin)+ymin, headymax=0.99*(ymax*yscale-ymin)+ymin;
+  //double headymin=0.2;//*(ymax*yscale-ymin)+ymin;
+  //double headymax=0.3;//*(ymax*yscale-ymin)+ymin;
   if(logy) { headymin=headymin*0.01; headymax=headymax*0.5; }
+//  if(norm) { headymin=headymin*0.01; headymax=headymax*0.1; }
+  cout  << "ymin:" << headymin << ", ymax:" << headymax << endl;
+
   TPaveText* pt = new TPaveText(headxmin,headymin, headxmax, headymax);//,"brNDC");
   pt->SetBorderSize(1);  pt->SetTextFont(42);  pt->SetTextSize(0.04);
   pt->SetLineColor(0);   pt->SetLineStyle(1);  pt->SetLineWidth(1);

@@ -86,29 +86,7 @@ void ploter2()
     leg[i]->Draw();
   }
 
+  c1->Print("GenJetVSRecoJet.eps");
 }
 
-/*  MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass", "Dilepton mass;Dilepton Mass (GeV/c^{2});Events/5 GeV/c^{2}", 20, 0, 250);
-  MonitorPlot nJet = MonitorPlot("nJet", "nJet30", "Jet Multiplicity;Jet Multiplicity;Events", 13, 0, 13);
 
-  MonitorPlot pt1 = MonitorPlot("pt1", "lep1_pt", "Leading lepton p_{T};p_{T} (GeV/c);Events/5 GeV/c", 20, 0, 100);
-  MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T} (GeV/c);Events/5 GeV/c", 20, 0, 100);
-  MonitorPlot eta1 = MonitorPlot("eta1", "lep1_eta", "Leading #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-  MonitorPlot eta2 = MonitorPlot("eta2", "lep2_eta", "Second leading lepton #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-
-  MonitorPlot jet1pt30 = MonitorPlot("jet1pt30", "jet1_pt", "Leading jet p_{T};p_{T} (GeV/c);Events/10 GeV/c",48, 20, 500);
-  MonitorPlot jet1eta30 = MonitorPlot("jet1eta30", "jet1_eta", "Leading #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-  MonitorPlot jet1phi30 = MonitorPlot("jet1phi30", "jet1_phi", "Leading #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
-
-  MonitorPlot jet2pt30 = MonitorPlot("jet2pt30", "jet2_pt", "Second leading jet p_{T};p_{T} (GeV/c);Events/10 GeV/c",48, 20, 500);
-  MonitorPlot jet2eta30 = MonitorPlot("jet2eta30", "jet2_eta", "Second leading jet #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-  MonitorPlot jet2phi30 = MonitorPlot("jet2phi30", "jet2_phi", "Second leading jet #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
-
-  MonitorPlot jet3pt30 = MonitorPlot("jet3pt30", "jet3_pt", "Third jet p_{T};p_{T} (GeV/c);Events/10 GeV/c",48, 20, 500);
-  MonitorPlot jet3eta30 = MonitorPlot("jet3eta30", "jet3_eta", "Third jet #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-  MonitorPlot jet3phi30 = MonitorPlot("jet3phi30", "jet3_phi", "Third jet #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
-
-  MonitorPlot jet4pt30 = MonitorPlot("jet4pt30", "jet4_pt", "Fourth jet p_{T};p_{T} (GeV/c);Events/10 GeV/c",48, 20, 500);
-  MonitorPlot jet4eta30 = MonitorPlot("jet4eta30", "jet4_eta", "Fourth jet #eta;#eta;Events/0.2", 35, -3.5, 3.5);
-  MonitorPlot jet4phi30 = MonitorPlot("jet4phi30", "jet4_phi", "Fourth jet #phi;#phi (Radian);Events/0.2 rad.", 35, -3.5, 3.5);
-*/
