@@ -323,7 +323,6 @@ void Delphes::Loop()
         }
       }
       */
-      std::vector<int> bhids;
       int gnJetOverlap =0;
       int gnJetBNTQ=0; 
       int gnJetBNTQOverlap=0;
@@ -333,6 +332,7 @@ void Delphes::Loop()
       gnjetBHiggs=0;
       int gnjetBTHiggs=0;
 
+      std::vector<int> bhids;
       std::vector<int> bbb;
       for( mJets::const_iterator vec1 = gjets_->begin() ; vec1 != gjets_->end(); vec1++, j++)
       {
@@ -352,7 +352,7 @@ void Delphes::Loop()
             {
               isBH=true;
 //               cout << " " <<  *vv << ", "; 
-              for(int i=0;i<bhids.size();i++) 
+/*              for(int i=0;i<bhids.size();i++) 
               if(bhids.at(i)==(*vv)) 
               {
                   isDoubleCount=true;
@@ -360,7 +360,7 @@ void Delphes::Loop()
 
               bhid_=(*vv);
               if(!isDoubleCount) bhids.push_back(bhid_); 
-
+*/
               /////////
               //check overlap
               for(int i=0;i<bbb.size();i++)
@@ -378,6 +378,16 @@ void Delphes::Loop()
                if(i>0) cout << ", "; 
                cout << bbb.at(i) ;
             }
+         }
+//////////
+         for(int i=0;i<bhids.size();i++)
+         for(int j=0;j<bbb.size();j++)
+         {
+            if(bhids.at(i)==bbb.at(j))
+            {
+                isDoubleCount=true;
+            }
+            else bhids.push_back(bbb.at(j));
          }
          if(!isDoubleCount && isBH)
          //if(isBH)
