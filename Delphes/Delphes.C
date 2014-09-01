@@ -258,7 +258,11 @@ void Delphes::Loop()
             double DRBH_ = 999, DRBQ_=999, DRBTQ_=999, DRBHiggs_=999;
             double DRCH_ = 999, DRCQ_=999, DRCTQ_=999, DRCHiggs_=999;
             for(int j=0;j<gDBHad_->size();j++)
-            {  double DR1_=fabs(Ajet_.DeltaR(gDBHad_->at(j).vec_)); if(DRBH_>DR1_) DRBH_=DR1_;           if(DRBH_<dr_)  break;  }
+            {  
+                double DR1_=fabs(Ajet_.DeltaR(gDBHad_->at(j).vec_)); 
+                if(DRBH_>DR1_) DRBH_=DR1_;           
+                if(DRBH_<dr_)  { gjet_.BHid.push_back( gDBHad_->at(j).mid_ ); } 
+            }
             for(int j=0;j<gDBQ_->size();j++)                                                                                                                           
             { 
                 double DR1_=fabs(Ajet_.DeltaR(gDBQ_->at(j).vec_));   
@@ -319,10 +323,11 @@ void Delphes::Loop()
         }
       }
       */
-      std::vector<int> bids;
+      std::vector<int> bhids;
       int gnJetOverlap =0;
       int gnJetBNTQ=0; 
       int gnJetBNTQOverlap=0;
+      gnjetBH=0;
       gnjetBQ=0;
       gnjetBTQ=0;
       gnjetBHiggs=0;
@@ -334,27 +339,27 @@ void Delphes::Loop()
          bbb.clear();
          mJet vec11 = *vec1;
 //         cout << endl << "gjet " << j << ": Pt:"<< vec11.Pt() << ": ";
-         std::vector<int> vec2 = vec1->BQid;
+         std::vector<int> vec2 = vec1->BHid;
 
          ///////////
          //check double counts
-         bool isDoubleCount =false; int bid_=0;
-         bool isBQ=false;
+         bool isDoubleCount =false; int bhid_=0;
+         bool isBH=false;
          bool isCheckOverlap=false;
          for( std::vector< int >::const_iterator vv = vec2.begin() ; vv != vec2.end() ; vv++) 
          {
             if((*vv)>0) 
             {
-              isBQ=true;
+              isBH=true;
 //               cout << " " <<  *vv << ", "; 
-              for(int i=0;i<bids.size();i++) 
-              if(bids.at(i)==(*vv)) 
+              for(int i=0;i<bhids.size();i++) 
+              if(bhids.at(i)==(*vv)) 
               {
                   isDoubleCount=true;
               }
 
-              bid_=(*vv);
-              if(!isDoubleCount) bids.push_back(bid_); 
+              bhid_=(*vv);
+              if(!isDoubleCount) bhids.push_back(bhid_); 
 
               /////////
               //check overlap
@@ -365,7 +370,7 @@ void Delphes::Loop()
               ////////
             }
          }
-         if(isBQ && bbb.size()>0 && isCheckOverlap)
+         if(isBH && bbb.size()>0 && isCheckOverlap)
          {
             cout << endl << "gjet " << j << ": Pt:"<< vec11.Pt() << ": ";
             for(int i=0;i<bbb.size();i++)
@@ -374,19 +379,23 @@ void Delphes::Loop()
                cout << bbb.at(i) ;
             }
          }
-         //if(!isDoubleCount && isBQ)
-         if(isBQ)
+         if(!isDoubleCount && isBH)
+         //if(isBH)
          {
-            gnjetBQ++;
+            gnjetBH++;
+            //gnjetBQ++;
             if(isCheckOverlap) gnJetOverlap++;
 
 //////////
-// count again about "t to b", "higgs to b"
-            double DRBTQ_=999, DRBHiggs_=999;
+// count again about "b", "t to b", "higgs to b"
+            double DRBQ_=999, DRBTQ_=999, DRBHiggs_=999;
+            for(int j=0;j<gDBQ_->size();j++)
+            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBQ_->at(j).vec_));  if(DRBQ_>DR1_) DRBQ_=DR1_;         if(DRBQ_<dr_) break;  }
             for(int j=0;j<gDBTQ_->size();j++)
             {  double DR1_=fabs(vec1->vec_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_;         if(DRBTQ_<dr_) break;  }
             for(int j=0;j<gDBHiggs_->size();j++)
             {  double DR1_=fabs(vec1->vec_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<dr_) break;  }
+            if(DRBQ_<dr_)    gnjetBQ++;
             if(DRBTQ_<dr_)    gnjetBTQ++;
             else{
               gnJetBNTQ++;

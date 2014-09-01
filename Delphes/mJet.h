@@ -30,6 +30,7 @@ class mJet{
    int flavor_;
    double bHDR_;
 
+   std::vector<int> BHid;
    std::vector<int> BQid;
 
 };

@@ -28,15 +28,14 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 {
 
   MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass"   , "Dilepton mass;Dilepton Mass (GeV/c^{2});Events/10 GeV/c^{2}", 30, 0, 300);
-  MonitorPlot nJet = MonitorPlot("nJet"  , "nJet30"  , "Jet Multiplicity;Jet Multiplicity;Events", 13, 0, 13);
+  MonitorPlot nJet  = MonitorPlot("nJet"  , "nJet30"  , "Jet Multiplicity;Jet Multiplicity;Events", 13, 0, 13);
   MonitorPlot nbJet = MonitorPlot("nbJet", "nbJet30T", "# of b-tagged Jets;# of b-tagged Jets;Events", 5, 0, 5);
   MonitorPlot MET   = MonitorPlot("MET"  ,  "MET"    , "Missing E_{T};Missing E_{T} (GeV);Events",20,0,200);
 
-
-  MonitorPlot  M_j12 = MonitorPlot("M_j12", "M_j12"   , "invariant mass of jet1+jet2;  (GeV/c^{2})^{(jet1+jet2)_M};Events/10 GeV/c^{2}", 30, 0, 300);
-  MonitorPlot  M_j34 = MonitorPlot("M_j34", "M_j34"   , "invariant mass of jet3+jet4;  (GeV/c^{2})^{(jet3+jet4)_M};Events/10 GeV/c^{2}", 30, 0, 300);
-  MonitorPlot gM_j12 = MonitorPlot("gM_j12", "gM_j12" , "invariant mass of jet1+jet2; GEN (GeV/c^{2})^{(jet1+jet2)_M};Events/10 GeV/c^{2}", 30, 0, 300);
-  MonitorPlot gM_j12 = MonitorPlot("gM_j12", "gM_j12" , "invariant mass of jet3+jet4; GEN (GeV/c^{2})^{(jet3+jet4)_M};Events/10 GeV/c^{2}", 30, 0, 300);
+  MonitorPlot  M_j12 = MonitorPlot("M_j12", "M_j12"   , "invariant mass of jet1+jet2; Invariant Mass^{(jet1+jet2)} (GeV/c^{2});Events/20 GeV/c^{2}", 40, 0, 800);
+  MonitorPlot  M_j34 = MonitorPlot("M_j34", "M_j34"   , "invariant mass of jet3+jet4; Invariant Mass^{(jet3+jet4)} (GeV/c^{2});Events/10 GeV/c^{2}", 40, 0, 400);
+  MonitorPlot gM_j12 = MonitorPlot("gM_j12", "gM_j12" , "invariant mass of jet1+jet2; Invariant Mass_{GEN}^{(jet1+jet2)} (GeV/c^{2});Events/20 GeV/c^{2}", 40, 0, 800);
+  MonitorPlot gM_j34 = MonitorPlot("gM_j34", "gM_j34" , "invariant mass of jet3+jet4; Invariant Mass_{GEN}^{(jet3+jet4)} (GeV/c^{2});Events/10 GeV/c^{2}", 40, 0, 400);
 
   MonitorPlot pt1 = MonitorPlot("pt1", "lep1_pt", "Leading lepton p_{T};p_{T}^{lep1} (GeV/c);Events/10 GeV/c", 20, 0, 200);
   MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T}^{lep2} (GeV/c);Events/10 GeV/c", 20, 0, 200);
