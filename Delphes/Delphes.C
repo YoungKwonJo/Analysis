@@ -346,7 +346,7 @@ void Delphes::Loop()
               //check overlap in BH
               bool isCheckOverlapBH_=false;
               for(int i=0;i<bbb.size();i++)
-              { if(bbb.at(i)!=(*vv)){ isCheckOverlapBH=true; isCheckOverlapBH_=true;} }    
+              { if(bbb.at(i)==(*vv)){ isCheckOverlapBH=true; isCheckOverlapBH_=true;} }    
               if(!isCheckOverlapBH_)
               { bbb.push_back( (*vv) ); }
             }
@@ -382,7 +382,7 @@ void Delphes::Loop()
                  //check overlap in BQ
                  bool isCheckOverlapBQ_=false;
                  for(int i=0;i<ccc.size();i++)
-                 { if(ccc.at(i)!=(*vv)) isCheckOverlapBQ=true; isCheckOverlapBQ_=true;}
+                 { if(ccc.at(i)==(*vv)) isCheckOverlapBQ=true; isCheckOverlapBQ_=true;}
                  if(!isCheckOverlapBQ_) { ccc.push_back( (*vv) ); }
                }
             }
