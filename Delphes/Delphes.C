@@ -344,24 +344,23 @@ void Delphes::Loop()
             {
               isBH=true;
               //check overlap in BH
-              bool isCheckOverlapBH_=false;
+              bool isCheckOverlapBH_F_=true;
               for(int i=0;i<bbb.size();i++)
-              { if(bbb.at(i)==(*vv)){ isCheckOverlapBH=true; isCheckOverlapBH_=true;} }    
-              if(!isCheckOverlapBH_)
-              { bbb.push_back( (*vv) ); }
+              { if(bbb.at(i)==(*vv)){ isCheckOverlapBH=true; isCheckOverlapBH_F_=false;} }    
+              if(isCheckOverlapBH_F_) bbb.push_back( (*vv) ); 
             }
          }
          if(bhids.size()>0)
          {
-           for(int j=0;j<bbb.size();j++)
-           { 
-              bool isDoubleCount_=false;
-              for(int i=0;i<bhids.size();i++)
-              {
-                 if(bhids.at(i)==bbb.at(j)){ isDoubleCount=true; isDoubleCount_=true; }
-              }
-              if(!isDoubleCount_) bhids.push_back( bbb.at(j) );
-           }
+            for(int j=0;j<bbb.size();j++)
+            { 
+               bool isDoubleCount_F_=true;
+               for(int i=0;i<bhids.size();i++)
+               {
+                  if(bhids.at(i)==bbb.at(j)){ isDoubleCount=true; isDoubleCount_F_=false; }
+               }
+               if(isDoubleCount_F_) bhids.push_back( bbb.at(j) );
+            }
          } 
          else for(int j=0;j<bbb.size();j++) bhids.push_back(bbb.at(j));
 ///////////
@@ -380,24 +379,25 @@ void Delphes::Loop()
                {
                  isBQ=true;
                  //check overlap in BQ
-                 bool isCheckOverlapBQ_=false;
+                 bool isCheckOverlapBQ_F_=true;
                  for(int i=0;i<ccc.size();i++)
-                 { if(ccc.at(i)==(*vv)) isCheckOverlapBQ=true; isCheckOverlapBQ_=true;}
-                 if(!isCheckOverlapBQ_) { ccc.push_back( (*vv) ); }
+                 { 
+                    if(ccc.at(i)==(*vv)) { isCheckOverlapBQ=true; isCheckOverlapBQ_F_=false;}
+                 }
+                 if(isCheckOverlapBQ_F_)  ccc.push_back( (*vv) ); 
                }
             }
             if(bqids.size()>0)
             {
-              for(int j=0;j<ccc.size();j++)
-              {
-                bool isDoubleCountBQ_=false;
-                for(int i=0;i<bqids.size();i++)
-                {
-                   if(bqids.at(i)==ccc.at(j)) { isDoubleCountBQ=true; isDoubleCountBQ_=true; }
-                   //else                       bqids.push_back(ccc.at(j));
-                }
-                if(!isDoubleCountBQ_) { bqids.push_back(ccc.at(j)); }
-              }
+               for(int j=0;j<ccc.size();j++)
+               {
+                 bool isDoubleCountBQ_F_=true;
+                 for(int i=0;i<bqids.size();i++)
+                 {
+                    if(bqids.at(i)==ccc.at(j)) { isDoubleCountBQ=true; isDoubleCountBQ_F_=false; }
+                 }
+                 if(isDoubleCountBQ_F_) bqids.push_back(ccc.at(j)); 
+               }
             } 
             else for(int j=0;j<ccc.size();j++) bqids.push_back(ccc.at(j));
 
