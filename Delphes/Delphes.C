@@ -321,17 +321,20 @@ void Delphes::Loop()
       int gnjetBTHiggs=0;
 
       std::vector<int> bhids;
+      std::vector<int> bqids;
       std::vector<int> bbb;
+      std::vector<int> ccc;
       for( mJets::const_iterator vec1 = gjets_->begin() ; vec1 != gjets_->end(); vec1++, j++)
       {
          bbb.clear();
+         ccc.clear();
          mJet vec11 = *vec1;
 //         cout << endl << "gjet " << j << ": Pt:"<< vec11.Pt() << ": ";
          //for checking bH
          std::vector<int> vec2 = vec1->BHid;
 
          ///////////
-         //check double counts
+         //check double counts in BH
          bool isDoubleCount =false; int bhid_=0;
          bool isBH=false;
          bool isCheckOverlapBH=false;
@@ -340,50 +343,77 @@ void Delphes::Loop()
             if((*vv)>0) 
             {
               isBH=true;
-              //check overlap BH
+              //check overlap in BH
               for(int i=0;i<bbb.size();i++)
               { if(bbb.at(i)!=(*vv)) isCheckOverlapBH=true; }    
               if(isCheckOverlapBH || bbb.size()==0)
               { bbb.push_back( (*vv) ); }
             }
          }
-         for(int i=0;i<bhids.size();i++)
-         for(int j=0;j<bbb.size();j++)
+         if(bhids.size()>0)
          {
-            if(bhids.at(i)==bbb.at(j))
-            {
-                isDoubleCount=true;
-            }
-            else bhids.push_back(bbb.at(j));
-         }
+           for(int i=0;i<bhids.size();i++)
+           for(int j=0;j<bbb.size();j++)
+           {
+              if(bhids.at(i)==bbb.at(j)) isDoubleCount=true;
+              else                       bhids.push_back(bbb.at(j));
+           }
+         } 
+         else for(int j=0;j<bbb.size();j++) bhids.push_back(bbb.at(j));
+
+///////////
          if(!isDoubleCount && isBH)
          {
             gnjetBH++;
             //for checking bQ 
-            //std::vector<int> vec2 = vec1->BQid;
+            std::vector<int> vec3 = vec1->BQid;
+            bool isBQ=false;
+            bool isDoubleCountBQ=false;
+            bool isCheckOverlapBQ=false;
+            for( std::vector< int >::const_iterator vv = vec3.begin() ; vv != vec3.end() ; vv++)
+            {
+               if((*vv)>0)
+               {
+                 isBQ=true;
+                 //check overlap in BQ
+                 for(int i=0;i<ccc.size();i++)
+                 { if(ccc.at(i)!=(*vv)) isCheckOverlapBQ=true; }
+                 if(isCheckOverlapBQ || ccc.size()==0)
+                 { ccc.push_back( (*vv) ); }
+               }
+            }
+            if(bqids.size()>0)
+            {
+              for(int i=0;i<bqids.size();i++)
+              for(int j=0;j<ccc.size();j++)
+              {
+                 if(bqids.at(i)==ccc.at(j)) isDoubleCountBQ=true;
+                 else                       bqids.push_back(ccc.at(j));
+              }
+            } 
+            else for(int j=0;j<ccc.size();j++) bqids.push_back(ccc.at(j));
 
-            //gnjetBQ++;
-            if(isCheckOverlapBH) gnJetOverlap++;
+            /////////
+            if(isDoubleCountBQ || !isBQ ) continue;
 
-//////////
-// count again about "b", "t to b", "higgs to b"
-            double DRBQ_=999, DRBTQ_=999, DRBHiggs_=999;
-            for(int j=0;j<gDBQ_->size();j++)
-            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBQ_->at(j).vec_));  if(DRBQ_>DR1_) DRBQ_=DR1_;         if(DRBQ_<dr_) break;  }
+            gnjetBQ++;
+            if(isCheckOverlapBQ) gnJetOverlap++;
+
+            // count about "t to b", "higgs to b"
+            double DRBTQ_=999, DRBHiggs_=999;
             for(int j=0;j<gDBTQ_->size();j++)
-            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_;         if(DRBTQ_<dr_) break;  }
+            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBTQ_->at(j).vec_));  if(DRBTQ_>DR1_) DRBTQ_=DR1_;         if(DRBTQ_<0.1) break;  }
             for(int j=0;j<gDBHiggs_->size();j++)
-            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<dr_) break;  }
-            if(DRBQ_<dr_)    gnjetBQ++;
-            if(DRBTQ_<dr_)    gnjetBTQ++;
+            {  double DR1_=fabs(vec1->vec_.DeltaR(gDBHiggs_->at(j).vec_)); if(DRBHiggs_>DR1_) DRBHiggs_=DR1_; if(DRBHiggs_<0.1) break;  }
+            if(DRBTQ_<0.1)    gnjetBTQ++;
             else{
               gnJetBNTQ++;
-              if(isCheckOverlapBH) gnJetBNTQOverlap++;
+              if(isCheckOverlapBQ) gnJetBNTQOverlap++;
             }
-            if(DRBHiggs_<dr_) gnjetBHiggs++;
-            if(DRBTQ_<dr_ || DRBHiggs_<dr_) gnjetBTHiggs++;
+            if(DRBHiggs_<0.1) gnjetBHiggs++;
+            if(DRBTQ_<0.1 || DRBHiggs_<0.1) gnjetBTHiggs++;
          }
-//////////
+//////////////
 
       }
 
