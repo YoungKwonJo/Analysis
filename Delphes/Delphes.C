@@ -233,7 +233,7 @@ void Delphes::Loop()
              {
                 gDBHad_->push_back(gp_);
                 int bid = isFromBQ(i,0);
-                if(bid>-1) 
+                if(bid>-1 && Particle_Status[Particle_M1[get1stIdX(bid,0)]]<40) 
                 {
                   gp_.mid_=bid; gDBQ_->push_back(gp_);
                   int tid = isFromTop(i,0);
@@ -246,7 +246,7 @@ void Delphes::Loop()
              {
                 gDCHad_->push_back(gp_);
                 int cid = isFromCQ(i,0);
-                if(cid>-1)
+                if(cid>-1 && Particle_Status[Particle_M1[get1stIdX(cid,0)]]<40)
                 {
                   gp_.mid_=cid; gDCQ_->push_back(gp_);
                   int tid = isFromTop(i,0);
