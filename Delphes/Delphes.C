@@ -74,6 +74,7 @@ void Delphes::Loop()
 //   std::vector< std::vector<int> > BQjet;
 
    GenParticlesP gBQlast_;     gBQlast_   = new GenParticles;
+   GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
 
    int Testing =0;
@@ -93,6 +94,7 @@ void Delphes::Loop()
       gDCHad_->clear(); gDCQ_->clear(); gDCTQ_->clear(); gDCHiggs_->clear();
       //BQjet.clear();
       gBQlast_->clear();
+      gLep_->clear();
 ////////
 //      fevent_->nVertex_ =
       fevent_->MET_     = MissingET_MET[0];
@@ -205,15 +207,28 @@ void Delphes::Loop()
 //check Ancestors(b/c hadron, b/c quark, top, higgs) in particle with status == 1
       if(leptonic>1)for(int i=0;i<Particle_size;i++ )
       {
-         if(abs(Particle_PID[i])==5 && abs(Particle_D1[i])!=5)
+
+         if(Particle_Status[i]<30 && Particle_Status[i]>10)
+         {
+             ;// cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
+         }
+         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_D1[i]])!=5)
          {
              GenParticle gp_ =getGenParticle(i);
-             gBQlast_->push_back(gp_);
+             if(Particle_Status[Particle_M1[get1stIdX(i,0)]]<40) gBQlast_->push_back(gp_);
+            // cout <<"bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i] 
+            //      <<", M1("<<Particle_M1[get1stIdX(i,0)]<<"):"<<Particle_PID[Particle_M1[get1stIdX(i,0)]] 
+            //      <<", m1-status:"<< Particle_Status[Particle_M1[get1stIdX(i,0)]] //<< endl;
+            //      <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;
          }
          if(Particle_Status[i]==1)
          {
-             bool isSameB=false;
              GenParticle gp_ =getGenParticle(i);
+             if(abs(Particle_PID[i])==11 || abs(Particle_PID[i])==13) 
+             {
+                gLep_->push_back(gp_);
+             }
+             bool isSameB=false;
              if(isFromBHad(i,0)==2)
              {
                 gDBHad_->push_back(gp_);
@@ -269,7 +284,7 @@ void Delphes::Loop()
       int gnjetCH=0, gnjetCQ=0, gnjetCTQ=0, gnjetCHiggs=0;
       for(int i=0;i<GenJet_size;i++ )
       {
-         //bool overlapMu=false, overlapEl=false;  // jet cleaning..
+         bool overlap_=false;  // jet cleaning..
          if(GenJet_PT[i]>30 && fabs(GenJet_Eta[i])<2.5)
          {
             double x_ = GenJet_PT[i]*TMath::Cos(GenJet_Phi[i]);
@@ -278,11 +293,10 @@ void Delphes::Loop()
             double e_ = TMath::Sqrt(x_*x_+y_*y_+z_*z_+GenJet_Mass[i]*GenJet_Mass[i]);
             TLorentzVector Ajet_(x_,y_,z_,e_);
 //            if(GenJet_Particles[i].GetEntries()>0) cout << "genjet particle:"<<" idx:"<< i << ", entries:" <<  GenJet_Particles[i].GetEntries() << endl;
-            /*for(int j=0;j<electrons_->size();j++ )
-            if( fabs( Ajet_.DeltaR(electrons_->at(j).vec_) )< dr_ ) overlapEl=true;
-            for(int j=0;j<muons_->size();j++ )
-            if( fabs( Ajet_.DeltaR(muons_->at(j).vec_) )< dr_ )     overlapMu=true;*/
-            //if(overlapEl || overlapMu) continue;
+            for(int j=0;j<gLep_->size();j++ )
+            if( gLep_->at(j).Pt()>20 && fabs(gLep_->at(j).Eta())<2.4 )
+            if( fabs( Ajet_.DeltaR(gLep_->at(j).vec_) )< dr_ )         overlap_=true;
+            if(overlap_ ) continue;
             
             mJet gjet_(TLorentzVector( x_,y_,z_,e_),GenJet_BTag[i],0, 999);
             double DRBH_ = 999, DRBQ_=999, DRBTQ_=999, DRBHiggs_=999;
@@ -580,7 +594,7 @@ void Delphes::Loop()
             if( fabs( Ajet_.DeltaR(electrons_->at(j).vec_) )< dr_ ) overlapEl=true;
             for(int j=0;j<muons_->size();j++ )
             if( fabs( Ajet_.DeltaR(muons_->at(j).vec_) )< dr_ )     overlapMu=true;
-            //if(overlapEl || overlapMu) continue;
+            if(overlapEl || overlapMu) continue;
 
             /*double DR_ = 999;
             for(int j=0;j<gDBHad_->size();j++)
