@@ -38,6 +38,11 @@ bool compByPtJet(mJet a, mJet b)
 {
    return a.Pt() > b.Pt();
 };
+bool compByPtGenParticle(GenParticle a, GenParticle b)
+{
+   return a.Pt() > b.Pt();
+};
+
 
 void Delphes::Loop()
 {
@@ -67,6 +72,8 @@ void Delphes::Loop()
    GenParticlesP gDCHiggs_;   gDCHiggs_ = new GenParticles;
 
 //   std::vector< std::vector<int> > BQjet;
+
+   GenParticlesP gBQlast_;     gBQlast_   = new GenParticles;
    double dr_=0.5;
 
    int Testing =0;
@@ -85,6 +92,7 @@ void Delphes::Loop()
       gDBHad_->clear(); gDBQ_->clear(); gDBTQ_->clear(); gDBHiggs_->clear(); 
       gDCHad_->clear(); gDCQ_->clear(); gDCTQ_->clear(); gDCHiggs_->clear();
       //BQjet.clear();
+      gBQlast_->clear();
 ////////
 //      fevent_->nVertex_ =
       fevent_->MET_     = MissingET_MET[0];
@@ -197,6 +205,11 @@ void Delphes::Loop()
 //check Ancestors(b/c hadron, b/c quark, top, higgs) in particle with status == 1
       if(leptonic>1)for(int i=0;i<Particle_size;i++ )
       {
+         if(abs(Particle_PID[i])==5 && abs(Particle_D1[i])!=5)
+         {
+             GenParticle gp_ =getGenParticle(i);
+             gBQlast_->push_back(gp_);
+         }
          if(Particle_Status[i]==1)
          {
              bool isSameB=false;
@@ -229,8 +242,25 @@ void Delphes::Loop()
              }
          }
       }
+///////////
+      std::sort(gBQlast_->begin(),gBQlast_->end(),compByPtGenParticle);
 
+      fevent_->NgBQlast_  = gBQlast_->size();
+      if(gBQlast_->size()>1)
+      {  
+         double bQ_DR[4]={999,999,999,99};
+         for(int i=0;i<gBQlast_->size()-1;i++)
+         for(int j=i+1;j<gBQlast_->size();j++)
+         {
+               double DR1_=fabs(gBQlast_->at(i).vec_.DeltaR(gBQlast_->at(j).vec_));
+                if(bQ_DR[i]>DR1_) bQ_DR[i]=DR1_;            
+         }
+         fevent_->gBQlast_DR1_= bQ_DR[0];
+         fevent_->gBQlast_DR2_= bQ_DR[1];
+         fevent_->gBQlast_DR3_= bQ_DR[2];
+         fevent_->gBQlast_DR4_= bQ_DR[3];
 
+      }
 //////////
 // choose genjet
       gjets_->clear();

@@ -46,6 +46,8 @@ public:
 // generated level
   bool isMC_;
 
+  int NgBQlast_;
+  double gBQlast_DR1_, gBQlast_DR2_, gBQlast_DR3_, gBQlast_DR4_;
 //  int nbJet30g_; // with reco
 
   //int gnbJet30_;
@@ -128,6 +130,12 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("gnJet30CTQ"  ,  &gnJet30CTQ_  , "gnJet30CTQ/I"  );
   tree_->Branch("gnJet30CHiggs", &gnJet30CHiggs_,"gnJet30CHiggs/I"  );
 
+
+  tree_->Branch("NgBQlast",  &NgBQlast_, "NgBQlast/I");
+  tree_->Branch("gBQlast_DR1",  &gBQlast_DR1_, "gBQlast_DR1/D");
+  tree_->Branch("gBQlast_DR2",  &gBQlast_DR2_, "gBQlast_DR2/D");
+  tree_->Branch("gBQlast_DR3",  &gBQlast_DR3_, "gBQlast_DR3/D");
+  tree_->Branch("gBQlast_DR4",  &gBQlast_DR4_, "gBQlast_DR4/D");
 
 //  tree_->Branch("nJet50"  ,  &nJet50_  , "nJet50/I"  );
   tree_->Branch("nbJet30T",  &nbJet30T_, "nbJet30T/I");
@@ -238,6 +246,9 @@ void FlatTree::clear()
    //gnbJet30_=-999;
    nJet30BH_=-999; nJet30BQ_=-999; nJet30BTQ_=-999; nJet30BHiggs_=-999;
    nJet30CH_=-999; nJet30CQ_=-999; nJet30CTQ_=-999; nJet30CHiggs_=-999;
+
+   NgBQlast_=-999;
+   gBQlast_DR1_=-999; gBQlast_DR2_=-999; gBQlast_DR3_=-999; gBQlast_DR4_=-999;
 
    gnJet30BH_=-999; gnJet30BQ_=-999; gnJet30BTQ_=-999; 
 gnJet30BHiggs_=-999;
