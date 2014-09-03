@@ -13,6 +13,8 @@ struct FlatTree
   void book(TTree* tree); // book leaves to fill the tree
   void clear();
 
+  typedef std::vector<double> doubles;
+  typedef doubles* doublesP;
 public:
   TTree* tree_;
   int run_, lumi_, event_;
@@ -48,6 +50,8 @@ public:
 
   int NgBQlast_;
   double gBQlast_DR1_, gBQlast_DR2_, gBQlast_DR3_, gBQlast_DR4_;
+  doublesP gBQlast_pt_;
+  doublesP gBQlast_eta_;
 //  int nbJet30g_; // with reco
 
   //int gnbJet30_;
@@ -80,6 +84,9 @@ public:
 FlatTree::FlatTree(bool isMC)
 {
    isMC_ = isMC;
+   gBQlast_pt_  = new doubles;
+   gBQlast_eta_ = new doubles;
+
 }
 void FlatTree::book(TTree* tree)
 {
@@ -136,6 +143,9 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("gBQlast_DR2",  &gBQlast_DR2_, "gBQlast_DR2/D");
   tree_->Branch("gBQlast_DR3",  &gBQlast_DR3_, "gBQlast_DR3/D");
   tree_->Branch("gBQlast_DR4",  &gBQlast_DR4_, "gBQlast_DR4/D");
+
+  tree_->Branch("gBQlast_pt"  , gBQlast_pt_  );
+  tree_->Branch("gBQlast_eta"  , gBQlast_eta_  );
 
 //  tree_->Branch("nJet50"  ,  &nJet50_  , "nJet50/I"  );
   tree_->Branch("nbJet30T",  &nbJet30T_, "nbJet30T/I");
@@ -232,6 +242,9 @@ void FlatTree::book(TTree* tree)
 }
 void FlatTree::clear()
 {
+   gBQlast_pt_->clear();
+   gBQlast_eta_->clear();
+
    lep1_pt_=-999;       lep2_pt_=-999;   
    lep1_eta_=-999;      lep2_eta_=-999;   
    lep1_Q_=-999;        lep2_Q_=-999;   

@@ -264,17 +264,22 @@ void Delphes::Loop()
       if(gBQlast_->size()>1)
       {  
          double bQ_DR[4]={999,999,999,99};
-         for(int i=0;i<gBQlast_->size()-1;i++)
-         for(int j=i+1;j<gBQlast_->size();j++)
+         for(int i=0;i<gBQlast_->size();i++)
          {
-               double DR1_=fabs(gBQlast_->at(i).vec_.DeltaR(gBQlast_->at(j).vec_));
-                if(bQ_DR[i]>DR1_) bQ_DR[i]=DR1_;            
+           fevent_->gBQlast_pt_ ->push_back(gBQlast_->at(i).Pt());
+           fevent_->gBQlast_eta_->push_back(gBQlast_->at(i).Eta());
+
+           if(i<gBQlast_->size()-1)
+           for(int j=i+1;j<gBQlast_->size();j++)
+           {
+                 double DR1_=fabs(gBQlast_->at(i).vec_.DeltaR(gBQlast_->at(j).vec_));
+                  if(bQ_DR[i]>DR1_) bQ_DR[i]=DR1_;            
+           }
          }
          fevent_->gBQlast_DR1_= bQ_DR[0];
          fevent_->gBQlast_DR2_= bQ_DR[1];
          fevent_->gBQlast_DR3_= bQ_DR[2];
          fevent_->gBQlast_DR4_= bQ_DR[3];
-
       }
 //////////
 // choose genjet
