@@ -210,16 +210,16 @@ void Delphes::Loop()
 
          if(Particle_Status[i]<30 && Particle_Status[i]>10)
          {
-             ;// cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
+              cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
          if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_D1[i]])!=5)
          {
              GenParticle gp_ =getGenParticle(i);
              if(Particle_Status[Particle_M1[get1stIdX(i,0)]]<40) gBQlast_->push_back(gp_);
-            // cout <<"bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i] 
-            //      <<", M1("<<Particle_M1[get1stIdX(i,0)]<<"):"<<Particle_PID[Particle_M1[get1stIdX(i,0)]] 
-            //      <<", m1-status:"<< Particle_Status[Particle_M1[get1stIdX(i,0)]] //<< endl;
-            //      <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;
+             cout <<"bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i] 
+                  <<", M1("<<Particle_M1[get1stIdX(i,0)]<<"):"<<Particle_PID[Particle_M1[get1stIdX(i,0)]] 
+                  <<", m1-status:"<< Particle_Status[Particle_M1[get1stIdX(i,0)]] //<< endl;
+                  <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;
          }
          if(Particle_Status[i]==1)
          {
@@ -414,7 +414,8 @@ void Delphes::Loop()
          else for(int j=0;j<bbb.size();j++) bhids.push_back(bbb.at(j));
 ///////////
 
-         if(!isDoubleCount && isBH)
+         //if(!isDoubleCount && isBH)
+         if( isBH)
          {
             gnjetBH++;
             //for checking bQ 
@@ -451,7 +452,8 @@ void Delphes::Loop()
             else for(int j=0;j<ccc.size();j++) bqids.push_back(ccc.at(j));
 
             /////////
-            if(!isDoubleCountBQ && isBQ )
+            //if(!isDoubleCountBQ && isBQ )
+            if(isBQ )
             {
                gnjetBQ++;
                if(isCheckOverlapBQ) gnJetOverlap++;
