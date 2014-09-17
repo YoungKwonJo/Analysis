@@ -223,6 +223,10 @@ void Delphes::Loop(bool isttjj)
          {
              GenParticle gp_ =getGenParticle(i);
              gQQfirst_->push_back(gp_);
+             /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
+                  <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
+                  <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
+                  <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;*/
          }
          //first bq
          if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && Particle_Status[i]>20 && Particle_Status[i]<60)
@@ -740,7 +744,7 @@ void Delphes::Loop(bool isttjj)
              if(i<gBQfirst_->size()-1)
              for(int j=i+1;j<gBQfirst_->size();j++)
              {
-                if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
+                if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]==-1 && bjet_idx_fromT[1]==-1)
                 {
                    bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                    bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
@@ -775,10 +779,11 @@ void Delphes::Loop(bool isttjj)
                 }
              }
           }
-          if(isttjj && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
+          if(isttjj && gQQfirst_->size()>1 && jets_->size()>3)// && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
           {
+             //cout << "start gQQ...." << endl;
              std::sort(gQQfirst_->begin(),gQQfirst_->end(),compByPtGenParticle);
-             int jgQQfirstJetIdx[50];
+             int jgQQfirstJetIdx[200];
              for(int i=0;i<gQQfirst_->size();i++)
              {
                double DR_=999, idx=-1;
@@ -793,14 +798,14 @@ void Delphes::Loop(bool isttjj)
              }
              bool pass_=false;
              for(int i=0;i<gQQfirst_->size();i++)
-             {
+             { //continue;
                 if(i<gQQfirst_->size()-1)
                 for(int j=i+1;j<gQQfirst_->size();j++)
                 if(!pass_)
                 if(jgQQfirstJetIdx[i]>-1 && jgQQfirstJetIdx[j]>-1)
                 {
-                    bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
-                    bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                    bQ_DR[1]=fabs(gQQfirst_->at(i).vec_.DeltaR(gQQfirst_->at(j).vec_));
+                    bQ_M[1] = (gQQfirst_->at(i).vec_+gQQfirst_->at(j).vec_).M();
                     bQ_DRjj[1]=fabs(jets_->at(jgQQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgQQfirstJetIdx[j]).vec_));
                     bQ_Mjj[1] = (jets_->at(jgQQfirstJetIdx[i]).vec_+jets_->at(jgQQfirstJetIdx[j]).vec_).M();
                     pass_=true;
@@ -852,7 +857,7 @@ void Delphes::Loop(bool isttjj)
             if(i<gBQfirst_->size()-1)
             for(int j=i+1;j<gBQfirst_->size();j++)
             {
-               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
+               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]==-1 && bjet_idx_fromT[1]==-1)
                {
                   bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
@@ -875,10 +880,11 @@ void Delphes::Loop(bool isttjj)
                }
             }
          }
-         if(isttjj && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
+         if(isttjj && gQQfirst_->size()>1 && gjets_->size()>3)// && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1 && gQQfirst_->size()>1 && gQQfirst_->size()>1)
          {
+             //cout << "start gQQ...." << endl;
              std::sort(gQQfirst_->begin(),gQQfirst_->end(),compByPtGenParticle);
-             int gQQfirstJetIdx[50];
+             int gQQfirstJetIdx[200];
              for(int i=0;i<gQQfirst_->size();i++)
              {
                double DR_=999, idx=-1;
@@ -893,14 +899,14 @@ void Delphes::Loop(bool isttjj)
              }
              bool pass_=false;
              for(int i=0;i<gQQfirst_->size();i++)
-             {
+             { //continue; // for debug
                 if(i<gQQfirst_->size()-1)
                 for(int j=i+1;j<gQQfirst_->size();j++)
                 if(!pass_)
                 if(gQQfirstJetIdx[i]>-1 && gQQfirstJetIdx[j]>-1)
                 {
-                    bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
-                    bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                    bQ_DR[1]=fabs(gQQfirst_->at(i).vec_.DeltaR(gQQfirst_->at(j).vec_));
+                    bQ_M[1] = (gQQfirst_->at(i).vec_+gQQfirst_->at(j).vec_).M();
                     bQ_DRjj[1]=fabs(gjets_->at(gQQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gQQfirstJetIdx[j]).vec_));
                     bQ_Mjj[1] = (gjets_->at(gQQfirstJetIdx[i]).vec_+gjets_->at(gQQfirstJetIdx[j]).vec_).M();
                     pass_=true;
