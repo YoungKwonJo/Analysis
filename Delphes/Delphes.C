@@ -44,7 +44,7 @@ bool compByPtGenParticle(GenParticle a, GenParticle b)
 };
 
 
-void Delphes::Loop()
+void Delphes::Loop(bool isttjj)
 {
    if (fChain == 0) return;
 
@@ -74,6 +74,7 @@ void Delphes::Loop()
 //   std::vector< std::vector<int> > BQjet;
 
    GenParticlesP gBQlast_;     gBQlast_   = new GenParticles;
+   GenParticlesP gQQfirst_;     gQQfirst_   = new GenParticles;
    GenParticlesP gBQfirst_;     gBQfirst_   = new GenParticles;
    GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
@@ -97,6 +98,7 @@ void Delphes::Loop()
       //BQjet.clear();
       gBQlast_->clear();
       gBQfirst_->clear();
+      gQQfirst_->clear();
       gLep_->clear();
 ////////
 //      fevent_->nVertex_ =
@@ -215,6 +217,12 @@ void Delphes::Loop()
          if(Particle_Status[i]<30 && Particle_Status[i]>10)
          {
               ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
+         }
+         if(Particle_Status[i]>20 && Particle_Status[i]<60 && abs(Particle_PID[i])<5 && 
+               abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
+         {
+             GenParticle gp_ =getGenParticle(i);
+             gQQfirst_->push_back(gp_);
          }
          //first bq
          if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && Particle_Status[i]>20 && Particle_Status[i]<60)
@@ -373,80 +381,6 @@ void Delphes::Loop()
       std::sort(gjets_->begin(), gjets_->end(), compByPtJet);
 
 //////////
-//bBQfirst and genJet.
-      //std::sort(gBQfirst_->begin(),gBQfirst_->end(),compByPtGenParticle);
-
-      int gBQfirstJetIdx[20];
-      if(gBQfirst_->size()>3)
-      {
-         for(int i=0;i<gBQfirst_->size();i++)
-         {
-           double DR_=999, idx=-1;
-           for(int j=0;j<gjets_->size();j++)
-           {
-                double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gjets_->at(j).vec_));
-                if(DR_>DR1_) { DR_=DR1_; idx=j;}
-           }
-           if(DR_<0.5) gBQfirstJetIdx[i]=idx;
-           else gBQfirstJetIdx[i] = -1;
-         }
-      }
-///////////
-      fevent_->NgBQ1st_  = gBQfirst_->size();
-      if(gBQfirst_->size()>3)
-      {
-         double bQ_DR[2]={999,999}; double bQ_M[2]={-1,-1};
-         double bQ_DRjj[2]={999,999}; double bQ_Mjj[2]={-1,-1};
-         for(int i=0;i<gBQfirst_->size();i++)
-         {
-            if(i<gBQfirst_->size()-1)
-            for(int j=i+1;j<gBQfirst_->size();j++)
-            {
-               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bQ_M[0]==-1)
-               {
-                  bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
-                  bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
-                  {
-                    bQ_DRjj[0]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
-                    bQ_Mjj[0] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
-                  }
-               }
-               if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_M[1]==-1)
-               {
-                  bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
-                  bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
-                  {
-                    bQ_DRjj[1]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
-                    bQ_Mjj[1] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
-                  }
-               }
-            }
-         }
-         fevent_->gBQ1st_DR1fromT_= bQ_DR[0];
-         fevent_->gBQ1st_DR2add_= bQ_DR[1];
-         fevent_->gBQ1st_M1fromT_= bQ_M[0];
-         fevent_->gBQ1st_M2add_= bQ_M[1];
-
-         fevent_->gBQ1st_DR1jjfromT_= bQ_DRjj[0];
-         fevent_->gBQ1st_DR2jjadd_= bQ_DRjj[1];
-         fevent_->gBQ1st_M1jjfromT_= bQ_Mjj[0];
-         fevent_->gBQ1st_M2jjadd_= bQ_Mjj[1];
-      }
-      double DR_jj[2]={999,999 }, M_jj[2]={-1, -1};
-      if(gjets_->size()>3)
-      {
-         DR_jj[0] = fabs( gjets_->at(0).vec_.DeltaR(gjets_->at(1).vec_) );
-         DR_jj[1] = fabs( gjets_->at(2).vec_.DeltaR(gjets_->at(3).vec_) );
-         M_jj[0] = (gjets_->at(0).vec_+gjets_->at(1).vec_).M();
-         M_jj[1] = (gjets_->at(2).vec_+gjets_->at(3).vec_).M();
-      }
-
-      fevent_->gjet_DR1jj_= DR_jj[0];
-      fevent_->gjet_DR2jj_= DR_jj[1];
-      fevent_->gjet_M1jj_= M_jj[0];
-      fevent_->gjet_M2jj_= M_jj[1];
 //////////
 //check double-count about matching
       ////int j=0;
@@ -778,82 +712,227 @@ void Delphes::Loop()
                     fevent_->jet4_bTag_=jets_->at(3).CSV_; fevent_->jet4_flavor_=jets_->at(3).flavor_; 
                     fevent_->M_j34_ = (jets_->at(2).vec_+jets_->at(3).vec_).M();
                  }
+
+
+//      tree_->Fill(); continue; //for debug
 //////////////////////////////
-      int jgBQfirstJetIdx[20];
-      if(gBQfirst_->size()>3)
+      if(gBQfirst_->size()>1)
       {
+          int jgBQfirstJetIdx[20];
+          for(int i=0;i<gBQfirst_->size();i++)
+          {
+            double DR_=999, idx=-1;
+            for(int j=0;j<jets_->size();j++)
+            {
+                 double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(jets_->at(j).vec_));
+                 if(DR_>DR1_) { DR_=DR1_; idx=j;}
+            }
+            if(DR_<0.5) jgBQfirstJetIdx[i]=idx;
+            else jgBQfirstJetIdx[i] = -1;
+          }
+          
+          int    bjet_idx_fromT[2]={-1,-1};
+          double bQ_DR[2]={999,999}; double bQ_M[2]={-1,-1};
+          double bQ_DRjj[2]={999,999}; double bQ_Mjj[2]={-1,-1};
+          double bQ_PTjj[4]={-1,-1,-1,-1}; double bQ_Etajj[4]={-999,-999,-999,-999};
+          for(int i=0;i<gBQfirst_->size();i++)
+          {
+             if(i<gBQfirst_->size()-1)
+             for(int j=i+1;j<gBQfirst_->size();j++)
+             {
+                if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
+                {
+                   bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                   bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                   if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                   {
+                     bQ_DRjj[0]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
+                     bQ_Mjj[0] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
+                     double pt1 = jets_->at(jgBQfirstJetIdx[i]).Pt();
+                     double pt2 = jets_->at(jgBQfirstJetIdx[j]).Pt();
+                     double eta1 = jets_->at(jgBQfirstJetIdx[i]).Eta();
+                     double eta2 = jets_->at(jgBQfirstJetIdx[j]).Eta();
+                     bjet_idx_fromT[0]=jgBQfirstJetIdx[i]; bjet_idx_fromT[1]=jgBQfirstJetIdx[j];
+                     if(pt1>pt2 ){ bQ_PTjj[0]=pt1; bQ_PTjj[1]=pt2; bQ_Etajj[0]=eta1; bQ_Etajj[1]=eta2;}
+                     else        { bQ_PTjj[0]=pt2; bQ_PTjj[1]=pt1; bQ_Etajj[0]=eta2; bQ_Etajj[1]=eta1;}
+                   }
+                }
+                if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj)
+                {
+                   bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                   bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                   if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                   {
+                     bQ_DRjj[1]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
+                     bQ_Mjj[1] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
+                     double pt1 = jets_->at(jgBQfirstJetIdx[i]).Pt();
+                     double pt2 = jets_->at(jgBQfirstJetIdx[j]).Pt();
+                     double eta1 = jets_->at(jgBQfirstJetIdx[i]).Eta();
+                     double eta2 = jets_->at(jgBQfirstJetIdx[j]).Eta();
+                     if(pt1>pt2 ){ bQ_PTjj[2]=pt1; bQ_PTjj[3]=pt2; bQ_Etajj[2]=eta1; bQ_Etajj[3]=eta2;}
+                     else        { bQ_PTjj[2]=pt2; bQ_PTjj[3]=pt1; bQ_Etajj[2]=eta2; bQ_Etajj[3]=eta1;}
+                   }
+                }
+             }
+          }
+          if(isttjj && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
+          {
+             std::sort(gQQfirst_->begin(),gQQfirst_->end(),compByPtGenParticle);
+             int jgQQfirstJetIdx[50];
+             for(int i=0;i<gQQfirst_->size();i++)
+             {
+               double DR_=999, idx=-1;
+               for(int j=0;j<jets_->size();j++)
+               if(bjet_idx_fromT[0]!=j && bjet_idx_fromT[1]!=j)
+               {
+                    double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(jets_->at(j).vec_));
+                    if(DR_>DR1_) { DR_=DR1_; idx=j;}
+               }
+               if(DR_<0.5) jgQQfirstJetIdx[i]=idx;
+               else jgQQfirstJetIdx[i] = -1;
+             }
+             bool pass_=false;
+             for(int i=0;i<gQQfirst_->size();i++)
+             {
+                if(i<gQQfirst_->size()-1)
+                for(int j=i+1;j<gQQfirst_->size();j++)
+                if(!pass_)
+                if(jgQQfirstJetIdx[i]>-1 && jgQQfirstJetIdx[j]>-1)
+                {
+                    bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                    bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                    bQ_DRjj[1]=fabs(jets_->at(jgQQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgQQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[1] = (jets_->at(jgQQfirstJetIdx[i]).vec_+jets_->at(jgQQfirstJetIdx[j]).vec_).M();
+                    pass_=true;
+                }
+             }
+          }
+          fevent_->jgBQ1st_DR1jjfromT_= bQ_DRjj[0];
+          fevent_->jgBQ1st_DR2jjadd_= bQ_DRjj[1];
+          fevent_->jgBQ1st_M1jjfromT_= bQ_Mjj[0];
+          fevent_->jgBQ1st_M2jjadd_= bQ_Mjj[1];
+          
+          fevent_->jgBQ1st_PTj1jfromT_= bQ_PTjj[0];
+          fevent_->jgBQ1st_PTj2jfromT_= bQ_PTjj[1];
+          fevent_->jgBQ1st_PTj3jadd_  = bQ_PTjj[2];
+          fevent_->jgBQ1st_PTj4jadd_  = bQ_PTjj[3];
+          
+          fevent_->jgBQ1st_Etaj1jfromT_= bQ_Etajj[0];
+          fevent_->jgBQ1st_Etaj2jfromT_= bQ_Etajj[1];
+          fevent_->jgBQ1st_Etaj3jadd_  = bQ_Etajj[2];
+          fevent_->jgBQ1st_Etaj4jadd_  = bQ_Etajj[3];
+      }
+
+
+
+
+//////////////////////////////
+//bBQfirst and genJet.
+      if(gBQfirst_->size()>1)
+      {
+         int gBQfirstJetIdx[20];
+         fevent_->NgBQ1st_  = gBQfirst_->size();
          for(int i=0;i<gBQfirst_->size();i++)
          {
            double DR_=999, idx=-1;
-           for(int j=0;j<jets_->size();j++)
+           for(int j=0;j<gjets_->size();j++)
            {
-                double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(jets_->at(j).vec_));
+                double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gjets_->at(j).vec_));
                 if(DR_>DR1_) { DR_=DR1_; idx=j;}
            }
-           if(DR_<0.5) jgBQfirstJetIdx[i]=idx;
-           else jgBQfirstJetIdx[i] = -1;
+           if(DR_<0.5) gBQfirstJetIdx[i]=idx;
+           else gBQfirstJetIdx[i] = -1;
          }
-
+//////////////
+         int    bjet_idx_fromT[2]={-1,-1};
          double bQ_DR[2]={999,999}; double bQ_M[2]={-1,-1};
          double bQ_DRjj[2]={999,999}; double bQ_Mjj[2]={-1,-1};
-         double bQ_PTjj[4]={-1,-1,-1,-1}; double bQ_Etajj[4]={999,999,999,999};
          for(int i=0;i<gBQfirst_->size();i++)
          {
             if(i<gBQfirst_->size()-1)
             for(int j=i+1;j<gBQfirst_->size();j++)
             {
-               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bQ_M[0]==-1)
+               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
                {
                   bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                  if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
                   {
-                    bQ_DRjj[0]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
-                    bQ_Mjj[0] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
-                    double pt1 = jets_->at(jgBQfirstJetIdx[i]).Pt();
-                    double pt2 = jets_->at(jgBQfirstJetIdx[j]).Pt();
-                    double eta1 = jets_->at(jgBQfirstJetIdx[i]).Eta();
-                    double eta2 = jets_->at(jgBQfirstJetIdx[j]).Eta();
-                    if(pt1>pt2 ){ bQ_PTjj[0]=pt1; bQ_PTjj[1]=pt2; bQ_Etajj[0]=eta1; bQ_Etajj[1]=eta2;}
-                    else        { bQ_PTjj[0]=pt2; bQ_PTjj[1]=pt1; bQ_Etajj[0]=eta2; bQ_Etajj[1]=eta1;}
+                    bQ_DRjj[0]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[0] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
+                    bjet_idx_fromT[0]=gBQfirstJetIdx[i]; bjet_idx_fromT[1]=gBQfirstJetIdx[j];
                   }
                }
-               if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_M[1]==-1)
+               if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj)
                {
                   bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                  if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
                   {
-                    bQ_DRjj[1]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
-                    bQ_Mjj[1] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
-                    double pt1 = jets_->at(jgBQfirstJetIdx[i]).Pt();
-                    double pt2 = jets_->at(jgBQfirstJetIdx[j]).Pt();
-                    double eta1 = jets_->at(jgBQfirstJetIdx[i]).Eta();
-                    double eta2 = jets_->at(jgBQfirstJetIdx[j]).Eta();
-                    if(pt1>pt2 ){ bQ_PTjj[2]=pt1; bQ_PTjj[3]=pt2; bQ_Etajj[2]=eta1; bQ_Etajj[3]=eta2;}
-                    else        { bQ_PTjj[2]=pt2; bQ_PTjj[3]=pt1; bQ_Etajj[2]=eta2; bQ_Etajj[3]=eta1;}
+                    bQ_DRjj[1]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[1] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
                   }
                }
             }
          }
-         fevent_->jgBQ1st_DR1jjfromT_= bQ_DRjj[0];
-         fevent_->jgBQ1st_DR2jjadd_= bQ_DRjj[1];
-         fevent_->jgBQ1st_M1jjfromT_= bQ_Mjj[0];
-         fevent_->jgBQ1st_M2jjadd_= bQ_Mjj[1];
-
-         fevent_->jgBQ1st_PTj1jfromT_= bQ_PTjj[0];
-         fevent_->jgBQ1st_PTj2jfromT_= bQ_PTjj[1];
-         fevent_->jgBQ1st_PTj3jadd_  = bQ_PTjj[2];
-         fevent_->jgBQ1st_PTj4jadd_  = bQ_PTjj[3];
-
-         fevent_->jgBQ1st_Etaj1jfromT_= bQ_Etajj[0];
-         fevent_->jgBQ1st_Etaj2jfromT_= bQ_Etajj[1];
-         fevent_->jgBQ1st_Etaj3jadd_  = bQ_Etajj[2];
-         fevent_->jgBQ1st_Etaj4jadd_  = bQ_Etajj[3];
+         if(isttjj && bjet_idx_fromT[0]>-1 && bjet_idx_fromT[1]>-1)
+         {
+             std::sort(gQQfirst_->begin(),gQQfirst_->end(),compByPtGenParticle);
+             int gQQfirstJetIdx[50];
+             for(int i=0;i<gQQfirst_->size();i++)
+             {
+               double DR_=999, idx=-1;
+               for(int j=0;j<gjets_->size();j++)
+               if(bjet_idx_fromT[0]!=j && bjet_idx_fromT[1]!=j)
+               {
+                    double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(gjets_->at(j).vec_));
+                    if(DR_>DR1_) { DR_=DR1_; idx=j;}
+               }
+               if(DR_<0.5) gQQfirstJetIdx[i]=idx;
+               else gQQfirstJetIdx[i] = -1;
+             }
+             bool pass_=false;
+             for(int i=0;i<gQQfirst_->size();i++)
+             {
+                if(i<gQQfirst_->size()-1)
+                for(int j=i+1;j<gQQfirst_->size();j++)
+                if(!pass_)
+                if(gQQfirstJetIdx[i]>-1 && gQQfirstJetIdx[j]>-1)
+                {
+                    bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                    bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                    bQ_DRjj[1]=fabs(gjets_->at(gQQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gQQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[1] = (gjets_->at(gQQfirstJetIdx[i]).vec_+gjets_->at(gQQfirstJetIdx[j]).vec_).M();
+                    pass_=true;
+                }
+             }
+         }
+         fevent_->gBQ1st_DR1fromT_= bQ_DR[0];
+         fevent_->gBQ1st_DR2add_= bQ_DR[1];
+         fevent_->gBQ1st_M1fromT_= bQ_M[0];
+         fevent_->gBQ1st_M2add_= bQ_M[1];
+         
+         fevent_->gBQ1st_DR1jjfromT_= bQ_DRjj[0];
+         fevent_->gBQ1st_DR2jjadd_= bQ_DRjj[1];
+         fevent_->gBQ1st_M1jjfromT_= bQ_Mjj[0];
+         fevent_->gBQ1st_M2jjadd_= bQ_Mjj[1];
+         
+         double DR_jj[2]={-999,-999 }, M_jj[2]={-1, -1};
+         if(gjets_->size()>3)
+         {
+            DR_jj[0] = fabs( gjets_->at(0).vec_.DeltaR(gjets_->at(1).vec_) );
+            DR_jj[1] = fabs( gjets_->at(2).vec_.DeltaR(gjets_->at(3).vec_) );
+            M_jj[0] = (gjets_->at(0).vec_+gjets_->at(1).vec_).M();
+            M_jj[1] = (gjets_->at(2).vec_+gjets_->at(3).vec_).M();
+         }
+         
+         fevent_->gjet_DR1jj_= DR_jj[0];
+         fevent_->gjet_DR2jj_= DR_jj[1];
+         fevent_->gjet_M1jj_= M_jj[0];
+         fevent_->gjet_M2jj_= M_jj[1];
       }
+
 //////////////////////////////
-
-
       tree_->Fill();
    }
 

@@ -1,4 +1,4 @@
-void run( char *str){
+void run( char *str, bool isttjj=false){
 
     //gROOT->ProcessLine(".L TtFullLepKinSolver.C+g");
     gROOT->ProcessLine(".L FlatTree.h+g");
@@ -16,7 +16,7 @@ void run( char *str){
  
         TFile fout(Form("result_%s.root", str), "RECREATE");
         
-        t.Loop();
+        t.Loop(isttjj);
         fout.Write();
         fout.Close();
     }

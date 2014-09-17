@@ -83,15 +83,15 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot gjet_M2jj = MonitorPlot("gjet_M2jj", "gjet_M2jj", "Dijet mass not from top;  M_{j_{3} j_{4}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
   MonitorPlot gjet_DR2jj = MonitorPlot("gjet_DR2jj", "gjet_DR2jj", "Dijet DR not from top; #Delta R_{j_{3} j_{4}} ;Events ", 30, 0.5, 6.5,false);
 
-  MonitorPlot jgBQ1st_PTj1jfromT = MonitorPlot("jgBQ1st_PTj1jfromT", "jgBQ1st_PTj1jfromT", "Leading Jet p_{T}; p_{T}^{jet1^{from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
-  MonitorPlot jgBQ1st_PTj2jfromT = MonitorPlot("jgBQ1st_PTj2jfromT", "jgBQ1st_PTj2jfromT", "Leading Jet p_{T}; p_{T}^{jet2^{from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
-  MonitorPlot jgBQ1st_PTj3jadd = MonitorPlot("jgBQ1st_PTj3jadd", "jgBQ1st_PTj3jadd", "Leading Jet p_{T}; p_{T}^{jet1^{not from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
-  MonitorPlot jgBQ1st_PTj4jadd = MonitorPlot("jgBQ1st_PTj4jadd", "jgBQ1st_PTj4jadd", "Leading Jet p_{T}; p_{T}^{jet2^{not from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
+  MonitorPlot jgBQ1st_PTj1jfromT = MonitorPlot("jgBQ1st_PTj1jfromT", "jgBQ1st_PTj1jfromT", "Leading Jet p_{T}; p_{T}^{jet1^{from t}} (GeV/c);Events/20 GeV/c",50, 0, 500);
+  MonitorPlot jgBQ1st_PTj2jfromT = MonitorPlot("jgBQ1st_PTj2jfromT", "jgBQ1st_PTj2jfromT", "Leading Jet p_{T}; p_{T}^{jet2^{from t}} (GeV/c);Events/20 GeV/c",50, 0, 500);
+  MonitorPlot jgBQ1st_PTj3jadd = MonitorPlot("jgBQ1st_PTj3jadd", "jgBQ1st_PTj3jadd", "Leading Jet p_{T}; p_{T}^{jet1^{not from t}} (GeV/c);Events/20 GeV/c",50, 0, 500);
+  MonitorPlot jgBQ1st_PTj4jadd = MonitorPlot("jgBQ1st_PTj4jadd", "jgBQ1st_PTj4jadd", "Leading Jet p_{T}; p_{T}^{jet2^{not from t}} (GeV/c);Events/20 GeV/c",50, 0, 500);
 
-  MonitorPlot jgBQ1st_Etaj1jfromT = MonitorPlot("jgBQ1st_Etaj1jfromT", "jgBQ1st_Etaj1jfromT", "Leading #eta;#eta^{jet1^{from t}};Events/0.2", 20, -3.5, 3.5);
-  MonitorPlot jgBQ1st_Etaj2jfromT = MonitorPlot("jgBQ1st_Etaj2jfromT", "jgBQ1st_Etaj2jfromT", "Leading #eta;#eta^{jet2^{from t}};Events/0.2", 20, -3.5, 3.5);
-  MonitorPlot jgBQ1st_Etaj3jadd = MonitorPlot("jgBQ1st_Etaj3jadd", "jgBQ1st_Etaj3jadd", "Leading #eta;#eta^{jet1^{not from t}};Events/0.2", 20, -3.5, 3.5);
-  MonitorPlot jgBQ1st_Etaj4jadd = MonitorPlot("jgBQ1st_Etaj4jadd", "jgBQ1st_Etaj4jadd", "Leading #eta;#eta^{jet2^{not from t}};Events/0.2", 20, -3.5, 3.5);
+  MonitorPlot jgBQ1st_Etaj1jfromT = MonitorPlot("jgBQ1st_Etaj1jfromT", "jgBQ1st_Etaj1jfromT", "Leading #eta;#eta^{jet1^{from t}};Events/0.2", 35, -3.5, 3.5,false);
+  MonitorPlot jgBQ1st_Etaj2jfromT = MonitorPlot("jgBQ1st_Etaj2jfromT", "jgBQ1st_Etaj2jfromT", "Leading #eta;#eta^{jet2^{from t}};Events/0.2", 35, -3.5, 3.5,false);
+  MonitorPlot jgBQ1st_Etaj3jadd = MonitorPlot("jgBQ1st_Etaj3jadd", "jgBQ1st_Etaj3jadd", "Leading #eta;#eta^{jet1^{not from t}};Events/0.2", 35, -3.5, 3.5,false);
+  MonitorPlot jgBQ1st_Etaj4jadd = MonitorPlot("jgBQ1st_Etaj4jadd", "jgBQ1st_Etaj4jadd", "Leading #eta;#eta^{jet2^{not from t}};Events/0.2", 35, -3.5, 3.5,false);
 
 //////////
   Sample ttbb_1 = Sample("result_ttbb_test.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.568e+01*0.04553956); // xsec unit : pb
@@ -114,6 +114,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   Cut cuts = Cut();
   cuts.addCut("1","1"); //S0
   cuts.addCut("leptonic>1","1"); // S1 : dileptonic in generate level
+//  cuts.addCut("nJet30>3","1");
 //  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
 //  cuts.addCut("nJet30>3","1");   //S3
 //  cuts.addCut("nbJet30T>2","1"); //S4
