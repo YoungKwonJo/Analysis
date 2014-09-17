@@ -62,24 +62,54 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot nElG = MonitorPlot("nElG", "electronic", "# of electron in gen;# of e^{GEN};Events", 3, 0, 3);
 
 
+  MonitorPlot gnBQ =       MonitorPlot("gnBQ1st",       "NgBQ1st",    "# of b;# of b;Events", 13, 0, 13);
+  MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "Dijet mass from top; M_{bb^{from t}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "Dijet DR from top;#Delta R_{bb^{from t}} ;Events ", 50, 0, 10);
+  MonitorPlot gBQ1st_M2add = MonitorPlot("gBQ1st_M2add", "gBQ1st_M2add", "Dijet mass not from top;  M_{bb^{not from t}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "Dijet DR not from top; #Delta R_{bb^{not from t}} ;Events ", 50, 0, 10);
 
   //Sample(string fileName_, string treeName_, string name_,string label_,Color_t color_,  int style_, double width_, bool isMC_=false,  double xsec_=1)
-  Sample ttbb_1 = Sample("result_ttbb_loop_sm.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.588e+01); // xsec unit : pb
+/*  Sample ttbb_1 = Sample("result_ttbb_loop_sm.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.588e+01); // xsec unit : pb
   Sample ttbb_2 = Sample("result_ttbb_loop_sm_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ cut",kRed-4 ,2,1,true, 4.686e+00); // xsec unit : pb
   Sample tth_1  = Sample("result_tth_loop_sm.root",        "ntuple","tth_1" ,"t#bar{t} + H"              ,kBlue  ,1,3,true, 4.642e-01); // xsec unit : pb
   Sample tth_2  = Sample("result_tth_loop_sm_cut_bq.root", "ntuple","tth_2" ,"t#bar{t} + H w/ cut"      ,kBlue-7 ,2,1,true, 3.669e-01); // xsec unit : pb
   Sample ttjj_1 = Sample("result_ttjj_loop_sm.root",       "ntuple","ttjj_1","t#bar{t} + jj"            ,kGreen+2,1,3,true, 2.238e+02); // xsec unit : pb
+*/
+/*
+  Sample ttbb_1 = Sample("result_ttbb_test.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.568e+01*0.04553956); // xsec unit : pb
+  Sample ttbb_2 = Sample("result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ cut",kRed-4 ,2,1,true, 4.729e+00*0.04553956); // xsec unit : pb
+  Sample tth_1  = Sample("result_tth_test.root",        "ntuple","tth_1" ,"t#bar{t} + H"              ,kBlue  ,1,3,true, 4.639e-01*0.04553956); // xsec unit : pb
+  Sample tth_2  = Sample("result_tth_test_cut_bq.root", "ntuple","tth_2" ,"t#bar{t} + H w/ cut"       ,kBlue-7 ,2,1,true,3.234e-01*0.04553956); // xsec unit : pb
+  Sample ttjj_1 = Sample("result_ttjj_woSPIN_test.root","ntuple","ttjj_1","t#bar{t} + jj w/o spin"    ,kGreen+2,1,3,true,2.238e+02); // xsec unit : pb
+*/
+  Sample ttbb_1 = Sample("result_ttbb_test.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.568e+01*0.04553956); // xsec unit : pb
+  Sample ttbb_2 = Sample("result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ bQ>20",kRed-4 ,2,1,true, 4.729e+00*0.04553956); // xsec unit : pb
+  Sample ttbb_3 = Sample("result_ttbb_woSPIN_test.root",       "ntuple","ttbb_3","t#bar{t} + b#bar{b} w/o SC",kOrange ,1,3,true, 4.729e+00); // xsec unit : pb
+  Sample ttbb_4 = Sample("result_ttbb_woSPIN_test_cut_bq.root","ntuple","ttbb_4","t#bar{t} + b#bar{b} w/ bQ>20 w/o SC",kOrange-6 ,2,1,true, 4.729e+00); // xsec unit : pb
+
+  Sample tth_1  = Sample("result_tth_test.root",        "ntuple","tth_1" ,"t#bar{t} + H"              ,kBlue  ,1,3,true, 4.639e-01*0.04553956); // xsec unit : pb
+  Sample tth_2  = Sample("result_tth_test_cut_bq.root", "ntuple","tth_2" ,"t#bar{t} + H w/ bQ>20"       ,kBlue-7 ,2,1,true,3.234e-01*0.04553956); // xsec unit : pb
+  Sample tth_3  = Sample("result_tth_woSPIN_test.root",        "ntuple","tth_3" ,"t#bar{t} + H w/o SC"              ,kCyan  ,1,3,true, 4.639e-01); // xsec unit : pb
+  Sample tth_4  = Sample("result_tth_woSPIN_test_cut_bq.root", "ntuple","tth_4" ,"t#bar{t} + H w/ bQ>20 w/o SC"       ,kCyan-7 ,2,1,true,3.234e-01); // xsec unit : pb
+
+  Sample ttjj_1 = Sample("result_ttjj_woSPIN_test.root","ntuple","ttjj_1","t#bar{t} + jj w/o SC"    ,kGreen+2,1,3,true,2.238e+02); // xsec unit : pb
+
+
+  Sample MC[] = {ttbb_1, ttbb_2, ttbb_3, ttbb_4, tth_1, tth_2, tth_3, tth_4, ttjj_1};
+//  Sample MC[] = { ttbb_1, ttbb_3, ttbb_4};//, tth_1, tth_2, tth_3, tth_4, ttjj_1};
 
 // Cut Steps as Event selection  
   Cut cuts = Cut();
   cuts.addCut("1","1"); //S0
   cuts.addCut("leptonic>1","1"); // S1 : dileptonic in generate level
-  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
-  cuts.addCut("nJet30>3","1");   //S3
-  cuts.addCut("nbJet30T>2","1"); //S4
-  cuts.addCut("nbJet30T>=4","1"); //S4
+//  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
+//  cuts.addCut("nJet30>3","1");   //S3
+//  cuts.addCut("nbJet30T>2","1"); //S4
+//  cuts.addCut("nbJet30T>=4","1"); //S4
 
 ////////////                 
+ MonitorPlot MyPlots[] = {nLepG,gnBQ,gBQ1st_M1fromT,gBQ1st_DR1fromT,gBQ1st_M2add,gBQ1st_DR2add };
+/*
   MonitorPlot MyPlots[] = {nLepG,nMuG,nElG,           // 0, 1, 2
                            ZMass, nJet, nbJet, MET,   // 3, 4, 5, 6
                            pt1, pt2,                  // 7,8
@@ -90,7 +120,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
                            M_j12, M_j34, gM_j12, gM_j34 
                            //jet1phi30,jet2phi30,jet3phi30, jet4phi30 // 19, 20, 21, 22
                           };
-  Sample MC[] = {ttbb_1, ttbb_2, tth_1, tth_2, ttjj_1};
+*/
   int mcN=(sizeof(MC)/sizeof(*MC));
   int cutN = cuts.Entries();
   if(ppp>cutN) ppp=0;
@@ -170,6 +200,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
     if(i==0) h[i]->Draw();  
     else     h[i]->Draw("same");  
     leg->AddEntry(h[i], MC[i].label.c_str(), "l");
+    if(MC[i].label.length()>13) leg->SetTextSize(0.04/1.6);
   }
   leg->Draw();
 
@@ -193,8 +224,8 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   else     pt->AddText(Form("%.0f fb^{-1} at #sqrt{s} = 13 TeV", lumi/1000));
   pt->Draw();
 
-  if(norm) c1->Print(Form("./plots/Norm_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
-  else     c1->Print(Form("./plots/Log_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  if(norm) c1->Print(Form("./plotsNew/Norm_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  else     c1->Print(Form("./plotsNew/Log_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
 }
 
 

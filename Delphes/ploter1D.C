@@ -78,7 +78,7 @@ void ploter1D()
   TFile* f[5];  TTree* tree[5]; 
   TH1F  *h[5], *h2[5], *h3[5], *h4[5], *h5[5], *h6[5], *h7[5], *h8[5], *h9[5];
   int mcN=5;
-  TString fname[5] = {"ttbb_loop_sm","ttbb_loop_sm_cut_bq","tth_loop_sm","tth_loop_sm_cut_bq","ttjj_loop_sm"};
+  TString fname[5] = {"ttbb_test","ttbb_test_cut_bq","tth_test","tth_test_cut_bq","ttjj_test"};
   TString label[5] = {"t#bar{t} + b#bar{b}","t#bar{t} + b#bar{b} w/ cut","t#bar{t} + H","t#bar{t} + H w/ cut","t#bar{t} + jj"};
   const Color_t color[] = {
     kRed,kRed-4,kBlue,kBlue-7, kGreen+2

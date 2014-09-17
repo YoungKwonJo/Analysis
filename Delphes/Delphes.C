@@ -74,6 +74,7 @@ void Delphes::Loop()
 //   std::vector< std::vector<int> > BQjet;
 
    GenParticlesP gBQlast_;     gBQlast_   = new GenParticles;
+   GenParticlesP gBQfirst_;     gBQfirst_   = new GenParticles;
    GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
 
@@ -85,8 +86,9 @@ void Delphes::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
       Testing++;
-      if(Testing>20) break;
-      if(Testing%100==0) cout << "event: " << Testing << endl;
+      //if(Testing>20) break;
+      //if(Testing>6000) break;
+      if(Testing%10000==0) cout << "event: " << Testing << endl;
 
       fevent_->clear();
       //gBHad_->clear();
@@ -94,6 +96,7 @@ void Delphes::Loop()
       gDCHad_->clear(); gDCQ_->clear(); gDCTQ_->clear(); gDCHiggs_->clear();
       //BQjet.clear();
       gBQlast_->clear();
+      gBQfirst_->clear();
       gLep_->clear();
 ////////
 //      fevent_->nVertex_ =
@@ -203,6 +206,7 @@ void Delphes::Loop()
       fevent_->muonic_ = muonic;
       fevent_->taunic_ = taunic;
 
+      //tree_->Fill();     continue;
 /////////////////
 //check Ancestors(b/c hadron, b/c quark, top, higgs) in particle with status == 1
       if(leptonic>1)for(int i=0;i<Particle_size;i++ )
@@ -210,16 +214,27 @@ void Delphes::Loop()
 
          if(Particle_Status[i]<30 && Particle_Status[i]>10)
          {
-              cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
+              ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
+         //first bq
+         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && Particle_Status[i]>20 && Particle_Status[i]<60)
+         {
+             GenParticle gp_ =getGenParticle(i);
+             gBQfirst_->push_back(gp_);
+             /*cout <<"first bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
+                  <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
+                  <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
+                  <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;*/
+         }
+         //last bq
          if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_D1[i]])!=5)
          {
              GenParticle gp_ =getGenParticle(i);
-             if(Particle_Status[Particle_M1[get1stIdX(i,0)]]<40) gBQlast_->push_back(gp_);
-             cout <<"bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i] 
+            // if(Particle_Status[Particle_M1[get1stIdX(i,0)]]<40) gBQlast_->push_back(gp_);
+             /*cout <<"last bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i] 
                   <<", M1("<<Particle_M1[get1stIdX(i,0)]<<"):"<<Particle_PID[Particle_M1[get1stIdX(i,0)]] 
                   <<", m1-status:"<< Particle_Status[Particle_M1[get1stIdX(i,0)]] //<< endl;
-                  <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;
+                  <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;*/
          }
          if(Particle_Status[i]==1)
          {
@@ -257,7 +272,7 @@ void Delphes::Loop()
              }
          }
       }
-///////////
+//////////
       std::sort(gBQlast_->begin(),gBQlast_->end(),compByPtGenParticle);
 
       fevent_->NgBQlast_  = gBQlast_->size();
@@ -281,6 +296,7 @@ void Delphes::Loop()
          fevent_->gBQlast_DR3_= bQ_DR[2];
          fevent_->gBQlast_DR4_= bQ_DR[3];
       }
+
 //////////
 // choose genjet
       gjets_->clear();
@@ -355,6 +371,70 @@ void Delphes::Loop()
          }
       }
       std::sort(gjets_->begin(), gjets_->end(), compByPtJet);
+
+//////////
+//bBQfirst and genJet.
+      //std::sort(gBQfirst_->begin(),gBQfirst_->end(),compByPtGenParticle);
+
+      int gBQfirstJetIdx[20];
+      if(gBQfirst_->size()>3)
+      {
+         for(int i=0;i<gBQfirst_->size();i++)
+         {
+           double DR_=999, idx=-1;
+           for(int j=0;j<gjets_->size();j++)
+           {
+                double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gjets_->at(j).vec_));
+                if(DR_>DR1_) { DR_=DR1_; idx=j;}
+           }
+           if(DR_<0.5) gBQfirstJetIdx[i]=idx;
+           else gBQfirstJetIdx[i] = -1;
+         }
+      }
+///////////
+      fevent_->NgBQ1st_  = gBQfirst_->size();
+      if(gBQfirst_->size()>3)
+      {
+         double bQ_DR[2]={999,999}; double bQ_M[2]={-1,-1};
+         double bQ_DRjj[2]={999,999}; double bQ_Mjj[2]={-1,-1};
+         for(int i=0;i<gBQfirst_->size();i++)
+         {
+            if(i<gBQfirst_->size()-1)
+            for(int j=i+1;j<gBQfirst_->size();j++)
+            {
+               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bQ_M[0]==-1)
+               {
+                  bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                  bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
+                  {
+                    bQ_DRjj[0]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[0] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
+                  }
+               }
+               if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_M[1]==-1)
+               {
+                  bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                  bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
+                  {
+                    bQ_DRjj[1]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[1] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
+                  }
+               }
+            }
+         }
+         fevent_->gBQ1st_DR1fromT_= bQ_DR[0];
+         fevent_->gBQ1st_DR2add_= bQ_DR[1];
+         fevent_->gBQ1st_M1fromT_= bQ_M[0];
+         fevent_->gBQ1st_M2add_= bQ_M[1];
+
+         fevent_->gBQ1st_DR1jjfromT_= bQ_DRjj[0];
+         fevent_->gBQ1st_DR2jjadd_= bQ_DRjj[1];
+         fevent_->gBQ1st_M1jjfromT_= bQ_Mjj[0];
+         fevent_->gBQ1st_M2jjadd_= bQ_Mjj[1];
+      }
+
 
 //////////
 //check double-count about matching
@@ -688,11 +768,12 @@ void Delphes::Loop()
                     fevent_->M_j34_ = (jets_->at(2).vec_+jets_->at(3).vec_).M();
                  }
 
-      tree_->Fill();
-
 //////////////////////////////
 
+
+      tree_->Fill();
    }
+
 }
 
 int Delphes::getLastIdX(int idx, int x)

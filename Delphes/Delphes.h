@@ -22,17 +22,17 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 const Int_t kMaxEvent = 1;
-const Int_t kMaxParticle = 2671;
-const Int_t kMaxTrack = 243;
+const Int_t kMaxParticle = 3671;
+const Int_t kMaxTrack = 343;
 const Int_t kMaxTower = 528;
-const Int_t kMaxEFlowTrack = 243;
-const Int_t kMaxEFlowPhoton = 206;
-const Int_t kMaxEFlowNeutralHadron = 267;
-const Int_t kMaxGenJet = 20;
-const Int_t kMaxJet = 19;
-const Int_t kMaxElectron = 3;
-const Int_t kMaxPhoton = 2;
-const Int_t kMaxMuon = 3;
+const Int_t kMaxEFlowTrack = 343;
+const Int_t kMaxEFlowPhoton = 306;
+const Int_t kMaxEFlowNeutralHadron = 367;
+const Int_t kMaxGenJet = 40;
+const Int_t kMaxJet = 59;
+const Int_t kMaxElectron = 5;
+const Int_t kMaxPhoton = 5;
+const Int_t kMaxMuon = 5;
 const Int_t kMaxMissingET = 1;
 const Int_t kMaxScalarHT = 1;
 

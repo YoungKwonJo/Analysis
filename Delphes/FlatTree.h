@@ -48,6 +48,13 @@ public:
 // generated level
   bool isMC_;
 
+  int NgBQ1st_;
+  double gBQ1st_DR1fromT_, gBQ1st_DR2add_;
+  double gBQ1st_M1fromT_, gBQ1st_M2add_;
+  double gBQ1st_DR1jjfromT_, gBQ1st_DR2jjadd_;
+  double gBQ1st_M1jjfromT_, gBQ1st_M2jjadd_;
+
+
   int NgBQlast_;
   double gBQlast_DR1_, gBQlast_DR2_, gBQlast_DR3_, gBQlast_DR4_;
   doublesP gBQlast_pt_;
@@ -137,10 +144,21 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("gnJet30CTQ"  ,  &gnJet30CTQ_  , "gnJet30CTQ/I"  );
   tree_->Branch("gnJet30CHiggs", &gnJet30CHiggs_,"gnJet30CHiggs/I"  );
 
+  tree_->Branch("NgBQ1st",  &NgBQ1st_, "NgBQ1st/I");
+  tree_->Branch("gBQ1st_DR1fromT",  &gBQ1st_DR1fromT_, "gBQ1st_DR1fromT/D");
+  tree_->Branch("gBQ1st_M1fromT",  &gBQ1st_M1fromT_, "gBQ1st_M1fromT/D");
+  tree_->Branch("gBQ1st_DR2add",  &gBQ1st_DR2add_, "gBQ1st_DR2add/D");
+  tree_->Branch("gBQ1st_M2add",  &gBQ1st_M2add_, "gBQ1st_M2add/D");
+
+  tree_->Branch("gBQ1st_DR1jjfromT",  &gBQ1st_DR1jjfromT_, "gBQ1st_DR1jjfromT/D");
+  tree_->Branch("gBQ1st_M1jjfromT",  &gBQ1st_M1jjfromT_, "gBQ1st_M1jjfromT/D");
+  tree_->Branch("gBQ1st_DR2jjadd",  &gBQ1st_DR2jjadd_, "gBQ1st_DR2jjadd/D");
+  tree_->Branch("gBQ1st_M2jjadd",  &gBQ1st_M2jjadd_, "gBQ1st_M2jjadd/D");
 
   tree_->Branch("NgBQlast",  &NgBQlast_, "NgBQlast/I");
   tree_->Branch("gBQlast_DR1",  &gBQlast_DR1_, "gBQlast_DR1/D");
   tree_->Branch("gBQlast_DR2",  &gBQlast_DR2_, "gBQlast_DR2/D");
+
   tree_->Branch("gBQlast_DR3",  &gBQlast_DR3_, "gBQlast_DR3/D");
   tree_->Branch("gBQlast_DR4",  &gBQlast_DR4_, "gBQlast_DR4/D");
 
@@ -259,6 +277,12 @@ void FlatTree::clear()
    //gnbJet30_=-999;
    nJet30BH_=-999; nJet30BQ_=-999; nJet30BTQ_=-999; nJet30BHiggs_=-999;
    nJet30CH_=-999; nJet30CQ_=-999; nJet30CTQ_=-999; nJet30CHiggs_=-999;
+
+   NgBQ1st_=-999;
+   gBQ1st_DR1fromT_=-999; gBQ1st_DR2add_=-999;
+   gBQ1st_M1fromT_=-999; gBQ1st_M2add_=-999;
+   gBQ1st_DR1jjfromT_=-999; gBQ1st_DR2jjadd_=-999;
+   gBQ1st_M1jjfromT_=-999; gBQ1st_M2jjadd_=-999;
 
    NgBQlast_=-999;
    gBQlast_DR1_=-999; gBQlast_DR2_=-999; gBQlast_DR3_=-999; gBQlast_DR4_=-999;
