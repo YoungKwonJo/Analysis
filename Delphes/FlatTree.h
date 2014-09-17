@@ -53,6 +53,12 @@ public:
   double gBQ1st_M1fromT_, gBQ1st_M2add_;
   double gBQ1st_DR1jjfromT_, gBQ1st_DR2jjadd_;
   double gBQ1st_M1jjfromT_, gBQ1st_M2jjadd_;
+  double jgBQ1st_DR1jjfromT_, jgBQ1st_DR2jjadd_;
+  double jgBQ1st_M1jjfromT_, jgBQ1st_M2jjadd_;
+
+
+  double gjet_DR1jj_, gjet_DR2jj_;
+  double gjet_M1jj_ , gjet_M2jj_;
 
 
   int NgBQlast_;
@@ -154,6 +160,15 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("gBQ1st_M1jjfromT",  &gBQ1st_M1jjfromT_, "gBQ1st_M1jjfromT/D");
   tree_->Branch("gBQ1st_DR2jjadd",  &gBQ1st_DR2jjadd_, "gBQ1st_DR2jjadd/D");
   tree_->Branch("gBQ1st_M2jjadd",  &gBQ1st_M2jjadd_, "gBQ1st_M2jjadd/D");
+  tree_->Branch("jgBQ1st_DR1jjfromT",  &jgBQ1st_DR1jjfromT_, "jgBQ1st_DR1jjfromT/D");
+  tree_->Branch("jgBQ1st_M1jjfromT",  &jgBQ1st_M1jjfromT_, "jgBQ1st_M1jjfromT/D");
+  tree_->Branch("jgBQ1st_DR2jjadd",  &jgBQ1st_DR2jjadd_, "jgBQ1st_DR2jjadd/D");
+  tree_->Branch("jgBQ1st_M2jjadd",  &jgBQ1st_M2jjadd_, "jgBQ1st_M2jjadd/D");
+
+  tree_->Branch("gjet_DR1jj", &gjet_DR1jj_, "gjet_DR1jj/D");
+  tree_->Branch("gjet_M1jj",  &gjet_M1jj_,  "gjet_M1jj/D");
+  tree_->Branch("gjet_DR2jj", &gjet_DR2jj_, "gjet_DR2jj/D");
+  tree_->Branch("gjet_M2jj",  &gjet_M2jj_,  "gjet_M2jj/D");
 
   tree_->Branch("NgBQlast",  &NgBQlast_, "NgBQlast/I");
   tree_->Branch("gBQlast_DR1",  &gBQlast_DR1_, "gBQlast_DR1/D");
@@ -283,6 +298,11 @@ void FlatTree::clear()
    gBQ1st_M1fromT_=-999; gBQ1st_M2add_=-999;
    gBQ1st_DR1jjfromT_=-999; gBQ1st_DR2jjadd_=-999;
    gBQ1st_M1jjfromT_=-999; gBQ1st_M2jjadd_=-999;
+   jgBQ1st_DR1jjfromT_=-999; jgBQ1st_DR2jjadd_=-999;
+   jgBQ1st_M1jjfromT_=-999; jgBQ1st_M2jjadd_=-999;
+
+   gjet_DR1jj_=-999; gjet_DR2jj_=-999;
+   gjet_M1jj_=-999; gjet_M2jj_=-999;
 
    NgBQlast_=-999;
    gBQlast_DR1_=-999; gBQlast_DR2_=-999; gBQlast_DR3_=-999; gBQlast_DR4_=-999;

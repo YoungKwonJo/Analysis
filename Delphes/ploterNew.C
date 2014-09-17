@@ -63,28 +63,25 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 
 
   MonitorPlot gnBQ =       MonitorPlot("gnBQ1st",       "NgBQ1st",    "# of b;# of b;Events", 13, 0, 13);
-  MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "Dijet mass from top; M_{bb^{from t}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "Dijet DR from top;#Delta R_{bb^{from t}} ;Events ", 50, 0, 10);
-  MonitorPlot gBQ1st_M2add = MonitorPlot("gBQ1st_M2add", "gBQ1st_M2add", "Dijet mass not from top;  M_{bb^{not from t}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "Dijet DR not from top; #Delta R_{bb^{not from t}} ;Events ", 50, 0, 10);
+  MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "bb mass from top; M_{bb^{from t}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gBQ1st_M2add = MonitorPlot("gBQ1st_M2add", "gBQ1st_M2add", "bb mass not from top;  M_{bb^{not from t}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "bb DR not from top; #Delta R_{bb^{not from t}} ;Events ", 49, 0.5, 10);
 
-  //Sample(string fileName_, string treeName_, string name_,string label_,Color_t color_,  int style_, double width_, bool isMC_=false,  double xsec_=1)
-/*  Sample ttbb_1 = Sample("result_ttbb_loop_sm.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.588e+01); // xsec unit : pb
-  Sample ttbb_2 = Sample("result_ttbb_loop_sm_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ cut",kRed-4 ,2,1,true, 4.686e+00); // xsec unit : pb
-  Sample tth_1  = Sample("result_tth_loop_sm.root",        "ntuple","tth_1" ,"t#bar{t} + H"              ,kBlue  ,1,3,true, 4.642e-01); // xsec unit : pb
-  Sample tth_2  = Sample("result_tth_loop_sm_cut_bq.root", "ntuple","tth_2" ,"t#bar{t} + H w/ cut"      ,kBlue-7 ,2,1,true, 3.669e-01); // xsec unit : pb
-  Sample ttjj_1 = Sample("result_ttjj_loop_sm.root",       "ntuple","ttjj_1","t#bar{t} + jj"            ,kGreen+2,1,3,true, 2.238e+02); // xsec unit : pb
-*/
-/*
-  Sample ttbb_1 = Sample("result_ttbb_test.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.568e+01*0.04553956); // xsec unit : pb
-  Sample ttbb_2 = Sample("result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ cut",kRed-4 ,2,1,true, 4.729e+00*0.04553956); // xsec unit : pb
-  Sample tth_1  = Sample("result_tth_test.root",        "ntuple","tth_1" ,"t#bar{t} + H"              ,kBlue  ,1,3,true, 4.639e-01*0.04553956); // xsec unit : pb
-  Sample tth_2  = Sample("result_tth_test_cut_bq.root", "ntuple","tth_2" ,"t#bar{t} + H w/ cut"       ,kBlue-7 ,2,1,true,3.234e-01*0.04553956); // xsec unit : pb
-  Sample ttjj_1 = Sample("result_ttjj_woSPIN_test.root","ntuple","ttjj_1","t#bar{t} + jj w/o spin"    ,kGreen+2,1,3,true,2.238e+02); // xsec unit : pb
-*/
+  MonitorPlot gBQ1st_M1jjfromT = MonitorPlot("gBQ1st_M1jjfromT", "gBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR1jjfromT = MonitorPlot("gBQ1st_DR1jjfromT", "gBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gBQ1st_M2jjadd = MonitorPlot("gBQ1st_M2jjadd", "gBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR2jjadd = MonitorPlot("gBQ1st_DR2jjadd", "gBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} ;Events ", 49, 0.5, 10);
+
+
+  MonitorPlot gjet_M1jj = MonitorPlot("gjet_M1jj", "gjet_M1jj", "Dijet mass ; M_{j_{1} j_{2}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gjet_DR1jj = MonitorPlot("gjet_DR1jj", "gjet_DR1jj", "Dijet DR;#Delta R_{j_{1} j_{2}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gjet_M2jj = MonitorPlot("gjet_M2jj", "gjet_M2jj", "Dijet mass not from top;  M_{j_{3} j_{4}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gjet_DR2jj = MonitorPlot("gjet_DR2jj", "gjet_DR2jj", "Dijet DR not from top; #Delta R_{j_{3} j_{4}} ;Events ", 49, 0.5, 10);
+
   Sample ttbb_1 = Sample("result_ttbb_test.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.568e+01*0.04553956); // xsec unit : pb
   Sample ttbb_2 = Sample("result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ bQ>20",kRed-4 ,2,1,true, 4.729e+00*0.04553956); // xsec unit : pb
-  Sample ttbb_3 = Sample("result_ttbb_woSPIN_test.root",       "ntuple","ttbb_3","t#bar{t} + b#bar{b} w/o SC",kOrange ,1,3,true, 4.729e+00); // xsec unit : pb
+  Sample ttbb_3 = Sample("result_ttbb_woSPIN_test.root",       "ntuple","ttbb_3","t#bar{t} + b#bar{b} w/o SC",kOrange ,1,3,true, 1.568e+01); // xsec unit : pb
   Sample ttbb_4 = Sample("result_ttbb_woSPIN_test_cut_bq.root","ntuple","ttbb_4","t#bar{t} + b#bar{b} w/ bQ>20 w/o SC",kOrange-6 ,2,1,true, 4.729e+00); // xsec unit : pb
 
   Sample tth_1  = Sample("result_tth_test.root",        "ntuple","tth_1" ,"t#bar{t} + H"              ,kBlue  ,1,3,true, 4.639e-01*0.04553956); // xsec unit : pb
@@ -108,7 +105,11 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 //  cuts.addCut("nbJet30T>=4","1"); //S4
 
 ////////////                 
- MonitorPlot MyPlots[] = {nLepG,gnBQ,gBQ1st_M1fromT,gBQ1st_DR1fromT,gBQ1st_M2add,gBQ1st_DR2add };
+ MonitorPlot MyPlots[] = {nLepG,gnBQ,
+        gBQ1st_M1fromT,gBQ1st_DR1fromT,gBQ1st_M2add,gBQ1st_DR2add,
+        gBQ1st_M1jjfromT,gBQ1st_DR1jjfromT,gBQ1st_M2jjadd,gBQ1st_DR2jjadd,
+        gjet_M1jj,gjet_DR1jj,gjet_M2jj,gjet_DR2jj
+   };
 /*
   MonitorPlot MyPlots[] = {nLepG,nMuG,nElG,           // 0, 1, 2
                            ZMass, nJet, nbJet, MET,   // 3, 4, 5, 6

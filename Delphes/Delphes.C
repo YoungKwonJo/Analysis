@@ -434,8 +434,19 @@ void Delphes::Loop()
          fevent_->gBQ1st_M1jjfromT_= bQ_Mjj[0];
          fevent_->gBQ1st_M2jjadd_= bQ_Mjj[1];
       }
+      double DR_jj[2]={999,999 }, M_jj[2]={-1, -1};
+      if(gjets_->size()>3)
+      {
+         DR_jj[0] = fabs( gjets_->at(0).vec_.DeltaR(gjets_->at(1).vec_) );
+         DR_jj[1] = fabs( gjets_->at(2).vec_.DeltaR(gjets_->at(3).vec_) );
+         M_jj[0] = (gjets_->at(0).vec_+gjets_->at(1).vec_).M();
+         M_jj[1] = (gjets_->at(2).vec_+gjets_->at(3).vec_).M();
+      }
 
-
+      fevent_->gjet_DR1jj_= DR_jj[0];
+      fevent_->gjet_DR2jj_= DR_jj[1];
+      fevent_->gjet_M1jj_= M_jj[0];
+      fevent_->gjet_M2jj_= M_jj[1];
 //////////
 //check double-count about matching
       ////int j=0;
@@ -767,7 +778,56 @@ void Delphes::Loop()
                     fevent_->jet4_bTag_=jets_->at(3).CSV_; fevent_->jet4_flavor_=jets_->at(3).flavor_; 
                     fevent_->M_j34_ = (jets_->at(2).vec_+jets_->at(3).vec_).M();
                  }
+//////////////////////////////
+      int jgBQfirstJetIdx[20];
+      if(gBQfirst_->size()>3)
+      {
+         for(int i=0;i<gBQfirst_->size();i++)
+         {
+           double DR_=999, idx=-1;
+           for(int j=0;j<jets_->size();j++)
+           {
+                double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(jets_->at(j).vec_));
+                if(DR_>DR1_) { DR_=DR1_; idx=j;}
+           }
+           if(DR_<0.5) jgBQfirstJetIdx[i]=idx;
+           else jgBQfirstJetIdx[i] = -1;
+         }
 
+         double bQ_DR[2]={999,999}; double bQ_M[2]={-1,-1};
+         double bQ_DRjj[2]={999,999}; double bQ_Mjj[2]={-1,-1};
+         for(int i=0;i<gBQfirst_->size();i++)
+         {
+            if(i<gBQfirst_->size()-1)
+            for(int j=i+1;j<gBQfirst_->size();j++)
+            {
+               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bQ_M[0]==-1)
+               {
+                  bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                  bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                  if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                  {
+                    bQ_DRjj[0]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[0] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
+                  }
+               }
+               if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_M[1]==-1)
+               {
+                  bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
+                  bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                  if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                  {
+                    bQ_DRjj[1]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
+                    bQ_Mjj[1] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
+                  }
+               }
+            }
+         }
+         fevent_->jgBQ1st_DR1jjfromT_= bQ_DRjj[0];
+         fevent_->jgBQ1st_DR2jjadd_= bQ_DRjj[1];
+         fevent_->jgBQ1st_M1jjfromT_= bQ_Mjj[0];
+         fevent_->jgBQ1st_M2jjadd_= bQ_Mjj[1];
+      }
 //////////////////////////////
 
 
