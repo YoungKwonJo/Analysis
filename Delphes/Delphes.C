@@ -796,6 +796,7 @@ void Delphes::Loop()
 
          double bQ_DR[2]={999,999}; double bQ_M[2]={-1,-1};
          double bQ_DRjj[2]={999,999}; double bQ_Mjj[2]={-1,-1};
+         double bQ_PTjj[4]={-1,-1,-1,-1}; double bQ_Etajj[4]={999,999,999,999};
          for(int i=0;i<gBQfirst_->size();i++)
          {
             if(i<gBQfirst_->size()-1)
@@ -809,6 +810,12 @@ void Delphes::Loop()
                   {
                     bQ_DRjj[0]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
                     bQ_Mjj[0] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
+                    double pt1 = jets_->at(jgBQfirstJetIdx[i]).Pt();
+                    double pt2 = jets_->at(jgBQfirstJetIdx[j]).Pt();
+                    double eta1 = jets_->at(jgBQfirstJetIdx[i]).Eta();
+                    double eta2 = jets_->at(jgBQfirstJetIdx[j]).Eta();
+                    if(pt1>pt2 ){ bQ_PTjj[0]=pt1; bQ_PTjj[1]=pt2; bQ_Etajj[0]=eta1; bQ_Etajj[1]=eta2;}
+                    else        { bQ_PTjj[0]=pt2; bQ_PTjj[1]=pt1; bQ_Etajj[0]=eta2; bQ_Etajj[1]=eta1;}
                   }
                }
                if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_M[1]==-1)
@@ -819,6 +826,12 @@ void Delphes::Loop()
                   {
                     bQ_DRjj[1]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
                     bQ_Mjj[1] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
+                    double pt1 = jets_->at(jgBQfirstJetIdx[i]).Pt();
+                    double pt2 = jets_->at(jgBQfirstJetIdx[j]).Pt();
+                    double eta1 = jets_->at(jgBQfirstJetIdx[i]).Eta();
+                    double eta2 = jets_->at(jgBQfirstJetIdx[j]).Eta();
+                    if(pt1>pt2 ){ bQ_PTjj[2]=pt1; bQ_PTjj[3]=pt2; bQ_Etajj[2]=eta1; bQ_Etajj[3]=eta2;}
+                    else        { bQ_PTjj[2]=pt2; bQ_PTjj[3]=pt1; bQ_Etajj[2]=eta2; bQ_Etajj[3]=eta1;}
                   }
                }
             }
@@ -827,6 +840,16 @@ void Delphes::Loop()
          fevent_->jgBQ1st_DR2jjadd_= bQ_DRjj[1];
          fevent_->jgBQ1st_M1jjfromT_= bQ_Mjj[0];
          fevent_->jgBQ1st_M2jjadd_= bQ_Mjj[1];
+
+         fevent_->jgBQ1st_PTj1jfromT_= bQ_PTjj[0];
+         fevent_->jgBQ1st_PTj2jfromT_= bQ_PTjj[1];
+         fevent_->jgBQ1st_PTj3jadd_  = bQ_PTjj[2];
+         fevent_->jgBQ1st_PTj4jadd_  = bQ_PTjj[3];
+
+         fevent_->jgBQ1st_Etaj1jfromT_= bQ_Etajj[0];
+         fevent_->jgBQ1st_Etaj2jfromT_= bQ_Etajj[1];
+         fevent_->jgBQ1st_Etaj3jadd_  = bQ_Etajj[2];
+         fevent_->jgBQ1st_Etaj4jadd_  = bQ_Etajj[3];
       }
 //////////////////////////////
 

@@ -64,21 +64,36 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 
   MonitorPlot gnBQ =       MonitorPlot("gnBQ1st",       "NgBQ1st",    "# of b;# of b;Events", 13, 0, 13);
   MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "bb mass from top; M_{bb^{from t}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;Events ", 30, 0.5, 6.5,false);
   MonitorPlot gBQ1st_M2add = MonitorPlot("gBQ1st_M2add", "gBQ1st_M2add", "bb mass not from top;  M_{bb^{not from t}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "bb DR not from top; #Delta R_{bb^{not from t}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "bb DR not from top; #Delta R_{bb^{not from t}} ;Events ", 30, 0.5, 6.5,false);
 
-  MonitorPlot gBQ1st_M1jjfromT = MonitorPlot("gBQ1st_M1jjfromT", "gBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR1jjfromT = MonitorPlot("gBQ1st_DR1jjfromT", "gBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} ;Events ", 49, 0.5, 10);
-  MonitorPlot gBQ1st_M2jjadd = MonitorPlot("gBQ1st_M2jjadd", "gBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR2jjadd = MonitorPlot("gBQ1st_DR2jjadd", "gBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gBQ1st_M1jjfromT = MonitorPlot("gBQ1st_M1jjfromT", "gBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}} genjet  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR1jjfromT = MonitorPlot("gBQ1st_DR1jjfromT", "gBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} genjet ;Events ", 30, 0.5,6.5,false);
+  MonitorPlot gBQ1st_M2jjadd = MonitorPlot("gBQ1st_M2jjadd", "gBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} genjet (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot gBQ1st_DR2jjadd = MonitorPlot("gBQ1st_DR2jjadd", "gBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} genjet ;Events ", 30, 0.5, 6.5,false);
 
+  MonitorPlot jgBQ1st_M1jjfromT = MonitorPlot("jgBQ1st_M1jjfromT", "jgBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}} recojet (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot jgBQ1st_DR1jjfromT = MonitorPlot("jgBQ1st_DR1jjfromT", "jgBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} recojet ;Events ", 30, 0.5, 6.5,false);
+  MonitorPlot jgBQ1st_M2jjadd = MonitorPlot("jgBQ1st_M2jjadd", "jgBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} recojet (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
+  MonitorPlot jgBQ1st_DR2jjadd = MonitorPlot("jgBQ1st_DR2jjadd", "jgBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} recojet ;Events ", 30, 0.5, 6.5,false);
 
   MonitorPlot gjet_M1jj = MonitorPlot("gjet_M1jj", "gjet_M1jj", "Dijet mass ; M_{j_{1} j_{2}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gjet_DR1jj = MonitorPlot("gjet_DR1jj", "gjet_DR1jj", "Dijet DR;#Delta R_{j_{1} j_{2}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gjet_DR1jj = MonitorPlot("gjet_DR1jj", "gjet_DR1jj", "Dijet DR;#Delta R_{j_{1} j_{2}} ;Events ", 30, 0.5,6.5,false);
   MonitorPlot gjet_M2jj = MonitorPlot("gjet_M2jj", "gjet_M2jj", "Dijet mass not from top;  M_{j_{3} j_{4}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gjet_DR2jj = MonitorPlot("gjet_DR2jj", "gjet_DR2jj", "Dijet DR not from top; #Delta R_{j_{3} j_{4}} ;Events ", 49, 0.5, 10);
+  MonitorPlot gjet_DR2jj = MonitorPlot("gjet_DR2jj", "gjet_DR2jj", "Dijet DR not from top; #Delta R_{j_{3} j_{4}} ;Events ", 30, 0.5, 6.5,false);
 
+  MonitorPlot jgBQ1st_PTj1jfromT = MonitorPlot("jgBQ1st_PTj1jfromT", "jgBQ1st_PTj1jfromT", "Leading Jet p_{T}; p_{T}^{jet1^{from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
+  MonitorPlot jgBQ1st_PTj2jfromT = MonitorPlot("jgBQ1st_PTj2jfromT", "jgBQ1st_PTj2jfromT", "Leading Jet p_{T}; p_{T}^{jet2^{from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
+  MonitorPlot jgBQ1st_PTj3jadd = MonitorPlot("jgBQ1st_PTj3jadd", "jgBQ1st_PTj3jadd", "Leading Jet p_{T}; p_{T}^{jet1^{not from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
+  MonitorPlot jgBQ1st_PTj4jadd = MonitorPlot("jgBQ1st_PTj4jadd", "jgBQ1st_PTj4jadd", "Leading Jet p_{T}; p_{T}^{jet2^{not from t}} (GeV/c);Events/20 GeV/c",25, 30, 530);
+
+  MonitorPlot jgBQ1st_Etaj1jfromT = MonitorPlot("jgBQ1st_Etaj1jfromT", "jgBQ1st_Etaj1jfromT", "Leading #eta;#eta^{jet1^{from t}};Events/0.2", 20, -3.5, 3.5);
+  MonitorPlot jgBQ1st_Etaj2jfromT = MonitorPlot("jgBQ1st_Etaj2jfromT", "jgBQ1st_Etaj2jfromT", "Leading #eta;#eta^{jet2^{from t}};Events/0.2", 20, -3.5, 3.5);
+  MonitorPlot jgBQ1st_Etaj3jadd = MonitorPlot("jgBQ1st_Etaj3jadd", "jgBQ1st_Etaj3jadd", "Leading #eta;#eta^{jet1^{not from t}};Events/0.2", 20, -3.5, 3.5);
+  MonitorPlot jgBQ1st_Etaj4jadd = MonitorPlot("jgBQ1st_Etaj4jadd", "jgBQ1st_Etaj4jadd", "Leading #eta;#eta^{jet2^{not from t}};Events/0.2", 20, -3.5, 3.5);
+
+//////////
   Sample ttbb_1 = Sample("result_ttbb_test.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.568e+01*0.04553956); // xsec unit : pb
   Sample ttbb_2 = Sample("result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ bQ>20",kRed-4 ,2,1,true, 4.729e+00*0.04553956); // xsec unit : pb
   Sample ttbb_3 = Sample("result_ttbb_woSPIN_test.root",       "ntuple","ttbb_3","t#bar{t} + b#bar{b} w/o SC",kOrange ,1,3,true, 1.568e+01); // xsec unit : pb
@@ -108,7 +123,10 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
  MonitorPlot MyPlots[] = {nLepG,gnBQ,
         gBQ1st_M1fromT,gBQ1st_DR1fromT,gBQ1st_M2add,gBQ1st_DR2add,
         gBQ1st_M1jjfromT,gBQ1st_DR1jjfromT,gBQ1st_M2jjadd,gBQ1st_DR2jjadd,
-        gjet_M1jj,gjet_DR1jj,gjet_M2jj,gjet_DR2jj
+        gjet_M1jj,gjet_DR1jj,gjet_M2jj,gjet_DR2jj,
+        jgBQ1st_M1jjfromT,jgBQ1st_DR1jjfromT,jgBQ1st_M2jjadd,jgBQ1st_DR2jjadd,
+     jgBQ1st_PTj1jfromT,jgBQ1st_PTj2jfromT, jgBQ1st_PTj3jadd, jgBQ1st_PTj4jadd,
+     jgBQ1st_Etaj1jfromT,jgBQ1st_Etaj2jfromT, jgBQ1st_Etaj3jadd, jgBQ1st_Etaj4jadd
    };
 /*
   MonitorPlot MyPlots[] = {nLepG,nMuG,nElG,           // 0, 1, 2

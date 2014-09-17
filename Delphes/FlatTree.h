@@ -56,6 +56,8 @@ public:
   double jgBQ1st_DR1jjfromT_, jgBQ1st_DR2jjadd_;
   double jgBQ1st_M1jjfromT_, jgBQ1st_M2jjadd_;
 
+  double jgBQ1st_PTj1jfromT_,jgBQ1st_PTj2jfromT_, jgBQ1st_PTj3jadd_, jgBQ1st_PTj4jadd_;
+  double jgBQ1st_Etaj1jfromT_,jgBQ1st_Etaj2jfromT_, jgBQ1st_Etaj3jadd_, jgBQ1st_Etaj4jadd_;
 
   double gjet_DR1jj_, gjet_DR2jj_;
   double gjet_M1jj_ , gjet_M2jj_;
@@ -164,6 +166,16 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("jgBQ1st_M1jjfromT",  &jgBQ1st_M1jjfromT_, "jgBQ1st_M1jjfromT/D");
   tree_->Branch("jgBQ1st_DR2jjadd",  &jgBQ1st_DR2jjadd_, "jgBQ1st_DR2jjadd/D");
   tree_->Branch("jgBQ1st_M2jjadd",  &jgBQ1st_M2jjadd_, "jgBQ1st_M2jjadd/D");
+
+  tree_->Branch("jgBQ1st_PTj1jfromT",  &jgBQ1st_PTj1jfromT_, "jgBQ1st_PTj1jfromT/D");
+  tree_->Branch("jgBQ1st_PTj2jfromT",  &jgBQ1st_PTj2jfromT_, "jgBQ1st_PTj2jfromT/D");
+  tree_->Branch("jgBQ1st_PTj3jadd",  &jgBQ1st_PTj3jadd_, "jgBQ1st_PTj3jadd/D");
+  tree_->Branch("jgBQ1st_PTj4jadd",  &jgBQ1st_PTj4jadd_, "jgBQ1st_PTj4jadd/D");
+
+  tree_->Branch("jgBQ1st_Etaj1jfromT",  &jgBQ1st_Etaj1jfromT_, "jgBQ1st_Etaj1jfromT/D");
+  tree_->Branch("jgBQ1st_Etaj2jfromT",  &jgBQ1st_Etaj2jfromT_, "jgBQ1st_Etaj2jfromT/D");
+  tree_->Branch("jgBQ1st_Etaj3jadd",  &jgBQ1st_Etaj3jadd_, "jgBQ1st_Etaj3jadd/D");
+  tree_->Branch("jgBQ1st_Etaj4jadd",  &jgBQ1st_Etaj4jadd_, "jgBQ1st_Etaj4jadd/D");
 
   tree_->Branch("gjet_DR1jj", &gjet_DR1jj_, "gjet_DR1jj/D");
   tree_->Branch("gjet_M1jj",  &gjet_M1jj_,  "gjet_M1jj/D");
@@ -301,6 +313,10 @@ void FlatTree::clear()
    jgBQ1st_DR1jjfromT_=-999; jgBQ1st_DR2jjadd_=-999;
    jgBQ1st_M1jjfromT_=-999; jgBQ1st_M2jjadd_=-999;
 
+  jgBQ1st_PTj1jfromT_=-999;jgBQ1st_PTj2jfromT_=-999; jgBQ1st_PTj3jadd_=-999; jgBQ1st_PTj4jadd_=-999;
+  jgBQ1st_Etaj1jfromT_=-999;jgBQ1st_Etaj2jfromT_=-999; jgBQ1st_Etaj3jadd_=-999; jgBQ1st_Etaj4jadd_=-999;
+
+///
    gjet_DR1jj_=-999; gjet_DR2jj_=-999;
    gjet_M1jj_=-999; gjet_M2jj_=-999;
 

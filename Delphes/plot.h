@@ -20,14 +20,16 @@ class MonitorPlot
 {
  public:
   explicit MonitorPlot(const string name_, const string varexp_, const string title_,
-                       const int xBins_, const double xmin_, const double xmax_)
+                       const int xBins_, const double xmin_, const double xmax_, bool over_=true)
   {
     name   = name_;    varexp = varexp_;    title  = title_;
     xBins  = xBins_;    xmin   = xmin_;    xmax   = xmax_;
+    over = over_;
   }
   ~MonitorPlot(){}
   string name;  string varexp;  string title;
   int xBins;    double xmin;    double xmax;
+  bool over;
 };
 
 class Sample
@@ -85,6 +87,7 @@ TH1F* plot(MonitorPlot mplot,TString fname, TTree* tree, TCut selection)
   const string varexp = mplot.varexp;
   const string title = mplot.title;
   const int nBins = mplot.xBins;
+  const bool over = mplot.over;
   const double xMin = mplot.xmin;
   const double xMax = mplot.xmax;  
 
@@ -92,7 +95,7 @@ TH1F* plot(MonitorPlot mplot,TString fname, TTree* tree, TCut selection)
     cout << " histName" << HistName.Data() << endl;
     TH1F *h = new TH1F(HistName, title.c_str(), nBins, xMin,xMax);
     tree->Project(HistName, varexp.c_str(), selection);
-    h->AddBinContent(nBins, h->GetBinContent(nBins+1));
+    if(over) h->AddBinContent(nBins, h->GetBinContent(nBins+1));
 
     if(nBins<10)
     {
@@ -100,7 +103,7 @@ TH1F* plot(MonitorPlot mplot,TString fname, TTree* tree, TCut selection)
        {
          h->GetXaxis()->SetBinLabel(bin, Form("%d", int(xMin+bin-1)));
        }
-       h->GetXaxis()->SetBinLabel(nBins, Form("#geq%d", int(xMin+nBins-1)));
+       if(over) h->GetXaxis()->SetBinLabel(nBins, Form("#geq%d", int(xMin+nBins-1)));
     }
     return h;
 }
