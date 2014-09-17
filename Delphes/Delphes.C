@@ -744,11 +744,11 @@ void Delphes::Loop(bool isttjj)
              if(i<gBQfirst_->size()-1)
              for(int j=i+1;j<gBQfirst_->size();j++)
              {
-                if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]==-1 && bjet_idx_fromT[1]==-1)
+                if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]==-1 && bjet_idx_fromT[1]==-1 && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
                 {
                    bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                    bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                   if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                   if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1 && fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_))>0.5)
                    {
                      bQ_DRjj[0]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
                      bQ_Mjj[0] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
@@ -761,11 +761,11 @@ void Delphes::Loop(bool isttjj)
                      else        { bQ_PTjj[0]=pt2; bQ_PTjj[1]=pt1; bQ_Etajj[0]=eta2; bQ_Etajj[1]=eta1;}
                    }
                 }
-                if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj)
+                if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
                 {
                    bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                    bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                   if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1)
+                   if(jgBQfirstJetIdx[i]>-1 && jgBQfirstJetIdx[j]>-1 && fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_))>0.5)
                    {
                      bQ_DRjj[1]=fabs(jets_->at(jgBQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgBQfirstJetIdx[j]).vec_));
                      bQ_Mjj[1] = (jets_->at(jgBQfirstJetIdx[i]).vec_+jets_->at(jgBQfirstJetIdx[j]).vec_).M();
@@ -802,12 +802,18 @@ void Delphes::Loop(bool isttjj)
                 if(i<gQQfirst_->size()-1)
                 for(int j=i+1;j<gQQfirst_->size();j++)
                 if(!pass_)
-                if(jgQQfirstJetIdx[i]>-1 && jgQQfirstJetIdx[j]>-1)
+                if(jgQQfirstJetIdx[i]>-1 && jgQQfirstJetIdx[j]>-1 && fabs(gQQfirst_->at(i).vec_.DeltaR(gQQfirst_->at(j).vec_))>0.5 && fabs(jets_->at(jgQQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgQQfirstJetIdx[j]).vec_))>0.5)
                 {
                     bQ_DR[1]=fabs(gQQfirst_->at(i).vec_.DeltaR(gQQfirst_->at(j).vec_));
                     bQ_M[1] = (gQQfirst_->at(i).vec_+gQQfirst_->at(j).vec_).M();
                     bQ_DRjj[1]=fabs(jets_->at(jgQQfirstJetIdx[i]).vec_.DeltaR(jets_->at(jgQQfirstJetIdx[j]).vec_));
                     bQ_Mjj[1] = (jets_->at(jgQQfirstJetIdx[i]).vec_+jets_->at(jgQQfirstJetIdx[j]).vec_).M();
+                     double pt1 = jets_->at(jgQQfirstJetIdx[i]).Pt();
+                     double pt2 = jets_->at(jgQQfirstJetIdx[j]).Pt();
+                     double eta1 = jets_->at(jgQQfirstJetIdx[i]).Eta();
+                     double eta2 = jets_->at(jgQQfirstJetIdx[j]).Eta();
+                     if(pt1>pt2 ){ bQ_PTjj[2]=pt1; bQ_PTjj[3]=pt2; bQ_Etajj[2]=eta1; bQ_Etajj[3]=eta2;}
+                     else        { bQ_PTjj[2]=pt2; bQ_PTjj[3]=pt1; bQ_Etajj[2]=eta2; bQ_Etajj[3]=eta1;}
                     pass_=true;
                 }
              }
@@ -857,22 +863,22 @@ void Delphes::Loop(bool isttjj)
             if(i<gBQfirst_->size()-1)
             for(int j=i+1;j<gBQfirst_->size();j++)
             {
-               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]==-1 && bjet_idx_fromT[1]==-1)
+               if(abs(gBQfirst_->at(i).MotherPdgId())==6 && abs(gBQfirst_->at(j).MotherPdgId())==6 && bjet_idx_fromT[0]==-1 && bjet_idx_fromT[1]==-1 && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
                {
                   bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
+                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1 && fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_))>0.5)
                   {
                     bQ_DRjj[0]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
                     bQ_Mjj[0] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
                     bjet_idx_fromT[0]=gBQfirstJetIdx[i]; bjet_idx_fromT[1]=gBQfirstJetIdx[j];
                   }
                }
-               if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj)
+               if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
                {
                   bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
-                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1)
+                  if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1 && fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_))>0.5)
                   {
                     bQ_DRjj[1]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
                     bQ_Mjj[1] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
@@ -903,7 +909,7 @@ void Delphes::Loop(bool isttjj)
                 if(i<gQQfirst_->size()-1)
                 for(int j=i+1;j<gQQfirst_->size();j++)
                 if(!pass_)
-                if(gQQfirstJetIdx[i]>-1 && gQQfirstJetIdx[j]>-1)
+                if(gQQfirstJetIdx[i]>-1 && gQQfirstJetIdx[j]>-1 && fabs(gQQfirst_->at(i).vec_.DeltaR(gQQfirst_->at(j).vec_))>0.5 && fabs(gjets_->at(gQQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gQQfirstJetIdx[j]).vec_))>0.5)
                 {
                     bQ_DR[1]=fabs(gQQfirst_->at(i).vec_.DeltaR(gQQfirst_->at(j).vec_));
                     bQ_M[1] = (gQQfirst_->at(i).vec_+gQQfirst_->at(j).vec_).M();
