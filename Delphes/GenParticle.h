@@ -15,6 +15,7 @@ class GenParticle{
    ~GenParticle(){}
 
    double Pt() { return vec_.Pt(); };
+   double y()  { return vec_.Rapidity(); };
    double Eta() { return vec_.Eta(); };
    double Phi() { return vec_.Phi(); };
 

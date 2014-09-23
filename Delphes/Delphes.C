@@ -79,6 +79,7 @@ void Delphes::Loop(bool isttjj)
    GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
 
+   //bool debug =true;
    int Testing =0;
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -119,12 +120,15 @@ void Delphes::Loop(bool isttjj)
               cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          if(Particle_Status[i]>70 && Particle_Status[i]<90)
               cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
-         */ /*
-         if( abs(Particle_PID[i])==6 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
-           cout << "event:"<< ientry <<", idx:"<< i << ", top, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << endl;
-         if( abs(Particle_PID[i])==24 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
-           cout << "event:"<< ientry <<", idx:"<< i << ", w, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << endl;
-          */
+         */ 
+         //if(debug){
+         if(false){
+           if( abs(Particle_PID[i])==6 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
+              cout << "event:"<< ientry <<", idx:"<< i << ", top, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << endl;
+            if( abs(Particle_PID[i])==24 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
+              cout << "event:"<< ientry <<", idx:"<< i << ", w, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << ", did1_test:"<< Particle_PID[Particle_D1[getLastIdX(i,0)]] << endl;
+         }
+          
 
          // ttbar dileptonic check 
          if( (Particle_PID[i]==6 && findtop==false ) || (Particle_PID[i]==-6 && findtopb==false))
@@ -167,32 +171,34 @@ void Delphes::Loop(bool isttjj)
                        if(abs(pdgidD111) >12 && abs(pdgidD111)<15) muonic++;
                        if(abs(pdgidD121) >12 && abs(pdgidD121)<15) muonic++;
                     }
-                    leptonic++;
+                    //if(debug) cout << "t2w2l: id1: " << pdgidD11 << ", id2: "<< pdgidD21 << endl;
+                    //leptonic++;
                  }
                } 
                if(abs(pdgidD2)==24)
                {
                  if ( abs(pdgidD21) >10 && abs(pdgidD21)<17 && abs(pdgidD22) >10 && abs(pdgidD22)<17 )
                  {
-                    if(abs(pdgidD11) >10 && abs(pdgidD11)<13) electronic++;
-                    if(abs(pdgidD11) >12 && abs(pdgidD11)<15) muonic++;
-                    if(abs(pdgidD11) >14 && abs(pdgidD11)<17) {
+                    if(abs(pdgidD21) >10 && abs(pdgidD21)<13) electronic++;
+                    if(abs(pdgidD21) >12 && abs(pdgidD21)<15) muonic++;
+                    if(abs(pdgidD21) >14 && abs(pdgidD21)<17) {
                        taunic++;
-                       int id111 = Particle_D1[getLastIdX(id11,0)];
-                       int id112 = Particle_D2[getLastIdX(id11,0)];
-                       int id121 = Particle_D1[getLastIdX(id12,0)];
-                       int id122 = Particle_D2[getLastIdX(id12,0)];
+                       int id211 = Particle_D1[getLastIdX(id21,0)];
+                       int id212 = Particle_D2[getLastIdX(id21,0)];
+                       int id221 = Particle_D1[getLastIdX(id22,0)];
+                       int id222 = Particle_D2[getLastIdX(id22,0)];
 
-                       int pdgidD111 = Particle_PID[id111];
-                       int pdgidD112 = Particle_PID[id112];
-                       int pdgidD121 = Particle_PID[id121];
-                       int pdgidD122 = Particle_PID[id122];
-                       if(abs(pdgidD111) >10 && abs(pdgidD111)<13) electronic++;
-                       if(abs(pdgidD121) >10 && abs(pdgidD121)<13) electronic++;
-                       if(abs(pdgidD111) >12 && abs(pdgidD111)<15) muonic++;
-                       if(abs(pdgidD121) >12 && abs(pdgidD121)<15) muonic++;
+                       int pdgidD211 = Particle_PID[id211];
+                       int pdgidD212 = Particle_PID[id212];
+                       int pdgidD221 = Particle_PID[id221];
+                       int pdgidD222 = Particle_PID[id222];
+                       if(abs(pdgidD211) >10 && abs(pdgidD211)<13) electronic++;
+                       if(abs(pdgidD221) >10 && abs(pdgidD221)<13) electronic++;
+                       if(abs(pdgidD211) >12 && abs(pdgidD211)<15) muonic++;
+                       if(abs(pdgidD221) >12 && abs(pdgidD221)<15) muonic++;
                     }
-                    leptonic++;
+                    //if(debug) cout << "t2w2l: id1: " << pdgidD21 << ", id2: "<< pdgidD21 << endl;
+                    //leptonic++;
                  }
                }
             }
@@ -203,11 +209,15 @@ void Delphes::Loop(bool isttjj)
       }
       fevent_->topN_ = topN;
       fevent_->wN_ = wN;
+
+      leptonic= (electronic+muonic);
       fevent_->leptonic_ = leptonic;
       fevent_->electronic_ = electronic;
       fevent_->muonic_ = muonic;
       fevent_->taunic_ = taunic;
 
+      //cout << "leptonic: "<< leptonic <<", electronic: "<< electronic << ", muonic: "<< muonic << endl;
+ 
       //tree_->Fill();     continue;
 /////////////////
 //check Ancestors(b/c hadron, b/c quark, top, higgs) in particle with status == 1
@@ -218,21 +228,17 @@ void Delphes::Loop(bool isttjj)
          {
               ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
-         if(Particle_Status[i]>20 && Particle_Status[i]<60 && abs(Particle_PID[i])<5 && 
-               abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
-         {
-             GenParticle gp_ =getGenParticle(i);
-             gQQfirst_->push_back(gp_);
-             /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
-                  <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
-                  <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
-                  <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;*/
-         }
          //first bq
          if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && Particle_Status[i]>20 && Particle_Status[i]<60)
          {
              GenParticle gp_ =getGenParticle(i);
-             gBQfirst_->push_back(gp_);
+             double DR_=999, idx=-1;
+             for(int i=0;i<gBQfirst_->size();i++)
+             {
+                    double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gp_.vec_));
+                    if(DR_>DR1_) DR_=DR1_; 
+             }
+             if(DR_>0.4 && gp_.Pt()>10 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
              /*cout <<"first bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -286,7 +292,33 @@ void Delphes::Loop(bool isttjj)
       }
 //////////
       std::sort(gBQlast_->begin(),gBQlast_->end(),compByPtGenParticle);
-
+////////////
+       if(leptonic>1) for(int i=0;i<Particle_size;i++ )
+      {
+         if(Particle_Status[i]>20 && Particle_Status[i]<60 && abs(Particle_PID[i])<5 && 
+               abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
+         {
+             GenParticle gp_ =getGenParticle(i);
+             //gQQfirst_->push_back(gp_);
+             double DR_=999, idx=-1;
+             for(int i=0;i<gBQfirst_->size();i++)
+             {
+                    double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gp_.vec_));
+                    if(DR_>DR1_) DR_=DR1_;
+             }
+             for(int i=0;i<gQQfirst_->size();i++)
+             {
+                    double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(gp_.vec_));
+                    if(DR_>DR1_) DR_=DR1_;
+             }
+             if(DR_>0.4 && gp_.Pt()>10 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
+             /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
+                  <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
+                  <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
+                  <<", D1("<<Particle_D1[i]<<"):"<<Particle_PID[Particle_D1[i]] << endl;*/
+         }
+      }
+////////////
       fevent_->NgBQlast_  = gBQlast_->size();
       if(gBQlast_->size()>1)
       {  
@@ -857,7 +889,9 @@ void Delphes::Loop(bool isttjj)
 //////////////
          int    bjet_idx_fromT[2]={-1,-1};
          double bQ_DR[2]={999,999}; double bQ_M[2]={-1,-1};
+         double bQ_Eta[4]={999,999,999,999}; double bQ_Pt[4]={-1,-1,-1,-1};
          double bQ_DRjj[2]={999,999}; double bQ_Mjj[2]={-1,-1};
+         double bQ_Etajj[4]={999,999,999,999}; double bQ_Ptjj[4]={-1,-1,-1,-1};
          for(int i=0;i<gBQfirst_->size();i++)
          {
             if(i<gBQfirst_->size()-1)
@@ -867,10 +901,32 @@ void Delphes::Loop(bool isttjj)
                {
                   bQ_DR[0]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[0] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                  if(gBQfirst_->at(i).vec_.Pt()>gBQfirst_->at(j).vec_.Pt())
+                  {
+                    bQ_Pt[0] = gBQfirst_->at(i).vec_.Pt();   bQ_Pt[1] = gBQfirst_->at(j).vec_.Pt();
+                    bQ_Eta[0] = gBQfirst_->at(i).vec_.Eta(); bQ_Eta[1] = gBQfirst_->at(j).vec_.Eta();
+                  }
+                  else
+                  {
+                    bQ_Pt[1] = gBQfirst_->at(i).vec_.Pt();   bQ_Pt[0] = gBQfirst_->at(j).vec_.Pt();
+                    bQ_Eta[1] = gBQfirst_->at(i).vec_.Eta(); bQ_Eta[0] = gBQfirst_->at(j).vec_.Eta();
+                  }
+
                   if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1 && fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_))>0.5)
                   {
                     bQ_DRjj[0]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
                     bQ_Mjj[0] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
+
+                    if(gjets_->at(gBQfirstJetIdx[i]).vec_.Pt()>gjets_->at(gBQfirstJetIdx[j]).vec_.Pt())
+                    {
+                      bQ_Ptjj[0] = gjets_->at(gBQfirstJetIdx[i]).vec_.Pt();   bQ_Ptjj[1] = gjets_->at(gBQfirstJetIdx[j]).vec_.Pt();
+                      bQ_Etajj[0] = gjets_->at(gBQfirstJetIdx[i]).vec_.Eta(); bQ_Etajj[1] = gjets_->at(gBQfirstJetIdx[j]).vec_.Eta();
+                    }
+                    else
+                    {
+                      bQ_Ptjj[1] = gjets_->at(gBQfirstJetIdx[i]).vec_.Pt();   bQ_Ptjj[0] = gjets_->at(gBQfirstJetIdx[j]).vec_.Pt();
+                      bQ_Etajj[1] = gjets_->at(gBQfirstJetIdx[i]).vec_.Eta(); bQ_Etajj[0] = gjets_->at(gBQfirstJetIdx[j]).vec_.Eta();
+                    }
                     bjet_idx_fromT[0]=gBQfirstJetIdx[i]; bjet_idx_fromT[1]=gBQfirstJetIdx[j];
                   }
                }
@@ -878,10 +934,31 @@ void Delphes::Loop(bool isttjj)
                {
                   bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
+                  if(gBQfirst_->at(i).vec_.Pt()>gBQfirst_->at(j).vec_.Pt())
+                  {
+                    bQ_Pt[2] = gBQfirst_->at(i).vec_.Pt();   bQ_Pt[3] = gBQfirst_->at(j).vec_.Pt();
+                    bQ_Eta[2] = gBQfirst_->at(i).vec_.Eta(); bQ_Eta[3] = gBQfirst_->at(j).vec_.Eta();
+                  }
+                  else
+                  {
+                    bQ_Pt[3] = gBQfirst_->at(i).vec_.Pt();   bQ_Pt[2] = gBQfirst_->at(j).vec_.Pt();
+                    bQ_Eta[3] = gBQfirst_->at(i).vec_.Eta(); bQ_Eta[2] = gBQfirst_->at(j).vec_.Eta();
+                  }
+//////////
                   if(gBQfirstJetIdx[i]>-1 && gBQfirstJetIdx[j]>-1 && fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_))>0.5)
                   {
                     bQ_DRjj[1]=fabs(gjets_->at(gBQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gBQfirstJetIdx[j]).vec_));
                     bQ_Mjj[1] = (gjets_->at(gBQfirstJetIdx[i]).vec_+gjets_->at(gBQfirstJetIdx[j]).vec_).M();
+                    if(gjets_->at(gBQfirstJetIdx[i]).vec_.Pt()>gjets_->at(gBQfirstJetIdx[j]).vec_.Pt())
+                    {
+                      bQ_Ptjj[2] = gjets_->at(gBQfirstJetIdx[i]).vec_.Pt();   bQ_Ptjj[3] = gjets_->at(gBQfirstJetIdx[j]).vec_.Pt();
+                      bQ_Etajj[2] = gjets_->at(gBQfirstJetIdx[i]).vec_.Eta(); bQ_Etajj[3] = gjets_->at(gBQfirstJetIdx[j]).vec_.Eta();
+                    }
+                    else
+                    {
+                      bQ_Ptjj[3] = gjets_->at(gBQfirstJetIdx[i]).vec_.Pt();   bQ_Ptjj[2] = gjets_->at(gBQfirstJetIdx[j]).vec_.Pt();
+                      bQ_Etajj[3] = gjets_->at(gBQfirstJetIdx[i]).vec_.Eta(); bQ_Etajj[2] = gjets_->at(gBQfirstJetIdx[j]).vec_.Eta();
+                    }
                   }
                }
             }
@@ -913,8 +990,28 @@ void Delphes::Loop(bool isttjj)
                 {
                     bQ_DR[1]=fabs(gQQfirst_->at(i).vec_.DeltaR(gQQfirst_->at(j).vec_));
                     bQ_M[1] = (gQQfirst_->at(i).vec_+gQQfirst_->at(j).vec_).M();
+                    if(gQQfirst_->at(i).vec_.Pt()>gQQfirst_->at(j).vec_.Pt())
+                    {
+                      bQ_Pt[2] = gQQfirst_->at(i).vec_.Pt();   bQ_Pt[3] = gQQfirst_->at(j).vec_.Pt();
+                      bQ_Eta[2] = gQQfirst_->at(i).vec_.Eta(); bQ_Eta[3] = gQQfirst_->at(j).vec_.Eta();
+                    }
+                    else
+                    {
+                      bQ_Pt[3] = gQQfirst_->at(i).vec_.Pt();   bQ_Pt[2] = gQQfirst_->at(j).vec_.Pt();
+                      bQ_Eta[3] = gQQfirst_->at(i).vec_.Eta(); bQ_Eta[2] = gQQfirst_->at(j).vec_.Eta();
+                    }
                     bQ_DRjj[1]=fabs(gjets_->at(gQQfirstJetIdx[i]).vec_.DeltaR(gjets_->at(gQQfirstJetIdx[j]).vec_));
                     bQ_Mjj[1] = (gjets_->at(gQQfirstJetIdx[i]).vec_+gjets_->at(gQQfirstJetIdx[j]).vec_).M();
+                    if(gjets_->at(gQQfirstJetIdx[i]).vec_.Pt()>gjets_->at(gQQfirstJetIdx[j]).vec_.Pt())
+                    {
+                      bQ_Ptjj[2] = gjets_->at(gQQfirstJetIdx[i]).vec_.Pt();   bQ_Ptjj[3] = gjets_->at(gQQfirstJetIdx[j]).vec_.Pt();
+                      bQ_Etajj[2] = gjets_->at(gQQfirstJetIdx[i]).vec_.Eta(); bQ_Etajj[3] = gjets_->at(gQQfirstJetIdx[j]).vec_.Eta();
+                    }
+                    else
+                    {
+                      bQ_Ptjj[3] = gjets_->at(gQQfirstJetIdx[i]).vec_.Pt();   bQ_Ptjj[2] = gjets_->at(gQQfirstJetIdx[j]).vec_.Pt();
+                      bQ_Etajj[3] = gjets_->at(gQQfirstJetIdx[i]).vec_.Eta(); bQ_Etajj[2] = gjets_->at(gQQfirstJetIdx[j]).vec_.Eta();
+                    }
                     pass_=true;
                 }
              }
@@ -928,6 +1025,26 @@ void Delphes::Loop(bool isttjj)
          fevent_->gBQ1st_DR2jjadd_= bQ_DRjj[1];
          fevent_->gBQ1st_M1jjfromT_= bQ_Mjj[0];
          fevent_->gBQ1st_M2jjadd_= bQ_Mjj[1];
+
+         
+         fevent_->gBQ1st_Pt1fromT_= bQ_Pt[0];
+         fevent_->gBQ1st_Pt2fromT_= bQ_Pt[1];
+         fevent_->gBQ1st_Pt1add_  = bQ_Pt[2];
+         fevent_->gBQ1st_Pt2add_  = bQ_Pt[3];
+         fevent_->gBQ1st_Eta1fromT_= bQ_Eta[0];
+         fevent_->gBQ1st_Eta2fromT_= bQ_Eta[1];
+         fevent_->gBQ1st_Eta1add_  = bQ_Eta[2];
+         fevent_->gBQ1st_Eta2add_  = bQ_Eta[3];
+
+         fevent_->gBQ1st_Ptjj1fromT_= bQ_Ptjj[0];
+         fevent_->gBQ1st_Ptjj2fromT_= bQ_Ptjj[1];
+         fevent_->gBQ1st_Ptjj1add_  = bQ_Ptjj[2];
+         fevent_->gBQ1st_Ptjj2add_  = bQ_Ptjj[3];
+         fevent_->gBQ1st_Etajj1fromT_= bQ_Etajj[0];
+         fevent_->gBQ1st_Etajj2fromT_= bQ_Etajj[1];
+         fevent_->gBQ1st_Etajj1add_  = bQ_Etajj[2];
+         fevent_->gBQ1st_Etajj2add_  = bQ_Etajj[3];
+         
          
          double DR_jj[2]={-999,-999 }, M_jj[2]={-1, -1};
          if(gjets_->size()>3)

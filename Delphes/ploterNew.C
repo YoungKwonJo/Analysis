@@ -64,24 +64,24 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 
   MonitorPlot gnBQ =       MonitorPlot("gnBQ1st",       "NgBQ1st",    "# of b;# of b;Events", 13, 0, 13);
   MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "bb mass from top; M_{bb^{from t}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;Events ", 30, 0.5, 6.5,false);
+  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;Events ", 60, 0., 6.,false);
   MonitorPlot gBQ1st_M2add = MonitorPlot("gBQ1st_M2add", "gBQ1st_M2add", "bb mass not from top;  M_{jj^{not from t}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "bb DR not from top; #Delta R_{jj^{not from t}} ;Events ", 30, 0.5, 6.5,false);
+  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "bb DR not from top; #Delta R_{jj^{not from t}} ;Events ", 60, 0., 6.,false);
 
   MonitorPlot gBQ1st_M1jjfromT = MonitorPlot("gBQ1st_M1jjfromT", "gBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}} genjet  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR1jjfromT = MonitorPlot("gBQ1st_DR1jjfromT", "gBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} genjet ;Events ", 30, 0.5,6.5,false);
+  MonitorPlot gBQ1st_DR1jjfromT = MonitorPlot("gBQ1st_DR1jjfromT", "gBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} genjet ;Events ", 60, 0.,6.,false);
   MonitorPlot gBQ1st_M2jjadd = MonitorPlot("gBQ1st_M2jjadd", "gBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} genjet (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gBQ1st_DR2jjadd = MonitorPlot("gBQ1st_DR2jjadd", "gBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} genjet ;Events ", 30, 0.5, 6.5,false);
+  MonitorPlot gBQ1st_DR2jjadd = MonitorPlot("gBQ1st_DR2jjadd", "gBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} genjet ;Events ", 60, 0., 6.,false);
 
   MonitorPlot jgBQ1st_M1jjfromT = MonitorPlot("jgBQ1st_M1jjfromT", "jgBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}} recojet (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot jgBQ1st_DR1jjfromT = MonitorPlot("jgBQ1st_DR1jjfromT", "jgBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} recojet ;Events ", 30, 0.5, 6.5,false);
+  MonitorPlot jgBQ1st_DR1jjfromT = MonitorPlot("jgBQ1st_DR1jjfromT", "jgBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} recojet ;Events ", 60, 0., 6.,false);
   MonitorPlot jgBQ1st_M2jjadd = MonitorPlot("jgBQ1st_M2jjadd", "jgBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} recojet (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot jgBQ1st_DR2jjadd = MonitorPlot("jgBQ1st_DR2jjadd", "jgBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} recojet ;Events ", 30, 0.5, 6.5,false);
+  MonitorPlot jgBQ1st_DR2jjadd = MonitorPlot("jgBQ1st_DR2jjadd", "jgBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} recojet ;Events ", 60, 0., 6.,false);
 
   MonitorPlot gjet_M1jj = MonitorPlot("gjet_M1jj", "gjet_M1jj", "Dijet mass ; M_{j_{1} j_{2}}  (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gjet_DR1jj = MonitorPlot("gjet_DR1jj", "gjet_DR1jj", "Dijet DR;#Delta R_{j_{1} j_{2}} ;Events ", 30, 0.5,6.5,false);
+  MonitorPlot gjet_DR1jj = MonitorPlot("gjet_DR1jj", "gjet_DR1jj", "Dijet DR;#Delta R_{j_{1} j_{2}} ;Events ", 60, 0.,6.,false);
   MonitorPlot gjet_M2jj = MonitorPlot("gjet_M2jj", "gjet_M2jj", "Dijet mass not from top;  M_{j_{3} j_{4}} (GeV/c^{2});Events/10 GeV/c^{2}", 50, 0, 500);
-  MonitorPlot gjet_DR2jj = MonitorPlot("gjet_DR2jj", "gjet_DR2jj", "Dijet DR not from top; #Delta R_{j_{3} j_{4}} ;Events ", 30, 0.5, 6.5,false);
+  MonitorPlot gjet_DR2jj = MonitorPlot("gjet_DR2jj", "gjet_DR2jj", "Dijet DR not from top; #Delta R_{j_{3} j_{4}} ;Events ", 60, 0., 6.,false);
 
   MonitorPlot jgBQ1st_PTj1jfromT = MonitorPlot("jgBQ1st_PTj1jfromT", "jgBQ1st_PTj1jfromT", "Leading Jet p_{T}; p_{T}^{jet1^{from t}} (GeV/c);Events/20 GeV/c",50, 0, 500);
   MonitorPlot jgBQ1st_PTj2jfromT = MonitorPlot("jgBQ1st_PTj2jfromT", "jgBQ1st_PTj2jfromT", "Leading Jet p_{T}; p_{T}^{jet2^{from t}} (GeV/c);Events/20 GeV/c",50, 0, 500);
