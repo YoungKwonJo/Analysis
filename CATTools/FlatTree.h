@@ -83,6 +83,23 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("nbJet50M"  ,    &nbJet50M_  , "nbJet50M/I"  );
   tree_->Branch("nbJet50T"  ,    &nbJet50T_  , "nbJet50T/I"  );
 
+  tree_->Branch("jet1_pt",   &jet1_pt_,  "jet1_pt/D");
+  tree_->Branch("jet2_pt",   &jet2_pt_,  "jet2_pt/D");
+  tree_->Branch("jet3_pt",   &jet3_pt_,  "jet3_pt/D");
+  tree_->Branch("jet4_pt",   &jet4_pt_,  "jet4_pt/D");
+  tree_->Branch("jet1_eta",  &jet1_eta_, "jet1_eta/D");
+  tree_->Branch("jet2_eta",  &jet2_eta_, "jet2_eta/D");
+  tree_->Branch("jet3_eta",  &jet3_eta_, "jet3_eta/D");
+  tree_->Branch("jet4_eta",  &jet4_eta_, "jet4_eta/D");
+  tree_->Branch("jet1_phi",  &jet1_phi_, "jet1_phi/D");
+  tree_->Branch("jet2_phi",  &jet2_phi_, "jet2_phi/D");
+  tree_->Branch("jet3_phi",  &jet3_phi_, "jet3_phi/D");
+  tree_->Branch("jet4_phi",  &jet4_phi_, "jet4_phi/D");
+  tree_->Branch("jet1_bTag", &jet1_bTag_, "jet1_bTag/D");
+  tree_->Branch("jet2_bTag", &jet2_bTag_, "jet2_bTag/D");
+  tree_->Branch("jet3_bTag", &jet3_bTag_, "jet3_bTag/D");
+  tree_->Branch("jet4_bTag", &jet4_bTag_, "jet4_bTag/D");
+
 // isMC
  tree_->Branch("gentop_lep1_pt",  &gentop_lep1_pt_,   "gentop_lep1_pt/D"); 
  tree_->Branch("gentop_lep1_eta", &gentop_lep1_eta_,  "gentop_lep1_eta/D");
