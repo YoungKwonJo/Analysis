@@ -8,7 +8,7 @@ void run( char *str){
 //    gROOT->ProcessLine(".L CSVWeight.h+g");
     gROOT->ProcessLine(".L CATNtuple.C+g");
     //TFile f(Form("../data/events_PYTHIA8_v20140813_%s.root",str));
-    TFile f(Form("ntuple_9.root"));
+    TFile f(Form("ntuple_%s.root",str));
     TTree *atree = dynamic_cast<TTree *>(f.Get( Form("ntuple/event") ));
 
     if (atree != 0)
