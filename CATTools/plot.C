@@ -1,19 +1,44 @@
-void plot() 
+
+void plot()
+{
+  plot2("gentop_NJets20","# of Jet in GEN","Entries",15,0,15,true,0);
+  plot2("nJet30","# of Jet30","Entries",10,0,10,true,4);
+  plot2("nbJet30T","# of bTag CSVT","Entries",5,0,5,true,5);
+  plot2("MET","MET","Entries",30,0,150,true,3);
+  plot2("ZMass","invariant mass of dilepton","Entries",50,0,200,true,1);
+  plot2("ZMass","invariant mass of dilepton","Entries",50,0,200,true,2);
+  plot2("lep1_pt","p_T of leading lepton","Entries",50,0,200,true,1);
+  plot2("lep2_pt","p_T of second leading lepton","Entries",50,0,200,true,1);
+  plot2("lep1_eta","#eta of leading lepton","Entries",50,-2.5,2.5,true,1);
+  plot2("lep2_eta","#eta of second leading lepton","Entries",50,-2.5,2.5,true,1);
+
+}
+void plot2(char *plotname, char* xtitle, char* ytitle, int nBins, double min, double max, bool logy, int cutN) 
 {
   //char *plotname = "gentop_NJets20", *xtitle = "# of Jet in GEN", *ytitle = "Entries"; int nBins = 15; double min =0, max=15; bool logy = true;
   //char *plotname = "jet3_bTag", *xtitle = "CSV of 3rd jet", *ytitle = "Entries"; int nBins = 10; double min =0, max=10; bool logy = true;
-  char *plotname = "nJet30", *xtitle = "# of Jet30 ", *ytitle = "Entries"; int nBins = 10; double min =0, max=10; bool logy = true;
+  //char *plotname = "nJet30", *xtitle = "# of Jet30 ", *ytitle = "Entries"; int nBins = 10; double min =0, max=10; bool logy = true;
+  //char *plotname = "nbJet30T", *xtitle = "# of bTag CSVT ", *ytitle = "Entries"; int nBins = 5; double min =0, max=5; bool logy = true;
+  //char *plotname = "MET", *xtitle = "MET ", *ytitle = "Entries"; int nBins = 30; double min =0, max=150; bool logy = true;
+  //char *plotname = "ZMass", *xtitle = "dilepton invariant mass ", *ytitle = "Entries"; int nBins = 50; double min =0, max=200; bool logy = true;
+  //char *plotname = "lep1_pt", *xtitle = "p_T of leading lepton ", *ytitle = "Entries"; int nBins = 50; double min =0, max=200; bool logy = true;
+  //char *plotname = "lep2_pt", *xtitle = "p_T of second leading lepton ", *ytitle = "Entries"; int nBins = 50; double min =0, max=200; bool logy = true;
+  //char *plotname = "lep2_eta", *xtitle = "#eta of second leading lepton ", *ytitle = "Entries"; int nBins = 50; double min =-2.5, max=2.5; bool logy = true;
 
 ///////////////////////
   TCut S1 = "lep1_pt>20. && abs(lep1_eta)<2.5 && lep2_pt>20. && abs(lep2_eta)<2.5 && lep1_relIso<0.15 &&  lep2_relIso<0.15 && ZMass>12 && lep1_Q*lep2_Q<0 ";
-  TCut S2 = "abs(ZMass-91)<15";
+  TCut S2 = "abs(ZMass-91)>15";
   TCut S3 = "MET>30";
   TCut S4 = "nJet30>=4";
   TCut S5 = "nbJet30T>=2";
 
 
-  //TCut stepcut = "1";  char *step = "nocut";
-  TCut stepcut = S1+S2+S3+S4+S5;  char *step = "S5";
+  TCut stepcut = "1";  char *step = "nocut";
+  if(cutN==1) {  stepcut = S1;  step = "S1"; }
+  if(cutN==2) { stepcut = S1+S2;  step = "S2"; }
+  if(cutN==3) { stepcut = S1+S2+S3;  step = "S3"; }
+  if(cutN==4) { stepcut = S1+S2+S3+S4;  step = "S4"; }
+  if(cutN==5) { stepcut = S1+S2+S3+S4+S5;  step = "S5"; }
 
 //////////////////////////////////////
   gStyle->SetOptStat(0); //remove statistics box
@@ -65,7 +90,7 @@ void plot()
 
   TCanvas *c1 = new TCanvas("c1","c1",500,500);
   if(logy) c1->SetLogy();
-  if(logy) h1[4]->SetMaximum( h1[4]->GetMaximum()*100 );
+  if(logy) h1[4]->SetMaximum( h1[4]->GetMaximum()*200 );
   else     h1[4]->SetMaximum( h1[4]->GetMaximum()*1.5 );
   h1[4]->SetMinimum(0.5);
   h1[4]->Draw();
@@ -101,5 +126,5 @@ void plot()
   pt->AddText(Form("ttbb/ttjj = %.5f",nume/denom));
   pt->Draw();
 
-  c1->Print(Form("%s_%s.eps",plotname,step));
+  c1->Print(Form("plots/%s_%s.eps",plotname,step));
 }
