@@ -1,0 +1,11 @@
+#!/usr/local/bin/python
+import sys,os
+
+aaa= [9]
+bbb="root -b -q run.C\\(\\\""
+ccc="\\\"\\)"
+
+for i in aaa:
+  cmd=bbb+("%d"%i)+ccc
+  print cmd
+  os.system(cmd)  
