@@ -57,6 +57,7 @@ void CATNtuple::Loop(char *DecayMode)
    LeptonsP electrons_;    electrons_ = new Leptons;
    JetsP   jets_;         jets_      = new Jets;
    TLorentzVector jets[60];
+   TVector3 ver;
 
 
 ///////
@@ -73,16 +74,29 @@ void CATNtuple::Loop(char *DecayMode)
       fevent_->METPHI_  = met_phi->at(0);
       fevent_->event_   = event; 
       fevent_->lumi_   = lumi; 
-      fevent_->run_   = run; 
-
+      fevent_->HLTDoubleMu_   = HLTDoubleMu; 
+      fevent_->HLTDoubleEl_   = HLTDoubleEl;
+      fevent_->HLTMuEl_   = HLTMuEl;
 
       //reconstructed level information
       muons_->clear();
       electrons_->clear();
       jets_->clear();
+      ver.SetXYZ(pvX,pvY,pvZ);
+
+      //https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopEGM#Signal
+      //Dilepton
+      //ID:  isPF
+      //pT>20, fabs(eta)<2.5
+      //fabs(electron.gsfTrack()->dxy(vertex_->position())) <0.04
+      //electron.passConversionVeto() =true
+      //electron.gsfTrack()->trackerExpectedHitsInner().numberOfHits()<=0
+      //
+      //pre-selection for electron : passConversionVeto && isPF && gsfTrack.hitPattern.numberOfLostHits('MISSING_INNER_HITS') <= 0
       for(int i=0;i<electrons_pt->size();i++)
       {
           if(electrons_pt->at(i)>20.0 && fabs(electrons_eta->at(i))<2.5) 
+          if(fabs(electrons_dxy->at(i))<0.04)
           {
              double x_ = electrons_pt->at(i)*TMath::Cos(electrons_phi->at(i));
              double y_ = electrons_pt->at(i)*TMath::Sin(electrons_phi->at(i));
@@ -93,9 +107,16 @@ void CATNtuple::Loop(char *DecayMode)
           }
       }
       std::sort(electrons_->begin(), electrons_->end(), compByPtLep);
+
+      //https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopMUO#Signal
+      //Dilepton
+      //Particle Flow Muon ID	isPFMuon
+      //Muon Reconstruction Alghoritm ID	isGlobalMuon OR isTrackerMuon
+      //pT>20, fabs(eta)<2.4
       for(int i=0;i<muon_pt->size();i++)
       {
-          if(muon_pt->at(i)>20.0 && fabs(muon_eta->at(i))<2.4) 
+          if(muon_pt->at(i)>20.0 && fabs(muon_eta->at(i))<2.4)
+          if(muon_isGlobal->at(i)==1 || muon_isTracker->at(i)==1) 
           {
              double x_ = muon_pt->at(i)*TMath::Cos(muon_phi->at(i));
              double y_ = muon_pt->at(i)*TMath::Sin(muon_phi->at(i));
@@ -107,6 +128,14 @@ void CATNtuple::Loop(char *DecayMode)
       }
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
 
+      //https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopJME#Jets
+      //corrected pT>30 
+      //abs(eta)<2.5
+      //JEC: L1FastJet+L2L3 (+L2L3Residual for data)
+      //JER smearing in MC
+      //jet ID
+      //
+      //pre-selection: LooseId and pileupJetId
       for(int i=0;i<jets_pt->size();i++)
       {
           jets[i].SetPtEtaPhiM( jets_pt->at(i),  jets_eta->at(i),  jets_phi->at(i),jets_m->at(i));

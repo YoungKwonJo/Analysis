@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Feb 11 14:19:18 2015 by ROOT version 5.34/17
+// Tue Feb 17 13:31:47 2015 by ROOT version 5.34/18
 // from TTree event/event
-// found on file: ntuple_9.root
+// found on file: ntuple_0.root
 //////////////////////////////////////////////////////////
 
 #ifndef CATNtuple_h
@@ -27,7 +27,11 @@ public :
    Int_t           run;
    Int_t           lumi;
    Int_t           event;
+   Int_t           HLTDoubleEl;
    Int_t           HLTDoubleMu;
+   Int_t           HLTELJet;
+   Int_t           HLTMuEl;
+   Int_t           HLTMuJet;
    Int_t           nVertex;
    Double_t        puWeight;
    Double_t        puWeightDn;
@@ -105,8 +109,10 @@ public :
    vector<double>  *muon_dxy;
    vector<double>  *muon_dz;
    vector<double>  *muon_eta;
+   vector<double>  *muon_isGlobal;
    vector<double>  *muon_isLoose;
    vector<double>  *muon_isTight;
+   vector<double>  *muon_isTracker;
    vector<double>  *muon_m;
    vector<double>  *muon_phi;
    vector<double>  *muon_pt;
@@ -146,7 +152,11 @@ public :
    TBranch        *b_run;   //!
    TBranch        *b_lumi;   //!
    TBranch        *b_event;   //!
+   TBranch        *b_HLTDoubleEl;   //!
    TBranch        *b_HLTDoubleMu;   //!
+   TBranch        *b_HLTELJet;   //!
+   TBranch        *b_HLTMuEl;   //!
+   TBranch        *b_HLTMuJet;   //!
    TBranch        *b_nVertex;   //!
    TBranch        *b_puWeight;   //!
    TBranch        *b_puWeightDn;   //!
@@ -224,8 +234,10 @@ public :
    TBranch        *b_muon_dxy;   //!
    TBranch        *b_muon_dz;   //!
    TBranch        *b_muon_eta;   //!
+   TBranch        *b_muon_isGlobal;   //!
    TBranch        *b_muon_isLoose;   //!
    TBranch        *b_muon_isTight;   //!
+   TBranch        *b_muon_isTracker;   //!
    TBranch        *b_muon_m;   //!
    TBranch        *b_muon_phi;   //!
    TBranch        *b_muon_pt;   //!
@@ -280,11 +292,11 @@ CATNtuple::CATNtuple(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_9.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_0.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("ntuple_9.root");
+         f = new TFile("ntuple_0.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("ntuple_9.root:/ntuple");
+      TDirectory * dir = (TDirectory*)f->Get("ntuple_0.root:/ntuple");
       dir->GetObject("event",tree);
 
    }
@@ -397,8 +409,10 @@ void CATNtuple::Init(TTree *tree)
    muon_dxy = 0;
    muon_dz = 0;
    muon_eta = 0;
+   muon_isGlobal = 0;
    muon_isLoose = 0;
    muon_isTight = 0;
+   muon_isTracker = 0;
    muon_m = 0;
    muon_phi = 0;
    muon_pt = 0;
@@ -442,7 +456,11 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("lumi", &lumi, &b_lumi);
    fChain->SetBranchAddress("event", &event, &b_event);
+   fChain->SetBranchAddress("HLTDoubleEl", &HLTDoubleEl, &b_HLTDoubleEl);
    fChain->SetBranchAddress("HLTDoubleMu", &HLTDoubleMu, &b_HLTDoubleMu);
+   fChain->SetBranchAddress("HLTELJet", &HLTELJet, &b_HLTELJet);
+   fChain->SetBranchAddress("HLTMuEl", &HLTMuEl, &b_HLTMuEl);
+   fChain->SetBranchAddress("HLTMuJet", &HLTMuJet, &b_HLTMuJet);
    fChain->SetBranchAddress("nVertex", &nVertex, &b_nVertex);
    fChain->SetBranchAddress("puWeight", &puWeight, &b_puWeight);
    fChain->SetBranchAddress("puWeightDn", &puWeightDn, &b_puWeightDn);
@@ -520,8 +538,10 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("muon_dxy", &muon_dxy, &b_muon_dxy);
    fChain->SetBranchAddress("muon_dz", &muon_dz, &b_muon_dz);
    fChain->SetBranchAddress("muon_eta", &muon_eta, &b_muon_eta);
+   fChain->SetBranchAddress("muon_isGlobal", &muon_isGlobal, &b_muon_isGlobal);
    fChain->SetBranchAddress("muon_isLoose", &muon_isLoose, &b_muon_isLoose);
    fChain->SetBranchAddress("muon_isTight", &muon_isTight, &b_muon_isTight);
+   fChain->SetBranchAddress("muon_isTracker", &muon_isTracker, &b_muon_isTracker);
    fChain->SetBranchAddress("muon_m", &muon_m, &b_muon_m);
    fChain->SetBranchAddress("muon_phi", &muon_phi, &b_muon_phi);
    fChain->SetBranchAddress("muon_pt", &muon_pt, &b_muon_pt);

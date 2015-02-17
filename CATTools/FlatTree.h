@@ -18,8 +18,12 @@ struct FlatTree
 public:
   TTree* tree_;
   int run_, lumi_, event_;
+
+  int HLTDoubleMu_, HLTDoubleEl_, HLTMuEl_;
+
   double lep1_pt_,  lep2_pt_, lep1_eta_, lep2_eta_, lep1_relIso_, lep2_relIso_;
   int     lep1_Q_,  lep2_Q_;
+
 
   double  MET_, METPHI_, ZMass_, Zdphi_;
   int     nVertex_, nJet30_, nbJet30L_,nbJet30M_, nbJet30T_;
@@ -57,6 +61,10 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("run"  , &run_  , "run/I");
   tree_->Branch("lumi" , &lumi_ , "lumi/I");
   tree_->Branch("event", &event_, "event/I");
+
+  tree_->Branch("HLTDoubleMu", &HLTDoubleMu_, "HLTDoubleMu/I");
+  tree_->Branch("HLTDoubleEl", &HLTDoubleEl_, "HLTDoubleEl/I");
+  tree_->Branch("HLTMuEl",     &HLTMuEl_,     "HLTMuEl/I");
 
   tree_->Branch("lep1_pt"    , &lep1_pt_    , "lep1_pt/D"    );
   tree_->Branch("lep2_pt"    , &lep2_pt_    , "lep2_pt/D"    );
@@ -150,6 +158,8 @@ void FlatTree::book(TTree* tree)
 }
 void FlatTree::clear()
 {
+   HLTDoubleMu_=-999; HLTDoubleEl_=-999; HLTMuEl_=-999;
+
    lep1_pt_=-999;       lep2_pt_=-999;   
    lep1_eta_=-999;      lep2_eta_=-999;   
    lep1_Q_=-999;        lep2_Q_=-999;   
