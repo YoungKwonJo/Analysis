@@ -284,7 +284,7 @@ void CATNtuple::Loop(char *DecayMode)
               if(jets_->at(i).CSV()>0.679 && jets_->at(i).Pt()>50) nBtagM50++; // CSVM 0.679
               if(jets_->at(i).CSV()>0.244 && jets_->at(i).Pt()>50) nBtagL50++; // CSVL 0.244    
               if(i==0) { jpt1=jets_->at(i).Pt();jeta1=jets_->at(i).Eta();jphi1=jets_->at(i).Phi(); jbtg1=jets_->at(i).CSV(); }
-              if(i==2) { jpt2=jets_->at(i).Pt();jeta2=jets_->at(i).Eta();jphi2=jets_->at(i).Phi(); jbtg2=jets_->at(i).CSV(); }
+              if(i==1) { jpt2=jets_->at(i).Pt();jeta2=jets_->at(i).Eta();jphi2=jets_->at(i).Phi(); jbtg2=jets_->at(i).CSV(); }
               if(i==2) { jpt3=jets_->at(i).Pt();jeta3=jets_->at(i).Eta();jphi3=jets_->at(i).Phi(); jbtg3=jets_->at(i).CSV(); }
               if(i==3) { jpt4=jets_->at(i).Pt();jeta4=jets_->at(i).Eta();jphi4=jets_->at(i).Phi(); jbtg4=jets_->at(i).CSV(); }
           }
