@@ -268,10 +268,10 @@ void CATNtuple::Loop(char *DecayMode)
           ////////////
           //jet selection 
           int njet = jets_->size(), njet50=0;
-          int jpt1=-99, jeta1=-99, jphi1=-99, jbtg1=-99;
-          int jpt2=-99, jeta2=-99, jphi2=-99, jbtg2=-99;
-          int jpt3=-99, jeta3=-99, jphi3=-99, jbtg3=-99;
-          int jpt4=-99, jeta4=-99, jphi4=-99, jbtg4=-99;
+          double jpt1=-99, jeta1=-99, jphi1=-99, jbtg1=-99;
+          double jpt2=-99, jeta2=-99, jphi2=-99, jbtg2=-99;
+          double jpt3=-99, jeta3=-99, jphi3=-99, jbtg3=-99;
+          double jpt4=-99, jeta4=-99, jphi4=-99, jbtg4=-99;
           int nBtagT=0, nBtagM=0, nBtagL=0;
           int nBtagT50=0, nBtagM50=0, nBtagL50=0;
           for(int i=0;i<jets_->size();i++)
