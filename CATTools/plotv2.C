@@ -22,23 +22,23 @@ void plotv2()
 
   //break;
   //S0
-  plot2("lep1_pt","p_T of leading lepton","Entries",25,0,200,log,0);
-  break;
-  plot2("lep2_pt","p_T of second leading lepton","Entries",25,0,200,log,0);
+  plot2("lep1_pt","p_T of leading lepton","Entries",40,0,200,log,0);
+  //break;
+  plot2("lep2_pt","p_T of second leading lepton","Entries",40,0,200,log,0);
   plot2("lep1_eta","#eta of leading lepton","Entries",20,-2.5,2.5,log,0);
   plot2("lep2_eta","#eta of second leading lepton","Entries",20,-2.5,2.5,log,0);
   plot2("lep1_relIso","Iso40_{rel} of leading lepton","Entries",50,0,5,log,0);
   plot2("lep2_relIso","Iso40_{rel} of second leading lepton","Entries",50,0,5,log,0);
  
   //S1
-  plot2("ZMass","invariant mass of dilepton","Entries",50,0,200,log,1);
-  plot2("lep1_pt","p_T of leading lepton","Entries",20,0,200,log,1);
-  plot2("lep2_pt","p_T of second leading lepton","Entries",20,0,200,log,1);
+  plot2("ZMass","invariant mass of dilepton","Entries",40,0,200,log,1);
+  plot2("lep1_pt","p_T of leading lepton","Entries",40,0,200,log,1);
+  plot2("lep2_pt","p_T of second leading lepton","Entries",40,0,200,log,1);
   plot2("lep1_eta","#eta of leading lepton","Entries",20,-2.5,2.5,log,1);
   plot2("lep2_eta","#eta of second leading lepton","Entries",20,-2.5,2.5,log,1);
 
   //S2
-  plot2("ZMass","invariant mass of dilepton","Entries",50,0,200,log,2);
+  plot2("ZMass","invariant mass of dilepton","Entries",40,0,200,log,2);
   plot2("MET","MET","Entries",30,0,150,log,2);
 
   //S3
@@ -51,12 +51,12 @@ void plotv2()
   plot2("nbJet30M","# of bTag CSVM","Entries",7,0,7,log,4);
   plot2("nbJet30L","# of bTag CSVL","Entries",7,0,7,log,4);
 
-  plot2("jet1_pt","p_T of 1st jet","Entries",50,0,200,log,4);
+  plot2("jet1_pt","p_T of 1st jet","Entries",40,0,200,log,4);
   plot2("jet1_eta","#eta of 1st jet","Entries",10,-2.5,2.5,log,4);
   plot2("jet1_phi","#phi of 1st jet","Entries",14,-3.5,3.5,log,4);
   plot2("jet1_bTag","CSV of 1st jet","Entries",10,0,10,log,4);
 
-  plot2("jet2_pt","p_T of 2nd jet","Entries",50,0,200,log,4);
+  plot2("jet2_pt","p_T of 2nd jet","Entries",40,0,200,log,4);
   plot2("jet2_eta","#eta of 2nd jet","Entries",10,-2.5,2.5,log,4);
   plot2("jet2_phi","#phi of 2nd jet","Entries",14,-3.5,3.5,log,4);
   plot2("jet2_bTag","CSV of 2nd jet","Entries",10,0,10,log,4);
