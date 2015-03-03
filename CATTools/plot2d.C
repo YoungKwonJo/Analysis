@@ -16,6 +16,7 @@ void plot2d()
   bool log = true;
   //plot2("gentop_NJets20","# of Jet in GEN","Entries",15,0,15,log,0);
   plot2("gentop_NJets20:nJet30", "# of Jet30","# of GenJet20",10,0,10,10,0,10,-1);
+//break;
   plot2("gentop_NJets20:nJet30", "# of Jet30","# of GenJet20",10,0,10,10,0,10,4);
   plot2("gentop_NJets20:nJet30", "# of Jet30","# of GenJet20",10,0,10,10,0,10,7);
 
@@ -35,6 +36,19 @@ void plot2d()
   plot2("gentop_NbJets30:nbJet30L", "# of bJet30 CSVL","# of GenbJet30",10,0,10,10,0,10,-1);
   plot2("gentop_NbJets30:nbJet30L", "# of bJet30 CSVL","# of GenbJet30",10,0,10,10,0,10,4);
   plot2("gentop_NbJets30:nbJet30L", "# of bJet30 CSVL","# of GenbJet30",10,0,10,10,0,10,7);
+
+
+  plot2("gentop_NbJets20:nbJet30T", "# of bJet30 CSVT","# of GenbJet20",10,0,10,10,0,10,-1);
+  plot2("gentop_NbJets20:nbJet30T", "# of bJet30 CSVT","# of GenbJet20",10,0,10,10,0,10,4);
+  plot2("gentop_NbJets20:nbJet30T", "# of bJet30 CSVT","# of GenbJet20",10,0,10,10,0,10,7);
+
+  plot2("gentop_NbJets20:nbJet30M", "# of bJet30 CSVM","# of GenbJet20",10,0,10,10,0,10,-1);
+  plot2("gentop_NbJets20:nbJet30M", "# of bJet30 CSVM","# of GenbJet20",10,0,10,10,0,10,4);
+  plot2("gentop_NbJets20:nbJet30M", "# of bJet30 CSVM","# of GenbJet20",10,0,10,10,0,10,7);
+
+  plot2("gentop_NbJets20:nbJet30L", "# of bJet30 CSVL","# of GenbJet20",10,0,10,10,0,10,-1);
+  plot2("gentop_NbJets20:nbJet30L", "# of bJet30 CSVL","# of GenbJet20",10,0,10,10,0,10,4);
+  plot2("gentop_NbJets20:nbJet30L", "# of bJet30 CSVL","# of GenbJet20",10,0,10,10,0,10,7);
 
 
 /*
@@ -172,24 +186,24 @@ void plot2(const char *plotname, const char* xtitle, const char* ytitle, int nBi
   TCut ttOth = !visible;
 
   const char* mcsample[] = {"t#bar{t}b#bar{b}","t#bar{t}bj",
-    "t#bar{t}c#bar{c}", "t#bar{t}LF","t#bar{t} other"
+    "t#bar{t}c#bar{c}", "t#bar{t}LF","t#bar{t} other", "t#bar{t}(all)"
   };
   const char* mcname[] = {"ttbb","ttbj",
-    "ttcc", "ttLF","ttother"
+    "ttcc", "ttLF","ttother", "ttbarall"
   };
   const Color_t color[] = {kRed,kBlue,kGreen,kViolet,kOrange};
   const char* decay[] = {"MuMu","ElEl","MuEl","LL"};
 
-  TH2F *h1[5][4];
-  TProfile *tpf[5][4];
+  TH2F *h1[6][4], *h2[6][4];
+  TProfile *tpf[6][4], *tpf2[6][4];
   TCut sigcut[5] = {ttbb, ttbj,ttcc,ttLF,ttOth};
-  double entries[5][4], ymax[4];
+  double entries[6][4], ymax[4];
   std::string plotname_ = plotname;
   std::string prn_ (":");
   std::string afn_ ("_");
   
   char* plotname2 =replace( plotname_, prn_, afn_).c_str();
-  for(int j=0;j<4;j++)for(int i=0;i<5;i++)
+  for(int j=0;j<4;j++)for(int i=0;i<6;i++)
   {
 
       h1[i][j] = tH2FPlot(mcname[i],plotname2,step,decay[j],nBins,min,max,nBinsy,ymin,ymax,plotname2,xtitle,ytitle);
@@ -208,6 +222,8 @@ void plot2(const char *plotname, const char* xtitle, const char* ytitle, int nBi
          //h1[i][j]->AddBinContent(nBins, h1[i][j]->GetBinContent(nBins+1));
          //h1[i][j]->Sumw2(); 
          h1[i][3]->Add(h1[i][j]);
+         h1[5][j]->Add(h1[i][j]);
+         h1[5][3]->Add(h1[i][j]);
      }
      cout << "finished for "<< decay[j] << endl;
   }
@@ -230,7 +246,7 @@ void plot2(const char *plotname, const char* xtitle, const char* ytitle, int nBi
   }*/
 
   cout << "openning a canvas" << endl;
-  TCanvas *c1[4]; 
+  TCanvas *c1[4], *c2[4]; 
   {
      //TLegend* leg[4];
      //TPaveText* pt[4];
@@ -238,19 +254,46 @@ void plot2(const char *plotname, const char* xtitle, const char* ytitle, int nBi
      {
         c1[j] = new TCanvas(Form("c1%d",j),Form("c1%d",j),1200,900);
         c1[j]->Divide(3,2);
-        for(int i=0;i<5;i++)
+        c2[j] = new TCanvas(Form("c2%d",j),Form("c2%d",j),1200,900);
+        c2[j]->Divide(3,2);
+ 
+        for(int i=0;i<6;i++)
         {
            c1[j]->cd(i+1);
            h1[i][j]->Draw("colz");
            tpf[i][j] = h1[i][j]->ProfileX();
            tpf[i][j]->Draw("same");
+
+           c2[j]->cd(i+1);
+           h2[i][j]=(TH2F*) exchange(h1[i][j]);
+           tpf2[i][j] = h2[i][j]->ProfileX();
+           tpf2[i][j]->SetLineColor(kGray);
+           h2[i][j]->Draw("colz");
+           tpf2[i][j]->Draw("same");
            //pt[j] = myTPaveText(mcname[i]);
            //pt[j]->Draw();
         }
         c1[j]->Print(Form("plots/TCanvas_%s_%s_%s.eps",plotname2,step,decay[j]));
+        c2[j]->Print(Form("plots/TCanvas_%s_%s_%s_IN.eps",plotname2,step,decay[j]));
      }
   }
 }
+TH2F* exchange(TH2F* h2)
+{
+  TH2F *h1 = new TH2F(Form("h2%s",h2->GetName()),h2->GetTitle(),
+                        h2->GetNbinsY(), h2->GetYaxis()->GetXmin(),h2->GetYaxis()->GetXmax(),
+                        h2->GetNbinsX(), h2->GetXaxis()->GetXmin(),h2->GetXaxis()->GetXmax());
+  h1->GetYaxis()->SetTitle(h2->GetXaxis()->GetTitle());
+  h1->GetXaxis()->SetTitle(h2->GetYaxis()->GetTitle());
+  for(int i=0;i<h1->GetNbinsY();i++)
+  for(int j=0;j<h1->GetNbinsX();j++)
+  {
+     h1->SetBinContent(i+1,j+1,h2->GetBinContent(j+1,i+1));  
+  }
+  return h1;
+
+}
+
 TH2F* tH2FPlot(const char* mcname, const char* plotname, const char* step, const char* decay, int nBins, double min, double max, int nBinsy, double ymin, double ymax, const char* title, const char* xtitle, const char* ytitle)
 {
       TH2F *h1 = new TH2F(Form("h_%s_%s_%s_%s",mcname,plotname,step,decay),Form("%s %s %s %s",title, step, decay, mcname),nBins,min,max, nBinsy, ymin, ymax);
