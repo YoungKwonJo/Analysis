@@ -24,6 +24,19 @@ void plot2d()
   plot2("gentop_NJets30:nJet30", "# of Jet30","# of GenJet30",10,0,10,10,0,10,7);
 
 
+  plot2("gentop_NbJets30:nbJet30T", "# of bJet30 CSVT","# of GenbJet30",10,0,10,10,0,10,-1);
+  plot2("gentop_NbJets30:nbJet30T", "# of bJet30 CSVT","# of GenbJet30",10,0,10,10,0,10,4);
+  plot2("gentop_NbJets30:nbJet30T", "# of bJet30 CSVT","# of GenbJet30",10,0,10,10,0,10,7);
+
+  plot2("gentop_NbJets30:nbJet30M", "# of bJet30 CSVM","# of GenbJet30",10,0,10,10,0,10,-1);
+  plot2("gentop_NbJets30:nbJet30M", "# of bJet30 CSVM","# of GenbJet30",10,0,10,10,0,10,4);
+  plot2("gentop_NbJets30:nbJet30M", "# of bJet30 CSVM","# of GenbJet30",10,0,10,10,0,10,7);
+
+  plot2("gentop_NbJets30:nbJet30L", "# of bJet30 CSVL","# of GenbJet30",10,0,10,10,0,10,-1);
+  plot2("gentop_NbJets30:nbJet30L", "# of bJet30 CSVL","# of GenbJet30",10,0,10,10,0,10,4);
+  plot2("gentop_NbJets30:nbJet30L", "# of bJet30 CSVL","# of GenbJet30",10,0,10,10,0,10,7);
+
+
 /*
   //break;
   //S0
@@ -189,8 +202,8 @@ void plot2(const char *plotname, const char* xtitle, const char* ytitle, int nBi
      for(int i=0;i<5;i++)
      {
          if(j==0) chain->Project(Form("h_%s_%s_%s_MuMu",mcname[i],plotname2,step),plotname,sigcut[i]+stepcut);
-         //if(j==1) chain2->Project(Form("h_%s_%s_%s_ElEl",mcname[i],plotname2,step),plotname,sigcut[i]+stepcut);
-         //if(j==2) chain3->Project(Form("h_%s_%s_%s_MuEl",mcname[i],plotname2,step),plotname,sigcut[i]+stepcut_em);
+         if(j==1) chain2->Project(Form("h_%s_%s_%s_ElEl",mcname[i],plotname2,step),plotname,sigcut[i]+stepcut);
+         if(j==2) chain3->Project(Form("h_%s_%s_%s_MuEl",mcname[i],plotname2,step),plotname,sigcut[i]+stepcut_em);
      
          //h1[i][j]->AddBinContent(nBins, h1[i][j]->GetBinContent(nBins+1));
          //h1[i][j]->Sumw2(); 
