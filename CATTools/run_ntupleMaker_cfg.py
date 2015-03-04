@@ -14,7 +14,7 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.source = cms.Source("PoolSource",
       fileNames = cms.untracked.vstring(
 #'/store/user/youn/cat710_phy14_ttbar_2025_aod/catTuple_972.root'
-'file:catTuple.root'
+'file:catTuple_000.root'
 #          '/store/user/jlee/TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/141219_091640/0000/catTuple_1.root',
 #          '/store/user/jlee/TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/141219_091640/0000/catTuple_2.root',
 #          '/store/user/jlee/TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/141219_091640/0000/catTuple_3.root',
@@ -23,17 +23,17 @@ process.source = cms.Source("PoolSource",
       )
 )
 
-#int                                   "recoEventInfo"             "HLTDoubleMu"     "CAT"
+process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
     failureMode = cms.untracked.string("error"), # choose one among keep/skip/error
-    eventCounters = cms.vstring(), #"nEventsTotal", "nEventsClean", "nEventsPAT"),
+    eventCounters = cms.vstring("nEventsTotal"), #"nEventsTotal", "nEventsClean", "nEventsPAT"),
     int = cms.PSet(
         nVertex   = cms.PSet(src = cms.InputTag("recoEventInfo","pvN")),
         HLTDoubleMu = cms.PSet(src = cms.InputTag("recoEventInfo","HLTDoubleMu")),
         HLTDoubleEl = cms.PSet(src = cms.InputTag("recoEventInfo","HLTDoubleEl")),
         HLTMuEl = cms.PSet(src = cms.InputTag("recoEventInfo","HLTMuEl")),
-        HLTMuJet = cms.PSet(src = cms.InputTag("recoEventInfo","HLTMuJet")),
-        HLTELJet = cms.PSet(src = cms.InputTag("recoEventInfo","HLTELJet")),
+        HLTSingleMu = cms.PSet(src = cms.InputTag("recoEventInfo","HLTSingleMu")),
+        HLTSingleEl = cms.PSet(src = cms.InputTag("recoEventInfo","HLTSingleEl")),
     ),
     double = cms.PSet(
         puWeight   = cms.PSet(src = cms.InputTag("pileupWeight")),
@@ -123,8 +123,10 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
             exprs = cms.untracked.PSet(
                 lepton1_pt      = cms.string("lepton1().Pt()"),
                 lepton1_eta      = cms.string("lepton1().Eta()"),
+                lepton1_phi      = cms.string("lepton1().Phi()"),
                 lepton2_pt      = cms.string("lepton2().Pt()"),
                 lepton2_eta      = cms.string("lepton2().Eta()"),
+                lepton2_phi      = cms.string("lepton2().Phi()"),
                 allHadronic      = cms.string("allHadronic"),
                 semiLeptonic     = cms.string("semiLeptonic"),
                 diLeptonicMuoMuo = cms.string("diLeptonicMuoMuo"),
@@ -133,6 +135,21 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
                 diLeptonicTauMuo = cms.string("diLeptonicTauMuo"),
                 diLeptonicTauEle = cms.string("diLeptonicTauEle"),
                 diLeptonicTauTau = cms.string("diLeptonicTauTau"),
+                NbJets1           = cms.string("NbJets(1)"),
+                NbJets201         = cms.string("NbJets20(1)"),
+                NbJets251         = cms.string("NbJets25(1)"),
+                NbJets301         = cms.string("NbJets30(1)"),
+                NbJets401         = cms.string("NbJets40(1)"),
+                NaddbJets1        = cms.string("NaddbJets(1)"),
+                NaddbJets201      = cms.string("NaddbJets20(1)"),
+                NaddbJets401      = cms.string("NaddbJets40(1)"),
+                NcJets1           = cms.string("NcJets(1)"),
+                NcJets101         = cms.string("NcJets10(1)"),
+                NcJets151         = cms.string("NcJets15(1)"),
+                NcJets201         = cms.string("NcJets20(1)"),
+                NcJets251         = cms.string("NcJets25(1)"),
+                NcJets301         = cms.string("NcJets30(1)"),
+                NcJets401         = cms.string("NcJets40(1)"),
                 NbJets           = cms.string("NbJets(0)"),
                 NbJets20         = cms.string("NbJets20(0)"),
                 NbJets25         = cms.string("NbJets25(0)"),
@@ -245,6 +262,7 @@ process.TFileService = cms.Service("TFileService",
 )
 
 process.p = cms.Path(
+    process.nEventsTotal*
     process.ntuple
 )
 
