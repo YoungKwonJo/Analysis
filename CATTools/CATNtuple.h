@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Feb 17 13:31:47 2015 by ROOT version 5.34/18
+// Thu Mar  5 12:56:38 2015 by ROOT version 5.34/18
 // from TTree event/event
-// found on file: ntuple_0.root
+// found on file: ../ntuple_ttbar_tag711_aod_0.root
 //////////////////////////////////////////////////////////
 
 #ifndef CATNtuple_h
@@ -29,9 +29,9 @@ public :
    Int_t           event;
    Int_t           HLTDoubleEl;
    Int_t           HLTDoubleMu;
-   Int_t           HLTELJet;
    Int_t           HLTMuEl;
-   Int_t           HLTMuJet;
+   Int_t           HLTSingleEl;
+   Int_t           HLTSingleMu;
    Int_t           nVertex;
    Double_t        puWeight;
    Double_t        puWeightDn;
@@ -62,27 +62,42 @@ public :
    vector<double>  *gentop_NaddJets20;
    vector<double>  *gentop_NaddJets40;
    vector<double>  *gentop_NaddbJets;
+   vector<double>  *gentop_NaddbJets1;
    vector<double>  *gentop_NaddbJets20;
+   vector<double>  *gentop_NaddbJets201;
    vector<double>  *gentop_NaddbJets40;
+   vector<double>  *gentop_NaddbJets401;
    vector<double>  *gentop_NaddbQuarks20;
    vector<double>  *gentop_NaddbQuarks40;
    vector<double>  *gentop_NbJets;
+   vector<double>  *gentop_NbJets1;
    vector<double>  *gentop_NbJets20;
+   vector<double>  *gentop_NbJets201;
    vector<double>  *gentop_NbJets25;
+   vector<double>  *gentop_NbJets251;
    vector<double>  *gentop_NbJets30;
+   vector<double>  *gentop_NbJets301;
    vector<double>  *gentop_NbJets40;
+   vector<double>  *gentop_NbJets401;
    vector<double>  *gentop_NbQuarks;
    vector<double>  *gentop_NbQuarks20;
    vector<double>  *gentop_NbQuarks40;
    vector<double>  *gentop_NbQuarksNoTop;
    vector<double>  *gentop_NbQuarksTop;
    vector<double>  *gentop_NcJets;
+   vector<double>  *gentop_NcJets1;
    vector<double>  *gentop_NcJets10;
+   vector<double>  *gentop_NcJets101;
    vector<double>  *gentop_NcJets15;
+   vector<double>  *gentop_NcJets151;
    vector<double>  *gentop_NcJets20;
+   vector<double>  *gentop_NcJets201;
    vector<double>  *gentop_NcJets25;
+   vector<double>  *gentop_NcJets251;
    vector<double>  *gentop_NcJets30;
+   vector<double>  *gentop_NcJets301;
    vector<double>  *gentop_NcJets40;
+   vector<double>  *gentop_NcJets401;
    vector<double>  *gentop_NcQuarks;
    vector<double>  *gentop_allHadronic;
    vector<double>  *gentop_diLeptonicEleEle;
@@ -92,8 +107,10 @@ public :
    vector<double>  *gentop_diLeptonicTauMuo;
    vector<double>  *gentop_diLeptonicTauTau;
    vector<double>  *gentop_lepton1_eta;
+   vector<double>  *gentop_lepton1_phi;
    vector<double>  *gentop_lepton1_pt;
    vector<double>  *gentop_lepton2_eta;
+   vector<double>  *gentop_lepton2_phi;
    vector<double>  *gentop_lepton2_pt;
    vector<double>  *gentop_semiLeptonic;
    vector<double>  *jets_CSVInclV2;
@@ -154,9 +171,9 @@ public :
    TBranch        *b_event;   //!
    TBranch        *b_HLTDoubleEl;   //!
    TBranch        *b_HLTDoubleMu;   //!
-   TBranch        *b_HLTELJet;   //!
    TBranch        *b_HLTMuEl;   //!
-   TBranch        *b_HLTMuJet;   //!
+   TBranch        *b_HLTSingleEl;   //!
+   TBranch        *b_HLTSingleMu;   //!
    TBranch        *b_nVertex;   //!
    TBranch        *b_puWeight;   //!
    TBranch        *b_puWeightDn;   //!
@@ -187,27 +204,42 @@ public :
    TBranch        *b_gentop_NaddJets20;   //!
    TBranch        *b_gentop_NaddJets40;   //!
    TBranch        *b_gentop_NaddbJets;   //!
+   TBranch        *b_gentop_NaddbJets1;   //!
    TBranch        *b_gentop_NaddbJets20;   //!
+   TBranch        *b_gentop_NaddbJets201;   //!
    TBranch        *b_gentop_NaddbJets40;   //!
+   TBranch        *b_gentop_NaddbJets401;   //!
    TBranch        *b_gentop_NaddbQuarks20;   //!
    TBranch        *b_gentop_NaddbQuarks40;   //!
    TBranch        *b_gentop_NbJets;   //!
+   TBranch        *b_gentop_NbJets1;   //!
    TBranch        *b_gentop_NbJets20;   //!
+   TBranch        *b_gentop_NbJets201;   //!
    TBranch        *b_gentop_NbJets25;   //!
+   TBranch        *b_gentop_NbJets251;   //!
    TBranch        *b_gentop_NbJets30;   //!
+   TBranch        *b_gentop_NbJets301;   //!
    TBranch        *b_gentop_NbJets40;   //!
+   TBranch        *b_gentop_NbJets401;   //!
    TBranch        *b_gentop_NbQuarks;   //!
    TBranch        *b_gentop_NbQuarks20;   //!
    TBranch        *b_gentop_NbQuarks40;   //!
    TBranch        *b_gentop_NbQuarksNoTop;   //!
    TBranch        *b_gentop_NbQuarksTop;   //!
    TBranch        *b_gentop_NcJets;   //!
+   TBranch        *b_gentop_NcJets1;   //!
    TBranch        *b_gentop_NcJets10;   //!
+   TBranch        *b_gentop_NcJets101;   //!
    TBranch        *b_gentop_NcJets15;   //!
+   TBranch        *b_gentop_NcJets151;   //!
    TBranch        *b_gentop_NcJets20;   //!
+   TBranch        *b_gentop_NcJets201;   //!
    TBranch        *b_gentop_NcJets25;   //!
+   TBranch        *b_gentop_NcJets251;   //!
    TBranch        *b_gentop_NcJets30;   //!
+   TBranch        *b_gentop_NcJets301;   //!
    TBranch        *b_gentop_NcJets40;   //!
+   TBranch        *b_gentop_NcJets401;   //!
    TBranch        *b_gentop_NcQuarks;   //!
    TBranch        *b_gentop_allHadronic;   //!
    TBranch        *b_gentop_diLeptonicEleEle;   //!
@@ -217,8 +249,10 @@ public :
    TBranch        *b_gentop_diLeptonicTauMuo;   //!
    TBranch        *b_gentop_diLeptonicTauTau;   //!
    TBranch        *b_gentop_lepton1_eta;   //!
+   TBranch        *b_gentop_lepton1_phi;   //!
    TBranch        *b_gentop_lepton1_pt;   //!
    TBranch        *b_gentop_lepton2_eta;   //!
+   TBranch        *b_gentop_lepton2_phi;   //!
    TBranch        *b_gentop_lepton2_pt;   //!
    TBranch        *b_gentop_semiLeptonic;   //!
    TBranch        *b_jets_CSVInclV2;   //!
@@ -279,7 +313,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(char *DecayMode);
+   virtual void     Loop(char *DecayMode,bool isSignal,bool isMC);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 };
@@ -292,11 +326,11 @@ CATNtuple::CATNtuple(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_0.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../ntuple_ttbar_tag711_aod_0.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("ntuple_0.root");
+         f = new TFile("../ntuple_ttbar_tag711_aod_0.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("ntuple_0.root:/ntuple");
+      TDirectory * dir = (TDirectory*)f->Get("../ntuple_ttbar_tag711_aod_0.root:/ntuple");
       dir->GetObject("event",tree);
 
    }
@@ -362,27 +396,42 @@ void CATNtuple::Init(TTree *tree)
    gentop_NaddJets20 = 0;
    gentop_NaddJets40 = 0;
    gentop_NaddbJets = 0;
+   gentop_NaddbJets1 = 0;
    gentop_NaddbJets20 = 0;
+   gentop_NaddbJets201 = 0;
    gentop_NaddbJets40 = 0;
+   gentop_NaddbJets401 = 0;
    gentop_NaddbQuarks20 = 0;
    gentop_NaddbQuarks40 = 0;
    gentop_NbJets = 0;
+   gentop_NbJets1 = 0;
    gentop_NbJets20 = 0;
+   gentop_NbJets201 = 0;
    gentop_NbJets25 = 0;
+   gentop_NbJets251 = 0;
    gentop_NbJets30 = 0;
+   gentop_NbJets301 = 0;
    gentop_NbJets40 = 0;
+   gentop_NbJets401 = 0;
    gentop_NbQuarks = 0;
    gentop_NbQuarks20 = 0;
    gentop_NbQuarks40 = 0;
    gentop_NbQuarksNoTop = 0;
    gentop_NbQuarksTop = 0;
    gentop_NcJets = 0;
+   gentop_NcJets1 = 0;
    gentop_NcJets10 = 0;
+   gentop_NcJets101 = 0;
    gentop_NcJets15 = 0;
+   gentop_NcJets151 = 0;
    gentop_NcJets20 = 0;
+   gentop_NcJets201 = 0;
    gentop_NcJets25 = 0;
+   gentop_NcJets251 = 0;
    gentop_NcJets30 = 0;
+   gentop_NcJets301 = 0;
    gentop_NcJets40 = 0;
+   gentop_NcJets401 = 0;
    gentop_NcQuarks = 0;
    gentop_allHadronic = 0;
    gentop_diLeptonicEleEle = 0;
@@ -392,8 +441,10 @@ void CATNtuple::Init(TTree *tree)
    gentop_diLeptonicTauMuo = 0;
    gentop_diLeptonicTauTau = 0;
    gentop_lepton1_eta = 0;
+   gentop_lepton1_phi = 0;
    gentop_lepton1_pt = 0;
    gentop_lepton2_eta = 0;
+   gentop_lepton2_phi = 0;
    gentop_lepton2_pt = 0;
    gentop_semiLeptonic = 0;
    jets_CSVInclV2 = 0;
@@ -458,9 +509,9 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("event", &event, &b_event);
    fChain->SetBranchAddress("HLTDoubleEl", &HLTDoubleEl, &b_HLTDoubleEl);
    fChain->SetBranchAddress("HLTDoubleMu", &HLTDoubleMu, &b_HLTDoubleMu);
-   fChain->SetBranchAddress("HLTELJet", &HLTELJet, &b_HLTELJet);
    fChain->SetBranchAddress("HLTMuEl", &HLTMuEl, &b_HLTMuEl);
-   fChain->SetBranchAddress("HLTMuJet", &HLTMuJet, &b_HLTMuJet);
+   fChain->SetBranchAddress("HLTSingleEl", &HLTSingleEl, &b_HLTSingleEl);
+   fChain->SetBranchAddress("HLTSingleMu", &HLTSingleMu, &b_HLTSingleMu);
    fChain->SetBranchAddress("nVertex", &nVertex, &b_nVertex);
    fChain->SetBranchAddress("puWeight", &puWeight, &b_puWeight);
    fChain->SetBranchAddress("puWeightDn", &puWeightDn, &b_puWeightDn);
@@ -491,27 +542,42 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("gentop_NaddJets20", &gentop_NaddJets20, &b_gentop_NaddJets20);
    fChain->SetBranchAddress("gentop_NaddJets40", &gentop_NaddJets40, &b_gentop_NaddJets40);
    fChain->SetBranchAddress("gentop_NaddbJets", &gentop_NaddbJets, &b_gentop_NaddbJets);
+   fChain->SetBranchAddress("gentop_NaddbJets1", &gentop_NaddbJets1, &b_gentop_NaddbJets1);
    fChain->SetBranchAddress("gentop_NaddbJets20", &gentop_NaddbJets20, &b_gentop_NaddbJets20);
+   fChain->SetBranchAddress("gentop_NaddbJets201", &gentop_NaddbJets201, &b_gentop_NaddbJets201);
    fChain->SetBranchAddress("gentop_NaddbJets40", &gentop_NaddbJets40, &b_gentop_NaddbJets40);
+   fChain->SetBranchAddress("gentop_NaddbJets401", &gentop_NaddbJets401, &b_gentop_NaddbJets401);
    fChain->SetBranchAddress("gentop_NaddbQuarks20", &gentop_NaddbQuarks20, &b_gentop_NaddbQuarks20);
    fChain->SetBranchAddress("gentop_NaddbQuarks40", &gentop_NaddbQuarks40, &b_gentop_NaddbQuarks40);
    fChain->SetBranchAddress("gentop_NbJets", &gentop_NbJets, &b_gentop_NbJets);
+   fChain->SetBranchAddress("gentop_NbJets1", &gentop_NbJets1, &b_gentop_NbJets1);
    fChain->SetBranchAddress("gentop_NbJets20", &gentop_NbJets20, &b_gentop_NbJets20);
+   fChain->SetBranchAddress("gentop_NbJets201", &gentop_NbJets201, &b_gentop_NbJets201);
    fChain->SetBranchAddress("gentop_NbJets25", &gentop_NbJets25, &b_gentop_NbJets25);
+   fChain->SetBranchAddress("gentop_NbJets251", &gentop_NbJets251, &b_gentop_NbJets251);
    fChain->SetBranchAddress("gentop_NbJets30", &gentop_NbJets30, &b_gentop_NbJets30);
+   fChain->SetBranchAddress("gentop_NbJets301", &gentop_NbJets301, &b_gentop_NbJets301);
    fChain->SetBranchAddress("gentop_NbJets40", &gentop_NbJets40, &b_gentop_NbJets40);
+   fChain->SetBranchAddress("gentop_NbJets401", &gentop_NbJets401, &b_gentop_NbJets401);
    fChain->SetBranchAddress("gentop_NbQuarks", &gentop_NbQuarks, &b_gentop_NbQuarks);
    fChain->SetBranchAddress("gentop_NbQuarks20", &gentop_NbQuarks20, &b_gentop_NbQuarks20);
    fChain->SetBranchAddress("gentop_NbQuarks40", &gentop_NbQuarks40, &b_gentop_NbQuarks40);
    fChain->SetBranchAddress("gentop_NbQuarksNoTop", &gentop_NbQuarksNoTop, &b_gentop_NbQuarksNoTop);
    fChain->SetBranchAddress("gentop_NbQuarksTop", &gentop_NbQuarksTop, &b_gentop_NbQuarksTop);
    fChain->SetBranchAddress("gentop_NcJets", &gentop_NcJets, &b_gentop_NcJets);
+   fChain->SetBranchAddress("gentop_NcJets1", &gentop_NcJets1, &b_gentop_NcJets1);
    fChain->SetBranchAddress("gentop_NcJets10", &gentop_NcJets10, &b_gentop_NcJets10);
+   fChain->SetBranchAddress("gentop_NcJets101", &gentop_NcJets101, &b_gentop_NcJets101);
    fChain->SetBranchAddress("gentop_NcJets15", &gentop_NcJets15, &b_gentop_NcJets15);
+   fChain->SetBranchAddress("gentop_NcJets151", &gentop_NcJets151, &b_gentop_NcJets151);
    fChain->SetBranchAddress("gentop_NcJets20", &gentop_NcJets20, &b_gentop_NcJets20);
+   fChain->SetBranchAddress("gentop_NcJets201", &gentop_NcJets201, &b_gentop_NcJets201);
    fChain->SetBranchAddress("gentop_NcJets25", &gentop_NcJets25, &b_gentop_NcJets25);
+   fChain->SetBranchAddress("gentop_NcJets251", &gentop_NcJets251, &b_gentop_NcJets251);
    fChain->SetBranchAddress("gentop_NcJets30", &gentop_NcJets30, &b_gentop_NcJets30);
+   fChain->SetBranchAddress("gentop_NcJets301", &gentop_NcJets301, &b_gentop_NcJets301);
    fChain->SetBranchAddress("gentop_NcJets40", &gentop_NcJets40, &b_gentop_NcJets40);
+   fChain->SetBranchAddress("gentop_NcJets401", &gentop_NcJets401, &b_gentop_NcJets401);
    fChain->SetBranchAddress("gentop_NcQuarks", &gentop_NcQuarks, &b_gentop_NcQuarks);
    fChain->SetBranchAddress("gentop_allHadronic", &gentop_allHadronic, &b_gentop_allHadronic);
    fChain->SetBranchAddress("gentop_diLeptonicEleEle", &gentop_diLeptonicEleEle, &b_gentop_diLeptonicEleEle);
@@ -521,8 +587,10 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("gentop_diLeptonicTauMuo", &gentop_diLeptonicTauMuo, &b_gentop_diLeptonicTauMuo);
    fChain->SetBranchAddress("gentop_diLeptonicTauTau", &gentop_diLeptonicTauTau, &b_gentop_diLeptonicTauTau);
    fChain->SetBranchAddress("gentop_lepton1_eta", &gentop_lepton1_eta, &b_gentop_lepton1_eta);
+   fChain->SetBranchAddress("gentop_lepton1_phi", &gentop_lepton1_phi, &b_gentop_lepton1_phi);
    fChain->SetBranchAddress("gentop_lepton1_pt", &gentop_lepton1_pt, &b_gentop_lepton1_pt);
    fChain->SetBranchAddress("gentop_lepton2_eta", &gentop_lepton2_eta, &b_gentop_lepton2_eta);
+   fChain->SetBranchAddress("gentop_lepton2_phi", &gentop_lepton2_phi, &b_gentop_lepton2_phi);
    fChain->SetBranchAddress("gentop_lepton2_pt", &gentop_lepton2_pt, &b_gentop_lepton2_pt);
    fChain->SetBranchAddress("gentop_semiLeptonic", &gentop_semiLeptonic, &b_gentop_semiLeptonic);
    fChain->SetBranchAddress("jets_CSVInclV2", &jets_CSVInclV2, &b_jets_CSVInclV2);

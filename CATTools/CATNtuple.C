@@ -44,7 +44,7 @@ bool compByCSVJet(Jet a, Jet b)
 };
 
 
-void CATNtuple::Loop(char *DecayMode)
+void CATNtuple::Loop(char *DecayMode,bool isSignal,bool isMC)
 {
    if (fChain == 0) return;
    Long64_t nentries = fChain->GetEntriesFast();
@@ -102,7 +102,7 @@ void CATNtuple::Loop(char *DecayMode)
              double y_ = electrons_pt->at(i)*TMath::Sin(electrons_phi->at(i));
              double z_ = electrons_pt->at(i)*sinh(electrons_eta->at(i));
              double e_ = TMath::Sqrt(x_*x_+y_*y_+z_*z_+electrons_m->at(i)*electrons_m->at(i));
-             Lepton el_(TLorentzVector( x_,y_,z_,e_), electrons_relIso04->at(i), electrons_q->at(i) );
+             Lepton el_(TLorentzVector( x_,y_,z_,e_), electrons_relIso03->at(i), electrons_q->at(i) );
              electrons_->push_back(el_);
           }
       }
@@ -122,7 +122,7 @@ void CATNtuple::Loop(char *DecayMode)
              double y_ = muon_pt->at(i)*TMath::Sin(muon_phi->at(i));
              double z_ = muon_pt->at(i)*sinh(muon_eta->at(i));
              double e_ = TMath::Sqrt(x_*x_+y_*y_+z_*z_+muon_m->at(i)*muon_m->at(i));
-             Lepton mu_(TLorentzVector( x_,y_,z_,e_), muon_relIso04->at(i), muon_q->at(i) );
+             Lepton mu_(TLorentzVector( x_,y_,z_,e_), muon_relIso03->at(i), muon_q->at(i) );
              muons_->push_back(mu_);
           }
       }
@@ -304,53 +304,55 @@ void CATNtuple::Loop(char *DecayMode)
       }//precut
 
 
-      //generate information
-      //gentop
-      fevent_->gentop_lep1_pt_=gentop_lepton1_pt->at(0);
-      fevent_->gentop_lep1_eta_=gentop_lepton1_eta->at(0);
-      fevent_->gentop_lep2_pt_=gentop_lepton2_pt->at(0);
-      fevent_->gentop_lep2_eta_=gentop_lepton2_eta->at(0);
- 
-      fevent_->gentop_NJets_   = gentop_NJets->at(0); 
-      fevent_->gentop_NJets10_   = gentop_NJets10->at(0); 
-      fevent_->gentop_NJets20_   = gentop_NJets20->at(0); 
-      fevent_->gentop_NJets25_   = gentop_NJets25->at(0); 
-      fevent_->gentop_NJets30_   = gentop_NJets30->at(0); 
-      fevent_->gentop_NJets40_   = gentop_NJets40->at(0); 
-      fevent_->gentop_NaddJets20_   = gentop_NaddJets20->at(0); 
-      fevent_->gentop_NaddJets40_   = gentop_NaddJets40->at(0); 
-      fevent_->gentop_NaddbJets_   = gentop_NaddbJets->at(0); 
-      fevent_->gentop_NaddbJets20_   = gentop_NaddbJets20->at(0); 
-      fevent_->gentop_NaddbJets40_   = gentop_NaddbJets40->at(0); 
-      fevent_->gentop_NaddbQuarks20_   = gentop_NaddbQuarks20->at(0); 
-      fevent_->gentop_NaddbQuarks40_   = gentop_NaddbQuarks40->at(0); 
-      fevent_->gentop_NbJets_   = gentop_NbJets->at(0); 
-      fevent_->gentop_NbJets20_   = gentop_NbJets20->at(0); 
-      fevent_->gentop_NbJets25_   = gentop_NbJets25->at(0); 
-      fevent_->gentop_NbJets30_   = gentop_NbJets30->at(0); 
-      fevent_->gentop_NbJets40_   = gentop_NbJets40->at(0); 
-      fevent_->gentop_NbQuarks_   = gentop_NbQuarks->at(0); 
-      fevent_->gentop_NbQuarks20_   = gentop_NbQuarks20->at(0); 
-      fevent_->gentop_NbQuarks40_   = gentop_NbQuarks40->at(0); 
-      fevent_->gentop_NbQuarksNoTop_   = gentop_NbQuarksNoTop->at(0); 
-      fevent_->gentop_NbQuarksTop_   = gentop_NbQuarksTop->at(0); 
-      fevent_->gentop_NcJets_   = gentop_NcJets->at(0); 
-      fevent_->gentop_NcJets10_   = gentop_NcJets10->at(0); 
-      fevent_->gentop_NcJets15_   = gentop_NcJets15->at(0); 
-      fevent_->gentop_NcJets20_   = gentop_NcJets20->at(0); 
-      fevent_->gentop_NcJets25_   = gentop_NcJets25->at(0); 
-      fevent_->gentop_NcJets30_   = gentop_NcJets30->at(0); 
-      fevent_->gentop_NcJets40_   = gentop_NcJets40->at(0); 
-      fevent_->gentop_NcQuarks_   = gentop_NcQuarks->at(0); 
-      fevent_->gentop_allHadronic_   = gentop_allHadronic->at(0); 
-      fevent_->gentop_diLeptonicEleEle_   = gentop_diLeptonicEleEle->at(0); 
-      fevent_->gentop_diLeptonicMuoEle_   = gentop_diLeptonicMuoEle->at(0); 
-      fevent_->gentop_diLeptonicMuoMuo_   = gentop_diLeptonicMuoMuo->at(0); 
-      fevent_->gentop_diLeptonicTauEle_   = gentop_diLeptonicTauEle->at(0); 
-      fevent_->gentop_diLeptonicTauMuo_   = gentop_diLeptonicTauMuo->at(0); 
-      fevent_->gentop_diLeptonicTauTau_   = gentop_diLeptonicTauTau->at(0); 
-      fevent_->gentop_semiLeptonic_   = gentop_semiLeptonic->at(0); 
-
+      if(isSignal)
+      {
+          //generate information
+          //gentop
+          fevent_->gentop_lep1_pt_=gentop_lepton1_pt->at(0);
+          fevent_->gentop_lep1_eta_=gentop_lepton1_eta->at(0);
+          fevent_->gentop_lep2_pt_=gentop_lepton2_pt->at(0);
+          fevent_->gentop_lep2_eta_=gentop_lepton2_eta->at(0);
+          
+          fevent_->gentop_NJets_   = gentop_NJets->at(0); 
+          fevent_->gentop_NJets10_   = gentop_NJets10->at(0); 
+          fevent_->gentop_NJets20_   = gentop_NJets20->at(0); 
+          fevent_->gentop_NJets25_   = gentop_NJets25->at(0); 
+          fevent_->gentop_NJets30_   = gentop_NJets30->at(0); 
+          fevent_->gentop_NJets40_   = gentop_NJets40->at(0); 
+          fevent_->gentop_NaddJets20_   = gentop_NaddJets20->at(0); 
+          fevent_->gentop_NaddJets40_   = gentop_NaddJets40->at(0); 
+          fevent_->gentop_NaddbJets_   = gentop_NaddbJets->at(0); 
+          fevent_->gentop_NaddbJets20_   = gentop_NaddbJets20->at(0); 
+          fevent_->gentop_NaddbJets40_   = gentop_NaddbJets40->at(0); 
+          fevent_->gentop_NaddbQuarks20_   = gentop_NaddbQuarks20->at(0); 
+          fevent_->gentop_NaddbQuarks40_   = gentop_NaddbQuarks40->at(0); 
+          fevent_->gentop_NbJets_   = gentop_NbJets->at(0); 
+          fevent_->gentop_NbJets20_   = gentop_NbJets20->at(0); 
+          fevent_->gentop_NbJets25_   = gentop_NbJets25->at(0); 
+          fevent_->gentop_NbJets30_   = gentop_NbJets30->at(0); 
+          fevent_->gentop_NbJets40_   = gentop_NbJets40->at(0); 
+          fevent_->gentop_NbQuarks_   = gentop_NbQuarks->at(0); 
+          fevent_->gentop_NbQuarks20_   = gentop_NbQuarks20->at(0); 
+          fevent_->gentop_NbQuarks40_   = gentop_NbQuarks40->at(0); 
+          fevent_->gentop_NbQuarksNoTop_   = gentop_NbQuarksNoTop->at(0); 
+          fevent_->gentop_NbQuarksTop_   = gentop_NbQuarksTop->at(0); 
+          fevent_->gentop_NcJets_   = gentop_NcJets->at(0); 
+          fevent_->gentop_NcJets10_   = gentop_NcJets10->at(0); 
+          fevent_->gentop_NcJets15_   = gentop_NcJets15->at(0); 
+          fevent_->gentop_NcJets20_   = gentop_NcJets20->at(0); 
+          fevent_->gentop_NcJets25_   = gentop_NcJets25->at(0); 
+          fevent_->gentop_NcJets30_   = gentop_NcJets30->at(0); 
+          fevent_->gentop_NcJets40_   = gentop_NcJets40->at(0); 
+          fevent_->gentop_NcQuarks_   = gentop_NcQuarks->at(0); 
+          fevent_->gentop_allHadronic_   = gentop_allHadronic->at(0); 
+          fevent_->gentop_diLeptonicEleEle_   = gentop_diLeptonicEleEle->at(0); 
+          fevent_->gentop_diLeptonicMuoEle_   = gentop_diLeptonicMuoEle->at(0); 
+          fevent_->gentop_diLeptonicMuoMuo_   = gentop_diLeptonicMuoMuo->at(0); 
+          fevent_->gentop_diLeptonicTauEle_   = gentop_diLeptonicTauEle->at(0); 
+          fevent_->gentop_diLeptonicTauMuo_   = gentop_diLeptonicTauMuo->at(0); 
+          fevent_->gentop_diLeptonicTauTau_   = gentop_diLeptonicTauTau->at(0); 
+          fevent_->gentop_semiLeptonic_   = gentop_semiLeptonic->at(0); 
+      }
 
 
 ////////
