@@ -13,9 +13,11 @@ void run( char *str, bool isMC){
     string tag = "tag711_aod";
     TFile f(Form("%s/ntuple_%s_%s.root",location.c_str(),mcname.c_str(),tag.c_str()));
     TTree *atree = dynamic_cast<TTree *>(f.Get( Form("ntuple/event") ));
-
-    bool isSignal = (mcname.find("ttbar")<mcname.length() && mcname.find("ttbar")>-1);
-    //cout << "isSignal : " << isSignal << ", "<< mcname <<", "<< mcname.find("ttbar") << " , "<< mcname.length()  << endl;
+ 
+    int aaa = mcname.find("ttbar");
+    int leng = mcname.length();
+    bool isSignal = ((aaa<leng) && (aaa>-1));
+    cout << "isSignal : " << isSignal << ", "<< mcname <<", find: "<< mcname.find("ttbar") << " , length:"<< mcname.length()  << endl;
     //return;
     
     if (atree != 0)
