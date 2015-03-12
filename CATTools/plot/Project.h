@@ -39,13 +39,13 @@ class Project{
       h3->GetXaxis()->SetTitle(h.xtitle_.c_str()); h3->GetYaxis()->SetTitle(h.ytitle_.c_str());
 
       char *delim=",";
-      vector<string> filelist2=split(s.filelist_,*delim);
+      //vector<string> filelist2=split(s.filelist_,*delim);
       TChain * chainMuMu_ = new TChain("ntupleMuMu");
-      for(unsigned int i=0;i<filelist2.size();i++) chainMuMu_->Add(Form("%s",filelist2.at(i).c_str()));
+      for(unsigned int i=0;i<s.filelist_.size();i++) chainMuMu_->Add(Form("%s",s.filelist_.at(i).c_str()));
       TChain * chainElEl_ = new TChain("ntupleElEl");
-      for(unsigned int i=0;i<filelist2.size();i++) chainElEl_->Add(Form("%s",filelist2.at(i).c_str()));
+      for(unsigned int i=0;i<s.filelist_.size();i++) chainElEl_->Add(Form("%s",s.filelist_.at(i).c_str()));
       TChain * chainMuEl_ = new TChain("ntupleMuEl");
-      for(unsigned int i=0;i<filelist2.size();i++) chainMuEl_->Add(Form("%s",filelist2.at(i).c_str()));
+      for(unsigned int i=0;i<s.filelist_.size();i++) chainMuEl_->Add(Form("%s",s.filelist_.at(i).c_str()));
       TCut cut = s.SD_;
       //TCut cut = Form("%s",s.SD_.c_str());
       cout << "starting project ..." << endl; 
@@ -62,13 +62,13 @@ class Project{
 ////////
       TFile *file[50]; 
       TH1F *hNEvent[50];
-      for(unsigned int i=0;i<filelist2.size();i++)
+      for(unsigned int i=0;i<s.filelist_.size();i++)
       {
-         file[i] = TFile::Open(filelist2.at(i).c_str());
+         file[i] = TFile::Open(s.filelist_.at(i).c_str());
          hNEvent[i]= (TH1F*) file[i]->Get("hNEvent")->Clone(Form("hNEvent%d",i));
          if(i>0) hNEvent[0]->Add(hNEvent[i]);
          //file[i]->Close();
-         cout << filelist2.at(i) << endl;
+         cout << s.filelist_.at(i) << endl;
       }
       double Ntot = hNEvent[0]->GetBinContent(1);
       cout << "total events: "<< s.name_.c_str() << " : " << Ntot << endl;
@@ -87,6 +87,7 @@ class Project{
       h4->Scale(norm);  h44->Scale(norm);
    }
 /////
+   /*
    std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
       std::stringstream ss(s);
       std::string item;
@@ -99,7 +100,7 @@ class Project{
       std::vector<std::string> elems;
       split(s, delim, elems);
       return elems;
-   }
+   }*/
 /////
    ~Project(){}
    TH1F *h1, *h2, *h3, *h4;

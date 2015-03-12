@@ -12,7 +12,7 @@ using namespace std;
 
 class HistSet{
   public:
-   explicit HistSet(char* plotname, char* variable, int nBins, double min, double max, const char* title, const char* xtitle, const char* ytitle)
+   explicit HistSet(const char* plotname, const char* variable, int nBins, double min, double max, const char* title, const char* xtitle, const char* ytitle)
    {
        plotname_=plotname; variable_=variable;
        title_=title; xtitle_=xtitle; ytitle_=ytitle;

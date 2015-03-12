@@ -15,7 +15,7 @@ class SampleSet{
   public:
    explicit SampleSet(){}
    //SampleSet(char* name, char* label, char* filelist, Color_t color, double norm, bool isMC, char* SD)
-   SampleSet(char* name, char* label, char* filelist, Color_t color, double norm, bool isMC, TCut SD)
+   SampleSet(const char* name, const char* label, vector<string> filelist, Color_t color, double norm, bool isMC, TCut SD)
    {
       name_=name; 
       label_ = label;
@@ -27,12 +27,15 @@ class SampleSet{
    }
    void print()
    {
-     cout << "samplename:"<<name_ <<", filelist:\""<< filelist_ <<"\", label:\""<< label_ <<"\", color:\""<< color_ <<"\", norm:\""<< norm_
+     cout << "samplename:"<<name_ 
+         // << ", filelist:\""<< filelist_ <<
+          << "\", label:\""<< label_ <<"\", color:\""<< color_ <<"\", norm:\""<< norm_
           <<"\", isMC:"<<isMC_ << ", signal-selection:"<< SD_.GetTitle()<< endl;
    }
 ///////
    ~SampleSet(){}
-   string filelist_;
+   //string filelist_;
+   vector<string> filelist_;
    //string SD_;
    TCut SD_;
    string name_;

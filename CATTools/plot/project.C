@@ -23,91 +23,105 @@ void project()
 }
 std::vector<TH1F*> projectlist()
 {
+  gROOT->ProcessLine(".L SampleSet.h+g");
+  gROOT->ProcessLine(".L HistSet.h+g");
+  gROOT->ProcessLine(".L CutSet.h+g");
+  gROOT->ProcessLine(".L Project.h+g");
+  gROOT->ProcessLine(".L ProjectRun.h+g");
+
+  gStyle->SetOptStat(0); //remove statistics box
+  gROOT->ProcessLine(".L ./tdrstyle.C");
+  defaultStyle();
+//  gStyle->SetCanvasDefH(610);  gStyle->SetCanvasDefW(900);
+////////
+
   bool log = true;
   std::vector<TH1F*> result ;
-  //result =proj2h1(result,"gentop_NJets20","# of Jet in GEN","Entries",15,0,15,log,0);
-  //result =proj2h1(result,"nJet30","# of Jet30","Entries",10,0,10,log,4);
-  //result =proj2h1(result,"nbJet30T","# of bTag CSVT","Entries",5,0,5,log,5);
-  //result =proj2h1(result,"MET","MET","Entries",30,0,150,log,3);
-  //result =proj2h1(result,"ZMass","invariant mass of dilepton","Entries",50,0,200,log,2);
+  ProjectRun *pp = new ProjectRun();
+  //result =pp->proj2h1(result,"gentop_NJets20","# of Jet in GEN","Entries",15,0,15,log,0);
+  //result =pp->proj2h1(result,"nJet30","# of Jet30","Entries",10,0,10,log,4);
+  //result =pp->proj2h1(result,"nbJet30T","# of bTag CSVT","Entries",5,0,5,log,5);
+  //result =pp->proj2h1(result,"MET","MET","Entries",30,0,150,log,3);
+  //result =pp->proj2h1(result,"ZMass","invariant mass of dilepton","Entries",50,0,200,log,2);
   //S-1
-  //result = proj2h1(result,"gentop_NJets20","# of Jet in GEN","Entries",15,0,15,log,-1);
+  //result = pp->proj2h1(result,"gentop_NJets20","# of Jet in GEN","Entries",15,0,15,log,-1);
   //result.insert(result.end(),result1[0].begin(),result1[0].end());
 
   //return result;
 
   //break;
   //S0
-   result = proj2h1(result,"lep1_pt","p_T of leading lepton","Entries",40,0,200,log,0);
-  return result;
+   result = pp->proj2h1(result,"lep1_pt","p_T of leading lepton","Entries",40,0,200,log,0);
+  //return result;
   //break;
-   result = proj2h1(result,"lep2_pt","p_T of second leading lepton","Entries",40,0,200,log,0);
-   result = proj2h1(result,"lep1_eta","#eta of leading lepton","Entries",20,-2.5,2.5,log,0);
-   result = proj2h1(result,"lep2_eta","#eta of second leading lepton","Entries",20,-2.5,2.5,log,0);
-   result = proj2h1(result,"lep1_relIso","Iso40_{rel} of leading lepton","Entries",50,0,5,log,0);
-   result = proj2h1(result,"lep2_relIso","Iso40_{rel} of second leading lepton","Entries",50,0,5,log,0);
+   result = pp->proj2h1(result,"lep2_pt","p_T of second leading lepton","Entries",40,0,200,log,0);
+   result = pp->proj2h1(result,"lep1_eta","#eta of leading lepton","Entries",20,-2.5,2.5,log,0);
+   result = pp->proj2h1(result,"lep2_eta","#eta of second leading lepton","Entries",20,-2.5,2.5,log,0);
+   result = pp->proj2h1(result,"lep1_relIso","Iso40_{rel} of leading lepton","Entries",50,0,5,log,0);
+   result = pp->proj2h1(result,"lep2_relIso","Iso40_{rel} of second leading lepton","Entries",50,0,5,log,0);
  
   //S1
-   result = proj2h1(result,"ZMass","invariant mass of dilepton","Entries",40,0,200,log,1);
-   result = proj2h1(result,"lep1_pt","p_T of leading lepton","Entries",40,0,200,log,1);
-   result = proj2h1(result,"lep2_pt","p_T of second leading lepton","Entries",40,0,200,log,1);
-   result = proj2h1(result,"lep1_eta","#eta of leading lepton","Entries",20,-2.5,2.5,log,1);
-   result = proj2h1(result,"lep2_eta","#eta of second leading lepton","Entries",20,-2.5,2.5,log,1);
+   result = pp->proj2h1(result,"ZMass","invariant mass of dilepton","Entries",40,0,200,log,1);
+   result = pp->proj2h1(result,"lep1_pt","p_T of leading lepton","Entries",40,0,200,log,1);
+   result = pp->proj2h1(result,"lep2_pt","p_T of second leading lepton","Entries",40,0,200,log,1);
+   result = pp->proj2h1(result,"lep1_eta","#eta of leading lepton","Entries",20,-2.5,2.5,log,1);
+   result = pp->proj2h1(result,"lep2_eta","#eta of second leading lepton","Entries",20,-2.5,2.5,log,1);
 
   //S2
-   result = proj2h1(result,"ZMass","invariant mass of dilepton","Entries",40,0,200,log,2);
-   result = proj2h1(result,"MET","MET","Entries",30,0,150,log,2);
+   result = pp->proj2h1(result,"ZMass","invariant mass of dilepton","Entries",40,0,200,log,2);
+   result = pp->proj2h1(result,"MET","MET","Entries",30,0,150,log,2);
 
   //S3
-   result = proj2h1(result,"MET","MET","Entries",30,0,150,log,3);
-   result = proj2h1(result,"nJet30","# of Jet30","Entries",10,0,10,log,3);
+   result = pp->proj2h1(result,"MET","MET","Entries",30,0,150,log,3);
+   result = pp->proj2h1(result,"nJet30","# of Jet30","Entries",10,0,10,log,3);
 
   //S4
-   result = proj2h1(result,"nJet30","# of Jet30","Entries",10,0,10,log,4);
-   result = proj2h1(result,"nbJet30T","# of bTag CSVT","Entries",5,0,5,log,4);
-   result = proj2h1(result,"nbJet30M","# of bTag CSVM","Entries",7,0,7,log,4);
-   result = proj2h1(result,"nbJet30L","# of bTag CSVL","Entries",7,0,7,log,4);
+   result = pp->proj2h1(result,"nJet30","# of Jet30","Entries",10,0,10,log,4);
+   result = pp->proj2h1(result,"nbJet30T","# of bTag CSVT","Entries",5,0,5,log,4);
+   result = pp->proj2h1(result,"nbJet30M","# of bTag CSVM","Entries",7,0,7,log,4);
+   result = pp->proj2h1(result,"nbJet30L","# of bTag CSVL","Entries",7,0,7,log,4);
 
-   result = proj2h1(result,"jet1_pt","p_T of 1st jet","Entries",40,0,200,log,4);
-   result = proj2h1(result,"jet1_eta","#eta of 1st jet","Entries",10,-2.5,2.5,log,4);
-   result = proj2h1(result,"jet1_phi","#phi of 1st jet","Entries",14,-3.5,3.5,log,4);
-   result = proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,10,log,4);
+   result = pp->proj2h1(result,"jet1_pt","p_T of 1st jet","Entries",40,0,200,log,4);
+   result = pp->proj2h1(result,"jet1_eta","#eta of 1st jet","Entries",10,-2.5,2.5,log,4);
+   result = pp->proj2h1(result,"jet1_phi","#phi of 1st jet","Entries",14,-3.5,3.5,log,4);
+   result = pp->proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,10,log,4);
 
-   result = proj2h1(result,"jet2_pt","p_T of 2nd jet","Entries",40,0,200,log,4);
-   result = proj2h1(result,"jet2_eta","#eta of 2nd jet","Entries",10,-2.5,2.5,log,4);
-   result = proj2h1(result,"jet2_phi","#phi of 2nd jet","Entries",14,-3.5,3.5,log,4);
-   result = proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,10,log,4);
+   result = pp->proj2h1(result,"jet2_pt","p_T of 2nd jet","Entries",40,0,200,log,4);
+   result = pp->proj2h1(result,"jet2_eta","#eta of 2nd jet","Entries",10,-2.5,2.5,log,4);
+   result = pp->proj2h1(result,"jet2_phi","#phi of 2nd jet","Entries",14,-3.5,3.5,log,4);
+   result = pp->proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,10,log,4);
 
-   result = proj2h1(result,"jet3_pt","p_T of 3rd jet","Entries",50,0,200,log,4);
-   result = proj2h1(result,"jet3_eta","#eta of 3rd jet","Entries",10,-2.5,2.5,log,4);
-   result = proj2h1(result,"jet3_phi","#phi of 3rd jet","Entries",14,-3.2,3.5,log,4);
-   result = proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,10,log,4);
+   result = pp->proj2h1(result,"jet3_pt","p_T of 3rd jet","Entries",50,0,200,log,4);
+   result = pp->proj2h1(result,"jet3_eta","#eta of 3rd jet","Entries",10,-2.5,2.5,log,4);
+   result = pp->proj2h1(result,"jet3_phi","#phi of 3rd jet","Entries",14,-3.2,3.5,log,4);
+   result = pp->proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,10,log,4);
 
-   result = proj2h1(result,"jet4_pt","p_T of 4th jet","Entries",50,0,200,log,4);
-   result = proj2h1(result,"jet4_eta","#eta of 4th jet","Entries",25,-2.5,2.5,log,4);
-   result = proj2h1(result,"jet4_phi","#phi of 4th jet","Entries",14,-3.5,3.5,log,4);
-   result = proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,10,log,4);
+   result = pp->proj2h1(result,"jet4_pt","p_T of 4th jet","Entries",50,0,200,log,4);
+   result = pp->proj2h1(result,"jet4_eta","#eta of 4th jet","Entries",25,-2.5,2.5,log,4);
+   result = pp->proj2h1(result,"jet4_phi","#phi of 4th jet","Entries",14,-3.5,3.5,log,4);
+   result = pp->proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,10,log,4);
 
   //S51
-   result = proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,1,log,5);
-   result = proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,1,log,5);
-   result = proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,1,log,5);
-   result = proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,1,log,5);
+   result = pp->proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,1,log,5);
+   result = pp->proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,1,log,5);
+   result = pp->proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,1,log,5);
+   result = pp->proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,1,log,5);
 
    //S52
-   result = proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,1,log,6);
-   result = proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,1,log,6);
-   result = proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,1,log,6);
-   result = proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,1,log,6);
+   result = pp->proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,1,log,6);
+   result = pp->proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,1,log,6);
+   result = pp->proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,1,log,6);
+   result = pp->proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,1,log,6);
 
   //S53
-   result = proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,1,log,7);
-   result = proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,1,log,7);
-   result = proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,1,log,7);
-   result = proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,1,log,7);
+   result = pp->proj2h1(result,"jet1_bTag","CSV of 1st jet","Entries",10,0,1,log,7);
+   result = pp->proj2h1(result,"jet2_bTag","CSV of 2nd jet","Entries",10,0,1,log,7);
+   result = pp->proj2h1(result,"jet3_bTag","CSV of 3rd jet","Entries",10,0,1,log,7);
+   result = pp->proj2h1(result,"jet4_bTag","CSV of 4th jet","Entries",10,0,1,log,7);
 
+  return result;
 }
-CutSet* cutset(int cutN)
+/*CutSet* cutset(int cutN)
 {
   TCut S0 = "lep1_pt>20. && abs(lep1_eta)<2.5 && lep2_pt>20. && abs(lep2_eta)<2.5";
   TCut S1 = "lep1_relIso<0.15 &&  lep2_relIso<0.15 && ZMass>12 && lep1_Q*lep2_Q<0 ";
@@ -172,13 +186,23 @@ std::vector<SampleSet>* sampleset()
 
 //////
   const string loc = "../../mini/result_", tag="_tag711_aod.root";
-  string ttbarfilelist=loc+"ttbar_nonu_0"+tag;
-  for(unsigned int i=1;i<10;i++){
+  //string ttbarfilelist=loc+"ttbar_nonu_0"+tag;
+*/  
+/*for(unsigned int i=1;i<10;i++){
      char ii = (char)(((int)'0')+i);;
      ttbarfilelist=ttbarfilelist+","+loc+"ttbar_nonu_"+ii+tag;
   }
   cout << ttbarfilelist << endl;
-  string bkgFileList[] ={loc+"dy"+tag+",", loc+"wj"+tag+",", loc+"tw"+tag+",", loc+"tbw"+tag+","
+  */
+/*
+  std::vector<string> ttbarfilelist;
+  for(unsigned int i=0;i<10;i++){
+     char ii = (char)(((int)'0')+i);;
+     ttbarfilelist.push_back(loc+"ttbar_nonu_"+ii+tag);
+  }
+  std::vector<string> bkgfilelist;
+  //string bkgFileList[] ={loc+"dy"+tag+",", loc+"wj"+tag+",", loc+"tw"+tag+",", loc+"tbw"+tag+","
+  string bkgFileList[] ={loc+"dy"+tag, loc+"wj"+tag, loc+"tw"+tag, loc+"tbw"+tag
    //, loc+"ww"+tag,loc+"wz"+tag,loc+"zz"+tag
    //,loc+"qcd"+tag
   };
@@ -189,24 +213,18 @@ std::vector<SampleSet>* sampleset()
    unsigned int bkgcount = sizeof(bkgFileList)/sizeof(bkgFileList[0]);
    for(unsigned i=0;i<bkgcount;i++) cout<< bkgFileList[i] << endl;
 
-   for(unsigned i=0;i<sigcount;i++) samples->push_back( SampleSet(signame[i],sigsample[i],ttbarfilelist.c_str(),sigcolor[i],sigCX,true,sigcut[i]));
-   for(unsigned i=0;i<bkgcount;i++) samples->push_back( SampleSet(bkgname[i],bkgsample[i],bkgFileList[i].c_str(),bkgcolor[i],bkgCX[i],true,bkgcut));
-
+   for(unsigned i=0;i<sigcount;i++) samples->push_back( SampleSet(signame[i],sigsample[i],ttbarfilelist,sigcolor[i],sigCX,true,sigcut[i]));
+   for(unsigned i=0;i<bkgcount;i++) 
+   {
+     bkgfilelist.clear(); bkgfilelist.push_back(bkgFileList[i]);
+     samples->push_back( SampleSet(bkgname[i],bkgsample[i],bkgfilelist,bkgcolor[i],bkgCX[i],true,bkgcut));
+   }
    return samples;
 
-}
-
+}*/
+/*
 std::vector<TH1F*> proj2h1(std::vector<TH1F*> result_, const char *plotname, const char* xtitle, const char* ytitle, int nBins, double min, double max, bool logy, int cutN) 
 {
-  gROOT->ProcessLine(".L SampleSet.h+g");
-  gROOT->ProcessLine(".L HistSet.h+g");
-  gROOT->ProcessLine(".L CutSet.h+g");
-  gROOT->ProcessLine(".L Project.h+g");
-
-  gStyle->SetOptStat(0); //remove statistics box
-  gROOT->ProcessLine(".L ./tdrstyle.C");
-  defaultStyle();
-//  gStyle->SetCanvasDefH(610);  gStyle->SetCanvasDefW(900);
   HistSet histSet(plotname,plotname,nBins,min,max,plotname,xtitle,ytitle);
   histSet.print();
 
@@ -231,5 +249,5 @@ std::vector<TH1F*> proj2h1(std::vector<TH1F*> result_, const char *plotname, con
   return result;
 
 }
-
+*/
 
