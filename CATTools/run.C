@@ -13,6 +13,7 @@ void run( char *str, bool isMC){
     string tag = "tag711_aod";
     TFile f(Form("%s/ntuple_%s_%s.root",location.c_str(),mcname.c_str(),tag.c_str()));
     TTree *atree = dynamic_cast<TTree *>(f.Get( Form("ntuple/event") ));
+    TH1* hNEvent = (TH1*)f->Get("ntuple/hNEvent");
  
     int aaa = mcname.find("ttbar");
     int leng = mcname.length();
@@ -27,6 +28,7 @@ void run( char *str, bool isMC){
         //TFile fout(Form("result_%s.root", str), "RECREATE");
         TFile fout(Form("%s/mini/result_%s_%s.root",location.c_str(),mcname.c_str(),tag.c_str()), "RECREATE");
 
+        hNEvent->Write();
         t.Loop("MuMu",isSignal,isMC);
         t.Loop("ElEl",isSignal,isMC);
         t.Loop("MuEl",isSignal,isMC);
