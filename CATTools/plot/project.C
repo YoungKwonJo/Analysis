@@ -31,7 +31,7 @@ std::vector<TH1F*> projectlist()
   //result =proj2h1(result,"MET","MET","Entries",30,0,150,log,3);
   //result =proj2h1(result,"ZMass","invariant mass of dilepton","Entries",50,0,200,log,2);
   //S-1
-  result = proj2h1(result,"gentop_NJets20","# of Jet in GEN","Entries",15,0,15,log,-1);
+  //result = proj2h1(result,"gentop_NJets20","# of Jet in GEN","Entries",15,0,15,log,-1);
   //result.insert(result.end(),result1[0].begin(),result1[0].end());
 
   //return result;
@@ -142,28 +142,58 @@ std::vector<SampleSet>* sampleset()
   TCut ttLF = visible && !ttbb && !ttbj && !ttcc;
   TCut ttOth = !visible;
 
-  const char* mcsample[] = {"t#bar{t}b#bar{b}","t#bar{t}bj",
+  const char* sigsample[] = {"t#bar{t}b#bar{b}","t#bar{t}bj",
     "t#bar{t}c#bar{c}", "t#bar{t}LF","t#bar{t} other"
   };
-  const char* mcname[] = {"ttbb","ttbj",
+  const char* signame[] = {"ttbb","ttbj",
     "ttcc", "ttLF","ttother"
   };
-  const Color_t color[] = {kRed,kBlue,kGreen,kViolet,kOrange};
+  //https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV
+  //https://twiki.cern.ch/twiki/bin/view/LHCPhysics/TtbarNNLO
+  //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SingleTopSigma
+  const double sigCX = 831.76;// ttbar mass : 172.5
+  const double bkgCX[]={2008.4,20508.9,35.6,35.6
+    // 118.7, 66.1, 31.8 // W+W-, W+/-Z (m_ll>12), Z/a* Z/a*(M_ll>12)
+  };//
+  const char* bkgsample[] = {"Z/#gamma* #rightarrow ll","W #rightarrow l#nu","Single top","Single top"
+  //, "WW","WZ","ZZ"
+  //, "multi jet"
+  };
+  const char* bkgname[] = {"dy","wj","tw","tbw"
+  };
+  TCut bkgcut ="1";
+
+  const Color_t bkgcolor[] = {kAzure-2,kGreen-3,kGreen,kGreen
+   //, kGray+4, kGray+4, kGray+4
+   //, kYellow
+  };
+  const Color_t sigcolor[] = {kRed+3,kOrange,kOrange+2,kRed,kRed-7};
   TCut sigcut[] = {ttbb, ttbj,ttcc,ttLF,ttOth};
 
-  const string loc = "./result_", tag="_tag711_aod.root";
+//////
+  const string loc = "../../mini/result_", tag="_tag711_aod.root";
   string ttbarfilelist=loc+"ttbar_nonu_0"+tag;
-  string bkgFileList[] ={loc+"wj"+tag, loc+"dy"+tag, loc+"tw"+tag, loc+"tbw"+tag};
-  //for(unsigned int i=1;i<8;i++)
-  //  ttbarfilelist=ttbarfilelist+",../../mini/result_ttbar_"+i+"_tag711_aod.root";
-///////////////
+  for(unsigned int i=1;i<10;i++){
+     char ii = (char)(((int)'0')+i);;
+     ttbarfilelist=ttbarfilelist+","+loc+"ttbar_nonu_"+ii+tag;
+  }
+  cout << ttbarfilelist << endl;
+  string bkgFileList[] ={loc+"dy"+tag+",", loc+"wj"+tag+",", loc+"tw"+tag+",", loc+"tbw"+tag+","
+   //, loc+"ww"+tag,loc+"wz"+tag,loc+"zz"+tag
+   //,loc+"qcd"+tag
+  };
 
    std::vector<SampleSet>* samples;
    samples = new std::vector<SampleSet>;
    unsigned int sigcount = sizeof(sigcut)/sizeof(sigcut[0]);
-   for(unsigned i=0;i<sigcount;i++) samples->push_back( SampleSet(mcname[i],mcsample[i],ttbarfilelist.c_str(),color[i],true,1.,sigcut[i]));
+   unsigned int bkgcount = sizeof(bkgFileList)/sizeof(bkgFileList[0]);
+   for(unsigned i=0;i<bkgcount;i++) cout<< bkgFileList[i] << endl;
+
+   for(unsigned i=0;i<sigcount;i++) samples->push_back( SampleSet(signame[i],sigsample[i],ttbarfilelist.c_str(),sigcolor[i],sigCX,true,sigcut[i]));
+   for(unsigned i=0;i<bkgcount;i++) samples->push_back( SampleSet(bkgname[i],bkgsample[i],bkgFileList[i].c_str(),bkgcolor[i],bkgCX[i],true,bkgcut));
 
    return samples;
+
 }
 
 std::vector<TH1F*> proj2h1(std::vector<TH1F*> result_, const char *plotname, const char* xtitle, const char* ytitle, int nBins, double min, double max, bool logy, int cutN) 

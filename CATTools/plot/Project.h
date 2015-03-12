@@ -6,6 +6,8 @@
 #include <TLorentzVector.h>
 #include <TH1F.h>
 #include <TChain.h>
+#include <TFile.h>
+#include <TH1F.h>
 #include <TString.h>
 #include <iostream>
 #include <sstream>
@@ -57,17 +59,32 @@ class Project{
 
       h4 = (TH1F*) h1->Clone(nameLL); h4->SetTitle(Form("%s %s LL",h.title_.c_str(), c.step_.c_str()));
       h4->Add(h2); h4->Add(h3);
-     
+////////
+      TFile *file[50]; 
+      TH1F *hNEvent[50];
+      for(unsigned int i=0;i<filelist2.size();i++)
+      {
+         file[i] = TFile::Open(filelist2.at(i).c_str());
+         hNEvent[i]= (TH1F*) file[i]->Get("hNEvent")->Clone(Form("hNEvent%d",i));
+         if(i>0) hNEvent[0]->Add(hNEvent[i]);
+         //file[i]->Close();
+         cout << filelist2.at(i) << endl;
+      }
+      double Ntot = hNEvent[0]->GetBinContent(1);
+      cout << "total events: "<< s.name_.c_str() << " : " << Ntot << endl;
+
+////////     
       cout << "finished project." << endl;
       h11=(TH1F*) h1->Clone(Form("%s_sumw2",h1->GetName()));
       h22=(TH1F*) h2->Clone(Form("%s_sumw2",h2->GetName()));
       h33=(TH1F*) h3->Clone(Form("%s_sumw2",h3->GetName()));
       h44=(TH1F*) h4->Clone(Form("%s_sumw2",h4->GetName()));
       h11->Sumw2(); h22->Sumw2(); h33->Sumw2(); h44->Sumw2();
-      h1->Scale(s.norm_);  h11->Scale(s.norm_);
-      h2->Scale(s.norm_);  h22->Scale(s.norm_);
-      h3->Scale(s.norm_);  h33->Scale(s.norm_);
-      h4->Scale(s.norm_);  h44->Scale(s.norm_);
+      double norm = s.norm_/Ntot; // cross section/total events 
+      h1->Scale(norm);  h11->Scale(norm);
+      h2->Scale(norm);  h22->Scale(norm);
+      h3->Scale(norm);  h33->Scale(norm);
+      h4->Scale(norm);  h44->Scale(norm);
    }
 /////
    std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
