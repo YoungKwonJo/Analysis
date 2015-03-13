@@ -12,7 +12,7 @@
 
 using namespace std;
 
-void ploter(int ii, int cut)
+void ploter(int cut, int ii) 
 {
 /*
   gROOT->ProcessLine(".L SampleSet.h+g");
@@ -32,15 +32,30 @@ void ploter(int ii, int cut)
   //ProjectRun *pp2 = new ProjectRun();
   std::vector<SampleSet>* samples = pp.samples;
 
-  char* histlist[] ={ "gentop_NJets20"
-       ,"lep1_pt","lep2_pt","lep1_eta","lep2_eta","lep1_relIso","lep2_relIso"
-       ,"ZMass", "MET", "nJet30"
-       ,"nbJet30T", "nbJet30M", "nbJet30L"
-       ,"jet1_pt",  "jet1_eta", "jet1_phi", "jet1_bTag" 
-       ,"jet2_pt",  "jet2_eta", "jet2_phi", "jet2_bTag"
-       ,"jet3_pt",  "jet3_eta", "jet3_phi", "jet3_bTag"
-       ,"jet4_pt",  "jet4_eta", "jet4_phi", "jet4_bTag"
+  char* histlist[] ={ "gentop_NJets20" // 0
+       ,"lep1_pt","lep2_pt","lep1_eta","lep2_eta","lep1_relIso","lep2_relIso" // 1~6
+       ,"ZMass", "MET", "nJet30"  // 7~9
+       ,"nbJet30T", "nbJet30M", "nbJet30L" // 10~12
+       ,"jet1_pt",  "jet1_eta", "jet1_phi", "jet1_bTag"  // 13~16 
+       ,"jet2_pt",  "jet2_eta", "jet2_phi", "jet2_bTag"  // 17~20
+       ,"jet3_pt",  "jet3_eta", "jet3_phi", "jet3_bTag"  // 21~24
+       ,"jet4_pt",  "jet4_eta", "jet4_phi", "jet4_bTag"  // 25~28
    };
+     //S-1 "gentop_NJets20"
+     //S0 "lep1_pt", "lep2_pt",""lep1_eta", "lep2_eta","lep1_relIso","lep2_relIso",
+     //S1 "ZMass",  "lep1_pt", "lep2_pt", "lep1_eta", "lep2_eta",
+     //S2 "ZMass", "MET",  
+     //S3 "MET",   "nJet30",
+     //S4
+     //"nJet30",  "nbJet30T", "nbJet30M", "nbJet30L",
+     //"jet1_pt",  "jet1_eta", "jet1_phi", "jet1_bTag",
+     //"jet2_pt",  "jet2_eta", "jet2_phi", "jet2_bTag",
+     //"jet3_pt",  "jet3_eta", "jet3_phi", "jet3_bTag",
+     //"jet4_pt",  "jet4_eta", "jet4_phi", "jet4_bTag",
+     //S51 "jet1_bTag", "jet2_bTag", "jet3_bTag", "jet4_bTag",
+     //S52 "jet1_bTag", "jet2_bTag", "jet3_bTag", "jet4_bTag",
+     //S53 "jet1_bTag", "jet2_bTag", "jet3_bTag", "jet4_bTag",
+
    char* decays[] = { "MuMu", "ElEl", "MuEl", "LL"};
    char* decays2[] = { "#mu#mu", "ee", "e#mu", "dilepton"};
    char* cutlist[] ={"nocut","S0","S1","S2","S3","S4","S51","S52","S53"};
@@ -168,29 +183,6 @@ void ploter(int ii, int cut)
       c1->Print(Form("./plots/%s%s.eps",cutlist[cut+1],histlist[ii]));
    }
 
-     //S-1
-     //"gentop_NJets20"
-     //break;
-     //S0
-     //"lep1_pt", "lep2_pt",""lep1_eta", "lep2_eta","lep1_relIso","lep2_relIso",
-     //S1
-     //"ZMass",  "lep1_pt", "lep2_pt", "lep1_eta", "lep2_eta",
-     //S2
-     //"ZMass", "MET",  
-     //S3
-     //"MET",   "nJet30",
-     //S4
-     //"nJet30",  "nbJet30T", "nbJet30M", "nbJet30L",
-     //"jet1_pt",  "jet1_eta", "jet1_phi", "jet1_bTag",
-     //"jet2_pt",  "jet2_eta", "jet2_phi", "jet2_bTag",
-     //"jet3_pt",  "jet3_eta", "jet3_phi", "jet3_bTag",
-     //"jet4_pt",  "jet4_eta", "jet4_phi", "jet4_bTag",
-     //S51
-     //"jet1_bTag", "jet2_bTag", "jet3_bTag", "jet4_bTag",
-     //S52
-     //"jet1_bTag", "jet2_bTag", "jet3_bTag", "jet4_bTag",
-     //S53
-     //"jet1_bTag", "jet2_bTag", "jet3_bTag", "jet4_bTag",
 }
 TLegend* myTLegend(bool logy, double ymax, double xmin, double xmax )
 {
