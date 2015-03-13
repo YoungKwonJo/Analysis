@@ -60,12 +60,12 @@ class Project{
       h4 = (TH1F*) h1->Clone(nameLL); h4->SetTitle(Form("%s %s LL",h.title_.c_str(), c.step_.c_str()));
       h4->Add(h2); h4->Add(h3);
 ////////
-      TFile *file[50]; 
+      //TFile *file[50]; 
       TH1F *hNEvent[50];
       for(unsigned int i=0;i<s.filelist_.size();i++)
       {
-         file[i] = TFile::Open(s.filelist_.at(i).c_str());
-         hNEvent[i]= (TH1F*) file[i]->Get("hNEvent")->Clone(Form("hNEvent%d",i));
+         TFile *file = TFile::Open(s.filelist_.at(i).c_str());
+         hNEvent[i]= (TH1F*) file->Get("hNEvent")->Clone(Form("hNEvent%d",i));
          if(i>0) hNEvent[0]->Add(hNEvent[i]);
          //file[i]->Close();
          cout << s.filelist_.at(i) << endl;
