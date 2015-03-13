@@ -12,6 +12,7 @@
 
 using namespace std;
 
+int logS = 1000;
 void ploter(int cut, int ii) 
 {
 /*
@@ -123,7 +124,7 @@ void ploter(int cut, int ii)
    {
       c1 = new TCanvas("c1","c1",500,500);
       if(logy) c1->SetLogy();
-      if(logy){ h1[0]->SetMaximum(ymax[0]*300);  hStack[0]->SetMaximum(ymax[0]*300);}
+      if(logy){ h1[0]->SetMaximum(ymax[0]*logS);  hStack[0]->SetMaximum(ymax[0]*logS);}
       else    { h1[0]->SetMaximum(ymax[0]);      hStack[0]->SetMaximum(ymax[0]);    }
       
       if(logy && ymin[0]>0) { h1[0]->SetMinimum(ymin[0]); hStack[0]->SetMinimum(ymin[0]);}
@@ -143,11 +144,11 @@ void ploter(int cut, int ii)
       {
           if(logy) c1->cd(i+1)->SetLogy();
           if(logy){
-               if(i==0) h1[0]->SetMaximum(ymax[0]*300); 
-               if(i==1) h2[0]->SetMaximum(ymax[1]*300); 
-               if(i==2) h3[0]->SetMaximum(ymax[2]*300); 
-               if(i==3) h4[0]->SetMaximum(ymax[3]*300); 
-               hStack[i]->SetMaximum(ymax[i]*300);
+               if(i==0) h1[0]->SetMaximum(ymax[0]*logS); 
+               if(i==1) h2[0]->SetMaximum(ymax[1]*logS); 
+               if(i==2) h3[0]->SetMaximum(ymax[2]*logS); 
+               if(i==3) h4[0]->SetMaximum(ymax[3]*logS); 
+               hStack[i]->SetMaximum(ymax[i]*logS);
           }
           else    {
                if(i==0) h1[0]->SetMaximum(ymax[0]);
@@ -190,8 +191,8 @@ TLegend* myTLegend(bool logy, double ymax, double xmin, double xmax )
 //  double xmax = h1[4]->GetXaxis()->GetXmax();
 //  double ymax = h1[4]->GetMaximum();
 
-  double legxmin=(xmax-xmin)*0.68, legxmax=(xmax-xmin)*0.98, legymin=ymax*1.01*weighty, legymax=ymax*1.15;
-  if(logy) { legxmin=(xmax-xmin)*0.68, legxmax=(xmax-xmin)*0.98, legymin=ymax*weighty*5, legymax=ymax*100; }
+  double legxmin=(xmax-xmin)*0.68+xmin, legxmax=(xmax-xmin)*0.98+xmin, legymin=ymax*1.01*weighty, legymax=ymax*1.15;
+  if(logy) { legxmin=(xmax-xmin)*0.68+xmin, legxmax=(xmax-xmin)*0.98+xmin, legymin=ymax*weighty*logS/10, legymax=ymax*logS; }
 
   TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax, NULL,"");
   leg->SetBorderSize(1); leg->SetTextFont(62);  leg->SetTextSize(0.04);
