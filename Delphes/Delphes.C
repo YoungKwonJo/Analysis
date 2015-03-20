@@ -10,7 +10,6 @@
 #include <TH1D.h>
 #include <TH2D.h>
 
-#include <TLorentzVector.h>
 #include "mJet.h"
 #include "Lepton.h"
 //#include "TtFullLepKinSolver.C"
@@ -80,11 +79,7 @@ void Delphes::Loop(bool isttjj)
    GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
 
-   TLorentzVector *topS1 = new TLorentzVector(0,0,0,0);
-   TLorentzVector *topbarS1 = new TLorentzVector(0,0,0,0);
-   TLorentzVector *othS1 = new TLorentzVector(0,0,0,0);
-  
-   //bool debug =true;
+   bool debug =false;//true;
    int Testing =0;
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -126,13 +121,14 @@ void Delphes::Loop(bool isttjj)
          if(Particle_Status[i]>70 && Particle_Status[i]<90)
               cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          */ 
-         //if(debug){
-         if(false){
+         if(debug){
+         //if(false){
            if( abs(Particle_PID[i])==6 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
               cout << "event:"<< ientry <<", idx:"<< i << ", top, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << endl;
             if( abs(Particle_PID[i])==24 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
               cout << "event:"<< ientry <<", idx:"<< i << ", w, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << ", did1_test:"<< Particle_PID[Particle_D1[getLastIdX(i,0)]] << endl;
          }
+          
          if(abs(Particle_PID[i]) >10 && abs(Particle_PID[i])<12 && Particle_Status[i]==3) electronic++;
          if(abs(Particle_PID[i]) >12 && abs(Particle_PID[i])<14 && Particle_Status[i]==3) muonic++;
 
@@ -235,7 +231,7 @@ void Delphes::Loop(bool isttjj)
               ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
          //first bq
-         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && Particle_Status[i]>20 && Particle_Status[i]<60)
+         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && ((Particle_Status[i]>20 && Particle_Status[i]<60) || (Particle_Status[i]>1 && Particle_Status[i]<4)))
          {
              GenParticle gp_ =getGenParticle(i);
              double DR_=999, idx=-1;
@@ -244,7 +240,7 @@ void Delphes::Loop(bool isttjj)
                     double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_; 
              }
-             if(DR_>0.4 && gp_.Pt()>10 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>-0.1 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
              /*cout <<"first bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -301,7 +297,7 @@ void Delphes::Loop(bool isttjj)
 ////////////
        if(leptonic>1) for(int i=0;i<Particle_size;i++ )
       {
-         if(Particle_Status[i]>20 && Particle_Status[i]<60 && abs(Particle_PID[i])<5 && 
+         if(((Particle_Status[i]>20 && Particle_Status[i]<60) || (Particle_Status[i]>1 && Particle_Status[i]<4)) && abs(Particle_PID[i])<5 && 
                abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
          {
              GenParticle gp_ =getGenParticle(i);
@@ -317,7 +313,7 @@ void Delphes::Loop(bool isttjj)
                     double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_;
              }
-             if(DR_>0.4 && gp_.Pt()>10 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>-0.1 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
              /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -356,7 +352,7 @@ void Delphes::Loop(bool isttjj)
       for(int i=0;i<GenJet_size;i++ )
       {
          bool overlap_=false;  // jet cleaning..
-         if(GenJet_PT[i]>40 && fabs(GenJet_Eta[i])<2.5)
+         if(GenJet_PT[i]>20 && fabs(GenJet_Eta[i])<2.5)
          {
             double x_ = GenJet_PT[i]*TMath::Cos(GenJet_Phi[i]);
             double y_ = GenJet_PT[i]*TMath::Sin(GenJet_Phi[i]);
@@ -656,7 +652,7 @@ void Delphes::Loop(bool isttjj)
       for(int i=0;i<Jet_size;i++ )
       {
          bool overlapMu=false, overlapEl=false;  // jet cleaning..
-         if(Jet_PT[i]>40 && fabs(Jet_Eta[i])<2.5)
+         if(Jet_PT[i]>20 && fabs(Jet_Eta[i])<2.5)
          {
             double x_ = Jet_PT[i]*TMath::Cos(Jet_Phi[i]);
             double y_ = Jet_PT[i]*TMath::Sin(Jet_Phi[i]);
