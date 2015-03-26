@@ -229,7 +229,7 @@ void Delphes::Loop(bool isttjj)
               ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
          //first bq
-         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && Particle_Status[i]>20 && Particle_Status[i]<60)
+         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && ((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]==3))
          {
              GenParticle gp_ =getGenParticle(i);
              double DR_=999, idx=-1;
@@ -295,7 +295,7 @@ void Delphes::Loop(bool isttjj)
 ////////////
        if(leptonic>0) for(int i=0;i<Particle_size;i++ )
       {
-         if(Particle_Status[i]>20 && Particle_Status[i]<60 && abs(Particle_PID[i])<5 && 
+         if(((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]==3 ) && abs(Particle_PID[i])<5 && 
                abs(Particle_PID[Particle_M1[i]])!=24 &&
                abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
          {
