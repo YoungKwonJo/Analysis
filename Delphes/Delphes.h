@@ -523,7 +523,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(bool isttjj);
+   virtual void     Loop(bool isttjj, bool pythia6);
 
    virtual int getLastIdX(int idx, int x);
    virtual int get1stIdX(int idx, int x );

@@ -44,7 +44,7 @@ bool compByPtGenParticle(GenParticle a, GenParticle b)
 };
 
 
-void Delphes::Loop(bool isttjj)
+void Delphes::Loop(bool isttjj, bool pythia6)
 {
    if (fChain == 0) return;
 
@@ -79,7 +79,7 @@ void Delphes::Loop(bool isttjj)
    GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
 
-   //bool debug =true;
+   bool debug =false;
    int Testing =0;
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -123,6 +123,7 @@ void Delphes::Loop(bool isttjj)
          */ 
          //if(debug){
          if(false){
+         //if(true){
            if( abs(Particle_PID[i])==6 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
               cout << "event:"<< ientry <<", idx:"<< i << ", top, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << endl;
             if( abs(Particle_PID[i])==24 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
@@ -146,6 +147,7 @@ void Delphes::Loop(bool isttjj)
             int pdgidD12 = Particle_PID[id12];
             int pdgidD21 = Particle_PID[id21];
             int pdgidD22 = Particle_PID[id22];
+            //cout << "id1:"<< id1 <<", id2:"<<id2 << ", pdgidD1:" << pdgidD1 << ", pdgidD2:"<<pdgidD2 <<  ", id11:" << id11 << ", id21:"<< id21 << endl;
             topN++;
             if( (abs(pdgidD1)==24 && abs(pdgidD2)==5) || (abs(pdgidD1)==5 && abs(pdgidD2)==24) )
             {  wN++; 
@@ -171,7 +173,7 @@ void Delphes::Loop(bool isttjj)
                        if(abs(pdgidD111) >12 && abs(pdgidD111)<15) muonic++;
                        if(abs(pdgidD121) >12 && abs(pdgidD121)<15) muonic++;
                     }
-                    //if(debug) cout << "t2w2l: id1: " << pdgidD11 << ", id2: "<< pdgidD21 << endl;
+                    if(debug) cout << "t2w2l: id1: " << pdgidD11 << ", id2: "<< pdgidD21 << endl;
                     //leptonic++;
                  }
                } 
@@ -197,7 +199,7 @@ void Delphes::Loop(bool isttjj)
                        if(abs(pdgidD211) >12 && abs(pdgidD211)<15) muonic++;
                        if(abs(pdgidD221) >12 && abs(pdgidD221)<15) muonic++;
                     }
-                    //if(debug) cout << "t2w2l: id1: " << pdgidD21 << ", id2: "<< pdgidD21 << endl;
+                    if(debug) cout << "t2w2l: id1: " << pdgidD21 << ", id2: "<< pdgidD21 << endl;
                     //leptonic++;
                  }
                }
@@ -205,8 +207,80 @@ void Delphes::Loop(bool isttjj)
             if(Particle_PID[i]==6) findtop=true;
             if(Particle_PID[i]==-6) findtopb=true;
          }    
+/////////////
+         if( pythia6 && (Particle_PID[i]==24  || Particle_PID[i]==-24) && Particle_D1[i]!=-1 && (Particle_PID[Particle_D1[i]] != Particle_PID[i]) )
+         {  wN++;
+  
+            int pdgidD1 = Particle_PID[i];
+            //int pdgidD2 = Particle_PID[i];
+            int id11 = Particle_D1[i];
+            int id12 = Particle_D2[i];
+            //int id21 = Particle_D1[i];
+            //int id22 = Particle_D2[i];
+            int pdgidD11 = Particle_PID[id11];
+            int pdgidD12 = Particle_PID[id12];
+            //int pdgidD21 = Particle_PID[id21];
+            //int pdgidD22 = Particle_PID[id22];
 
+            if(debug) cout << "status:"<<Particle_Status[i] <<", pdg:"<<pdgidD1 << ",D1 id11:" << id11 <<  ", id12:" << id12 << ", pdgidD12:"<< pdgidD12 << endl; 
+            //if(abs(pdgidD1)==24)
+            //{
+              if ( abs(pdgidD11) >10 && abs(pdgidD11)<17 && abs(pdgidD12) >10 && abs(pdgidD12)<17 )
+              {
+                 if(abs(pdgidD11) >10 && abs(pdgidD11)<13) electronic++;
+                 if(abs(pdgidD11) >12 && abs(pdgidD11)<15) muonic++;
+                 if(abs(pdgidD11) >14 && abs(pdgidD11)<17) 
+                 { 
+                    taunic++;
+                    int id111 = Particle_D1[getLastIdX(id11,0)];
+                    int id112 = Particle_D2[getLastIdX(id11,0)];
+                    int id121 = Particle_D1[getLastIdX(id12,0)];
+                    int id122 = Particle_D2[getLastIdX(id12,0)];
+
+                    int pdgidD111 = Particle_PID[id111];
+                    int pdgidD112 = Particle_PID[id112];
+                    int pdgidD121 = Particle_PID[id121];
+                    int pdgidD122 = Particle_PID[id122];
+                    if(abs(pdgidD111) >10 && abs(pdgidD111)<13) electronic++;
+                    if(abs(pdgidD121) >10 && abs(pdgidD121)<13) electronic++;
+                    if(abs(pdgidD111) >12 && abs(pdgidD111)<15) muonic++;
+                    if(abs(pdgidD121) >12 && abs(pdgidD121)<15) muonic++;
+                 }
+                 if(debug) cout << "t2w2l: id1: " << pdgidD11 << ", id2: "<< pdgidD12 << endl;
+                 //leptonic++;
+              }
+            //} 
+            /*if(abs(pdgidD2)==24)
+            {
+              if ( abs(pdgidD21) >10 && abs(pdgidD21)<17 && abs(pdgidD22) >10 && abs(pdgidD22)<17 )
+              {
+                 if(abs(pdgidD21) >10 && abs(pdgidD21)<13) electronic++;
+                 if(abs(pdgidD21) >12 && abs(pdgidD21)<15) muonic++;
+                 if(abs(pdgidD21) >14 && abs(pdgidD21)<17) {
+                    taunic++;
+                    int id211 = Particle_D1[getLastIdX(id21,0)];
+                    int id212 = Particle_D2[getLastIdX(id21,0)];
+                    int id221 = Particle_D1[getLastIdX(id22,0)];
+                    int id222 = Particle_D2[getLastIdX(id22,0)];
+
+                    int pdgidD211 = Particle_PID[id211];
+                    int pdgidD212 = Particle_PID[id212];
+                    int pdgidD221 = Particle_PID[id221];
+                    int pdgidD222 = Particle_PID[id222];
+                    if(abs(pdgidD211) >10 && abs(pdgidD211)<13) electronic++;
+                    if(abs(pdgidD221) >10 && abs(pdgidD221)<13) electronic++;
+                    if(abs(pdgidD211) >12 && abs(pdgidD211)<15) muonic++;
+                    if(abs(pdgidD221) >12 && abs(pdgidD221)<15) muonic++;
+                 }
+                 if(debug) cout << "t2w2l: id1: " << pdgidD21 << ", id2: "<< pdgidD21 << endl;
+                 //leptonic++;
+              }
+            }*/
+         }
+ 
+///////////
       }
+      if(debug) cout << "topN: " << topN <<", wN:" << wN << endl;
       fevent_->topN_ = topN;
       fevent_->wN_ = wN;
 
@@ -229,7 +303,7 @@ void Delphes::Loop(bool isttjj)
               ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
          //first bq
-         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && ((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]==3))
+         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && ((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]<4))
          {
              GenParticle gp_ =getGenParticle(i);
              double DR_=999, idx=-1;
@@ -238,7 +312,7 @@ void Delphes::Loop(bool isttjj)
                     double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_; 
              }
-             if(DR_>0.4 && gp_.Pt()>-1 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>15 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
              /*cout <<"first bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -295,7 +369,7 @@ void Delphes::Loop(bool isttjj)
 ////////////
        if(leptonic>0) for(int i=0;i<Particle_size;i++ )
       {
-         if(((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]==3 ) && abs(Particle_PID[i])<5 && 
+         if(((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]<4 ) && abs(Particle_PID[i])<5 && 
                abs(Particle_PID[Particle_M1[i]])!=24 &&
                abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
          {
@@ -312,7 +386,7 @@ void Delphes::Loop(bool isttjj)
                     double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_;
              }
-             if(DR_>0.4 && gp_.Pt()>-1 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>15 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
              /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -323,7 +397,7 @@ void Delphes::Loop(bool isttjj)
       fevent_->NgBQlast_  = gBQlast_->size();
       if(gBQlast_->size()>1)
       {  
-         double bQ_DR[4]={999,999,999,99};
+         double bQ_DR[4]={999,999,999,999};
          for(int i=0;i<gBQlast_->size();i++)
          {
            fevent_->gBQlast_pt_ ->push_back(gBQlast_->at(i).Pt());
