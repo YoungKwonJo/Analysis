@@ -79,7 +79,7 @@ void Delphes::Loop(bool isttjj)
    GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
 
-   bool debug =false;//true;
+   //bool debug =true;
    int Testing =0;
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -121,16 +121,14 @@ void Delphes::Loop(bool isttjj)
          if(Particle_Status[i]>70 && Particle_Status[i]<90)
               cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          */ 
-         if(debug){
-         //if(false){
+         //if(debug){
+         if(false){
            if( abs(Particle_PID[i])==6 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
               cout << "event:"<< ientry <<", idx:"<< i << ", top, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << endl;
             if( abs(Particle_PID[i])==24 && Particle_PID[Particle_D1[i]] != Particle_PID[i])
               cout << "event:"<< ientry <<", idx:"<< i << ", w, did1:"<< Particle_PID[Particle_D1[i]]<< ", did2:"<< Particle_PID[Particle_D2[i]] << ", did1_test:"<< Particle_PID[Particle_D1[getLastIdX(i,0)]] << endl;
          }
           
-         if(abs(Particle_PID[i]) >10 && abs(Particle_PID[i])<12 && Particle_Status[i]==3) electronic++;
-         if(abs(Particle_PID[i]) >12 && abs(Particle_PID[i])<14 && Particle_Status[i]==3) muonic++;
 
          // ttbar dileptonic check 
          if( (Particle_PID[i]==6 && findtop==false ) || (Particle_PID[i]==-6 && findtopb==false))
@@ -223,7 +221,7 @@ void Delphes::Loop(bool isttjj)
       //tree_->Fill();     continue;
 /////////////////
 //check Ancestors(b/c hadron, b/c quark, top, higgs) in particle with status == 1
-      if(leptonic>1)for(int i=0;i<Particle_size;i++ )
+      if(leptonic>0)for(int i=0;i<Particle_size;i++ )
       {
 
          if(Particle_Status[i]<30 && Particle_Status[i]>10)
@@ -231,7 +229,7 @@ void Delphes::Loop(bool isttjj)
               ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
          //first bq
-         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && ((Particle_Status[i]>20 && Particle_Status[i]<60) || (Particle_Status[i]>1 && Particle_Status[i]<4)))
+         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && Particle_Status[i]>20 && Particle_Status[i]<60)
          {
              GenParticle gp_ =getGenParticle(i);
              double DR_=999, idx=-1;
@@ -240,7 +238,7 @@ void Delphes::Loop(bool isttjj)
                     double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_; 
              }
-             if(DR_>0.4 && gp_.Pt()>-0.1 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>-1 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
              /*cout <<"first bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -295,9 +293,10 @@ void Delphes::Loop(bool isttjj)
 //////////
       std::sort(gBQlast_->begin(),gBQlast_->end(),compByPtGenParticle);
 ////////////
-       if(leptonic>1) for(int i=0;i<Particle_size;i++ )
+       if(leptonic>0) for(int i=0;i<Particle_size;i++ )
       {
-         if(((Particle_Status[i]>20 && Particle_Status[i]<60) || (Particle_Status[i]>1 && Particle_Status[i]<4)) && abs(Particle_PID[i])<5 && 
+         if(Particle_Status[i]>20 && Particle_Status[i]<60 && abs(Particle_PID[i])<5 && 
+               abs(Particle_PID[Particle_M1[i]])!=24 &&
                abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
          {
              GenParticle gp_ =getGenParticle(i);
@@ -313,7 +312,7 @@ void Delphes::Loop(bool isttjj)
                     double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_;
              }
-             if(DR_>0.4 && gp_.Pt()>-0.1 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>-1 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
              /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -642,6 +641,18 @@ void Delphes::Loop(bool isttjj)
          fevent_->lep1_Q_   = muons_->at(0).Q_;
          fevent_->lep2_Q_   = electrons_->at(0).Q_;
       }
+      if(muonic==1 && muons_->size()>0)
+      {
+         fevent_->lep_lj_pt_  = muons_->at(0).Pt();
+         fevent_->lep_lj_eta_ = muons_->at(0).Eta();
+         fevent_->lep_lj_phi_ = muons_->at(0).Phi();
+      }
+      if(electronic==1 && electrons_->size()>0)
+      {
+         fevent_->lep_lj_pt_  = electrons_->at(0).Pt();
+         fevent_->lep_lj_eta_ = electrons_->at(0).Eta();
+         fevent_->lep_lj_phi_ = electrons_->at(0).Phi();
+      }
 
 ///////////////////////////////
 //choose jet
@@ -652,7 +663,7 @@ void Delphes::Loop(bool isttjj)
       for(int i=0;i<Jet_size;i++ )
       {
          bool overlapMu=false, overlapEl=false;  // jet cleaning..
-         if(Jet_PT[i]>20 && fabs(Jet_Eta[i])<2.5)
+         if(Jet_PT[i]>30 && fabs(Jet_Eta[i])<2.5)
          {
             double x_ = Jet_PT[i]*TMath::Cos(Jet_Phi[i]);
             double y_ = Jet_PT[i]*TMath::Sin(Jet_Phi[i]);
@@ -796,6 +807,7 @@ void Delphes::Loop(bool isttjj)
                    }
                 }
                 if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
+                if(abs(gBQfirst_->at(i).MotherPdgId())!=24 && abs(gBQfirst_->at(j).MotherPdgId())!=24 && bQ_Mjj[1]==-1 && !isttjj && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
                 {
                    bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                    bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
@@ -933,6 +945,7 @@ void Delphes::Loop(bool isttjj)
                   }
                }
                if(abs(gBQfirst_->at(i).MotherPdgId())!=6 && abs(gBQfirst_->at(j).MotherPdgId())!=6 && bQ_Mjj[1]==-1 && !isttjj && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
+               if(abs(gBQfirst_->at(i).MotherPdgId())!=24 && abs(gBQfirst_->at(j).MotherPdgId())!=24 && bQ_Mjj[1]==-1 && !isttjj && fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_))>0.5)
                {
                   bQ_DR[1]=fabs(gBQfirst_->at(i).vec_.DeltaR(gBQfirst_->at(j).vec_));
                   bQ_M[1] = (gBQfirst_->at(i).vec_+gBQfirst_->at(j).vec_).M();
