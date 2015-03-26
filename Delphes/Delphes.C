@@ -303,7 +303,7 @@ void Delphes::Loop(bool isttjj, bool pythia6)
               ;//cout << "event:"<< ientry <<", idx:"<< i << ", pdgid:" << Particle_PID[i] << ", midx:"<< Particle_M1[i]<< ", status:"<< Particle_Status[i] << endl;
          }
          //first bq
-         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && ((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]<4))
+         if(abs(Particle_PID[i])==5 && abs(Particle_PID[Particle_M1[i]])!=5 && ((Particle_Status[i]>20 && Particle_Status[i]<60) || (Particle_Status[i]<4 && pythia6) ))
          {
              GenParticle gp_ =getGenParticle(i);
              double DR_=999, idx=-1;
@@ -369,7 +369,7 @@ void Delphes::Loop(bool isttjj, bool pythia6)
 ////////////
        if(leptonic>0) for(int i=0;i<Particle_size;i++ )
       {
-         if(((Particle_Status[i]>20 && Particle_Status[i]<60) || Particle_Status[i]<4 ) && abs(Particle_PID[i])<5 && 
+         if(((Particle_Status[i]>20 && Particle_Status[i]<60) || ( Particle_Status[i]<4 && pythia6)) && (abs(Particle_PID[i])<5 || abs(Particle_PID[i])==21) && 
                abs(Particle_PID[Particle_M1[i]])!=24 &&
                abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
          {
@@ -715,13 +715,13 @@ void Delphes::Loop(bool isttjj, bool pythia6)
          fevent_->lep1_Q_   = muons_->at(0).Q_;
          fevent_->lep2_Q_   = electrons_->at(0).Q_;
       }
-      if(muonic==1 && muons_->size()>0)
+      if(muonic==1 && muons_->size()>0 && leptonic==1)
       {
          fevent_->lep_lj_pt_  = muons_->at(0).Pt();
          fevent_->lep_lj_eta_ = muons_->at(0).Eta();
          fevent_->lep_lj_phi_ = muons_->at(0).Phi();
       }
-      if(electronic==1 && electrons_->size()>0)
+      if(electronic==1 && electrons_->size()>0 && leptonic==1)
       {
          fevent_->lep_lj_pt_  = electrons_->at(0).Pt();
          fevent_->lep_lj_eta_ = electrons_->at(0).Eta();
