@@ -24,10 +24,10 @@
 #include "plot.h"
 //#include "plot2.h"
 
-void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
+void ploterNew_lj(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 {
 
-  MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass"   , "Dilepton mass;Dilepton Mass (GeV/c^{2});/10 GeV/c^{2}", 30, 0, 300);
+  //MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass"   , "Dilepton mass;Dilepton Mass (GeV/c^{2});/10 GeV/c^{2}", 30, 0, 300);
   MonitorPlot nJet  = MonitorPlot("nJet"  , "nJet30"  , "Jet Multiplicity;Jet Multiplicity;", 13, 0, 13);
   MonitorPlot nbJet = MonitorPlot("nbJet", "nbJet30T", "# of b-tagged Jets;# of b-tagged Jets;", 5, 0, 5);
   MonitorPlot MET   = MonitorPlot("MET"  ,  "MET"    , "Missing E_{T};Missing E_{T} (GeV);/10 GeV",20,0,200);
@@ -37,10 +37,10 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot gM_j12 = MonitorPlot("gM_j12", "gM_j12" , "invariant mass of jet1+jet2; Invariant Mass_{GEN}^{(jet1+jet2)} (GeV/c^{2});/20 GeV/c^{2}", 40, 0, 800);
   MonitorPlot gM_j34 = MonitorPlot("gM_j34", "gM_j34" , "invariant mass of jet3+jet4; Invariant Mass_{GEN}^{(jet3+jet4)} (GeV/c^{2});/10 GeV/c^{2}", 40, 0, 400);
 
-  MonitorPlot pt1 = MonitorPlot("pt1", "lep1_pt", "Leading lepton p_{T};p_{T}^{lep1} (GeV/c);/10 GeV/c", 20, 0, 200);
-  MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T}^{lep2} (GeV/c);/10 GeV/c", 20, 0, 200);
-  MonitorPlot eta1 = MonitorPlot("eta1", "lep1_eta", "Leading #eta;#eta^{lep1};/0.2", 35, -3.5, 3.5);
-  MonitorPlot eta2 = MonitorPlot("eta2", "lep2_eta", "Second leading lepton #eta^{lep2};#eta;/0.2", 35, -3.5, 3.5);
+  MonitorPlot pt_lj = MonitorPlot("pt_lj", "lep_lj_pt", "Leading lepton p_{T};p_{T}^{lep1} (GeV/c);/10 GeV/c", 20, 0, 200);
+  //MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T}^{lep2} (GeV/c);/10 GeV/c", 20, 0, 200);
+  MonitorPlot eta_lj = MonitorPlot("eta_lj", "lep_lj_eta", "Leading #eta;#eta^{lep1};/0.2", 35, -3.5, 3.5);
+  //MonitorPlot eta2 = MonitorPlot("eta2", "lep2_eta", "Second leading lepton #eta^{lep2};#eta;/0.2", 35, -3.5, 3.5);
 
   MonitorPlot jet1pt30 = MonitorPlot("jet1pt30", "jet1_pt", "Leading Jet p_{T}; p_{T}^{jet1} (GeV/c);/20 GeV/c",25, 0, 500);
   MonitorPlot jet2pt30 = MonitorPlot("jet2pt30", "jet2_pt", "Second leading Jet p_{T}; p_{T}^{jet2} (GeV/c);/20 GeV/c",25, 0, 500);
@@ -61,7 +61,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot nMuG = MonitorPlot("nMuG", "muonic", "# of muon in gen;/# of #mu^{GEN};", 3, 0, 3);
   MonitorPlot nElG = MonitorPlot("nElG", "electronic", "# of electron in gen;/# of e^{GEN};", 3, 0, 3);
 
-////////////
+
   MonitorPlot gnBQ =       MonitorPlot("gnBQ1st",       "NgBQ1st",    "# of b;# of b;", 13, 0, 13);
   MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "bb mass from top; M_{bb^{from t}}  (GeV/c^{2});/20 GeV/c^{2}", 25, 0, 500);
   MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;/0.2 ", 30, 0., 6.,false);
@@ -111,58 +111,6 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot gBQ1st_Etajj1add = MonitorPlot("gBQ1st_Etajj1add", "gBQ1st_Etajj1add", "Leading #eta;#eta^{genjet1^{not from t}};/0.4", 17, -3.4, 3.4,false);
   MonitorPlot gBQ1st_Etajj2add = MonitorPlot("gBQ1st_Etajj2add", "gBQ1st_Etajj2add", "Leading #eta;#eta^{gentjet2^{not from t}};/0.4", 17, -3.4, 3.4,false);
 
-
-////////////////////
-/*
-  MonitorPlot gnBQ =       MonitorPlot("gnBQ1st",       "NgBQ1st",    "# of b;# of b;", 13, 0, 13);
-  MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "bb mass from top; M_{bb^{from t}}  (GeV/c^{2});/20 GeV/c^{2}", 35, 0, 700);
-  MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;/0.1 ", 60, 0., 6.,false);
-  MonitorPlot gBQ1st_M2add = MonitorPlot("gBQ1st_M2add", "gBQ1st_M2add", "bb mass not from top;  M_{jj^{not from t}} (GeV/c^{2});/20 GeV/c^{2}", 35, 0, 700);
-  MonitorPlot gBQ1st_DR2add = MonitorPlot("gBQ1st_DR2add", "gBQ1st_DR2add", "bb DR not from top; #Delta R_{jj^{not from t}} ;/0.1 ", 60, 0., 6.,false);
-
-  MonitorPlot gBQ1st_M1jjfromT = MonitorPlot("gBQ1st_M1jjfromT", "gBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}} genjet  (GeV/c^{2});/20 GeV/c^{2}",35,0, 700);
-  MonitorPlot gBQ1st_DR1jjfromT = MonitorPlot("gBQ1st_DR1jjfromT", "gBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} genjet ;/0.1 ", 60, 0.,6.,false);
-  MonitorPlot gBQ1st_M2jjadd = MonitorPlot("gBQ1st_M2jjadd", "gBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} genjet (GeV/c^{2});/20 GeV/c^{2}", 35, 10, 700);
-  MonitorPlot gBQ1st_DR2jjadd = MonitorPlot("gBQ1st_DR2jjadd", "gBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} genjet ;/0.1 ", 60, 0., 6.,false);
-
-  MonitorPlot jgBQ1st_M1jjfromT = MonitorPlot("jgBQ1st_M1jjfromT", "jgBQ1st_M1jjfromT", "Dijet mass from top; M_{jj^{from t}} recojet (GeV/c^{2});/20 GeV/c^{2}", 35, 0, 700);
-  MonitorPlot jgBQ1st_DR1jjfromT = MonitorPlot("jgBQ1st_DR1jjfromT", "jgBQ1st_DR1jjfromT", "Dijet DR from top;#Delta R_{jj^{from t}} recojet ;/0.1 ", 60, 0., 6.,false);
-  MonitorPlot jgBQ1st_M2jjadd = MonitorPlot("jgBQ1st_M2jjadd", "jgBQ1st_M2jjadd", "Dijet mass not from top;  M_{jj^{not from t}} recojet (GeV/c^{2});/20 GeV/c^{2}", 35, 0, 700);
-  MonitorPlot jgBQ1st_DR2jjadd = MonitorPlot("jgBQ1st_DR2jjadd", "jgBQ1st_DR2jjadd", "Dijet DR not from top; #Delta R_{jj^{not from t}} recojet ;/0.1 ", 60, 0., 6.,false);
-
-  MonitorPlot gjet_M1jj = MonitorPlot("gjet_M1jj", "gjet_M1jj", "Dijet mass ; M_{j_{1} j_{2}}  (GeV/c^{2});/20 GeV/c^{2}", 35, 0, 700);
-  MonitorPlot gjet_DR1jj = MonitorPlot("gjet_DR1jj", "gjet_DR1jj", "Dijet DR;#Delta R_{j_{1} j_{2}} ;/0.1 ", 60, 0.,6.,false);
-  MonitorPlot gjet_M2jj = MonitorPlot("gjet_M2jj", "gjet_M2jj", "Dijet mass not from top;  M_{j_{3} j_{4}} (GeV/c^{2});/20 GeV/c^{2}", 35, 0, 700);
-  MonitorPlot gjet_DR2jj = MonitorPlot("gjet_DR2jj", "gjet_DR2jj", "Dijet DR not from top; #Delta R_{j_{3} j_{4}} ;/0.1 ", 60, 0., 6.,false);
-
-  MonitorPlot jgBQ1st_PTj1jfromT = MonitorPlot("jgBQ1st_PTj1jfromT", "jgBQ1st_PTj1jfromT", "Leading Jet p_{T}; p_{T}^{jet1^{from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot jgBQ1st_PTj2jfromT = MonitorPlot("jgBQ1st_PTj2jfromT", "jgBQ1st_PTj2jfromT", "Leading Jet p_{T}; p_{T}^{jet2^{from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot jgBQ1st_PTj3jadd = MonitorPlot("jgBQ1st_PTj3jadd", "jgBQ1st_PTj3jadd", "Leading Jet p_{T}; p_{T}^{jet1^{not from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot jgBQ1st_PTj4jadd = MonitorPlot("jgBQ1st_PTj4jadd", "jgBQ1st_PTj4jadd", "Leading Jet p_{T}; p_{T}^{jet2^{not from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-
-  MonitorPlot jgBQ1st_Etaj1jfromT = MonitorPlot("jgBQ1st_Etaj1jfromT", "jgBQ1st_Etaj1jfromT", "Leading #eta;#eta^{jet1^{from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot jgBQ1st_Etaj2jfromT = MonitorPlot("jgBQ1st_Etaj2jfromT", "jgBQ1st_Etaj2jfromT", "Leading #eta;#eta^{jet2^{from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot jgBQ1st_Etaj3jadd = MonitorPlot("jgBQ1st_Etaj3jadd", "jgBQ1st_Etaj3jadd", "Leading #eta;#eta^{jet1^{not from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot jgBQ1st_Etaj4jadd = MonitorPlot("jgBQ1st_Etaj4jadd", "jgBQ1st_Etaj4jadd", "Leading #eta;#eta^{jet2^{not from t}};/0.2", 35, -3.5, 3.5,false);
-///////////
-  MonitorPlot gBQ1st_Pt1fromT = MonitorPlot("gBQ1st_Pt1fromT", "gBQ1st_Pt1fromT", "Leading Jet p_{T}; p_{T}^{b1^{from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Pt2fromT = MonitorPlot("gBQ1st_Pt2fromT", "gBQ1st_Pt2fromT", "Leading Jet p_{T}; p_{T}^{b2^{from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Pt1add = MonitorPlot("gBQ1st_Pt1add", "gBQ1st_Pt1add", "Leading Jet p_{T}; p_{T}^{b1^{not from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Pt2add = MonitorPlot("gBQ1st_Pt2add", "gBQ1st_Pt2add", "Leading Jet p_{T}; p_{T}^{b2^{not from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Eta1fromT = MonitorPlot("gBQ1st_Eta1fromT", "gBQ1st_Eta1fromT", "Leading #eta;#eta^{b1^{from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot gBQ1st_Eta2fromT = MonitorPlot("gBQ1st_Eta2fromT", "gBQ1st_Eta2fromT", "Leading #eta;#eta^{b2^{from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot gBQ1st_Eta1add = MonitorPlot("gBQ1st_Eta1add", "gBQ1st_Eta1add", "Leading #eta;#eta^{b1^{not from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot gBQ1st_Eta2add = MonitorPlot("gBQ1st_Eta2add", "gBQ1st_Eta2add", "Leading #eta;#eta^{b2^{not from t}};/0.2", 35, -3.5, 3.5,false);
-//////////
-  MonitorPlot gBQ1st_Ptjj1fromT = MonitorPlot("gBQ1st_Ptjj1fromT", "gBQ1st_Ptjj1fromT", "Leading Jet p_{T}; p_{T}^{genjet1^{from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Ptjj2fromT = MonitorPlot("gBQ1st_Ptjj2fromT", "gBQ1st_Ptjj2fromT", "Leading Jet p_{T}; p_{T}^{genjet2^{from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Ptjj1add = MonitorPlot("gBQ1st_Ptjj1add", "gBQ1st_Ptjj1add", "Leading Jet p_{T}; p_{T}^{genjet1^{not from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Ptjj2add = MonitorPlot("gBQ1st_Ptjj2add", "gBQ1st_Ptjj2add", "Leading Jet p_{T}; p_{T}^{genjet2^{not from t}} (GeV/c);/10 GeV/c",20, 0, 200);
-  MonitorPlot gBQ1st_Etajj1fromT = MonitorPlot("gBQ1st_Etajj1fromT", "gBQ1st_Etajj1fromT", "Leading #eta;#eta^{genjet1^{from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot gBQ1st_Etajj2fromT = MonitorPlot("gBQ1st_Etajj2fromT", "gBQ1st_Etajj2fromT", "Leading #eta;#eta^{genjet2^{from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot gBQ1st_Etajj1add = MonitorPlot("gBQ1st_Etajj1add", "gBQ1st_Etajj1add", "Leading #eta;#eta^{genjet1^{not from t}};/0.2", 35, -3.5, 3.5,false);
-  MonitorPlot gBQ1st_Etajj2add = MonitorPlot("gBQ1st_Etajj2add", "gBQ1st_Etajj2add", "Leading #eta;#eta^{gentjet2^{not from t}};/0.2", 35, -3.5, 3.5,false);
-*/
 //////////
 /*
   Sample ttbb_1 = Sample("result_ttbb_test.root",       "ntuple","ttbb_1","t#bar{t} + b#bar{b}"       ,kRed   ,1,3,true, 1.568e+01*0.04553956); // xsec unit : pb
@@ -178,35 +126,35 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   Sample ttjj_1 = Sample("result_ttjj_woSPIN_test.root","ntuple","ttjj_1","t#bar{t} + jj w/o SC"    ,kGreen+2,1,3,true,2.238e+02); // xsec unit : pb
   Sample ttjj_2 = Sample("result_ttjj_SPIN_LO.root","ntuple","ttjj_2","t#bar{t} + jj LO"    ,kGreen+4,2,2,true,20.935801482312659); // xsec unit : pb
 */
-  /*
-  Sample ttbb_2 = Sample("result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ S.C.",kRed-4 ,1,2,true, 4.729e+00*0.04553956); // xsec unit : pb
-  Sample ttbb_4 = Sample("result_ttbb_woSPIN_test_cut_bq.root","ntuple","ttbb_4","t#bar{t} + b#bar{b}",kOrange ,2,1,true, 4.729e+00); // xsec unit : pb
+  
+  //Sample ttbb_2 = Sample("result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t} + b#bar{b} w/ S.C.",kRed-4 ,1,2,true, 4.729e+00*0.04553956); // xsec unit : pb
 
-  Sample tth_2  = Sample("result_tth_test_cut_bq.root", "ntuple","tth_2" ,"t#bar{t} + H w/ S.C."       ,kGreen+2 ,1,2,true,3.234e-01*0.04553956); // xsec unit : pb
-  Sample tth_4  = Sample("result_tth_woSPIN_test_cut_bq.root", "ntuple","tth_4" ,"t#bar{t} + H "       ,kGreen ,2,1,true,3.234e-01); // xsec unit : pb
+  //Sample tth_2  = Sample("result_tth_test_cut_bq.root", "ntuple","tth_2" ,"t#bar{t} + H w/ S.C."       ,kGreen+2 ,1,2,true,3.234e-01*0.04553956); // xsec unit : pb
 
-  Sample ttjj_1 = Sample("result_ttjj_woSPIN_test.root","ntuple","ttjj_1","t#bar{t} + jj "    ,kBlue,1,2,true,2.238e+02); // xsec unit : pb
-  Sample ttjj_2 = Sample("result_ttjj_SPIN_LO.root","ntuple","ttjj_2","t#bar{t} + jj LO w/ SC"    ,kBlue-7,2,1,true,20.935801482312659); // xsec unit : pb
-  */
+  //Sample ttjj_2 = Sample("result_ttjj_SPIN_LO.root","ntuple","ttjj_2","t#bar{t} + jj LO w/ SC"    ,kBlue-7,2,1,true,20.935801482312659); // xsec unit : pb
+  //
+
+
+  Sample ttbb_4 = Sample("./new20GeV_v7/result_ttbb_woSPIN_test_cut_bq.root","ntuple","ttbb_4","t#bar{t} + b#bar{b}",kRed-4 ,1,2,true, 4.729e+00); // xsec unit : pb
+  Sample tth_4  = Sample("./new20GeV_v7/result_tth_woSPIN_test_cut_bq.root", "ntuple","tth_4" ,"t#bar{t} + H "       ,kGreen+2 ,1,2,true,3.234e-01); // xsec unit : pb
+  Sample ttjj_1 = Sample("./new20GeV_v7/result_ttjj_woSPIN_test.root","ntuple","ttjj_1","t#bar{t}jj "    ,kBlue-7,1,2,true,2.238e+02); // xsec unit : pb
 
   Sample ttbb_2 = Sample("./new20GeV_v7/result_ttbb_test_cut_bq.root","ntuple","ttbb_2","t#bar{t}b#bar{b}",kRed-4 ,1,2,true, 4.729e+00*0.04553956); // xsec unit : pb
-
   Sample tth_2  = Sample("./new20GeV_v7/result_tth_test_cut_bq.root", "ntuple","tth_2" ,"t#bar{t}H "       ,kGreen+2 ,1,2,true,3.234e-01*0.04553956); // xsec unit : pb
-  Sample ttjj_1 = Sample("./new20GeV_v7/result_ttjj_woSPIN_test.root","ntuple","ttjj_1","t#bar{t}jj "    ,kBlue,2,1,true,2.238e+02); // xsec unit : pb
   Sample ttjj_2 = Sample("./new20GeV_v7/result_ttjj_SPIN_LO.root","ntuple","ttjj_2","t#bar{t}jj LO "    ,kBlue-7,1,2,true,20.935801482312659); // xsec unit : pb
 
   //Sample MC[] = {ttbb_1, ttbb_2, ttbb_3, ttbb_4, tth_1, tth_2, tth_3, tth_4, ttjj_1, ttjj_2};
   //Sample MC[] = {ttbb_2, ttbb_4, tth_2, tth_4, ttjj_1, ttjj_2};
-  Sample MC[] = {ttbb_2, tth_2,ttjj_2};
+  Sample MC[] = {ttbb_4, tth_4,ttjj_1};
 //  Sample MC[] = { ttbb_1, ttbb_3, ttbb_4};//, tth_1, tth_2, tth_3, tth_4, ttjj_1};
 
 // Cut Steps as Event selection  
   Cut cuts = Cut();
   cuts.addCut("1","1"); //S0
-  cuts.addCut("leptonic>1","1"); // S1 : dileptonic in generate level
+  cuts.addCut("leptonic==1","1"); // S1 : single leptonic in generate level
 //  cuts.addCut("nJet30>3","1");
-  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
-  cuts.addCut("nJet30>3","1");   //S3
+  cuts.addCut("lep_lj_pt>20 && abs(lep_lj_eta)<2.4 ","1");//&& abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
+  cuts.addCut("nJet30>5","1");   //S3
   cuts.addCut("nbJet30T>=2","1"); //S4
   cuts.addCut("nbJet30T>3","1"); //S4
 //  cuts.addCut("nbJet30T>=4","1"); //S4
@@ -223,7 +171,8 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
      gBQ1st_Eta1fromT,gBQ1st_Eta2fromT,gBQ1st_Eta1add,gBQ1st_Eta2add, //32
      gBQ1st_Ptjj1fromT,gBQ1st_Ptjj2fromT,gBQ1st_Ptjj1add, gBQ1st_Ptjj2add, //36
      gBQ1st_Etajj1fromT,gBQ1st_Etajj2fromT,gBQ1st_Etajj1add,gBQ1st_Etajj2add, //40
-     ZMass,nJet,nbJet,MET //44
+     //ZMass,
+     nJet,nbJet,MET //44
    };
 /*
   MonitorPlot MyPlots[] = {nLepG,nMuG,nElG,           // 0, 1, 2
@@ -304,10 +253,18 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   if(logy){  c1->SetLogy(); yscale=5000; }
   h[0]->SetMaximum(h[0]->GetMaximum()*yscale);
 
+  int logS = 1000;
 // add legend
-  double legxmin=0.73, legxmax=0.93, legymin=0.62, legymax=0.89;
-  if(canMvleg) { legxmin=0.25, legxmax=0.55, legymin=0.2, legymax=0.49; h[0]->SetMinimum(ymin*0.1); }
-  TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax);
+  //double xmin = h[0]->GetXaxis()->GetXmin();
+  //double xmax = h[0]->GetXaxis()->GetXmax();
+  double weighty=0.85; if(logy) weighty=0.007;
+  double legxmin=(xmax-xmin)*0.68+xmin, legxmax=(xmax-xmin)*0.99+xmin, legymin=ymax*1.01*weighty, legymax=ymax*1.25;
+  if(logy) { legxmin=(xmax-xmin)*0.68+xmin, legxmax=(xmax-xmin)*0.98+xmin, legymin=ymax*weighty*logS/10, legymax=ymax*logS; }
+  //double legxmin=0.73, legxmax=0.93, legymin=0.62, legymax=0.89;
+  //if(canMvleg) { legxmin=0.25, legxmax=0.55, legymin=0.2, legymax=0.49;
+  if(canMvleg) { h[0]->SetMinimum(ymin*0.1); }
+  //TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax);
+  TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax, NULL,"");
   leg->SetBorderSize(1);  leg->SetTextFont(62);  leg->SetTextSize(0.04);
   leg->SetLineColor(0);  leg->SetLineStyle(1);  leg->SetLineWidth(1);  leg->SetFillColor(0);
   leg->SetFillStyle(1001);
@@ -343,8 +300,8 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   else     pt->AddText(Form("%.0f fb^{-1} at #sqrt{s} = 13 TeV", lumi/1000));
   pt->Draw();
 
-  if(norm) c1->Print(Form("./plotsNew_new20GeV_v7/Norm_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
-  else     c1->Print(Form("./plotsNew_new20GeV_v7/Log_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  if(norm) c1->Print(Form("./plotsNew_new20GeV_v7_lj/Norm_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  else     c1->Print(Form("./plotsNew_new20GeV_v7_lj/Log_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
 }
 
 

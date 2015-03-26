@@ -4,6 +4,7 @@
 
 #include "TCanvas.h"
 #include "TPad.h"
+#include "TCut.h"
 #include "TLegend.h"
 #include "TH1F.h"
 #include "THStack.h"
@@ -11,10 +12,13 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <set>
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
+
+using namespace std;
 
 class MonitorPlot
 {
