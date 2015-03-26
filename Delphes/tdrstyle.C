@@ -180,7 +180,7 @@ void defaultStyle(){
     // Margins:
     gStyle->SetPadTopMargin(0.1);
     gStyle->SetPadBottomMargin(0.15);
-    gStyle->SetPadLeftMargin(0.15);
+    gStyle->SetPadLeftMargin(0.175);
     gStyle->SetPadRightMargin(0.05);
 
     // For the axis titles:
@@ -188,7 +188,7 @@ void defaultStyle(){
     gStyle->SetTitleFont(42, "XYZ");
     gStyle->SetTitleSize(0.06, "XYZ");
     gStyle->SetTitleXOffset(0.9);
-    gStyle->SetTitleYOffset(1.2);
+    gStyle->SetTitleYOffset(1.4);
 
     // For the axis labels:
     gStyle->SetLabelColor(1, "XYZ");
