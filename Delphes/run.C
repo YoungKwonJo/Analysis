@@ -8,6 +8,7 @@ void run( char *str, char *str2, bool isttjj=false, bool pythia6){
     gROOT->ProcessLine(".L Delphes.C+g");
     //TFile f(Form("../data/events_PYTHIA8_v20140813_%s.root",str));
     TFile f(Form("/cms/data/xrd/store/user/youngjo/Madgraph/DATA/v20140916/%s",str));
+    //TFile f(Form("/cms/home/youngjo/newMadgraph/Madgraph/MG5_aMC_v2_1_2/LO_ttjj/Events/run_02/%s",str));
     TTree *atree = dynamic_cast<TTree *>(f.Get( Form("Delphes") ));
 
     if (atree != 0)
