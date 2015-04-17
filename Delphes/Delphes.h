@@ -20,21 +20,23 @@
 #include <TRefArray.h>
 #include "GenParticle.h"
 
+
 // Fixed size dimensions of array or collections stored in the TTree if any.
 const Int_t kMaxEvent = 1;
-const Int_t kMaxParticle = 3671;
-const Int_t kMaxTrack = 343;
-const Int_t kMaxTower = 528;
-const Int_t kMaxEFlowTrack = 343;
-const Int_t kMaxEFlowPhoton = 306;
-const Int_t kMaxEFlowNeutralHadron = 367;
-const Int_t kMaxGenJet = 40;
-const Int_t kMaxJet = 59;
-const Int_t kMaxElectron = 5;
-const Int_t kMaxPhoton = 5;
-const Int_t kMaxMuon = 5;
+const Int_t kMaxParticle = 6671;
+const Int_t kMaxTrack = 643;
+const Int_t kMaxTower = 928;
+const Int_t kMaxEFlowTrack = 643;
+const Int_t kMaxEFlowPhoton = 606;
+const Int_t kMaxEFlowNeutralHadron = 967;
+const Int_t kMaxGenJet = 100;
+const Int_t kMaxJet = 129;
+const Int_t kMaxElectron = 10;
+const Int_t kMaxPhoton = 10;
+const Int_t kMaxMuon = 10;
 const Int_t kMaxMissingET = 1;
 const Int_t kMaxScalarHT = 1;
+
 
 class Delphes {
 public :

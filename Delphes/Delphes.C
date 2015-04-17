@@ -78,6 +78,7 @@ void Delphes::Loop(bool isttjj, bool pythia6)
    GenParticlesP gBQfirst_;     gBQfirst_   = new GenParticles;
    GenParticlesP gLep_;     gLep_   = new GenParticles;
    double dr_=0.5;
+   //cout << "SN : " << SN << endl;
 
    bool debug =false;
    int Testing =0;
@@ -91,6 +92,8 @@ void Delphes::Loop(bool isttjj, bool pythia6)
       //if(Testing>20) break;
       //if(Testing>6000) break;
       if(Testing%10000==0) cout << "event: " << Testing << endl;
+      //if(10000<Testing) break;
+      //if(100002>Testing) continue;
 
       fevent_->clear();
       //gBHad_->clear();
@@ -312,7 +315,7 @@ void Delphes::Loop(bool isttjj, bool pythia6)
                     double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_; 
              }
-             if(DR_>0.4 && gp_.Pt()>15 && fabs(gp_.y())<4.5) gBQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>20 && fabs(gp_.y())<2.5) gBQfirst_->push_back(gp_);
              /*cout <<"first bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -373,6 +376,9 @@ void Delphes::Loop(bool isttjj, bool pythia6)
                abs(Particle_PID[Particle_M1[i]])!=24 &&
                abs(Particle_PID[Particle_M1[i]])!=abs(Particle_PID[i]) && abs(Particle_PID[Particle_M1[i]])!=5 && abs(Particle_PID[Particle_M1[i]])<30)
          {
+             int isB = isFromBQ(i,0);
+             if(isB>-1) continue;
+
              GenParticle gp_ =getGenParticle(i);
              //gQQfirst_->push_back(gp_);
              double DR_=999, idx=-1;
@@ -386,7 +392,7 @@ void Delphes::Loop(bool isttjj, bool pythia6)
                     double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_;
              }
-             if(DR_>0.4 && gp_.Pt()>15 && fabs(gp_.y())<4.5) gQQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>0 && fabs(gp_.y())<2.5) gQQfirst_->push_back(gp_);
              /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
