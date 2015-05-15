@@ -24,10 +24,10 @@
 #include "plot.h"
 //#include "plot2.h"
 
-void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
+void ploterNew_lj(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
 {
 
-  MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass"   , "Dilepton mass;Dilepton Mass (GeV/c^{2});/10 GeV/c^{2}", 30, 0, 300);
+  //MonitorPlot ZMass = MonitorPlot("ZMass", "ZMass"   , "Dilepton mass;Dilepton Mass (GeV/c^{2});/10 GeV/c^{2}", 30, 0, 300);
   MonitorPlot nJet  = MonitorPlot("nJet"  , "nJet30"  , "Jet Multiplicity;Jet Multiplicity;", 13, 0, 13);
   MonitorPlot nbJet = MonitorPlot("nbJet", "nbJet30T", "# of b-tagged Jets;# of b-tagged Jets;", 5, 0, 5);
   MonitorPlot MET   = MonitorPlot("MET"  ,  "MET"    , "Missing E_{T};Missing E_{T} (GeV);/10 GeV",20,0,200);
@@ -37,10 +37,10 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot gM_j12 = MonitorPlot("gM_j12", "gM_j12" , "invariant mass of jet1+jet2; Invariant Mass_{GEN}^{(jet1+jet2)} (GeV/c^{2});/20 GeV/c^{2}", 40, 0, 800);
   MonitorPlot gM_j34 = MonitorPlot("gM_j34", "gM_j34" , "invariant mass of jet3+jet4; Invariant Mass_{GEN}^{(jet3+jet4)} (GeV/c^{2});/10 GeV/c^{2}", 40, 0, 400);
 
-  MonitorPlot pt1 = MonitorPlot("pt1", "lep1_pt", "Leading lepton p_{T};p_{T}^{lep1} (GeV/c);/10 GeV/c", 20, 0, 200);
-  MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T}^{lep2} (GeV/c);/10 GeV/c", 20, 0, 200);
-  MonitorPlot eta1 = MonitorPlot("eta1", "lep1_eta", "Leading #eta;#eta^{lep1};/0.2", 35, -3.5, 3.5);
-  MonitorPlot eta2 = MonitorPlot("eta2", "lep2_eta", "Second leading lepton #eta^{lep2};#eta;/0.2", 35, -3.5, 3.5);
+  MonitorPlot pt_lj = MonitorPlot("pt_lj", "lep_lj_pt", "Leading lepton p_{T};p_{T}^{lep1} (GeV/c);/10 GeV/c", 20, 0, 200);
+  //MonitorPlot pt2 = MonitorPlot("pt2", "lep2_pt", "Second leading lepton p_{T};p_{T}^{lep2} (GeV/c);/10 GeV/c", 20, 0, 200);
+  MonitorPlot eta_lj = MonitorPlot("eta_lj", "lep_lj_eta", "Leading #eta;#eta^{lep1};/0.2", 35, -3.5, 3.5);
+  //MonitorPlot eta2 = MonitorPlot("eta2", "lep2_eta", "Second leading lepton #eta^{lep2};#eta;/0.2", 35, -3.5, 3.5);
 
   MonitorPlot jet1pt30 = MonitorPlot("jet1pt30", "jet1_pt", "Leading Jet p_{T}; p_{T}^{jet1} (GeV/c);/20 GeV/c",25, 0, 500);
   MonitorPlot jet2pt30 = MonitorPlot("jet2pt30", "jet2_pt", "Second leading Jet p_{T}; p_{T}^{jet2} (GeV/c);/20 GeV/c",25, 0, 500);
@@ -61,7 +61,7 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot nMuG = MonitorPlot("nMuG", "muonic", "# of muon in gen;/# of #mu^{GEN};", 3, 0, 3);
   MonitorPlot nElG = MonitorPlot("nElG", "electronic", "# of electron in gen;/# of e^{GEN};", 3, 0, 3);
 
-////////////
+
   MonitorPlot gnBQ =       MonitorPlot("gnBQ1st",       "NgBQ1st",    "# of b;# of b;", 13, 0, 13);
   MonitorPlot gBQ1st_M1fromT = MonitorPlot("gBQ1st_M1fromT", "gBQ1st_M1fromT", "bb mass from top; M_{bb^{from t}}  (GeV/c^{2});/20 GeV/c^{2}", 25, 0, 500);
   MonitorPlot gBQ1st_DR1fromT = MonitorPlot("gBQ1st_DR1fromT", "gBQ1st_DR1fromT", "bb DR from top;#Delta R_{bb^{from t}} ;/0.2 ", 30, 0., 6.,false);
@@ -111,39 +111,36 @@ void ploterNew(int pp=0, int ppp=0, bool norm = false)//,bool logy = false)
   MonitorPlot gBQ1st_Etajj1add = MonitorPlot("gBQ1st_Etajj1add", "gBQ1st_Etajj1add", "Leading #eta;#eta^{genjet1^{not from t}};/0.4", 17, -3.4, 3.4,false);
   MonitorPlot gBQ1st_Etajj2add = MonitorPlot("gBQ1st_Etajj2add", "gBQ1st_Etajj2add", "Leading #eta;#eta^{gentjet2^{not from t}};/0.4", 17, -3.4, 3.4,false);
 
-
-////////////////////
+//////////
 /*
-ttbb_2 : 23046.7
-tth_2 : 1609.24
-ttjj_1 : 2.33684e+07
-ttbb_4 : 464162
-tth_4 : 46527.9
-*/
+ * ttbb_2 : 23046.7
+ * tth_2 : 1609.24
+ * ttjj_1 : 2.33684e+07
+ * ttbb_4 : 464162
+ * tth_4 : 46527.9
+ * */
 
    const string path ="/cms/home/youngjo/Madgraph/Analysis/new20GeV_v13";
    Sample ttbb_2  = Sample(path+"/result_ttbb_cut_bq.root","ntuple","ttbb_2","t#bar{t}b#bar{b}",kRed ,1,2,true, 4.729e+00*0.04553956,23046.7); // xsec unit : pb
    Sample tth_2   = Sample(path+"/result_tth_cut_bq.root", "ntuple","tth_2" ,"t#bar{t}H "       ,kGreen-7 ,1,2,true,3.234e-01*0.04553956,1609.24); // xsec unit : pb
    Sample ttjj_2  = Sample(path+"/result_ttjj_SPIN_LO.root","ntuple","ttjj_2","t#bar{t}jj LO "    ,kBlue+1,1,2,true,20.935801482312659,1.); // xsec unit : pb
 
-//   Sample ttjj_1 = Sample(path+"/result_ttjj_woSPIN.root","ntuple","ttjj_1","t#bar{t}jj "    ,kBlue+1,1,2,true,2.238e+02,2.33684e+07); // xsec unit : pb
-//   Sample ttjj_3 = Sample(path+"/result_ttjj_LO.root","ntuple","ttjj_3","t#bar{t}jj LO "    ,kBlue+1,1,2,true,423.55676178935778,1.); // xsec unit : pb
+   Sample ttjj_1 = Sample(path+"/result_ttjj_woSPIN.root","ntuple","ttjj_1","t#bar{t}jj "    ,kBlue+1,1,2,true,2.238e+02,2.33684e+07); // xsec unit : pb
+//   Sample ttjj_3 = Sample(path+"/result_ttjj_LO.root","ntuple","ttjj_3","t#bar{t}jj LO "    ,kBlue+1,1,2,true,423.55676178935778,1); // xsec unit : pb
 
    Sample ttbb_4 = Sample(path+"/result_ttbb_woSPIN_cut_bq.root","ntuple","ttbb_4","t#bar{t} + b#bar{b}",kRed ,1,2,true, 4.729e+00,464162); // xsec unit : pb
    Sample tth_4  = Sample(path+"/result_tth_woSPIN.root", "ntuple","tth_4" ,"t#bar{t} + H "       ,kGreen-7 ,1,2,true,4.455e-01,46527.9); // xsec unit : pb
    Sample ttjj_4 = Sample(path+"/result_ttjj_LO2.root","ntuple","ttjj_3","t#bar{t}jj LO "    ,kBlue+1,1,2,true,424.14756200450773,1.);
 
-
-//////////---------///
-  Sample MC[] = {ttbb_2, tth_2,ttjj_2};
+  Sample MC[] = {ttbb_4, tth_4,ttjj_4};
 
 // Cut Steps as Event selection  
   Cut cuts = Cut();
   cuts.addCut("1","1"); //S0
-  cuts.addCut("leptonic>1","1"); // S1 : dileptonic in generate level
+  cuts.addCut("leptonic==1","1"); // S1 : single leptonic in generate level
 //  cuts.addCut("nJet30>3","1");
-  cuts.addCut("lep1_pt>20 && lep2_pt>20 && abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
-  cuts.addCut("nJet30>3","1");   //S3
+  cuts.addCut("lep_lj_pt>40 && abs(lep_lj_eta)<2.4 ","1");//&& abs(lep1_eta)<2.4 && abs(lep2_eta)<2.4","1"); // S2
+  cuts.addCut("nJet30>5","1");   //S3
   cuts.addCut("nbJet30T>=2","1"); //S4
   cuts.addCut("nbJet30T>=3","1"); //S4
 //  cuts.addCut("nbJet30T>=4","1"); //S4
@@ -160,7 +157,8 @@ tth_4 : 46527.9
      gBQ1st_Eta1fromT,gBQ1st_Eta2fromT,gBQ1st_Eta1add,gBQ1st_Eta2add, //32
      gBQ1st_Ptjj1fromT,gBQ1st_Ptjj2fromT,gBQ1st_Ptjj1add, gBQ1st_Ptjj2add, //36
      gBQ1st_Etajj1fromT,gBQ1st_Etajj2fromT,gBQ1st_Etajj1add,gBQ1st_Etajj2add, //40
-     ZMass,nJet,nbJet,MET //44
+     //ZMass,
+     nJet,nbJet,MET //44
    };
 
   int mcN=(sizeof(MC)/sizeof(*MC));
@@ -181,11 +179,9 @@ tth_4 : 46527.9
     //h[i] = plot(MyPlots[pp],MC[i].name,MC[i].chain,cuts.useCut(ppp));  
     h[i] = plot(MyPlots[pp],MC[i].name,MC[i].chain,cuts.useCut2(ppp));  
     if(!norm) h[i]->Sumw2();
-
     if((MC[i].sumweight)>2.) h[i]->Scale(MC[i].xsec*lumi/MC[i].sumweight);
     else
-                   h[i]->Scale(MC[i].xsec/MC[i].nEvents*lumi);
- 
+          h[i]->Scale(MC[i].xsec/MC[i].nEvents*lumi);
   }
 
 ////////////////////
@@ -234,10 +230,18 @@ tth_4 : 46527.9
   if(logy){  c1->SetLogy(); yscale=5000; }
   h[0]->SetMaximum(h[0]->GetMaximum()*yscale);
 
+  int logS = 1000;
 // add legend
-  double legxmin=0.73, legxmax=0.93, legymin=0.62, legymax=0.89;
-  if(canMvleg) { legxmin=0.25, legxmax=0.55, legymin=0.2, legymax=0.49; h[0]->SetMinimum(ymin*0.1); }
-  TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax);
+  //double xmin = h[0]->GetXaxis()->GetXmin();
+  //double xmax = h[0]->GetXaxis()->GetXmax();
+  double weighty=0.85; if(logy) weighty=0.007;
+  double legxmin=(xmax-xmin)*0.68+xmin, legxmax=(xmax-xmin)*0.99+xmin, legymin=ymax*1.01*weighty, legymax=ymax*1.25;
+  if(logy) { legxmin=(xmax-xmin)*0.68+xmin, legxmax=(xmax-xmin)*0.98+xmin, legymin=ymax*weighty*logS/10, legymax=ymax*logS; }
+  //double legxmin=0.73, legxmax=0.93, legymin=0.62, legymax=0.89;
+  //if(canMvleg) { legxmin=0.25, legxmax=0.55, legymin=0.2, legymax=0.49;
+  if(canMvleg) { h[0]->SetMinimum(ymin*0.1); }
+  //TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax);
+  TLegend* leg = new TLegend(legxmin,legymin, legxmax,legymax, NULL,"");
   leg->SetBorderSize(1);  leg->SetTextFont(62);  leg->SetTextSize(0.04);
   leg->SetLineColor(0);  leg->SetLineStyle(1);  leg->SetLineWidth(1);  leg->SetFillColor(0);
   leg->SetFillStyle(1001);
@@ -273,8 +277,8 @@ tth_4 : 46527.9
   else     pt->AddText(Form("%.0f fb^{-1} at #sqrt{s} = 13 TeV", lumi/1000));
   pt->Draw();
 
-  if(norm) c1->Print(Form("./plotsNew_new20GeV_v13/Norm_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
-  else     c1->Print(Form("./plotsNew_new20GeV_v13/Log_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  if(norm) c1->Print(Form("./plotsNew_new20GeV_v13_lj/Norm_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
+  else     c1->Print(Form("./plotsNew_new20GeV_v13_lj/Log_%s_S%d.eps",MyPlots[pp].name.c_str(),ppp));
 }
 
 

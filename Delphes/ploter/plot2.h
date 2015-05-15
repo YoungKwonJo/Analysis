@@ -86,7 +86,7 @@ class Cut
 };
 
 
-TH1F* plot(MonitorPlot mplot,TString fname, TTree* tree, TCut selection)
+TH1F* plot2(MonitorPlot mplot,TString fname, TTree* tree, TCut selection)
 {
   const string name = mplot.name;
   const string varexp = mplot.varexp;
@@ -99,9 +99,8 @@ TH1F* plot(MonitorPlot mplot,TString fname, TTree* tree, TCut selection)
     TString HistName = Form("h%s_%s", name.c_str(), fname.Data());
     //cout << " histName" << HistName.Data() << endl;
     TH1F *h = new TH1F(HistName, title.c_str(), nBins, xMin,xMax);
-    h->Sumw2();
-    tree->Project(HistName, varexp.c_str(), selection*("weight"));
-    //tree->Project(HistName, varexp.c_str(), selection);
+    //tree->Project(HistName, varexp.c_str(), selection*("weight"));
+    tree->Project(HistName, varexp.c_str(), selection);
     if(over) h->AddBinContent(nBins, h->GetBinContent(nBins+1));
 
     if(nBins<10)
