@@ -110,6 +110,10 @@ void Delphes::Loop(bool isttjj, bool pythia6)
       fevent_->METPHI_  = MissingET_Phi[0];
       fevent_->event_   = Event_; 
 
+      if(!pythia6){
+         fevent_->weight_   = Event_Weight[0]; 
+         fevent_->hSumWeight_->Fill(1,Event_Weight[0]);
+      }
 /////////////////////
 //check letonic decay
       bool findtop=false, findtopb=false;
@@ -315,7 +319,7 @@ void Delphes::Loop(bool isttjj, bool pythia6)
                     double DR1_=fabs(gBQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_; 
              }
-             if(DR_>0.4 && gp_.Pt()>20 && fabs(gp_.y())<2.5) gBQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>10 && fabs(gp_.y())<2.5) gBQfirst_->push_back(gp_);
              /*cout <<"first bQ: event:" << (Testing-1) << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;
@@ -369,7 +373,8 @@ void Delphes::Loop(bool isttjj, bool pythia6)
       }
 //////////
       std::sort(gBQlast_->begin(),gBQlast_->end(),compByPtGenParticle);
-////////////
+/////////////
+       //for light quark selection
        if(leptonic>0) for(int i=0;i<Particle_size;i++ )
       {
          if(((Particle_Status[i]>20 && Particle_Status[i]<60) || ( Particle_Status[i]<4 && pythia6)) && (abs(Particle_PID[i])<5 || abs(Particle_PID[i])==21) && 
@@ -392,7 +397,7 @@ void Delphes::Loop(bool isttjj, bool pythia6)
                     double DR1_=fabs(gQQfirst_->at(i).vec_.DeltaR(gp_.vec_));
                     if(DR_>DR1_) DR_=DR1_;
              }
-             if(DR_>0.4 && gp_.Pt()>0 && fabs(gp_.y())<2.5) gQQfirst_->push_back(gp_);
+             if(DR_>0.4 && gp_.Pt()>10 && fabs(gp_.y())<2.5) gQQfirst_->push_back(gp_);
              /*cout <<"first QQ: event:" << (Testing-1) <<", pdgid:"<<Particle_PID[i] << ", idx: "<< i << ", pT:"<<Particle_PT[i] << ", eta:"<<Particle_Eta[i]
                   <<", M1("<<Particle_M1[i]<<"):"<<Particle_PID[Particle_M1[i]]
                   <<", m1-status:"<< Particle_Status[Particle_M1[i]] //<< endl;

@@ -4,8 +4,8 @@ import sys,os
  #[filename, name, isttjj, pythia6]
 Sample=[
 ["LO_ttjj_8TeV_20150416_tag_1_pythia_events.root", "ttjj_LO", "true","true"  ],
-["NLO_ttbb_8TeV_20150416_events_PYTHIA8.root",     "ttbb_LO", "false","false"],
-["NLO_tth_8TeV_20150416_events_PYTHIA8.root",      "tth_LO",  "false","false"]  
+["NLO_ttbb_8TeV_20150416_events_PYTHIA8.root",     "ttbb_NLO", "false","false"],
+["NLO_tth_8TeV_20150416_events_PYTHIA8.root",      "tth_NLO",  "false","false"]  
 ]
 
 for i in range(len(Sample)) :

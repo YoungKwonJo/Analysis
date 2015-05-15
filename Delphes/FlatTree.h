@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "TTree.h"
+#include "TH1F.h"
 
 struct FlatTree
 {
@@ -18,6 +19,8 @@ struct FlatTree
 public:
   TTree* tree_;
   int run_, lumi_, event_;
+
+  double weight_;
 
   double lep1_pt_,  lep2_pt_, lep1_eta_, lep2_eta_, lep1_relIso_, lep2_relIso_;
   double lep_lj_pt_, lep_lj_eta_, lep_lj_phi_;
@@ -98,6 +101,7 @@ public:
 
   int ttIndex_;
   int dileptonic_;
+  TH1F* hSumWeight_;
   //double puweight_, puweightUp_, puweightDw_, bTagweight_, leptonweight_;
   //int nGenbJet20_, nGencJet20_, nGenJet20_;
   //double genLep1_pt_, genLep2_pt_, genLep1_eta_, genLep2_eta_;
@@ -116,10 +120,13 @@ FlatTree::FlatTree(bool isMC)
 void FlatTree::book(TTree* tree)
 {
   tree_ = tree;
+  hSumWeight_ = new TH1F("hSumWeight","hSumWeight",1,0,2);
 
   tree_->Branch("run"  , &run_  , "run/I");
   tree_->Branch("lumi" , &lumi_ , "lumi/I");
   tree_->Branch("event", &event_, "event/I");
+
+  tree_->Branch("weight", &weight_, "weight/D");
 
   tree_->Branch("lep1_pt"    , &lep1_pt_    , "lep1_pt/D"    );
   tree_->Branch("lep2_pt"    , &lep2_pt_    , "lep2_pt/D"    );
@@ -326,6 +333,7 @@ void FlatTree::clear()
    gBQlast_pt_->clear();
    gBQlast_eta_->clear();
 
+   weight_=1.0;
    lep1_pt_=-999;       lep2_pt_=-999;   
    lep1_eta_=-999;      lep2_eta_=-999;   
    lep1_Q_=-999;        lep2_Q_=-999;  
