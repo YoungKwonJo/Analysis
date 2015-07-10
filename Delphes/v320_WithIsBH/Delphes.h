@@ -29,18 +29,18 @@ public :
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
    const static Int_t kMaxEvent = 1;
-   const static Int_t kMaxParticle = 1472;
-   const static Int_t kMaxBHadron = 6;
-   const static Int_t kMaxTrack = 118;
-   const static Int_t kMaxTower = 180;
-   const static Int_t kMaxEFlowTrack = 118;
-   const static Int_t kMaxEFlowPhoton = 91;
-   const static Int_t kMaxEFlowNeutralHadron = 74;
-   const static Int_t kMaxGenJet = 12;
-   const static Int_t kMaxJet = 11;
-   const static Int_t kMaxElectron = 1;
-   const static Int_t kMaxPhoton = 1;
-   const static Int_t kMaxMuon = 4;
+   const static Int_t kMaxParticle = 2472;
+   const static Int_t kMaxBHadron = 16;
+   const static Int_t kMaxTrack = 218;
+   const static Int_t kMaxTower = 280;
+   const static Int_t kMaxEFlowTrack = 218;
+   const static Int_t kMaxEFlowPhoton = 191;
+   const static Int_t kMaxEFlowNeutralHadron = 174;
+   const static Int_t kMaxGenJet = 52;
+   const static Int_t kMaxJet = 51;
+   const static Int_t kMaxElectron = 10;
+   const static Int_t kMaxPhoton = 10;
+   const static Int_t kMaxMuon = 10;
    const static Int_t kMaxMissingET = 1;
    const static Int_t kMaxScalarHT = 1;
 

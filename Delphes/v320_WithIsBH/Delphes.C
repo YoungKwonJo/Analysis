@@ -31,8 +31,8 @@ void Delphes::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-      if(Testing>5000) break;
-      Testing++;
+    //  if(Testing>5000) break;
+    //  Testing++;
 //////////////////
       fevent_->clear();
       fevent_->event_   = Event_; 
@@ -184,30 +184,27 @@ void Delphes::Loop()
       for(int i=0;i<GenJet_size;i++ )
       {
           jet->SetPtEtaPhiM(GenJet_PT[i],GenJet_Eta[i],GenJet_Phi[i],GenJet_Mass[i]);
-          fevent_->Pt_gjet_->push_back(GenJet_PT[i]);
-          fevent_->Eta_gjet_->push_back(GenJet_Eta[i]);
-          fevent_->BH_gjet_->push_back(GenJet_IsBH[i]);
-
           njet++;
           if(GenJet_PT[i]>20 && fabs(GenJet_Eta[i])<2.5) njet20++;
+          dr_bh_jet=999.;
+          dpt_bh_jet=-999.;
           if(GenJet_IsBH[i]>0)  
           {
-             dr_bh_jet=999.;
              if(GenJet_PT[i]>20 && fabs(GenJet_Eta[i])<2.5) nbjet20++;
              nbjet++;
              for(int j=0;j<BHadron_size;j++ ) 
              {
-                TLorentzVector bhadron(BHadron_X[j],BHadron_Y[j],BHadron_Z[j],BHadron_T[j]);
+                //TLorentzVector bhadron(BHadron_X[j],BHadron_Y[j],BHadron_Z[j],BHadron_T[j]);
+                TLorentzVector bhadron;
+                bhadron.SetPtEtaPhiM(BHadron_PT[j],BHadron_Eta[j],BHadron_Phi[j],BHadron_Mass[j]);
                 double dr_bh_jet_= fabs(jet->DeltaR(bhadron));
                 if(dr_bh_jet_<dr_bh_jet){ dr_bh_jet=dr_bh_jet_; dpt_bh_jet= (GenJet_PT[i]-BHadron_PT[j]); }
              }
-             if(dr_bh_jet<999.)
-             {
-                 //hDR_genjet_bh->Fill(dr_bh_jet);
-                 //fevent_->DR_gjet_BH_->push_back(dr_bh_jet);
-                 //fevent_->DPT_gjet_BH_->push_back(dpt_bh_jet);
-             }
+
           }
+          fevent_->Pt_gjet_->push_back(GenJet_PT[i]);
+          fevent_->Eta_gjet_->push_back(GenJet_Eta[i]);
+          fevent_->BH_gjet_->push_back((int)GenJet_IsBH[i]);
           fevent_->DR_gjet_BH_->push_back(dr_bh_jet);
           fevent_->DPT_gjet_BH_->push_back(dpt_bh_jet);
 

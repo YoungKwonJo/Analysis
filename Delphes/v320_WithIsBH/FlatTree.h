@@ -78,7 +78,6 @@ void FlatTree::book(TTree* tree)
 
   tree_->Branch("Ngenjet", &Ngenjet_, "Ngenjet/I");
   tree_->Branch("Ngenjet_BH", &Ngenjet_BH_, "Ngenjet_BH/I");
-
   tree_->Branch("Ngenjet20", &Ngenjet20_, "Ngenjet20/I");
   tree_->Branch("Ngenjet20_BH", &Ngenjet20_BH_, "Ngenjet20_BH/I");
 
