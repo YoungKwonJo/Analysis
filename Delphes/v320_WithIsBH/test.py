@@ -13,11 +13,20 @@ gROOT.ProcessLine(".L FlatTree.h+");
 gROOT.ProcessLine(".L Delphes.C+");
  
 xrdfolder="/cms/data/xrd/store/user/youngjo/Madgraph/DATA/v20140916_delphes320/"
-name1 = "v20140911_"
-name3 = "_test_events_PYTHIA8_0_delphes_v320.root"
-#"v20140911_ttbb_test_events_PYTHIA8_0_delphes_v320.root"
+names = {"ttbb":["v20140911_","_test_events_PYTHIA8_0_delphes_v320"],"ttjj":["","_DecayAll_20150406_events_PYTHIA8_delphes_v320"],"TTH":["v20140911_NLO_","_cut_bq_20150331_PYTHIA8_0_delphes_v320"]}
 
-f = TFile(xrdfolder+name1+input+name3)
+#"v20140911_ttbb_test_events_PYTHIA8_0_delphes_v320.root"
+#v20140911_NLO_TTH_cut_bq_20150331_PYTHIA8_0_delphes_v320.root
+#"ttjj_DecayAll_20150406_events_PYTHIA8_delphes_v320.root"
+#>>> names = {"ttbb":["aaaa","bbbbb"],"ttjj":["aaaa","bbbbb"]}
+#>>> names["ttbb"]
+#['aaaa', 'bbbbb']
+#>>> names["ttbb"][0]
+#'aaaa'
+#>>> names["ttbb"][1]
+#'bbbbb'
+
+f = TFile(xrdfolder+names[input][0]+input+names[input][1]+".root")
 atree = f.Get("Delphes") 
 
 t = Delphes(atree)
