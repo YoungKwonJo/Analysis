@@ -153,8 +153,34 @@ def singleplot(filename,mon,step,mcsamples):
   c1.SetLogy()
   pt = make_banner(0.15,0.73, 0.5, 0.89)
   pt.Draw()
-  output = mon+"_"+step+".eps"
+  output = "TH1_"+mon+"_"+step+".eps"
   c1.Print(output)
+  f.Close()
 
 
- 
+def plotTH2F(filename,mon,step,mcsamples):
+  f = TFile.Open(filename,"read")
+  n=len(mcsamples)
+  c1 = TCanvas( 'c1', '', 500*n, 500 ) 
+  c1.Divide(n,1)
+  legs = []
+  pts  = []
+  for i,mc in enumerate(mcsamples):
+    c1.cd(i+1)
+    histname = "h2_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
+    h1 = f.Get(histname);
+    h1.SetTitle("")
+    h1.SetLineColor(mc['color'])
+    h1.Draw("colz")
+    pt = make_banner(0.15,0.73, 0.5, 0.89)
+    pts.append(copy.deepcopy(pt))
+    pts[i].Draw()
+    leg = make_legend(0.45,0.70, 0.69,0.8)
+    leg.AddEntry(h1, mc['name'], "l");
+    legs.append(copy.deepcopy(leg))
+    legs[i].Draw()
+  output = "TH2_"+mon+"_"+step+".eps"
+  c1.Print(output)
+  f.Close()
+
+

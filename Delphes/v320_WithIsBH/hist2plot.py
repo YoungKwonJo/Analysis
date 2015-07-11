@@ -7,6 +7,7 @@ from ntuple2hist_cff import *
 
 json = {
 "file": "hist_all.root",
+#"file": "hist_all2.root",
 "mcsamples" : [
 
 {"name":"ttbb", "color": kRed,     "lineWidth": 2, "cx":1.  },
@@ -15,6 +16,7 @@ json = {
 
 ],
 "cuts" : ["S0","S1","S2","S3","S4","S5"],
+#"cuts" : ["S0","S1"],
 
 "monitors" : [
 
@@ -24,15 +26,27 @@ json = {
  { "name":"Etagjet",  "unit":"\eta ",                          "var":"Eta_gjet",    "xbin_set":[10,-5,5]    },
  { "name":"BHgjet",   "unit":"# of bH of jet ",                "var":"BH_gjet",     "xbin_set":[10,0,10]    },
 
-# { "name":"Ngenjet20","unit":"# of gen-jet ",                  "var":"Ngenjet20",   "xbin_set":[15,0,15]    },
-# { "name":"Ngenjet20BH","unit":"# of gen-bjet ",               "var":"Ngenjet20_BH","xbin_set":[15,0,15]    }
+#  { "name":"Ngenjet20",  "unit":"# of gen-jet ",                "var":"Ngenjet20",   "xbin_set":[15,0,15]    },
+#  { "name":"Ngenjet20BH","unit":"# of gen-bjet ",               "var":"Ngenjet20_BH","xbin_set":[15,0,15]    }
 
 ]
 }
-
+#########
+#TH1F
 #singleplot(json['file'],"DRgjetBH","S1",json['mcsamples'])
+######
+#for step in json['cuts']:
+#  for mon in json['monitors']:
+#    singleplot(json['file'],mon['name'],step,json['mcsamples'])
 
-####
+
+#########
+#TH2F
 for step in json['cuts']:
-  for mon in json['monitors']:
-    singleplot(json['file'],mon['name'],step,json['mcsamples'])
+  for i,mon in enumerate(json['monitors']):
+    for j,mon2 in enumerate(json['monitors']):
+      if i<j :
+        mon_ = mon['name']+"_"+mon2['name']
+        plotTH2F(json['file'],mon_,step,json['mcsamples'])
+
+
