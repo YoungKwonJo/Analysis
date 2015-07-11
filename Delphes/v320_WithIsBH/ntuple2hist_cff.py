@@ -12,7 +12,7 @@ def h1_maker(tree, mon, cut,doSumw2):
   return h1  
 
 def h1_set(name,monitor,cutname):
-  mon = {  "name" : "h1_"+name+monitor['name']+"_"+cutname, "title" : name+" "+monitor['var'],
+  mon = {  "name" : "h1_"+name+"_"+monitor['name']+"_"+cutname, "title" : name+" "+monitor['var'],
            "var" : monitor['var'],            "xbin_set" : monitor['xbin_set'],
            "x_name": monitor['unit'], "y_name": "Entries"
         }
@@ -29,7 +29,7 @@ def h2_maker(tree, mon, cut,doSumw2):
   return h2  
 
 def h2_set(name,monitor,monitor2,cutname):
-  mon = {  "name" : "h2_"+name+monitor['name']+"_"+monitor2['name']+"_"+cutname, "title" : name+" "+monitor['var']+" vs "+monitor2['var'],
+  mon = {  "name" : "h2_"+name+"_"+monitor['name']+"_"+monitor2['name']+"_"+cutname, "title" : name+" "+monitor['var']+" vs "+monitor2['var'],
            "var" : monitor2['var']+":"+monitor['var'],         
            "xbin_set" : monitor['xbin_set'], "ybin_set" : monitor2['xbin_set'],
            "x_name": monitor['unit'], "y_name": monitor2['unit']
@@ -62,3 +62,99 @@ def cut_maker(cuts_):
     else:
       cuts["S%d"%i]= cut+" && "+cuts["S%d"%(i-1)]
   return cuts
+
+def cut_maker2(cuts_):
+  cuts  = {}
+  for i,cut in enumerate(cuts_):
+      cuts["S%d"%i]=cut
+  return cuts
+
+
+def ntuple2hist(mcsamples,monitors,cuts):
+  h = []
+  for i,mc in enumerate(mcsamples):
+    f = TFile.Open(mcsamples[i]['file'],"read")
+    tree = f.ntuple
+    h= h+h_all_maker(tree,mcsamples[i],monitors,cuts)
+    f.Close()
+  return h
+ 
+def makeoutput(outputname, h):
+  fout = TFile(outputname,"RECREATE")
+  for a in h:
+    a.Write()
+  fout.Write()
+  fout.Close()
+
+def makehist(json):
+  cuts_  = cut_maker(json['cuts']) #print "cut : %s" % cuts
+  h = ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+  makeoutput(json['output'],h)
+
+def makehist2(json):
+  cuts_  = cut_maker2(json['cuts']) #print "cut : %s" % cuts
+  h = ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+  makeoutput(json['output'],h)
+
+
+###################################################
+def make_legend(xmin,ymin,xmax,ymax):
+  #leg = TLegend(0.65,0.7, 0.89,0.89)
+  leg = TLegend(xmin,ymin,xmax,ymax)
+  leg.SetBorderSize(1)
+  leg.SetTextFont(62)
+  leg.SetTextSize(0.04)
+  leg.SetLineColor(0)
+  leg.SetLineStyle(1)
+  leg.SetLineWidth(1)
+  leg.SetFillColor(0)
+  leg.SetFillStyle(1001)
+
+  return leg
+
+def make_banner(xmin,ymin,xmax,ymax):
+  #pt = TPaveText(0.15,0.73, 0.5, 0.89,"brNDC");
+  pt = TPaveText(xmin,ymin,xmax,ymax,"brNDC");
+  pt.SetBorderSize(1)
+  pt.SetTextFont(42)
+  pt.SetTextSize(0.04)
+  pt.SetLineColor(0)
+  pt.SetLineStyle(1)
+  pt.SetLineWidth(1)
+  pt.SetFillColor(0)
+  pt.SetFillStyle(1001)
+  pt.SetTextAlign(12)
+  pt.AddText("Work in progress")
+  pt.AddText("aMC@NLO & Delphes")
+  pt.AddText("#sqrt{s} = 13 TeV")
+  pt.Draw()
+
+  return pt
+
+def singleplot(filename,mon,step,mcsamples):
+  f = TFile.Open(filename,"read")
+  c1 = TCanvas( 'c1', '', 500, 500 ) 
+  leg = make_legend(0.65,0.7, 0.89,0.89)
+  for i,mc in enumerate(mcsamples):
+    histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
+    h1 = f.Get(histname);
+    h1.SetTitle("")
+    h1.Scale(1./h1.Integral())
+    h1.SetLineColor(mc['color'])
+    h1.SetLineWidth(mc['lineWidth'])
+    h1.SetStats(0)
+    leg.AddEntry(h1, mc['name'], "l");
+    if i==0:
+      h1.SetMaximum(h1.GetMaximum()*200)
+      h1.Draw()
+    else:
+      h1.Draw("same")
+  leg.Draw()
+  c1.SetLogy()
+  pt = make_banner(0.15,0.73, 0.5, 0.89)
+  pt.Draw()
+  output = mon+"_"+step+".eps"
+  c1.Print(output)
+
+
+ 

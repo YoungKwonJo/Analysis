@@ -1,19 +1,24 @@
 
+from ROOT import *
+import copy
 
 from ntuple2hist_cff import *
 #import sys 
 
 json = {
+"file": "hist_all.root",
 "mcsamples" : [
 
-{"name":"ttbb", "selection": "1", "file":"result_ttbb.root", "cx":1.  },
-{"name":"ttjj", "selection": "1", "file":"result_ttjj.root", "cx":1.  },
-{"name":"tth",  "selection": "1", "file":"result_TTH.root" , "cx":1.  }
+{"name":"ttbb", "color": kRed,     "lineWidth": 2, "cx":1.  },
+{"name":"ttjj", "color": kBlue-3,  "lineWidth": 2, "cx":1.  },
+{"name":"tth",  "color": kGreen-3, "lineWidth": 2, "cx":1.  }
 
 ],
+"cuts" : ["S0","S1","S2","S3","S4","S5"],
+
 "monitors" : [
 
- { "name":"DRgjetBH", "unit":"DR between genjet and B hadron", "var":"DR_gjet_BH",  "xbin_set":[40,0,2]       },
+ { "name":"DRgjetBH", "unit":"DR between genjet and B hadron", "var":"DR_gjet_BH",  "xbin_set":[40,0,5]       },
  { "name":"DPTgjetBH","unit":"pT_genjet - pT_BH",              "var":"DPT_gjet_BH", "xbin_set":[200,-200,200] },
  { "name":"Ptgjet",   "unit":"pT ",                            "var":"Pt_gjet",     "xbin_set":[40,0,200]    },
  { "name":"Etagjet",  "unit":"\eta ",                          "var":"Eta_gjet",    "xbin_set":[10,-5,5]    },
@@ -22,20 +27,12 @@ json = {
 # { "name":"Ngenjet20","unit":"# of gen-jet ",                  "var":"Ngenjet20",   "xbin_set":[15,0,15]    },
 # { "name":"Ngenjet20BH","unit":"# of gen-bjet ",               "var":"Ngenjet20_BH","xbin_set":[15,0,15]    }
 
-],
-"cuts" : [
-
-  "(BH_gjet>0)",
-  "(BH_gjet>0) && Pt_gjet>20 && abs(Eta_gjet)<2.5",
-  "(BH_gjet>0) && Pt_gjet>20 && abs(Eta_gjet)<2.5 && BH_gjet==1",
-  "(BH_gjet>0) && Pt_gjet>20 && abs(Eta_gjet)<2.5 && BH_gjet==2",
-  "(BH_gjet>0) && Pt_gjet>20 && abs(Eta_gjet)<2.5 && BH_gjet==3",
-  "(BH_gjet>0) && Pt_gjet>20 && abs(Eta_gjet)<2.5 && BH_gjet==4"
- 
-],
-"output" : "hist_all.root"
+]
 }
 
-#makehist(json)
-makehist2(json)
+#singleplot(json['file'],"DRgjetBH","S1",json['mcsamples'])
 
+####
+for step in json['cuts']:
+  for mon in json['monitors']:
+    singleplot(json['file'],mon['name'],step,json['mcsamples'])
