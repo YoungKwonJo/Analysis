@@ -214,7 +214,26 @@ void Delphes::Loop()
       fevent_->Ngenjet_BH_ = nbjet;
       fevent_->Ngenjet20_    = njet20;
       fevent_->Ngenjet20_BH_ = nbjet20;
+///////
 
+      double dr_bh_bh_=999.;
+      if(BHadron_size>1)
+      for(int i=0;i<BHadron_size-1;i++ ) 
+      {     
+         TLorentzVector bhadron;
+         bhadron.SetPtEtaPhiM(BHadron_PT[i],BHadron_Eta[i],BHadron_Phi[i],BHadron_Mass[i]);
+         for(int j=i+1;j<BHadron_size;j++ ) 
+         {
+            TLorentzVector bhadron2;
+            bhadron2.SetPtEtaPhiM(BHadron_PT[j],BHadron_Eta[j],BHadron_Phi[j],BHadron_Mass[j]);
+            double dr_bh_bh= fabs(bhadron.DeltaR(bhadron2));
+            if(dr_bh_bh<dr_bh_bh_){ dr_bh_bh_=dr_bh_bh; }
+         }
+      }
+      fevent_->N_bh_bh_=BHadron_size;
+      fevent_->dr_bh_bh_=dr_bh_bh_;     
+
+////////
       tree_->Fill();
 
 

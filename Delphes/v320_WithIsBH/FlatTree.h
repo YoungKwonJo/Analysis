@@ -42,6 +42,9 @@ public:
   int taunic_;
   int topN_;
   int wN_;
+
+  double dr_bh_bh_;
+  int N_bh_bh_;
  
 //  TH1F* hSumWeight_;
 
@@ -88,6 +91,9 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("topN",  &topN_, "topN/I" );
   tree_->Branch("wN",  &wN_, "wN/I" );
 
+  tree_->Branch("dr_bh_bh", &dr_bh_bh_, "dr_bh_bh/D");
+  tree_->Branch("N_bh_bh",  &N_bh_bh_, "N_bh_bh/I" );
+
 }
 void FlatTree::clear()
 {
@@ -111,6 +117,9 @@ void FlatTree::clear()
    taunic_  =-99;
    wN_  =-99;
    topN_  =-99;
+
+   N_bh_bh_=-99;
+   dr_bh_bh_=-99;
 
 }
 FlatTree::~FlatTree()

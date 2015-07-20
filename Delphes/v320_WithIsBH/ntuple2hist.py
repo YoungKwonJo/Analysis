@@ -19,8 +19,10 @@ json = {
 # { "name":"Etagjet",  "unit":"\eta ",                          "var":"Eta_gjet",    "xbin_set":[10,-5,5]    },
 # { "name":"BHgjet",   "unit":"# of bH of jet ",                "var":"BH_gjet",     "xbin_set":[10,0,10]    },
 
-  { "name":"Ngenjet20","unit":"# of gen-jet ",                  "var":"Ngenjet20",   "xbin_set":[15,0,15]    },
-  { "name":"Ngenjet20BH","unit":"# of gen-bjet ",               "var":"Ngenjet20_BH","xbin_set":[15,0,15]    }
+  { "name":"Ngenjet20","unit":"# of gen-jet ",                  "var":"Ngenjet20",   "xbin_set":[10,0,10]    },
+  { "name":"Ngenjet20BH","unit":"# of gen-bjet ",               "var":"Ngenjet20_BH","xbin_set":[10,0,10]    },
+  { "name":"drbhbh","unit":"DR of B-Hadrons ",                  "var":"dr_bh_bh","xbin_set":[40,0,4]       },
+  { "name":"Nbhbh","unit":"# of B-Hadrons ",                    "var":"N_bh_bh","xbin_set":[10,0,10]         }
 
 ],
 "cuts" : [
@@ -36,7 +38,7 @@ json = {
    "(leptonic>1)"
 
 ],
-"output" : "hist_all2.root"
+"output" : "hist_all4.root"
 }
 
 #makehist(json)
