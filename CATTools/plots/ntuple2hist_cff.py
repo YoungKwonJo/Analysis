@@ -43,8 +43,11 @@ def h_all_maker(tree,mc, monitors, cuts):
       mon = h1_set(mc['name'],monitors[i],cutname)
       h1 = h1_maker(tree,mon,cuts[cutname]+" && "+mc['selection'],0)
       h.append(copy.deepcopy(h1))
-      h1sumw2 = h1_maker(tree,mon,cuts[cutname]+" && "+mc['selection'],1)
+      cut = cuts[cutname]+" && "+mc['selection']
+      print "____" + mc['name'] + "_____" + cut + "_____" 
+      h1sumw2 = h1_maker(tree,mon,cut,1)
       h.append(copy.deepcopy(h1sumw2))
+      """
       for j,jj in enumerate(monitors):
         if i<j:
           mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname)
@@ -52,6 +55,7 @@ def h_all_maker(tree,mc, monitors, cuts):
           h.append(copy.deepcopy(h2))
           h2sumw2 = h2_maker(tree,mon2,cuts[cutname]+" && "+mc['selection'],1)
           h.append(copy.deepcopy(h2sumw2))
+      """
   return h
 
 def cut_maker(cuts_):
@@ -60,7 +64,8 @@ def cut_maker(cuts_):
     if i==0 :
       cuts["S%d"%i]=cut
     else:
-      cuts["S%d"%i]= cut+" && "+cuts["S%d"%(i-1)]
+      cuts["S%d"%i]= cuts["S%d"%(i-1)] + " && " + cut
+  print cuts
   return cuts
 
 def cut_maker2(cuts_):
@@ -105,11 +110,14 @@ def make_legend(xmin,ymin,xmax,ymax):
   leg.SetBorderSize(1)
   leg.SetTextFont(62)
   leg.SetTextSize(0.04)
-  leg.SetLineColor(0)
   leg.SetLineStyle(1)
   leg.SetLineWidth(1)
+  leg.SetLineColor(0)
+  #leg.SetLineColor(1)
   leg.SetFillColor(0)
+  #leg.SetFillColor(10)
   leg.SetFillStyle(1001)
+  leg.SetMargin(0.15) #for size of the marker
 
   return leg
 
@@ -126,7 +134,8 @@ def make_banner(xmin,ymin,xmax,ymax):
   pt.SetFillStyle(1001)
   pt.SetTextAlign(12)
   pt.AddText("Work in progress")
-  pt.AddText("TTJets_madgraphMLM-pythia8")
+  #pt.AddText("TTJets_madgraphMLM-pythia8")
+  pt.AddText("madgraphMLM-pythia8")
   pt.AddText("#sqrt{s} = 13 TeV")
   pt.Draw()
 
@@ -135,14 +144,14 @@ def make_banner(xmin,ymin,xmax,ymax):
 def singleplot(filename,mon,step,mcsamples):
   f = TFile.Open(filename,"read")
   c1 = TCanvas( 'c1', '', 500, 500 ) 
-  leg = make_legend(0.70,0.67, 0.89,0.88)
+  leg = make_legend(0.57,0.64, 0.89,0.88)
   scale=0.;
   for i,mc in enumerate(mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname);
-    if h1.Integral()>0 :
-      h1.Scale(1./h1.Integral())
+    #if h1.Integral()>0 :
+    #  h1.Scale(1./h1.Integral())
     if h1.GetMaximum()>scale:
       scale=h1.GetMaximum()
 
@@ -153,14 +162,19 @@ def singleplot(filename,mon,step,mcsamples):
     h1.SetTitle("")
     if i==0:
       h1.SetMaximum(scale*40)
-      h1.SetMinimum(0.001)
+      #h1.SetMinimum(0.001)
+      h1.SetMinimum(0.1)
       h1.Draw()
     else:
       h1.Draw("same")
     h1.SetLineColor(mc['color'])
     h1.SetLineWidth(mc['lineWidth'])
     h1.SetStats(0)
-    leg.AddEntry(h1, mc['label'], "l");
+    #lleng= len("%s"%mc['label'])
+    #rleng= len(" %.0f"%h1.Integral())
+    #lrleng = 22 - lleng - int(rleng/1.8)
+    label = ("%s"%mc['label']) + (" %.0f"%h1.Integral()).rjust(8)
+    leg.AddEntry(h1, label, "l");
   leg.Draw()
   c1.SetLogy()
   pt = make_banner(0.15,0.73, 0.5, 0.89)
@@ -179,8 +193,8 @@ def singleplotlinear(filename,mon,step,mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname);
-    if h1.Integral()>0 :
-      h1.Scale(1./h1.Integral())
+    #if h1.Integral()>0 :
+    #  h1.Scale(1./h1.Integral())
     if h1.GetMaximum()>scale:
       scale=h1.GetMaximum()
 

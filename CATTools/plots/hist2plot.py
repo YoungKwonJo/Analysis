@@ -13,10 +13,10 @@ json = {
 "mcsamples" : mcsamples,
 #"cuts" : ["S0","S1","S2","S3","S4","S5"],
 #"cuts" : ["S0","S1","S2","S3"],
-"cuts" : ["S0"],
+"cuts" : ["S0","S1","S2","S3"],
 #"cuts" : ["S3","S4","S5"],
 
-"monitors" : monitors["jetMon1"]
+"monitors" : monitors["jetMon3"]
 
 }
 #########
