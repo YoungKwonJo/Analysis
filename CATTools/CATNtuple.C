@@ -165,13 +165,13 @@ void CATNtuple::Loop()
       if(ZmmS)
       {
          fevent_->mm_mu1_pt_ = muons_->at(mm_id1).Pt();
-         fevent_->mm_mu1_eta_= muons_->at(mm_id1).Pt();
-         fevent_->mm_mu1_phi_= muons_->at(mm_id1).Pt();
+         fevent_->mm_mu1_eta_= muons_->at(mm_id1).Eta();
+         fevent_->mm_mu1_phi_= muons_->at(mm_id1).Phi();
          fevent_->mm_mu1_q_  = muons_->at(mm_id1).Q_;
          fevent_->mm_mu1_iso_= muons_->at(mm_id1).Iso_;
          fevent_->mm_mu2_pt_ = muons_->at(mm_id2).Pt();
-         fevent_->mm_mu2_eta_= muons_->at(mm_id2).Pt();
-         fevent_->mm_mu2_phi_= muons_->at(mm_id2).Pt();
+         fevent_->mm_mu2_eta_= muons_->at(mm_id2).Eta();
+         fevent_->mm_mu2_phi_= muons_->at(mm_id2).Phi();
          fevent_->mm_mu2_q_  = muons_->at(mm_id2).Q_;
          fevent_->mm_mu2_iso_= muons_->at(mm_id2).Iso_;
          fevent_->mm_zmass_  = Zmm.M();
@@ -196,13 +196,13 @@ void CATNtuple::Loop()
       if(ZeeS)
       {
          fevent_->ee_el1_pt_ = electrons_->at(ee_id1).Pt();
-         fevent_->ee_el1_eta_= electrons_->at(ee_id1).Pt();
-         fevent_->ee_el1_phi_= electrons_->at(ee_id1).Pt();
+         fevent_->ee_el1_eta_= electrons_->at(ee_id1).Eta();
+         fevent_->ee_el1_phi_= electrons_->at(ee_id1).Phi();
          fevent_->ee_el1_q_  = electrons_->at(ee_id1).Q_;
          fevent_->ee_el1_iso_= electrons_->at(ee_id1).Iso_;
          fevent_->ee_el2_pt_ = electrons_->at(ee_id2).Pt();
-         fevent_->ee_el2_eta_= electrons_->at(ee_id2).Pt();
-         fevent_->ee_el2_phi_= electrons_->at(ee_id2).Pt();
+         fevent_->ee_el2_eta_= electrons_->at(ee_id2).Eta();
+         fevent_->ee_el2_phi_= electrons_->at(ee_id2).Phi();
          fevent_->ee_el2_q_  = electrons_->at(ee_id2).Q_;
          fevent_->ee_el2_iso_= electrons_->at(ee_id2).Iso_;
          fevent_->ee_zmass_  = Zee.M();
@@ -226,13 +226,13 @@ void CATNtuple::Loop()
       if(ZemS)
       {
          fevent_->em_mu1_pt_ = muons_->at(em_id1).Pt();
-         fevent_->em_mu1_eta_= muons_->at(em_id1).Pt();
-         fevent_->em_mu1_phi_= muons_->at(em_id1).Pt();
+         fevent_->em_mu1_eta_= muons_->at(em_id1).Eta();
+         fevent_->em_mu1_phi_= muons_->at(em_id1).Phi();
          fevent_->em_mu1_q_  = muons_->at(em_id1).Q_;
          fevent_->em_mu1_iso_= muons_->at(em_id1).Iso_;
          fevent_->em_el2_pt_ = electrons_->at(em_id2).Pt();
-         fevent_->em_el2_eta_= electrons_->at(em_id2).Pt();
-         fevent_->em_el2_phi_= electrons_->at(em_id2).Pt();
+         fevent_->em_el2_eta_= electrons_->at(em_id2).Eta();
+         fevent_->em_el2_phi_= electrons_->at(em_id2).Phi();
          fevent_->em_el2_q_  = electrons_->at(em_id2).Q_;
          fevent_->em_el2_iso_= electrons_->at(em_id2).Iso_;
          fevent_->em_zmass_  = Zem.M();
