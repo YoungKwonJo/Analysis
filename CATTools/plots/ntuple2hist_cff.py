@@ -187,7 +187,7 @@ def singleplot(filename,mon,step,mcsamples):
 def singleplotlinear(filename,mon,step,mcsamples):
   f = TFile.Open(filename,"read")
   c1 = TCanvas( 'c1', '', 500, 500 ) 
-  leg = make_legend(0.70,0.67, 0.89,0.88)
+  leg = make_legend(0.57,0.64, 0.89,0.88)
   scale=0.;
   for i,mc in enumerate(mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
@@ -211,7 +211,8 @@ def singleplotlinear(filename,mon,step,mcsamples):
     h1.SetLineColor(mc['color'])
     h1.SetLineWidth(mc['lineWidth'])
     h1.SetStats(0)
-    leg.AddEntry(h1, mc['label'], "l");
+    label = ("%s"%mc['label']) + (" %.0f"%h1.Integral()).rjust(8)
+    leg.AddEntry(h1, label, "l");
   leg.Draw()
   #c1.SetLogy()
   pt = make_banner(0.15,0.73, 0.5, 0.89)
