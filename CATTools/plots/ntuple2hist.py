@@ -23,7 +23,7 @@ em_lep = "(" + em_mu1 + " && "+em_el2 + " && (em_zmass>20))"
 
 mm_zmass = "( abs(91.2-mm_zmass)>15 )"
 ee_zmass = "( abs(91.2-ee_zmass)>15 )"
-em_zmass = "( abs(91.2-em_zmass)>15 )"
+em_zmass = "(1)"#( abs(91.2-em_zmass)>15 )"
 
 mon = []
 for i,ii in enumerate(monitors):
