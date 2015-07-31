@@ -27,7 +27,8 @@ em_zmass = "( abs(91.2-em_zmass)>15 )"
 
 mon = []
 for i,ii in enumerate(monitors):
-  mon+=ii
+  #print monitors[ii]
+  mon+=monitors[ii]
 
 #monitors["jetMon1" ]+monitors["jetMon2" ]+monitors["jetMon3" ]+monitors["basicMon"]
 
