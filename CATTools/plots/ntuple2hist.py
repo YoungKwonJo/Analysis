@@ -9,7 +9,7 @@ if len(sys.argv) is 1:
   print "> python  ntuple2hist.py [1,2,3, or 4] \n"
   sys.exit()
 
-i = sys.argv[1]
+arg = sys.argv[1]
 mm_mu1 = "((mm_mu1_pt>20) && (abs(mm_mu1_eta)<2.4) && (abs(mm_mu1_iso)<0.12))"
 mm_mu2 = "((mm_mu2_pt>20) && (abs(mm_mu2_eta)<2.4) && (abs(mm_mu2_iso)<0.12))"
 ee_el1 = "((ee_el1_pt>20) && (abs(ee_el1_eta)<2.4) && (abs(ee_el1_iso)<0.12))"
@@ -33,7 +33,7 @@ for i,ii in enumerate(monitors):
 
 json = {
 "mcsamples" : mcsamples,
-"monitors" : monitors["Mon" + ("%d"%i) ],
+"monitors" : monitors["Mon" + ("%d"%arg) ],
 #"monitors" : monitors["basicMon" ],
 #"monitors" : monitors["jetMon3" ],
 #"monitors" : mon,
@@ -48,7 +48,7 @@ json = {
    "nBJetM>=2", 
    "nBJetT>=2", 
 ],
-"output" : "hist_mon" + ("%d"%i) + ".root"
+"output" : "hist_mon" + ("%d"%arg) + ".root"
 }
 
 makehist(json)
