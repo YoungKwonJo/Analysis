@@ -6,18 +6,21 @@ from mcsample_cfi import *
 from monitors_cfi import *
 
 #import sys 
+
 mon = []
 for i,ii in enumerate(monitors):
   #print monitors[ii]
   mon+=monitors[ii]
 
 json = {
-"file": "hist_all1.root",
+"file": "hist_all.root",
 #"file": "hist_all2.root",
 "mcsamples" : mcsamples,
 #"cuts" : ["S0","S1","S2","S3","S4","S5"],
 #"cuts" : ["S0","S1","S2","S3"],
-"cuts" : ["S0","S1","S2","S3"],
+"cuts" : ["S0","S1","S2","S3","S4","S5","S6"],
+#"cuts" : ["S1"],
+#"cuts" : ["S6"],
 #"cuts" : ["S3","S4","S5"],
 
 #"monitors" : monitors["jetMon3"]

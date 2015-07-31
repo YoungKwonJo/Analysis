@@ -141,15 +141,51 @@ def make_banner(xmin,ymin,xmax,ymax):
 
   return pt
 
+def make_banner2(xmin,ymin,xmax,ymax,bb,bb2):
+  #pt = TPaveText(0.15,0.73, 0.5, 0.89,"brNDC");
+  pt = TPaveText(xmin,ymin,xmax,ymax,"brNDC");
+  pt.SetBorderSize(1)
+  pt.SetTextFont(42)
+  pt.SetTextSize(0.04)
+  pt.SetLineColor(0)
+  pt.SetLineStyle(1)
+  pt.SetLineWidth(1)
+  pt.SetFillColor(0)
+  pt.SetFillStyle(1001)
+  pt.SetTextAlign(12)
+  pt.AddText("Work in progress")
+  #pt.AddText("TTJets_madgraphMLM-pythia8")
+  pt.AddText("madgraphMLM-pythia8")
+  pt.AddText("#sqrt{s} = 13 TeV")
+  pt.AddText( ("ttbb/ttjj : "+str("%.4f"%bb)+"")  )
+  pt.AddText( ("(ttbb+ttb+tt2b)/ttjj : "+str("%.4f"%bb2)+" ") )
+  pt.Draw()
+
+  return pt
+
+
 def singleplot(filename,mon,step,mcsamples):
   f = TFile.Open(filename,"read")
   c1 = TCanvas( 'c1', '', 500, 500 ) 
   leg = make_legend(0.57,0.64, 0.89,0.88)
-  scale=0.;
+  scale=0.
+  jj = 0.
+  bb = 0.
+  b1 = 0.
+  b2 = 0.
   for i,mc in enumerate(mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
-    h1 = f.Get(histname);
+    h1 = f.Get(histname)
+    h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
+    aa = mc['name']
+    if ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") ):
+      jj+=h1.Integral()
+      #print jj
+    if aa is "ttbb" :  bb+=h1.Integral()
+    if aa is "ttb"  :  b1+=h1.Integral()
+    if aa is "tt2b" :  b2+=h1.Integral()
+
     #if h1.Integral()>0 :
     #  h1.Scale(1./h1.Integral())
     if h1.GetMaximum()>scale:
@@ -161,9 +197,9 @@ def singleplot(filename,mon,step,mcsamples):
     h1 = f.Get(histname);
     h1.SetTitle("")
     if i==0:
-      h1.SetMaximum(scale*40)
+      h1.SetMaximum(scale*400)
       #h1.SetMinimum(0.001)
-      h1.SetMinimum(0.1)
+      h1.SetMinimum(0.5)
       h1.Draw()
     else:
       h1.Draw("same")
@@ -177,7 +213,12 @@ def singleplot(filename,mon,step,mcsamples):
     leg.AddEntry(h1, label, "l");
   leg.Draw()
   c1.SetLogy()
-  pt = make_banner(0.15,0.73, 0.5, 0.89)
+  #pt = make_banner(0.15,0.73, 0.5, 0.89)
+  bbb = 0.
+  bbbb = 0.
+  if jj>0:  bbb = bb/jj
+  if jj>0:  bbbb = (bb+b1+bb)/jj
+  pt = make_banner2(0.12,0.66, 0.5, 0.89, bbb,bbbb )
   pt.Draw()
   output = "plots/TH1_"+mon+"_"+step+".eps"
   c1.Print(output)
@@ -215,7 +256,7 @@ def singleplotlinear(filename,mon,step,mcsamples):
     leg.AddEntry(h1, label, "l");
   leg.Draw()
   #c1.SetLogy()
-  pt = make_banner(0.15,0.73, 0.5, 0.89)
+  pt = make_banner(0.12,0.73, 0.5, 0.89)
   pt.Draw()
   output = "plots/TH1_linear_"+mon+"_"+step+".eps"
   c1.Print(output)
