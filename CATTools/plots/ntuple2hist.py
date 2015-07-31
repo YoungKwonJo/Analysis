@@ -33,7 +33,7 @@ for i,ii in enumerate(monitors):
 
 json = {
 "mcsamples" : mcsamples,
-"monitors" : monitors["Mon" + ("%d"%arg) ],
+"monitors" : monitors["Mon" + arg ],
 #"monitors" : monitors["basicMon" ],
 #"monitors" : monitors["jetMon3" ],
 #"monitors" : mon,
@@ -48,7 +48,7 @@ json = {
    "nBJetM>=2", 
    "nBJetT>=2", 
 ],
-"output" : "hist_mon" + ("%d"%arg) + ".root"
+"output" : "hist_mon" + arg + ".root"
 }
 
 makehist(json)
