@@ -1,7 +1,9 @@
 
 from ROOT import *
 
-loc = "/Volumes/MYSD/CATTools/ttbb_20150730/plots/"
+#loc = "/Volumes/MYSD/CATTools/ttbb_20150730/plots/"
+loc = "../"
+ttbar = "ttjets_madgraph_pythia8"
 
 def mAND(aaa,bbb):
   return "(" +aaa+ " && "+bbb+")"
@@ -31,12 +33,12 @@ ttothers = mAND2(ttotheslist)
 
 mcsamples=[
 
-{"name":"ttbb",  "selection": ttbb, "file": loc + "result_ttbar.root", "cx":1., "color": kRed,     "lineWidth": 4, "label":"t#bar{t}+b#bar{b}      " },
-{"name":"ttb",   "selection": ttb,  "file": loc + "result_ttbar.root", "cx":1., "color": kOrange,  "lineWidth": 4, "label":"t#bar{t}+b        "      },
-{"name":"tt2b",  "selection": tt2b, "file": loc + "result_ttbar.root", "cx":1., "color": kCyan,    "lineWidth": 4, "label":"t#bar{t}+2b      "       },
-{"name":"ttcc",  "selection": ttcc, "file": loc + "result_ttbar.root", "cx":1., "color": kBlue-3,  "lineWidth": 4, "label":"t#bar{t}+c#bar{c}      " },
-{"name":"ttlf",  "selection": ttlf, "file": loc + "result_ttbar.root", "cx":1., "color": kGreen-3, "lineWidth": 4, "label":"t#bar{t}+lf       "  },
-{"name":"ttot",  "selection": ttothers, "file": loc + "result_ttbar.root", "cx":1., "color": kGray, "lineWidth": 4, "label":"t#bar{t} others"    }
+{"name":"ttbb",  "selection": ttbb, "file": loc + "result_"+ttbar+".root", "cx":1., "color": kRed,     "lineWidth": 4, "label":"t#bar{t}+b#bar{b}      " },
+{"name":"ttb",   "selection": ttb,  "file": loc + "result_"+ttbar+".root", "cx":1., "color": kOrange,  "lineWidth": 4, "label":"t#bar{t}+b        "      },
+{"name":"tt2b",  "selection": tt2b, "file": loc + "result_"+ttbar+".root", "cx":1., "color": kCyan,    "lineWidth": 4, "label":"t#bar{t}+2b      "       },
+{"name":"ttcc",  "selection": ttcc, "file": loc + "result_"+ttbar+".root", "cx":1., "color": kBlue-3,  "lineWidth": 4, "label":"t#bar{t}+c#bar{c}      " },
+{"name":"ttlf",  "selection": ttlf, "file": loc + "result_"+ttbar+".root", "cx":1., "color": kGreen-3, "lineWidth": 4, "label":"t#bar{t}+lf       "  },
+{"name":"ttot",  "selection": ttothers, "file": loc + "result_"+ttbar+".root", "cx":1., "color": kGray, "lineWidth": 4, "label":"t#bar{t} others"    }
 
 ]
 
