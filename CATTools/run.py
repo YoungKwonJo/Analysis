@@ -13,14 +13,18 @@ gROOT.ProcessLine(".L Lepton.h+");
 gROOT.ProcessLine(".L Jet.h+");
 gROOT.ProcessLine(".L CATNtuple.C+");
 
-#f = TFile("ntuple.root")
-#f = TFile("../mcsamples/ntuple_ttjets_madgraph_pythia8.root")
-f = TFile("../ntuple_ttjets_madgraph_pythia8.root")
-atree = f.Get("ntuple/event")
+from mcsample_cfi import *
 
-t = CATNtuple(atree)
+def makeresult(name):
+  f = TFile("../ntuple_" + name + ".root")
+  atree = f.Get("ntuple/event")
 
-output = "result_ttbar.root"
-fout = TFile(output,"RECREATE")
-t.Loop()
-fout.Write()
+  t = CATNtuple(atree)
+
+  output = "result_" + name + ".root"
+  fout = TFile(output,"RECREATE")
+  t.Loop()
+  fout.Write()
+
+for i,ii in enumerate(mcsamples):
+  makeresult(ii['name']);
