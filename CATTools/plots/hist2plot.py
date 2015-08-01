@@ -13,9 +13,9 @@ for i,ii in enumerate(monitors):
   mon+=monitors[ii]
 
 mon2 = []
-for i,ii in enumerate(monitors2):
-  #print monitors[ii]
-  mon2+=monitors2[ii]
+for i,ii in enumerate(monitors2d):
+  #print monitors2d[ii]
+  mon2+=monitors2d[ii]
 
 json = {
 "file": "hist_all.root",

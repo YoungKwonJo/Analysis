@@ -255,6 +255,7 @@ def singleplotlinear(filename,mon,step,mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname);
+    h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
     #if h1.Integral()>0 :
     #  h1.Scale(1./h1.Integral())
     if h1.GetMaximum()>scale:
