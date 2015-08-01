@@ -81,5 +81,16 @@ monitors2d = {
   { "name":"jet2CSV",     "unit":"CSV2 of 2nd leading Jet ",     "var":"jet_csv[1]",   "xbin_set":[20,0,1]     },
   { "name":"jet3CSV",     "unit":"CSV2 of 3rd leading Jet ",     "var":"jet_csv[2]",   "xbin_set":[20,0,1]     },
   { "name":"jet4CSV",     "unit":"CSV2 of 4th leading Jet ",     "var":"jet_csv[3]",   "xbin_set":[20,0,1]     },
-]
+],
+"Mon12" : [
+  { "name":"nBJetL",      "unit":"b-Jet multiplicity loose ",     "var":"nBJetL",   "xbin_set":[8,0,8]      },
+  { "name":"nBJetM",      "unit":"b-Jet multiplicity medium ",    "var":"nBJetM",   "xbin_set":[8,0,8]      },
+  { "name":"NJet",        "unit":"Jet multiplicity ",             "var":"nJet",     "xbin_set":[10,0,10]    },
+  { "name":"nBJetT",      "unit":"b-Jet multiplicity tight ",     "var":"nBJetT",   "xbin_set":[8,0,8]      },
+],
+"Mon13" : [
+  { "name":"NJet",        "unit":"Jet multiplicity ",            "var":"nJet",         "xbin_set":[10,0,10]    },
+  { "name":"genNJet",     "unit":"genJet multiplicity ",         "var":"NgenJet",      "xbin_set":[10,0,10]    },
+  { "name":"Category",    "unit":"Category ",                    "var":"Category",     "xbin_set":[5,0,5]      },
+],
 }
