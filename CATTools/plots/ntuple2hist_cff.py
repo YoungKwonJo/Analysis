@@ -47,7 +47,12 @@ def h_all_maker(tree,mc, monitors, cuts):
       print "____" + mc['name'] + "_____" + cut + "_____" 
       h1sumw2 = h1_maker(tree,mon,cut,1)
       h.append(copy.deepcopy(h1sumw2))
-      """
+  return h
+
+def h2_all_maker(tree,mc, monitors, cuts):
+  h = []
+  for cutname in cuts:
+    for i,ii in enumerate(monitors):
       for j,jj in enumerate(monitors):
         if i<j:
           mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname)
@@ -55,7 +60,6 @@ def h_all_maker(tree,mc, monitors, cuts):
           h.append(copy.deepcopy(h2))
           h2sumw2 = h2_maker(tree,mon2,cuts[cutname]+" && "+mc['selection'],1)
           h.append(copy.deepcopy(h2sumw2))
-      """
   return h
 
 def cut_maker(cuts_):
@@ -84,6 +88,16 @@ def ntuple2hist(mcsamples,monitors,cuts):
     h= h+h_all_maker(tree,mcsamples[i],monitors,cuts)
     f.Close()
   return h
+
+def ntuple2hist2d(mcsamples,monitors,cuts):
+  h = []
+  for i,mc in enumerate(mcsamples):
+    f = TFile.Open(mcsamples[i]['file'],"read")
+    #tree = f.ntuple
+    tree = f.myresult
+    h= h+h2_all_maker(tree,mcsamples[i],monitors,cuts)
+    f.Close()
+  return h
  
 def makeoutput(outputname, h):
   fout = TFile(outputname,"RECREATE")
@@ -94,12 +108,20 @@ def makeoutput(outputname, h):
 
 def makehist(json):
   cuts_  = cut_maker(json['cuts']) #print "cut : %s" % cuts
-  h = ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+  h=[]
+  if len(json['monitors'])>0 :
+    h += ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+  if len(json['monitors2'])>0 :
+    h += ntuple2hist2d(json['mcsamples'],json['monitors2'],cuts_)
   makeoutput(json['output'],h)
 
 def makehist2(json):
   cuts_  = cut_maker2(json['cuts']) #print "cut : %s" % cuts
-  h = ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+  h=[]
+  if len(json['monitors'])>0 :
+    h += ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+  if len(json['monitors2'])>0 :
+    h += ntuple2hist2d(json['mcsamples'],json['monitors2'],cuts_)
   makeoutput(json['output'],h)
 
 
@@ -162,7 +184,6 @@ def make_banner2(xmin,ymin,xmax,ymax,bb,bb2):
   pt.Draw()
 
   return pt
-
 
 def singleplot(filename,mon,step,mcsamples):
   f = TFile.Open(filename,"read")
@@ -256,7 +277,7 @@ def singleplotlinear(filename,mon,step,mcsamples):
     leg.AddEntry(h1, label, "l");
   leg.Draw()
   #c1.SetLogy()
-  pt = make_banner(0.12,0.73, 0.5, 0.89)
+  pt = make_banner(0.12,0.66, 0.5, 0.89)
   pt.Draw()
   output = "plots/TH1_linear_"+mon+"_"+step+".eps"
   c1.Print(output)

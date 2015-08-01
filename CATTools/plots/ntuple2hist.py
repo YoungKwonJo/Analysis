@@ -23,7 +23,7 @@ em_lep = "(" + em_mu1 + " && "+em_el2 + " && (em_zmass>20))"
 
 mm_zmass = "( abs(91.2-mm_zmass)>15 )"
 ee_zmass = "( abs(91.2-ee_zmass)>15 )"
-em_zmass = "( abs(91.2-em_zmass)>15 )"
+em_zmass = "(1)"# "( abs(91.2-em_zmass)>15 )"
 
 mon = []
 for i,ii in enumerate(monitors):
@@ -31,10 +31,20 @@ for i,ii in enumerate(monitors):
   mon+=monitors[ii]
 
 #monitors["jetMon1" ]+monitors["jetMon2" ]+monitors["jetMon3" ]+monitors["basicMon"]
+mon1=[]
+for mon11 in monitors.keys():
+  if mon11 == ("Mon" + arg) :
+    mon1+=monitors["Mon" + arg ]
+
+mon2=[]
+for mon22 in monitors2d.keys():
+  if mon22 == ("Mon" + arg) :
+    mon2+=monitors2d["Mon" + arg ]
 
 json = {
 "mcsamples" : mcsamples,
-"monitors" : monitors["Mon" + arg ],
+"monitors" : mon1,
+"monitors2" : mon2,
 #"monitors" : monitors["basicMon" ],
 #"monitors" : monitors["jetMon3" ],
 #"monitors" : mon,

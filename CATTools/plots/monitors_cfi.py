@@ -19,7 +19,7 @@ monitors = {
 
   { "name":"lep2PtMM",     "unit":"sceond  lepton p_{T} (GeV/c) ", "var":"mm_mu2_pt", "xbin_set":[40,0,200] },
   { "name":"lep2PtEE",     "unit":"sceond  lepton p_{T} (GeV/c) ", "var":"ee_el2_pt", "xbin_set":[40,0,200] },
-  { "name":"lep2PtEM",     "unit":"sceond  lepton p_{T} (GeV/c) ", "var":"em_mu2_pt", "xbin_set":[40,0,200] },
+  { "name":"lep2PtEM",     "unit":"sceond  lepton p_{T} (GeV/c) ", "var":"em_el2_pt", "xbin_set":[40,0,200] },
 ],
 "Mon3" : [
   { "name":"lep1EtaMM",    "unit":"Leading lepton #eta ",          "var":"mm_mu1_eta", "xbin_set":[30,-3,3] },
@@ -28,7 +28,7 @@ monitors = {
 
   { "name":"lep2EtaMM",    "unit":"sceond  lepton #eta ",          "var":"mm_mu2_eta", "xbin_set":[30,-3,3] },
   { "name":"lep2EtaEE",    "unit":"sceond  lepton #eta ",          "var":"ee_el2_eta", "xbin_set":[30,-3,3] },
-  { "name":"lep2EtaEM",    "unit":"sceond  lepton #eta ",          "var":"em_mu2_eta", "xbin_set":[30,-3,3] },
+  { "name":"lep2EtaEM",    "unit":"sceond  lepton #eta ",          "var":"em_el2_eta", "xbin_set":[30,-3,3] },
 ],
 "Mon4" : [
   { "name":"lep1PhiMM",    "unit":"Leading lepton #phi ",          "var":"mm_mu1_phi", "xbin_set":[40,-4,4] },
@@ -37,7 +37,7 @@ monitors = {
 
   { "name":"lep2PhiMM",    "unit":"sceond  lepton #phi ",          "var":"mm_mu2_phi", "xbin_set":[40,-4,4] },
   { "name":"lep2PhiEE",    "unit":"sceond  lepton #phi ",          "var":"ee_el2_phi", "xbin_set":[40,-4,4] },
-  { "name":"lep2PhiEM",    "unit":"sceond  lepton #phi ",          "var":"em_mu2_phi", "xbin_set":[40,-4,4] },
+  { "name":"lep2PhiEM",    "unit":"sceond  lepton #phi ",          "var":"em_el2_phi", "xbin_set":[40,-4,4] },
 ],
 "Mon5" : [
   { "name":"lep1IsoMM",    "unit":"Leading lepton Iso_{rel} ",     "var":"mm_mu1_iso", "xbin_set":[20,0,1] },
@@ -67,6 +67,15 @@ monitors = {
   { "name":"jet4Phi",      "unit":"#phi of 4th leading Jet ",      "var":"jet_phi[3]",    "xbin_set":[40,-4,4]   },
 ],
 "Mon9": [
+  { "name":"jet1CSV",     "unit":"CSV2 of 1st leading Jet ",     "var":"jet_csv[0]",   "xbin_set":[20,0,1]     },
+  { "name":"jet2CSV",     "unit":"CSV2 of 2nd leading Jet ",     "var":"jet_csv[1]",   "xbin_set":[20,0,1]     },
+  { "name":"jet3CSV",     "unit":"CSV2 of 3rd leading Jet ",     "var":"jet_csv[2]",   "xbin_set":[20,0,1]     },
+  { "name":"jet4CSV",     "unit":"CSV2 of 4th leading Jet ",     "var":"jet_csv[3]",   "xbin_set":[20,0,1]     },
+]
+}
+
+monitors2d = {
+"Mon1" : [
   { "name":"jet1CSV",     "unit":"CSV2 of 1st leading Jet ",     "var":"jet_csv[0]",   "xbin_set":[20,0,1]     },
   { "name":"jet2CSV",     "unit":"CSV2 of 2nd leading Jet ",     "var":"jet_csv[1]",   "xbin_set":[20,0,1]     },
   { "name":"jet3CSV",     "unit":"CSV2 of 3rd leading Jet ",     "var":"jet_csv[2]",   "xbin_set":[20,0,1]     },
