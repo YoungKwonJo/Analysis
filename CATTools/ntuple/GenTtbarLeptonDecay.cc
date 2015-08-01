@@ -63,9 +63,10 @@ void cat::GenTtbarLeptonDecay::produce(edm::Event & iEvent, const edm::EventSetu
     if(isLast != true) continue;
 
     unsigned int nDaughters = p.numberOfDaughters();
+    int nW_ = 0;
     for ( unsigned iDaughter=0; iDaughter<nDaughters; ++iDaughter ) {
       const reco::Candidate* daughTemp = p.daughter(iDaughter);
-      if ( nW == 1 ) break;
+      if ( nW_ == 1 ) break;
       if ( abs(daughTemp->pdgId()) != 24 ) continue;
       const reco::Candidate* daugh = getLast( *daughTemp );
       unsigned int nWDaughters = daugh->numberOfDaughters();
@@ -73,11 +74,11 @@ void cat::GenTtbarLeptonDecay::produce(edm::Event & iEvent, const edm::EventSetu
       for ( unsigned iWDaughter=0; iWDaughter<nWDaughters; ++iWDaughter ) {
 	const reco::Candidate* decay = daugh->daughter(iWDaughter);
 	int decayId = abs(decay->pdgId());
-	if ( decayId == 11 || decayId == 12 ) {  
+	if ( decayId == 11 ){ //|| decayId == 12 ) {  
               ++n_W2electronic;
-	} else if ( decayId == 13 || decayId == 14 ) {  
+	} else if ( decayId == 13){// || decayId == 14 ) {  
               ++n_W2muonic;
-	} else if ( decayId == 15 || decayId == 16 ) {  
+	} else if ( decayId == 15){// || decayId == 16 ) {  
               ++n_W2taunic;
 	} else if( decayId < 6 ){
               ++nW2hadronic;
@@ -86,6 +87,7 @@ void cat::GenTtbarLeptonDecay::produce(edm::Event & iEvent, const edm::EventSetu
         }
       }
 
+      ++nW_;
       ++nW;
     }
     ++ntop;
