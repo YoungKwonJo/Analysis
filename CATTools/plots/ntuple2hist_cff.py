@@ -291,8 +291,9 @@ def singleplotlinear(filename,mon,step,mcsamples):
 def plotTH2F(filename,mon,step,mcsamples):
   f = TFile.Open(filename,"read")
   n=len(mcsamples)
-  c1 = TCanvas( 'c2', '', 500*n, 500 ) 
-  c1.Divide(n,1)
+  gStyle.SetOptStat(0)
+  c1 = TCanvas( 'c2', '', 500*3, 500*2 ) 
+  c1.Divide(3,2)
   legs = []
   #pts  = []
   for i,mc in enumerate(mcsamples):

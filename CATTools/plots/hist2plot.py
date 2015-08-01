@@ -23,8 +23,8 @@ json = {
 "mcsamples" : mcsamples,
 #"cuts" : ["S0","S1","S2","S3","S4","S5"],
 #"cuts" : ["S0","S1","S2","S3"],
-"cuts" : ["S0","S1","S2","S3","S4","S5"],
-#"cuts" : ["S3","S4","S5"],
+"cuts" : ["S0","S1","S2","S3","S4","S5","S6"],
+#"cuts" : ["S6"],
 
 #"monitors" : monitors["jetMon3"]
 "monitors" : mon,
@@ -35,10 +35,10 @@ json = {
 #TH1F
 #singleplot(json['file'],"DRgjetBH","S1",json['mcsamples'])
 ######
-for step in json['cuts']:
-  for mon in json['monitors']:
-    singleplot(json['file'],mon['name'],step,json['mcsamples'])
-    singleplotlinear(json['file'],mon['name'],step,json['mcsamples'])
+#for step in json['cuts']:
+#  for mon in json['monitors']:
+#    singleplot(json['file'],mon['name'],step,json['mcsamples'])
+#    singleplotlinear(json['file'],mon['name'],step,json['mcsamples'])
 
 
 #########
