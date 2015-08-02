@@ -35,10 +35,10 @@ json = {
 #TH1F
 #singleplot(json['file'],"DRgjetBH","S1",json['mcsamples'])
 ######
-#for step in json['cuts']:
-#  for mon in json['monitors']:
-#    singleplot(json['file'],mon['name'],step,json['mcsamples'])
-#    singleplotlinear(json['file'],mon['name'],step,json['mcsamples'])
+for step in json['cuts']:
+  for mon in json['monitors']:
+    singleplot(json['file'],mon['name'],step,json['mcsamples'])
+    singleplotlinear(json['file'],mon['name'],step,json['mcsamples'])
 
 
 #########

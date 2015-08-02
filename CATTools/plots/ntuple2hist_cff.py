@@ -216,6 +216,8 @@ def singleplot(filename,mon,step,mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname);
+    if type(h1) is not TH1F :
+      continue
     h1.SetTitle("")
     if i==0:
       h1.SetMaximum(scale*400)
@@ -254,7 +256,9 @@ def singleplotlinear(filename,mon,step,mcsamples):
   for i,mc in enumerate(mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
-    h1 = f.Get(histname);
+    h1 = f.Get(histname)
+    if type(h1) is not TH1F :
+      continue
     h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
     #if h1.Integral()>0 :
     #  h1.Scale(1./h1.Integral())
@@ -299,7 +303,9 @@ def plotTH2F(filename,mon,step,mcsamples):
   for i,mc in enumerate(mcsamples):
     c1.cd(i+1)
     histname = "h2_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
-    h1 = f.Get(histname);
+    h1 = f.Get(histname)
+    if type(h1) is not TH2F :  
+      continue
     h1.SetTitle("")
     h1.SetLineColor(mc['color'])
     h1.Draw("colz")
