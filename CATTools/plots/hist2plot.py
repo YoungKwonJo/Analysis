@@ -15,7 +15,7 @@ for i,ii in enumerate(monitors):
 mon2 = []
 for i,ii in enumerate(monitors2d):
   #print monitors2d[ii]
-  mon2+=monitors2d[ii]
+  mon2.append(monitors2d[ii])
 
 json = {
 "file": "hist_all.root",
@@ -35,18 +35,19 @@ json = {
 #TH1F
 #singleplot(json['file'],"DRgjetBH","S1",json['mcsamples'])
 ######
-for step in json['cuts']:
-  for mon in json['monitors']:
-    singleplot(json['file'],mon['name'],step,json['mcsamples'])
-    singleplotlinear(json['file'],mon['name'],step,json['mcsamples'])
+#for step in json['cuts']:
+#  for mon in json['monitors']:
+#    singleplot(json['file'],mon['name'],step,json['mcsamples'])
+#    singleplotlinear(json['file'],mon['name'],step,json['mcsamples'])
 
 
 #########
 #TH2F
 for step in json['cuts']:
-  for i,mon in enumerate(json['monitors2']):
-    for j,mon2 in enumerate(json['monitors2']):
-      if i<j :
-        mon_ = mon['name']+"_"+mon2['name']
-        plotTH2F(json['file'],mon_,step,json['mcsamples'])
+  for ii,mon in enumerate(json['monitors2']):
+    for i,mon1 in enumerate(mon):
+      for j,mon2 in enumerate(mon):
+        if i<j :
+          mon_ = mon1['name']+"_"+mon2['name']
+          plotTH2F(json['file'],mon_,step,json['mcsamples'])
 

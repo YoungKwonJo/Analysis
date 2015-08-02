@@ -198,6 +198,8 @@ def singleplot(filename,mon,step,mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname)
+    if type(h1) is not TH1F :
+      return
     h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
     aa = mc['name']
     if ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") ):
@@ -216,8 +218,6 @@ def singleplot(filename,mon,step,mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname);
-    if type(h1) is not TH1F :
-      continue
     h1.SetTitle("")
     if i==0:
       h1.SetMaximum(scale*400)
@@ -252,13 +252,13 @@ def singleplotlinear(filename,mon,step,mcsamples):
   f = TFile.Open(filename,"read")
   c1 = TCanvas( 'c1', '', 500, 500 ) 
   leg = make_legend(0.57,0.64, 0.89,0.88)
-  scale=0.;
+  scale=0.
   for i,mc in enumerate(mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname)
     if type(h1) is not TH1F :
-      continue
+      return 
     h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
     #if h1.Integral()>0 :
     #  h1.Scale(1./h1.Integral())
@@ -305,7 +305,7 @@ def plotTH2F(filename,mon,step,mcsamples):
     histname = "h2_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     h1 = f.Get(histname)
     if type(h1) is not TH2F :  
-      continue
+      return
     h1.SetTitle("")
     h1.SetLineColor(mc['color'])
     h1.Draw("colz")
