@@ -144,7 +144,7 @@ void CATNtuple::Loop()
              double CSVInclV2 = jets_CSVInclV2->at(i);
              Jet jet_(pt,eta,phi,mass, CSVInclV2);
              //jets_->push_back(jet_);
-             boolean isFill=true;
+             bool isFill=true;
              for(int j=0;j<muonsl_->size();j++ )     if(fabs(muons_    ->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
              for(int j=0;j<electrons_->size();j++ )  if(fabs(electrons_->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
 
