@@ -44,7 +44,8 @@ public:
   int nBJetT_, nBJetM_, nBJetL_, nJet_;
 
   int isMM_, isEE_, isEM_, Category_,NgenJet_;
- 
+
+  int Nmu_, Nel_; 
 //  TH1F* hSumWeight_;
 
  
@@ -75,6 +76,9 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("jet_eta"  , jet_eta_  );
   tree_->Branch("jet_phi"  , jet_phi_  );
   tree_->Branch("jet_csv"  , jet_csv_  );
+
+  tree_->Branch("Nmu",    &Nmu_,     "Nmu/I");
+  tree_->Branch("Nel",    &Nel_,     "Nel/I");
 
   tree_->Branch("nJet",    &nJet_,     "nJet/I");
   tree_->Branch("nBJetT",  &nBJetT_,   "nBJetT/I");
@@ -139,6 +143,7 @@ void FlatTree::clear()
 
    weight_=1.0;
 
+   Nmu_=-99; Nel_=-99;
    nBJetT_=-99; nBJetM_=-99; nBJetL_=-99; nJet_=-99;
    met_=-99.0; metphi_=-99.;
 ///

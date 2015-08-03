@@ -45,6 +45,8 @@ void CATNtuple::Loop()
    LeptonsP electrons_;    electrons_ = new Leptons;
    JetsP   jets_;         jets_      = new Jets;
 
+   LeptonsP muonsl_;        muonsl_     = new Leptons;
+   LeptonsP electronsl_;    electronsl_ = new Leptons;
 ///////////
    int aaa=0;
 
@@ -84,7 +86,8 @@ void CATNtuple::Loop()
       for(int i=0;i<electrons_pt->size();i++)
       {
           if( electrons_pt->at(i)>20.0 && fabs(electrons_eta->at(i))<2.4 &&
-              electrons_idMedium->at(i)==1 && electrons_isPassConversionVeto->at(i)==1 &&
+              //electrons_idMedium->at(i)==1 &&
+              electrons_isPassConversionVeto->at(i)==1 &&
               !(fabs(electrons_scEta->at(i))>1.4442 && fabs(electrons_scEta->at(i))<1.5660) 
             ) 
           {
@@ -96,7 +99,9 @@ void CATNtuple::Loop()
              double q = electrons_q->at(i);
 
              Lepton el_(pt,eta,phi,mass, relIso03, q);
-             electrons_->push_back(el_);
+             //electrons_->push_back(el_);
+             if(electrons_idMedium->at(i)==1) electrons_->push_back(el_);
+             if(electrons_idLoose->at(i)==1 && relIso03<0.12) electronsl_->push_back(el_);
           }
       }
       std::sort(electrons_->begin(), electrons_->end(), compByPtLep);
@@ -104,12 +109,12 @@ void CATNtuple::Loop()
       for(int i=0;i<muons_pt->size();i++)
       {
           if( muons_pt->at(i)>20.0 && fabs(muons_eta->at(i))<2.4 &&
-              muons_isTight->at(i)==1 && 
+              //muons_isTight->at(i)==1 && 
               muons_isPF->at(i)==1 && muons_isGlobal->at(i)==1 && 
               fabs(muons_dxy->at(i))<0.2 && fabs(muons_dz->at(i))<0.5 &&
               muons_normalizedChi2->at(i)<10 && muons_numberOfValidMuonHits->at(i)>0 &&
-              muons_numberOfValidPixelHits->at(i)>0 && muons_numberOfMatchedStations->at(i)>1 &&
-              muons_relIso04->at(i)<0.12   
+              muons_numberOfValidPixelHits->at(i)>0 && muons_numberOfMatchedStations->at(i)>1 
+              //&&  muons_relIso04->at(i)<0.12   
             ) 
           {
              double pt = muons_pt->at(i);
@@ -120,7 +125,9 @@ void CATNtuple::Loop()
              double q = muons_q->at(i);
 
              Lepton el_(pt,eta,phi,mass, relIso04, q);
-             muons_->push_back(el_);
+             if(muons_isTight->at(i)==1) muons_->push_back(el_);
+             if(muons_isLoose->at(i)==1 && relIso03<0.12) muonsl_->push_back(el_);
+             //muons_->push_back(el_);
           }
       }
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
@@ -136,11 +143,22 @@ void CATNtuple::Loop()
              double mass = jets_m->at(i);
              double CSVInclV2 = jets_CSVInclV2->at(i);
              Jet jet_(pt,eta,phi,mass, CSVInclV2);
-             jets_->push_back(jet_);
+             //jets_->push_back(jet_);
+             boolean isFill=true;
+             for(int j=0;j<muonsl_->size();j++ )     if(fabs(muons_    ->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+             for(int j=0;j<electrons_->size();j++ )  if(fabs(electrons_->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+
+             if(isFill) jets_->push_back(jet_);
           }
       }
       std::sort(jets_->begin(), jets_->end(), compByCSVJet);
 ////////
+      int Nmu=0, Nel=0;
+      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     Nmu++;
+      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) Nel++;
+      fevent_->Nmu_=Nmu;
+      fevent_->Nel_=Nel;
+
      //continue;
      // dilepton selection
       TLorentzVector Zmm, Zee, Zem;
