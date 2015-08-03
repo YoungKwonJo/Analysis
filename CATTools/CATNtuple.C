@@ -126,7 +126,7 @@ void CATNtuple::Loop()
 
              Lepton el_(pt,eta,phi,mass, relIso04, q);
              if(muons_isTight->at(i)==1) muons_->push_back(el_);
-             if(muons_isLoose->at(i)==1 && relIso03<0.12) muonsl_->push_back(el_);
+             if(muons_isLoose->at(i)==1 && relIso04<0.12) muonsl_->push_back(el_);
              //muons_->push_back(el_);
           }
       }
