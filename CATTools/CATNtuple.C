@@ -64,7 +64,7 @@ void CATNtuple::Loop()
  
       aaa++;
       //if(aaa>500) break;
-      if(aaa%10000) cout << "event : " << aaa << endl;      
+      if(aaa%10000==0) cout << "event : " << aaa << endl;      
       //cout << "event : " << aaa << endl;      
 
       /////
@@ -132,27 +132,6 @@ void CATNtuple::Loop()
       }
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
 
-      for(int i=0;i<jets_pt->size();i++)
-      {
-          if( jets_pt->at(i)>30.0 && fabs(jets_eta->at(i))<2.4 
-            ) 
-          {
-             double pt = jets_pt->at(i);
-             double eta = jets_eta->at(i);
-             double phi = jets_phi->at(i);
-             double mass = jets_m->at(i);
-             double CSVInclV2 = jets_CSVInclV2->at(i);
-             Jet jet_(pt,eta,phi,mass, CSVInclV2);
-             //jets_->push_back(jet_);
-             bool isFill=true;
-             for(int j=0;j<muonsl_->size();j++ )     if(fabs(muons_    ->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-             for(int j=0;j<electrons_->size();j++ )  if(fabs(electrons_->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-
-             if(isFill) jets_->push_back(jet_);
-          }
-      }
-      std::sort(jets_->begin(), jets_->end(), compByCSVJet);
-////////
       int Nmu=0, Nel=0;
       for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     Nmu++;
       for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) Nel++;
@@ -162,9 +141,19 @@ void CATNtuple::Loop()
      //continue;
      // dilepton selection
       TLorentzVector Zmm, Zee, Zem;
+      double ZmmPt=0., ZeePt=0., ZemPt=0.;
       int mm_id1, mm_id2, ee_id1, ee_id2, em_id1, em_id2;
       bool ZmmS=false, ZeeS=false, ZemS=false;
       //for MuMu
+      if(muons_->size()>1)
+      for(int i=0;i<muons_->size()-1;i++ ) //if(ZmmS==false)
+      for(int j=i+1;j<muons_->size();j++ ) //if(ZmmS==false)
+      {
+         TLorentzVector Zmm_ = ((muons_->at(i).vec_)+(muons_->at(j).vec_));
+         double ZmmPt_ = Zmm.Pt();
+         if(ZmmPt_>ZmmPt) { Zmm=Zmm_; ZmmPt=ZmmPt_;  mm_id1=i; mm_id2=j; ZmmS=true; }
+      }
+      /*
       if(muons_->size()>1)
       for(int i=0;i<muons_->size()-1;i++ ) if(ZmmS==false)
       for(int j=i+1;j<muons_->size();j++ ) if(ZmmS==false)
@@ -179,7 +168,7 @@ void CATNtuple::Loop()
           Zmm = ((muons_->at(0).vec_)+(muons_->at(1).vec_));
           mm_id1=0; mm_id2=1;
           ZmmS=true;
-      }
+      }*/
       if(ZmmS)
       {
          fevent_->mm_mu1_pt_ = muons_->at(mm_id1).Pt();
@@ -197,6 +186,15 @@ void CATNtuple::Loop()
 
       //for ElEl
       if(electrons_->size()>0)
+      for(int i=0;i<electrons_->size()-1;i++ ) //if(ZeeS==false)
+      for(int j=i+1;j<electrons_->size();j++ ) //if(ZeeS==false)
+      {
+         TLorentzVector Zee_ = ((electrons_->at(i).vec_)+(electrons_->at(j).vec_));
+         double ZeePt_ = Zee_.Pt();
+         if(ZeePt_>ZeePt) { Zee=Zee_; ZeePt=ZeePt_; ee_id1=i; ee_id2=j; ZeeS=true; }
+      }
+      /*
+      if(electrons_->size()>0)
       for(int i=0;i<electrons_->size()-1;i++ ) if(ZeeS==false)
       for(int j=i+1;j<electrons_->size();j++ ) if(ZeeS==false)
       {
@@ -210,7 +208,7 @@ void CATNtuple::Loop()
           Zee = ((electrons_->at(0).vec_)+(electrons_->at(1).vec_));    
           ee_id1=0; ee_id2=1;
           ZeeS=true;
-      } 
+      }*/ 
       if(ZeeS)
       {
          fevent_->ee_el1_pt_ = electrons_->at(ee_id1).Pt();
@@ -227,6 +225,15 @@ void CATNtuple::Loop()
       }
       //for MuEl
       if(electrons_->size()>0 && muons_->size()>0)
+      for(int i=0;i<muons_->size();i++ )     //if(ZemS==false)
+      for(int j=0;j<electrons_->size();j++ ) //if(ZemS==false )
+      {
+         TLorentzVector Zem_ = ((muons_->at(i).vec_)+(electrons_->at(j).vec_));
+         double ZemPt_ = Zem_.Pt();
+         if(ZemPt_>ZemPt) { Zem=Zem_; ZemPt=ZemPt_;   em_id1=i; em_id2=j; ZemS=true; }
+      }
+      /*
+      if(electrons_->size()>0 && muons_->size()>0)
       for(int i=0;i<muons_->size();i++ )     if(ZemS==false)
       for(int j=0;j<electrons_->size();j++ ) if(ZemS==false )
       {
@@ -240,7 +247,7 @@ void CATNtuple::Loop()
           Zem = ((muons_->at(0).vec_)+(electrons_->at(0).vec_));
           em_id1=0; em_id2=0;
           ZemS=true;
-      }
+      }*/
       if(ZemS)
       {
          fevent_->em_mu1_pt_ = muons_->at(em_id1).Pt();
@@ -255,8 +262,60 @@ void CATNtuple::Loop()
          fevent_->em_el2_iso_= electrons_->at(em_id2).Iso_;
          fevent_->em_zmass_  = Zem.M();
       }
-//////////
 
+////////////////////////////////////
+      for(int i=0;i<jets_pt->size();i++)
+      {
+          if( jets_pt->at(i)>30.0 && fabs(jets_eta->at(i))<2.4 
+            ) 
+          {
+             double pt = jets_pt->at(i);
+             double eta = jets_eta->at(i);
+             double phi = jets_phi->at(i);
+             double mass = jets_m->at(i);
+             double CSVInclV2 = jets_CSVInclV2->at(i);
+             Jet jet_(pt,eta,phi,mass, CSVInclV2);
+             //jets_->push_back(jet_);
+             bool isFill=true;
+
+             //////////// 1st option
+             //for(int j=0;j<muonsl_->size();j++ )     if(fabs(muonsl_     ->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+             //for(int j=0;j<electronsl_->size();j++ )  if(fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+
+             /////////// 2nd option
+             if(ZmmS)// && !ZeeS && !ZemS) 
+             if(Zmm.M()>20 && (muons_->at(mm_id1).Q_*muons_->at(mm_id2).Q_<0) )
+             {
+                 if(fabs(muons_->at(mm_id1).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id1).Iso_<0.12 ) isFill=false;
+                 if(fabs(muons_->at(mm_id2).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id2).Iso_<0.12 ) isFill=false;
+             }
+             if(ZeeS)
+             if(Zee.M()>20 && (electrons_->at(ee_id1).Q_*electrons_->at(ee_id2).Q_<0) )
+             {
+                 if( electrons_->at(ee_id1).Iso_<0.12 && electrons_->at(ee_id2).Iso_<0.12 )
+                 {
+                    if(fabs(electrons_->at(ee_id1).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+                    if(fabs(electrons_->at(ee_id2).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+                 }
+             }
+             if(ZemS)
+             if(Zem.M()>20 && (muons_->at(em_id1).Q_*electrons_->at(em_id2).Q_<0) )
+             {
+                 if( muons_->at(em_id1).Iso_<0.12 && electrons_->at(em_id2).Iso_<0.12 ) 
+                 {
+                    if(fabs(muons_    ->at(em_id1).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
+                    if(fabs(electrons_->at(em_id2).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
+                 }
+             }
+
+             if(isFill) jets_->push_back(jet_);
+          }
+      }
+      std::sort(jets_->begin(), jets_->end(), compByCSVJet);
+////////
+
+
+//////////////
       int nBJetT=0, nBJetM=0, nBJetL=0, nJet=0;
       for(int i=0;i<jets_->size();i++)
       {
