@@ -143,7 +143,7 @@ void CATNtuple::Loop()
       TLorentzVector Zmm, Zee, Zem;
       double ZmmPt=-1., ZeePt=-1., ZemPt=-1.;
       int mm_id1, mm_id2, ee_id1, ee_id2, em_id1, em_id2;
-      double mm_mu1_dr_el=100., mm_mu2_dr_el=100., ee_el1_dr_mu=100., ee_el2_dr_mu=100., em_mu1_dr_el=100., em_el2_dr_mu=100.,;
+      double mm_mu1_dr_el=100., mm_mu2_dr_el=100., ee_el1_dr_mu=100., ee_el2_dr_mu=100., em_mu1_dr_el=100., em_el2_dr_mu=100.;
       bool ZmmS=false, ZeeS=false, ZemS=false;
       //for MuMu
       if(muons_->size()>1)
@@ -196,9 +196,9 @@ void CATNtuple::Loop()
             for(int k=0;k<muons_->size();k++)
             {
                double ee_el1_dr_mu_ = fabs(muons_->at(k).vec_.DeltaR(electrons_->at(i).vec_));
-               if(ee_el1_dr_mu_<ee_el1_dr_el) ee_el1_dr_mu=ee_el1_dr_mu_;
+               if(ee_el1_dr_mu_<ee_el1_dr_mu) ee_el1_dr_mu=ee_el1_dr_mu_;
                double ee_el2_dr_mu_ = fabs(muons_->at(k).vec_.DeltaR(electrons_->at(j).vec_));
-               if(ee_el2_dr_mu_<ee_el2_dr_el) ee_el2_dr_mu=ee_el2_dr_mu_;
+               if(ee_el2_dr_mu_<ee_el2_dr_mu) ee_el2_dr_mu=ee_el2_dr_mu_;
             }
          }
       }
