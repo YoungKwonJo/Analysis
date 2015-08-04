@@ -215,8 +215,8 @@ void CATNtuple::Loop()
          fevent_->ee_el2_q_  = electrons_->at(ee_id2).Q_;
          fevent_->ee_el2_iso_= electrons_->at(ee_id2).Iso_;
          fevent_->ee_zmass_  = Zee.M();
-         fevent_->ee_el1_dr_el_ = ee_el1_dr_el;
-         fevent_->ee_el2_dr_el_ = ee_el2_dr_el;
+         fevent_->ee_el1_dr_mu_ = ee_el1_dr_mu;
+         fevent_->ee_el2_dr_mu_ = ee_el2_dr_mu;
       }
       //for MuEl
       if(electrons_->size()>0 && muons_->size()>0)
