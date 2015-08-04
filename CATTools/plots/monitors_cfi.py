@@ -93,4 +93,10 @@ monitors2d = {
   { "name":"genNJet",     "unit":"genJet multiplicity ",         "var":"NgenJet",      "xbin_set":[10,0,10]    },
   { "name":"Category",    "unit":"Category ",                    "var":"Category",     "xbin_set":[5,0,5]      },
 ],
+"Mon14" : [
+  { "name":"Nmu",         "unit":"number of muon ",              "var":"Nmu",          "xbin_set":[5,0,5]    },
+  { "name":"Nel",         "unit":"number of electron ",          "var":"Nel",          "xbin_set":[5,0,5]    },
+],
+
+
 }
