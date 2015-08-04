@@ -232,12 +232,12 @@ void CATNtuple::Loop()
             for(int k=0;k<electrons_->size();k++)
             {
                double em_mu1_dr_el_ = fabs(electrons_->at(k).vec_.DeltaR(muons_->at(i).vec_));
-               if(ee_mu1_dr_el_<ee_mu1_dr_el) ee_mu1_dr_el=ee_mu1_dr_el_;
+               if(em_mu1_dr_el_<em_mu1_dr_el) em_mu1_dr_el=em_mu1_dr_el_;
             }
             for(int k=0;k<muons_->size();k++)
             {
                double em_el2_dr_mu_ = fabs(muons_->at(k).vec_.DeltaR(electrons_->at(j).vec_));
-               if(em_el2_dr_mu_<em_el2_dr_mu) em_el2_dr_mu=ee_el2_dr_mu_;
+               if(em_el2_dr_mu_<em_el2_dr_mu) em_el2_dr_mu=em_el2_dr_mu_;
             }
          }
       }
@@ -254,8 +254,8 @@ void CATNtuple::Loop()
          fevent_->em_el2_q_  = electrons_->at(em_id2).Q_;
          fevent_->em_el2_iso_= electrons_->at(em_id2).Iso_;
          fevent_->em_zmass_  = Zem.M();
-         fevent_->em_mu1_dr_el_ = ee_mu1_dr_el;
-         fevent_->em_el2_dr_mu_ = ee_el2_dr_mu;
+         fevent_->em_mu1_dr_el_ = em_mu1_dr_el;
+         fevent_->em_el2_dr_mu_ = em_el2_dr_mu;
       }
 
 ////////////////////////////////////
