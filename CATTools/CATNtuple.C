@@ -141,7 +141,7 @@ void CATNtuple::Loop()
      //continue;
      // dilepton selection
       TLorentzVector Zmm, Zee, Zem;
-      double ZmmPt=0., ZeePt=0., ZemPt=0.;
+      double ZmmPt=-1., ZeePt=-1., ZemPt=-1.;
       int mm_id1, mm_id2, ee_id1, ee_id2, em_id1, em_id2;
       bool ZmmS=false, ZeeS=false, ZemS=false;
       //for MuMu
@@ -149,7 +149,7 @@ void CATNtuple::Loop()
       for(int i=0;i<muons_->size()-1;i++ ) //if(ZmmS==false)
       for(int j=i+1;j<muons_->size();j++ ) //if(ZmmS==false)
       {
-         TLorentzVector Zmm_ = ((muons_->at(i).vec_)+(muons_->at(j).vec_));
+         TLorentzVector Zmm_((muons_->at(i).vec_)+(muons_->at(j).vec_));
          double ZmmPt_ = Zmm.Pt();
          if(ZmmPt_>ZmmPt) { Zmm=Zmm_; ZmmPt=ZmmPt_;  mm_id1=i; mm_id2=j; ZmmS=true; }
       }
@@ -185,11 +185,11 @@ void CATNtuple::Loop()
       }
 
       //for ElEl
-      if(electrons_->size()>0)
+      if(electrons_->size()>1)
       for(int i=0;i<electrons_->size()-1;i++ ) //if(ZeeS==false)
       for(int j=i+1;j<electrons_->size();j++ ) //if(ZeeS==false)
       {
-         TLorentzVector Zee_ = ((electrons_->at(i).vec_)+(electrons_->at(j).vec_));
+         TLorentzVector Zee_((electrons_->at(i).vec_)+(electrons_->at(j).vec_));
          double ZeePt_ = Zee_.Pt();
          if(ZeePt_>ZeePt) { Zee=Zee_; ZeePt=ZeePt_; ee_id1=i; ee_id2=j; ZeeS=true; }
       }
@@ -228,7 +228,7 @@ void CATNtuple::Loop()
       for(int i=0;i<muons_->size();i++ )     //if(ZemS==false)
       for(int j=0;j<electrons_->size();j++ ) //if(ZemS==false )
       {
-         TLorentzVector Zem_ = ((muons_->at(i).vec_)+(electrons_->at(j).vec_));
+         TLorentzVector Zem_((muons_->at(i).vec_)+(electrons_->at(j).vec_));
          double ZemPt_ = Zem_.Pt();
          if(ZemPt_>ZemPt) { Zem=Zem_; ZemPt=ZemPt_;   em_id1=i; em_id2=j; ZemS=true; }
       }
