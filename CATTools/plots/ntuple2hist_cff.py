@@ -313,7 +313,7 @@ def plotTH2F(filename,mon,step,mcsamples):
     #pts.append(copy.deepcopy(pt))
     #pts[i].Draw()
     leg = make_legend(0.5,0.91, 0.75,0.99)
-    leg.AddEntry(h1, mc['label'], "l");
+    leg.AddEntry(h1, ("%s : "%mc['label']) + ("%.0f"%h1.Integral()), "l");
     legs.append(copy.deepcopy(leg))
     legs[i].Draw()
   output = "plots/TH2_"+mon+"_"+step+".eps"
