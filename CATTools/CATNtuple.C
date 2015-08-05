@@ -140,8 +140,9 @@ void CATNtuple::Loop()
 
      //continue;
      // dilepton selection
-      TLorentzVector Zmm, Zee, Zem;
+      //TLorentzVector Zmm, Zee, Zem;
       double ZmmPt=-1., ZeePt=-1., ZemPt=-1.;
+      double mm_zmass=-1., ee_zmass=-1., em_zmass=-1.;
       int mm_id1, mm_id2, ee_id1, ee_id2, em_id1, em_id2;
       double mm_mu1_dr_el=100., mm_mu2_dr_el=100., ee_el1_dr_mu=100., ee_el2_dr_mu=100., em_mu1_dr_el=100., em_el2_dr_mu=100.;
       bool ZmmS=false, ZeeS=false, ZemS=false;
@@ -152,10 +153,11 @@ void CATNtuple::Loop()
       {
          TLorentzVector Zmm_((muons_->at(i).vec_)+(muons_->at(j).vec_));
 
-         double ZmmPt_ = Zmm.Pt();
+         double ZmmPt_ = Zmm_.Pt();
+         double mm_zmass_ = Zmm_.M();
          if(ZmmPt_>ZmmPt) 
          {
-             Zmm=Zmm_; ZmmPt=ZmmPt_;  mm_id1=i; mm_id2=j; ZmmS=true; 
+             mm_zmass=mm_zmass_; ZmmPt=ZmmPt_;  mm_id1=i; mm_id2=j; ZmmS=true; 
              for(int k=0;k<electrons_->size();k++) 
              {
                 double mm_mu1_dr_el_ = fabs(electrons_->at(k).vec_.DeltaR(muons_->at(i).vec_));
@@ -177,7 +179,7 @@ void CATNtuple::Loop()
          fevent_->mm_mu2_phi_= muons_->at(mm_id2).Phi();
          fevent_->mm_mu2_q_  = muons_->at(mm_id2).Q_;
          fevent_->mm_mu2_iso_= muons_->at(mm_id2).Iso_;
-         fevent_->mm_zmass_  = Zmm.M();
+         fevent_->mm_zmass_  = mm_zmass;
          fevent_->mm_mu1_dr_el_ = mm_mu1_dr_el;
          fevent_->mm_mu2_dr_el_ = mm_mu2_dr_el;
       }
@@ -189,10 +191,11 @@ void CATNtuple::Loop()
       {
          TLorentzVector Zee_((electrons_->at(i).vec_)+(electrons_->at(j).vec_));
          double ZeePt_ = Zee_.Pt();
+         double ee_zmass_ = Zee_.M();
 
          if(ZeePt_>ZeePt) 
          {
-            Zee=Zee_; ZeePt=ZeePt_; ee_id1=i; ee_id2=j; ZeeS=true; 
+            ee_zmass=ee_zmass_; ZeePt=ZeePt_; ee_id1=i; ee_id2=j; ZeeS=true; 
             for(int k=0;k<muons_->size();k++)
             {
                double ee_el1_dr_mu_ = fabs(muons_->at(k).vec_.DeltaR(electrons_->at(i).vec_));
@@ -214,7 +217,7 @@ void CATNtuple::Loop()
          fevent_->ee_el2_phi_= electrons_->at(ee_id2).Phi();
          fevent_->ee_el2_q_  = electrons_->at(ee_id2).Q_;
          fevent_->ee_el2_iso_= electrons_->at(ee_id2).Iso_;
-         fevent_->ee_zmass_  = Zee.M();
+         fevent_->ee_zmass_  = ee_zmass;
          fevent_->ee_el1_dr_mu_ = ee_el1_dr_mu;
          fevent_->ee_el2_dr_mu_ = ee_el2_dr_mu;
       }
@@ -225,10 +228,11 @@ void CATNtuple::Loop()
       {
          TLorentzVector Zem_((muons_->at(i).vec_)+(electrons_->at(j).vec_));
          double ZemPt_ = Zem_.Pt();
+         double em_zmass_ = Zem_.M();
 
          if(ZemPt_>ZemPt) 
          {
-            Zem=Zem_; ZemPt=ZemPt_;   em_id1=i; em_id2=j; ZemS=true; 
+            em_zmass=em_zmass_; ZemPt=ZemPt_;   em_id1=i; em_id2=j; ZemS=true; 
             for(int k=0;k<electrons_->size();k++)
             {
                double em_mu1_dr_el_ = fabs(electrons_->at(k).vec_.DeltaR(muons_->at(i).vec_));
@@ -253,7 +257,7 @@ void CATNtuple::Loop()
          fevent_->em_el2_phi_= electrons_->at(em_id2).Phi();
          fevent_->em_el2_q_  = electrons_->at(em_id2).Q_;
          fevent_->em_el2_iso_= electrons_->at(em_id2).Iso_;
-         fevent_->em_zmass_  = Zem.M();
+         fevent_->em_zmass_  = em_zmass;
          fevent_->em_mu1_dr_el_ = em_mu1_dr_el;
          fevent_->em_el2_dr_mu_ = em_el2_dr_mu;
       }
