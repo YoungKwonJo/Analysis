@@ -291,24 +291,24 @@ void CATNtuple::Loop()
 
              /////////// 2nd option
              if(ZmmS)// && !ZeeS && !ZemS) 
-             if(mm_zmass>20 && (muons_->at(mm_id1).Q_*muons_->at(mm_id2).Q_<0) )
+             //if(mm_zmass>20 && (muons_->at(mm_id1).Q_*muons_->at(mm_id2).Q_<0) )
              {
                  if(fabs(muons_->at(mm_id1).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id1).Iso_<0.12 ) isFill=false;
                  if(fabs(muons_->at(mm_id2).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id2).Iso_<0.12 ) isFill=false;
              }
              if(ZeeS)
-             if(ee_zmass>20 && (electrons_->at(ee_id1).Q_*electrons_->at(ee_id2).Q_<0) )
+             //if(ee_zmass>20 && (electrons_->at(ee_id1).Q_*electrons_->at(ee_id2).Q_<0) )
              {
-                 if( electrons_->at(ee_id1).Iso_<0.12 && electrons_->at(ee_id2).Iso_<0.12 )
+                 //if( electrons_->at(ee_id1).Iso_<0.12 && electrons_->at(ee_id2).Iso_<0.12 )
                  {
                     if(fabs(electrons_->at(ee_id1).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
                     if(fabs(electrons_->at(ee_id2).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
                  }
              }
              if(ZemS)
-             if(em_zmass>20 && (muons_->at(em_id1).Q_*electrons_->at(em_id2).Q_<0) )
+             //if(em_zmass>20 && (muons_->at(em_id1).Q_*electrons_->at(em_id2).Q_<0) )
              {
-                 if( muons_->at(em_id1).Iso_<0.12 && electrons_->at(em_id2).Iso_<0.12 ) 
+                 //if( muons_->at(em_id1).Iso_<0.12 && electrons_->at(em_id2).Iso_<0.12 ) 
                  {
                     if(fabs(muons_    ->at(em_id1).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
                     if(fabs(electrons_->at(em_id2).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
