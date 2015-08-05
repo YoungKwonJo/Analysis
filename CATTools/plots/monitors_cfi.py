@@ -7,11 +7,11 @@ monitors = {
 ],
 "Mon2" : [
   { "name":"MET",          "unit":"Missing E_{T} (GeV) ",          "var":"met",      "xbin_set":[60,0,300]     },
-  { "name":"METPHI",      "unit":"Missing E_{T} #phi ",           "var":"metphi",   "xbin_set":[40,-4,4]      },
+  { "name":"METPHI",       "unit":"Missing E_{T} #phi ",           "var":"metphi",   "xbin_set":[40,-4,4]      },
   { "name":"nBJetL",       "unit":"b-Jet multiplicity loose ",     "var":"nBJetL",   "xbin_set":[8,0,8]      },
   { "name":"nBJetM",       "unit":"b-Jet multiplicity medium ",    "var":"nBJetM",   "xbin_set":[8,0,8]      },
-  { "name":"NJet",        "unit":"Jet multiplicity ",            "var":"nJet",         "xbin_set":[10,0,10]    },
-  { "name":"nBJetT",      "unit":"b-Jet multiplicity tight ",    "var":"nBJetT",       "xbin_set":[8,0,8]      },
+  { "name":"NJet",         "unit":"Jet multiplicity ",            "var":"nJet",         "xbin_set":[10,0,10]    },
+  { "name":"nBJetT",       "unit":"b-Jet multiplicity tight ",    "var":"nBJetT",       "xbin_set":[8,0,8]      },
 ],
 "Mon3" : [
   { "name":"lep1PtMM",     "unit":"Leading lepton p_{T} (GeV/c) ", "var":"mm_mu1_pt", "xbin_set":[40,0,200] },
