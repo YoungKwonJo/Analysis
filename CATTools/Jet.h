@@ -7,13 +7,13 @@
 
 class Jet{
   public:
-   explicit Jet(double pt, double eta, double phi, double mass, double CSV, double minDRL)//, int flavor, double bHDR )
+   explicit Jet(double pt, double eta, double phi, double mass, double CSV)//, double minDRL)//, int flavor, double bHDR )
    {
       vec_.SetPtEtaPhiM(pt,eta,phi,mass); CSV_=CSV;// flavor_=flavor; bHDR_=bHDR;
-      minDRL_ =minDRL;
+      //minDRL_ =minDRL;
    }
    ~Jet(){}
-
+   void setDRl(double minDRL) {  minDRL_ =minDRL; }
    double Pt() { return vec_.Pt(); };
    double Eta() { return vec_.Eta(); };
    double Phi() { return vec_.Phi(); };

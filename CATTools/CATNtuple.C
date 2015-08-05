@@ -281,6 +281,7 @@ void CATNtuple::Loop()
              double phi = jets_phi->at(i);
              double mass = jets_m->at(i);
              double CSVInclV2 = jets_CSVInclV2->at(i);
+             Jet jet_(pt,eta,phi,mass, CSVInclV2);
              double minDR=1000.;
              for(int j=0;j<muonsl_->size();j++ )
              {
@@ -293,8 +294,8 @@ void CATNtuple::Loop()
                  if(minDR_<minDR) minDR=minDR_;
              }
              if(minDR==1000.) minDR=-999; 
+             jet_.setDRl(minDR);
 
-             Jet jet_(pt,eta,phi,mass, CSVInclV2, minDR);
              //jets_->push_back(jet_);
              bool isFill=true;
 
