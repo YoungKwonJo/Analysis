@@ -100,7 +100,7 @@ void CATNtuple::Loop()
 
              Lepton el_(pt,eta,phi,mass, relIso03, q);
              //electrons_->push_back(el_);
-             if(electrons_idMedium->at(i)==1 && relIso03<0.12) electrons_->push_back(el_);
+             if(electrons_idMedium->at(i)==1) electrons_->push_back(el_);
              if(electrons_idLoose->at(i)==1 && relIso03<0.12) electronsl_->push_back(el_);
           }
       }
@@ -125,22 +125,25 @@ void CATNtuple::Loop()
              double q = muons_q->at(i);
 
              Lepton el_(pt,eta,phi,mass, relIso04, q);
-             if(muons_isTight->at(i)==1 && relIso04<0.12) muons_->push_back(el_);
+             if(muons_isTight->at(i)==1) muons_->push_back(el_);
              if(muons_isLoose->at(i)==1 && relIso04<0.12) muonsl_->push_back(el_);
              //muons_->push_back(el_);
           }
       }
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
 
-      int Nmu=0, Nel=0;
-      //for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     Nmu++;
-      //for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) Nel++;
+/////////////////////
+      int Nmu=0, Nel=0, NmuIso=0, NelIso=0;
+      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     NmuIso++;
+      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) NelIso++;
       for(int i=0;i<muons_->size();i++ )      Nmu++;
       for(int i=0;i<electrons_->size();i++ )  Nel++;
       fevent_->Nmu_=Nmu;
       fevent_->Nel_=Nel;
+      fevent_->NmuIso_=NmuIso;
+      fevent_->NelIso_=NelIso;
 
-     //continue;
+///////////////////
      // dilepton selection
       //TLorentzVector Zmm, Zee, Zem;
       double ZmmPt=-1., ZeePt=-1., ZemPt=-1.;
@@ -169,23 +172,6 @@ void CATNtuple::Loop()
              }
          }
       }
-      if(ZmmS)
-      {
-         fevent_->mm_mu1_pt_ = muons_->at(mm_id1).Pt();
-         fevent_->mm_mu1_eta_= muons_->at(mm_id1).Eta();
-         fevent_->mm_mu1_phi_= muons_->at(mm_id1).Phi();
-         fevent_->mm_mu1_q_  = muons_->at(mm_id1).Q_;
-         fevent_->mm_mu1_iso_= muons_->at(mm_id1).Iso_;
-         fevent_->mm_mu2_pt_ = muons_->at(mm_id2).Pt();
-         fevent_->mm_mu2_eta_= muons_->at(mm_id2).Eta();
-         fevent_->mm_mu2_phi_= muons_->at(mm_id2).Phi();
-         fevent_->mm_mu2_q_  = muons_->at(mm_id2).Q_;
-         fevent_->mm_mu2_iso_= muons_->at(mm_id2).Iso_;
-         fevent_->mm_zmass_  = mm_zmass;
-         fevent_->mm_mu1_dr_el_ = mm_mu1_dr_el;
-         fevent_->mm_mu2_dr_el_ = mm_mu2_dr_el;
-      }
-
       //for ElEl
       if(electrons_->size()>1)
       for(int i=0;i<electrons_->size()-1;i++ ) //if(ZeeS==false)
@@ -206,22 +192,6 @@ void CATNtuple::Loop()
                if(ee_el2_dr_mu_<ee_el2_dr_mu) ee_el2_dr_mu=ee_el2_dr_mu_;
             }
          }
-      }
-      if(ZeeS)
-      {
-         fevent_->ee_el1_pt_ = electrons_->at(ee_id1).Pt();
-         fevent_->ee_el1_eta_= electrons_->at(ee_id1).Eta();
-         fevent_->ee_el1_phi_= electrons_->at(ee_id1).Phi();
-         fevent_->ee_el1_q_  = electrons_->at(ee_id1).Q_;
-         fevent_->ee_el1_iso_= electrons_->at(ee_id1).Iso_;
-         fevent_->ee_el2_pt_ = electrons_->at(ee_id2).Pt();
-         fevent_->ee_el2_eta_= electrons_->at(ee_id2).Eta();
-         fevent_->ee_el2_phi_= electrons_->at(ee_id2).Phi();
-         fevent_->ee_el2_q_  = electrons_->at(ee_id2).Q_;
-         fevent_->ee_el2_iso_= electrons_->at(ee_id2).Iso_;
-         fevent_->ee_zmass_  = ee_zmass;
-         fevent_->ee_el1_dr_mu_ = ee_el1_dr_mu;
-         fevent_->ee_el2_dr_mu_ = ee_el2_dr_mu;
       }
       //for MuEl
       if(electrons_->size()>0 && muons_->size()>0)
@@ -247,6 +217,43 @@ void CATNtuple::Loop()
             }
          }
       }
+/////////////////////////////////////
+     if(ZmmPt>ZeePt && ZmmPt>ZemPt) {  ZeeS=false; ZemS =false; }
+     if(ZeePt>ZmmPt && ZeePt>ZemPt) {  ZmmS=false; ZemS =false; }
+     if(ZemPt>ZmmPt && ZemPt>ZeePt) {  ZmmS=false; ZeeS =false; }
+
+      if(ZmmS)
+      {
+         fevent_->mm_mu1_pt_ = muons_->at(mm_id1).Pt();
+         fevent_->mm_mu1_eta_= muons_->at(mm_id1).Eta();
+         fevent_->mm_mu1_phi_= muons_->at(mm_id1).Phi();
+         fevent_->mm_mu1_q_  = muons_->at(mm_id1).Q_;
+         fevent_->mm_mu1_iso_= muons_->at(mm_id1).Iso_;
+         fevent_->mm_mu2_pt_ = muons_->at(mm_id2).Pt();
+         fevent_->mm_mu2_eta_= muons_->at(mm_id2).Eta();
+         fevent_->mm_mu2_phi_= muons_->at(mm_id2).Phi();
+         fevent_->mm_mu2_q_  = muons_->at(mm_id2).Q_;
+         fevent_->mm_mu2_iso_= muons_->at(mm_id2).Iso_;
+         fevent_->mm_zmass_  = mm_zmass;
+         fevent_->mm_mu1_dr_el_ = mm_mu1_dr_el;
+         fevent_->mm_mu2_dr_el_ = mm_mu2_dr_el;
+      }
+      if(ZeeS)
+      {
+         fevent_->ee_el1_pt_ = electrons_->at(ee_id1).Pt();
+         fevent_->ee_el1_eta_= electrons_->at(ee_id1).Eta();
+         fevent_->ee_el1_phi_= electrons_->at(ee_id1).Phi();
+         fevent_->ee_el1_q_  = electrons_->at(ee_id1).Q_;
+         fevent_->ee_el1_iso_= electrons_->at(ee_id1).Iso_;
+         fevent_->ee_el2_pt_ = electrons_->at(ee_id2).Pt();
+         fevent_->ee_el2_eta_= electrons_->at(ee_id2).Eta();
+         fevent_->ee_el2_phi_= electrons_->at(ee_id2).Phi();
+         fevent_->ee_el2_q_  = electrons_->at(ee_id2).Q_;
+         fevent_->ee_el2_iso_= electrons_->at(ee_id2).Iso_;
+         fevent_->ee_zmass_  = ee_zmass;
+         fevent_->ee_el1_dr_mu_ = ee_el1_dr_mu;
+         fevent_->ee_el2_dr_mu_ = ee_el2_dr_mu;
+      }
       if(ZemS)
       {
          fevent_->em_mu1_pt_ = muons_->at(em_id1).Pt();
@@ -263,7 +270,6 @@ void CATNtuple::Loop()
          fevent_->em_mu1_dr_el_ = em_mu1_dr_el;
          fevent_->em_el2_dr_mu_ = em_el2_dr_mu;
       }
-
 ////////////////////////////////////
       for(int i=0;i<jets_pt->size();i++)
       {
