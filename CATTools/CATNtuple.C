@@ -81,6 +81,9 @@ void CATNtuple::Loop()
       muons_->clear();
       electrons_->clear();
       jets_->clear();
+
+      muonsl_->clear();
+      electronsl_->clear();
       ////////
 
       for(int i=0;i<electrons_pt->size();i++)
