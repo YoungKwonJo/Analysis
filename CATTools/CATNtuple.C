@@ -100,7 +100,7 @@ void CATNtuple::Loop()
 
              Lepton el_(pt,eta,phi,mass, relIso03, q);
              //electrons_->push_back(el_);
-             if(electrons_idMedium->at(i)==1) electrons_->push_back(el_);
+             if(electrons_idMedium->at(i)==1 && relIso03<0.12) electrons_->push_back(el_);
              if(electrons_idLoose->at(i)==1 && relIso03<0.12) electronsl_->push_back(el_);
           }
       }
@@ -125,7 +125,7 @@ void CATNtuple::Loop()
              double q = muons_q->at(i);
 
              Lepton el_(pt,eta,phi,mass, relIso04, q);
-             if(muons_isTight->at(i)==1) muons_->push_back(el_);
+             if(muons_isTight->at(i)==1 && relIso04<0.12) muons_->push_back(el_);
              if(muons_isLoose->at(i)==1 && relIso04<0.12) muonsl_->push_back(el_);
              //muons_->push_back(el_);
           }
@@ -133,8 +133,10 @@ void CATNtuple::Loop()
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
 
       int Nmu=0, Nel=0;
-      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     Nmu++;
-      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) Nel++;
+      //for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     Nmu++;
+      //for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) Nel++;
+      for(int i=0;i<muons_->size();i++ )      Nmu++;
+      for(int i=0;i<electrons_->size();i++ )  Nel++;
       fevent_->Nmu_=Nmu;
       fevent_->Nel_=Nel;
 
