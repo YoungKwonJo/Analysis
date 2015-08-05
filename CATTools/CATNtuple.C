@@ -281,7 +281,20 @@ void CATNtuple::Loop()
              double phi = jets_phi->at(i);
              double mass = jets_m->at(i);
              double CSVInclV2 = jets_CSVInclV2->at(i);
-             Jet jet_(pt,eta,phi,mass, CSVInclV2);
+             double minDR=1000.;
+             for(int j=0;j<muonsl_->size();j++ )
+             {
+                 double minDR_= fabs(muonsl_->at(j).vec_.DeltaR(jet_.vec_));
+                 if(minDR_<minDR) minDR=minDR_;
+             }
+             for(int j=0;j<electronsl_->size();j++ )
+             {
+                 double minDR_= fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_));
+                 if(minDR_<minDR) minDR=minDR_;
+             }
+             if(minDR==1000.) minDR=-999; 
+
+             Jet jet_(pt,eta,phi,mass, CSVInclV2, minDR);
              //jets_->push_back(jet_);
              bool isFill=true;
 
@@ -319,7 +332,6 @@ void CATNtuple::Loop()
           }
       }
       std::sort(jets_->begin(), jets_->end(), compByCSVJet);
-////////
 
 
 //////////////
@@ -334,13 +346,14 @@ void CATNtuple::Loop()
          fevent_->jet_eta_->push_back( jets_->at(i).Eta() );   
          fevent_->jet_phi_->push_back( jets_->at(i).Phi() );   
          fevent_->jet_csv_->push_back( jets_->at(i).CSV() );   
+         fevent_->jet_drl_->push_back( jets_->at(i).DRl() );   
       } 
       fevent_->nJet_=nJet;
       fevent_->nBJetT_=nBJetT;
       fevent_->nBJetM_=nBJetM;
       fevent_->nBJetL_=nBJetL;
 
-//////
+////////////
       fevent_->isMM_ = ((int) (genTtbarLeptonDecay%100)==2); 
       fevent_->isEE_ = ((int) (genTtbarLeptonDecay%10000)==200);
       fevent_->isEM_ = ((int) (genTtbarLeptonDecay%10000)==101);
@@ -355,10 +368,11 @@ void CATNtuple::Loop()
       else if( ((int)(genTtbarId%100)) == 55)   category=2;
       fevent_->Category_ =  category;
       fevent_->NgenJet_ = NgenJet;
-/////
+
+//////////
       tree_->Fill();
 
-/////
+//////////
 
    }
 }

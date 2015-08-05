@@ -40,7 +40,7 @@ public:
   int  mm_mu1_q_, mm_mu2_q_, ee_el1_q_, ee_el2_q_, em_mu1_q_, em_el2_q_;
   double mm_mu1_dr_el_, mm_mu2_dr_el_, ee_el1_dr_mu_, ee_el2_dr_mu_, em_mu1_dr_el_, em_el2_dr_mu_;
 
-  doublesP jet_pt_, jet_eta_, jet_phi_, jet_csv_; 
+  doublesP jet_pt_, jet_eta_, jet_phi_, jet_csv_, jet_drl_; 
   //order csv;
   int nBJetT_, nBJetM_, nBJetL_, nJet_;
 
@@ -60,6 +60,7 @@ FlatTree::FlatTree()
    jet_eta_  = new doubles;
    jet_phi_  = new doubles;
    jet_csv_  = new doubles;
+   jet_drl_  = new doubles;
    //BH_gjet_ = new ints;
 
 }
@@ -77,6 +78,7 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("jet_eta"  , jet_eta_  );
   tree_->Branch("jet_phi"  , jet_phi_  );
   tree_->Branch("jet_csv"  , jet_csv_  );
+  tree_->Branch("jet_drl"  , jet_drl_  );
 
   tree_->Branch("Nmu",    &Nmu_,     "Nmu/I");
   tree_->Branch("Nel",    &Nel_,     "Nel/I");
@@ -151,6 +153,7 @@ void FlatTree::clear()
    jet_eta_->clear();
    jet_phi_->clear();
    jet_csv_->clear();
+   jet_drl_->clear();
 
    weight_=1.0;
 
