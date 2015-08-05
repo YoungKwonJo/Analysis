@@ -74,6 +74,12 @@ monitors = {
   { "name":"jet4CSV",     "unit":"CSV2 of 4th leading Jet ",     "var":"jet_csv[3]",   "xbin_set":[20,0,1]     },
 ],
 "Mon11": [
+  { "name":"jet1DRl",     "unit":"DR_l of 1st leading Jet ",     "var":"jet_drl[0]",   "xbin_set":[20,0,4]     },
+  { "name":"jet2DRl",     "unit":"DR_l of 2nd leading Jet ",     "var":"jet_drl[1]",   "xbin_set":[20,0,4]     },
+  { "name":"jet3DRl",     "unit":"DR_l of 3rd leading Jet ",     "var":"jet_drl[2]",   "xbin_set":[20,0,4]     },
+  { "name":"jet4DRl",     "unit":"DR_l of 4th leading Jet ",     "var":"jet_drl[3]",   "xbin_set":[20,0,4]     },
+],
+"Mon12": [
   { "name":"lep1DRelMM",   "unit":"Leading lepton DR with electron ",  "var":"mm_mu1_dr_el", "xbin_set":[60,0,3] },
   { "name":"lep1DRmuEE",   "unit":"Leading lepton DR with muon     ",  "var":"ee_el1_dr_mu", "xbin_set":[60,0,3] },
   { "name":"lep1DRelEM",   "unit":"Leading lepton DR with electron ",  "var":"em_mu1_dr_el", "xbin_set":[60,0,3] },
@@ -84,24 +90,24 @@ monitors = {
 }
 
 monitors2d = {
-"Mon12" : [
+"Mon13" : [
   { "name":"jet1CSV",     "unit":"CSV2 of 1st leading Jet ",     "var":"jet_csv[0]",   "xbin_set":[20,0,1]     },
   { "name":"jet2CSV",     "unit":"CSV2 of 2nd leading Jet ",     "var":"jet_csv[1]",   "xbin_set":[20,0,1]     },
   { "name":"jet3CSV",     "unit":"CSV2 of 3rd leading Jet ",     "var":"jet_csv[2]",   "xbin_set":[20,0,1]     },
   { "name":"jet4CSV",     "unit":"CSV2 of 4th leading Jet ",     "var":"jet_csv[3]",   "xbin_set":[20,0,1]     },
 ],
-"Mon13" : [
+"Mon14" : [
   { "name":"NJet",        "unit":"Jet multiplicity ",             "var":"nJet",     "xbin_set":[10,0,10]    },
   { "name":"nBJetL",      "unit":"b-Jet multiplicity loose ",     "var":"nBJetL",   "xbin_set":[8,0,8]      },
   { "name":"nBJetM",      "unit":"b-Jet multiplicity medium ",    "var":"nBJetM",   "xbin_set":[8,0,8]      },
   { "name":"nBJetT",      "unit":"b-Jet multiplicity tight ",     "var":"nBJetT",   "xbin_set":[8,0,8]      },
 ],
-"Mon14" : [
+"Mon15" : [
   { "name":"NJet",        "unit":"Jet multiplicity ",            "var":"nJet",         "xbin_set":[10,0,10]    },
   { "name":"genNJet",     "unit":"genJet multiplicity ",         "var":"NgenJet",      "xbin_set":[10,0,10]    },
   { "name":"Category",    "unit":"Category ",                    "var":"Category",     "xbin_set":[5,0,5]      },
 ],
-"Mon15" : [
+"Mon16" : [
   { "name":"Nmu",         "unit":"number of muon ",              "var":"Nmu",          "xbin_set":[5,0,5]    },
   { "name":"Nel",         "unit":"number of electron ",          "var":"Nel",          "xbin_set":[5,0,5]    },
 ],
