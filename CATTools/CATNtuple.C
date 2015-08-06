@@ -98,10 +98,10 @@ void CATNtuple::Loop()
              double eta = electrons_eta->at(i);
              double phi = electrons_phi->at(i);
              double mass = electrons_m->at(i);
-             double relIso03 = electrons_relIso03->at(i);
+             double relIso04 = electrons_relIso04->at(i);
              double q = electrons_q->at(i);
 
-             Lepton el_(pt,eta,phi,mass, relIso03, q);
+             Lepton el_(pt,eta,phi,mass, relIso04, q);
              //electrons_->push_back(el_);
              if(electrons_idMedium->at(i)==1) electrons_->push_back(el_);
              if(electrons_idLoose->at(i)==1 && relIso03<0.12) electronsl_->push_back(el_);
