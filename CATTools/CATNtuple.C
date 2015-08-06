@@ -104,7 +104,7 @@ void CATNtuple::Loop()
              Lepton el_(pt,eta,phi,mass, relIso04, q);
              //electrons_->push_back(el_);
              if(electrons_idMedium->at(i)==1) electrons_->push_back(el_);
-             if(electrons_idLoose->at(i)==1 && relIso03<0.12) electronsl_->push_back(el_);
+             if(electrons_idLoose->at(i)==1 && relIso04<0.12) electronsl_->push_back(el_);
           }
       }
       std::sort(electrons_->begin(), electrons_->end(), compByPtLep);
