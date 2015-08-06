@@ -3,7 +3,7 @@ import sys
 from ntuple2hist_cff import *
 from mcsample_cfi import * 
 from monitors_cfi import *
-from cuts_cfi import *
+from cut_cfi import *
 
 if len(sys.argv) is 1:
   print "Please, add the name as like followings."
