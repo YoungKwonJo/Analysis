@@ -44,6 +44,13 @@ process.genTtbarLeptonDecay = cms.EDProducer("GenTtbarLeptonDecay",
 process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
     failureMode = cms.untracked.string("keep"), # choose one among keep/skip/error
     eventCounters = cms.vstring("nEventsTotal"), #"nEventsTotal", "nEventsClean", "nEventsPAT"),
+    bool = cms.PSet(
+        CSCTightHaloFilter                 =   cms.PSet(src = cms.InputTag("catTrigger", "CSCTightHaloFilter"                 )),
+        EcalDeadCellTriggerPrimitiveFilter =   cms.PSet(src = cms.InputTag("catTrigger", "EcalDeadCellTriggerPrimitiveFilter" )),
+        HBHENoiseFilter                    =   cms.PSet(src = cms.InputTag("catTrigger", "HBHENoiseFilter"                    )),
+        eeBadScFilter                      =   cms.PSet(src = cms.InputTag("catTrigger", "eeBadScFilter"                      )),
+        goodVertices                       =   cms.PSet(src = cms.InputTag("catTrigger", "goodVertices"                       )),
+    ),
     int = cms.PSet(
 
         HLTDoubleEle33CaloIdLGsfTrkIdVL             =   cms.PSet(src = cms.InputTag("catTrigger", "HLTDoubleEle33CaloIdLGsfTrkIdVL"             )),
@@ -348,6 +355,7 @@ process.TFileService = cms.Service("TFileService",
 process.load("CATTools.CatProducer.pseudoTop_cff")
 process.p = cms.Path(
     process.nEventsTotal*
+    process.genTtbarLeptonDecay*
     process.partonTop*
     process.ntuple
 )
