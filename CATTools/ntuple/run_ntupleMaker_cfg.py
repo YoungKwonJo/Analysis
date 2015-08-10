@@ -93,7 +93,7 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
         pdfWeight = cms.PSet(src = cms.InputTag("pdfWeight")),
     ),
     cands = cms.PSet(
-        muon = cms.PSet(
+        muons = cms.PSet(
             src = cms.InputTag("catMuons"),
             #index = cms.untracked.int32(0),
             exprs = cms.untracked.PSet(
