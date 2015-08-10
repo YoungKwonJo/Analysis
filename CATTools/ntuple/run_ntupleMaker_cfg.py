@@ -69,8 +69,16 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
         HLTMu17TrkIsoVVLTkMu8TrkIsoVVL              =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu17TrkIsoVVLTkMu8TrkIsoVVL"              )),
         HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL    =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL"    )),
 
-        nVertex   = cms.PSet(src = cms.InputTag("recoEventInfo","pvN")),
 
+        nGoodPV           =   cms.PSet(src = cms.InputTag("catVertex"   , "nGoodPV"          )),
+        nPV               =   cms.PSet(src = cms.InputTag("catVertex"   , "nPV"              )),
+
+        pdfWeightId1 =   cms.PSet(src = cms.InputTag("pdfWeight", "id1" )),
+        pdfWeightId2 =   cms.PSet(src = cms.InputTag("pdfWeight", "id2" )),
+
+        nTrueInteraction  =   cms.PSet(src = cms.InputTag("pileupWeight", "nTrueInteraction" )),
+
+        #nVertex   = cms.PSet(src = cms.InputTag("recoEventInfo","pvN")),
         #HLTDoubleMu = cms.PSet(src = cms.InputTag("recoEventInfo","HLTDoubleMu")),
         #HLTDoubleEl = cms.PSet(src = cms.InputTag("recoEventInfo","HLTDoubleEl")),
         #HLTMuEl     = cms.PSet(src = cms.InputTag("recoEventInfo","HLTMuEl")),
@@ -85,9 +93,14 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
         puWeight   = cms.PSet(src = cms.InputTag("pileupWeight")),
         puWeightUp = cms.PSet(src = cms.InputTag("pileupWeight", "up")),
         puWeightDn = cms.PSet(src = cms.InputTag("pileupWeight", "dn")),
-        pvX   = cms.PSet(src = cms.InputTag("recoEventInfo","pvX")),
-        pvY   = cms.PSet(src = cms.InputTag("recoEventInfo","pvY")),
-        pvZ   = cms.PSet(src = cms.InputTag("recoEventInfo","pvZ")),
+
+        pdfWeightQ  =   cms.PSet(src = cms.InputTag("pdfWeight", "Q" )),
+        pdfWeightX1 =   cms.PSet(src = cms.InputTag("pdfWeight", "x1" )),
+        pdfWeightX2 =   cms.PSet(src = cms.InputTag("pdfWeight", "x2" )),
+
+     #   pvX   = cms.PSet(src = cms.InputTag("recoEventInfo","pvX")),
+     #   pvY   = cms.PSet(src = cms.InputTag("recoEventInfo","pvY")),
+     #   pvZ   = cms.PSet(src = cms.InputTag("recoEventInfo","pvZ")),
    ),
     doubles = cms.PSet(
         pdfWeight = cms.PSet(src = cms.InputTag("pdfWeight")),
@@ -185,8 +198,50 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
 
             ),
         ),
+        jetsPuppi = cms.PSet(
+            src = cms.InputTag("catJetsPuppi"),
+            exprs = cms.untracked.PSet(
+                pt  = cms.string("pt"),
+                eta = cms.string("eta"),
+                phi = cms.string("phi"),
+                m   = cms.string("mass"),
+                vtxMass = cms.string("vtxMass"),
+                CSVInclV2 = cms.string("bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')"),
+                #CSVInclV2 = cms.string("bDiscriminator('combinedInclusiveSecondaryVertexV2BJetTags')"),
+                partonFlavour = cms.string("partonFlavour"),
+                hadronFlavour = cms.string("hadronFlavour"),
+            ),
+            selections = cms.untracked.PSet(
+                isLoose = cms.string("LooseId"),
+                isPFId = cms.string("pileupJetId"),
+            ),
+        ),
         met = cms.PSet(
             src = cms.InputTag("catMETs"),
+            exprs = cms.untracked.PSet(
+                pt  = cms.string("pt"),
+                phi = cms.string("phi"),
+            ),
+            selections = cms.untracked.PSet(),
+        ),
+        metNoHF = cms.PSet(
+            src = cms.InputTag("catMETsNoHF"),
+            exprs = cms.untracked.PSet(
+                pt  = cms.string("pt"),
+                phi = cms.string("phi"),
+            ),
+            selections = cms.untracked.PSet(),
+        ),
+        metPfMva = cms.PSet(
+            src = cms.InputTag("catMETsPfMva"),
+            exprs = cms.untracked.PSet(
+                pt  = cms.string("pt"),
+                phi = cms.string("phi"),
+            ),
+            selections = cms.untracked.PSet(),
+        ),
+        metPuppi = cms.PSet(
+            src = cms.InputTag("catMETsPuppi"),
             exprs = cms.untracked.PSet(
                 pt  = cms.string("pt"),
                 phi = cms.string("phi"),
