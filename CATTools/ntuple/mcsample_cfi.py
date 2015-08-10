@@ -88,6 +88,26 @@ mcsamples =[
 }
 ]
 
+datasamples =[
+{
+ "name": "DoubleMuon_Run2015B",
+"location": "/store/group/CAT/DoubleMuon/v7-3-1_Run2015B-PromptReco-v1/",
+"subfolder": "150724_094546",
+"entries": 117
+},
+{
+ "name": "DoubleEG_Run2015B",
+"location": "/store/group/CAT/DoubleEG/v7-3-1_Run2015B-PromptReco-v1/",
+"subfolder": "150724_094516",
+"entries": 117
+},
+{
+ "name": "DoubleMuon_Run2015B",
+"location": "/store/group/CAT/MuonEG/v7-3-1_Run2015B-PromptReco-v1/",
+"subfolder": "150724_094612",
+"entries": 117
+},
+]
 
 def my_readFiles(mcsample):
   aaa = []
