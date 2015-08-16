@@ -27,6 +27,7 @@ fileNames = readFiles
 )
 from FWCore.PythonUtilities import LumiList
 process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt').getVLuminosityBlockRange()
+#https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.genTtbarLeptonDecay = cms.EDProducer("GenTtbarLeptonDecay",
