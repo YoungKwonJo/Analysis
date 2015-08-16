@@ -21,8 +21,11 @@ process.source = cms.Source("PoolSource",
 fileNames = readFiles
 #      fileNames = cms.untracked.vstring(
 #'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/v7-3-4_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150810_214907/0000/catTuple_1.root',
+#'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/DoubleMuon/v7-3-4_Run2015B-PromptReco-v1/150810_214255/0000/catTuple_1.root',
 #      )
 )
+from FWCore.PythonUtilities import LumiList
+process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt').getVLuminosityBlockRange()
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
 process.genTtbarLeptonDecay = cms.EDProducer("GenTtbarLeptonDecay",
@@ -400,7 +403,7 @@ process.TFileService = cms.Service("TFileService",
 process.load("CATTools.CatProducer.pseudoTop_cff")
 process.p = cms.Path(
     process.nEventsTotal*
-    process.genTtbarLeptonDecay*
-    process.partonTop*
+#    process.genTtbarLeptonDecay*
+#    process.partonTop*
     process.ntuple
 )
