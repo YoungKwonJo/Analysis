@@ -116,7 +116,7 @@ samples = [
 def my_readFiles(sample):
   aaa = []
   for i in range(1,sample['entries']+1) :
-    bbb= "root://cms-xrdr.sdfarm.kr:1094///xrd" + mcsample['path'] + "/0000/catTuple_"
+    bbb= "root://cms-xrdr.sdfarm.kr:1094///xrd" + sample['path'] + "/0000/catTuple_"
     bbb+="%d" % (i)
     bbb+=".root"
     print bbb
