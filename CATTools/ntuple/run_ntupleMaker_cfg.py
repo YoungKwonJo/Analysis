@@ -11,6 +11,7 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
+import sys
 input =sys.argv[2]
 i = int(input)
 from samples_cfi import samples, my_readFiles 
