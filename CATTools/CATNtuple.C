@@ -35,8 +35,7 @@ bool compByCSVJet(Jet a, Jet b)
 void CATNtuple::Loop()
 {
    if (fChain == 0) return;
-///////////
-
+/////////
    TTree *tree_ = new TTree(Form("myresult"),"");
    FlatTree* fevent_ = new FlatTree();
    fevent_->book(tree_);
@@ -44,22 +43,23 @@ void CATNtuple::Loop()
    LeptonsP muons_;        muons_     = new Leptons;
    LeptonsP electrons_;    electrons_ = new Leptons;
    JetsP   jets_;         jets_      = new Jets;
+   JetsP   jetsPuppi_;    jetsPuppi_ = new Jets;
 
    LeptonsP muonsl_;        muonsl_     = new Leptons;
    LeptonsP electronsl_;    electronsl_ = new Leptons;
+
 ///////////
    int aaa=0;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
    Long64_t nbytes = 0, nb = 0;
-   for (Long64_t jentry=0; jentry<nentries;jentry++) 
-   {
+   for (Long64_t jentry=0; jentry<nentries;jentry++) {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
-/////
+//////////////////////
       fevent_->clear();
  
       aaa++;
@@ -70,10 +70,42 @@ void CATNtuple::Loop()
       /////
       fevent_->met_     = met_pt->at(0);
       fevent_->metphi_  = met_phi->at(0);
+      fevent_->metNoHFphi_  =  metNoHF_phi->at(0);
+      fevent_->metNoHF_     =  metNoHF_pt->at(0);
+      fevent_->metPfMvaphi_ =  metPfMva_phi->at(0);
+      fevent_->metPfMva_    =  metPfMva_pt->at(0);
+      fevent_->metPuppiphi_ =  metPuppi_phi->at(0);
+      fevent_->metPuppi_    =  metPuppi_pt->at(0);
 
       fevent_->event_   = event; 
       fevent_->lumi_   = lumi; 
 
+////////////////////
+   fevent_->CSCTightHaloFilter_=                         CSCTightHaloFilter;                        
+   fevent_->EcalDeadCellTriggerPrimitiveFilter_=         EcalDeadCellTriggerPrimitiveFilter;
+   fevent_->HBHENoiseFilter_=                            HBHENoiseFilter;
+   fevent_->eeBadScFilter_=                              eeBadScFilter;
+   fevent_->goodVertices_=                               goodVertices;
+   fevent_->HLTDoubleEle33CaloIdLGsfTrkIdVL_=            HLTDoubleEle33CaloIdLGsfTrkIdVL;
+   fevent_->HLTEle12CaloIdLTrackIdLIsoVL_=               HLTEle12CaloIdLTrackIdLIsoVL;
+   fevent_->HLTEle16Ele12Ele8CaloIdLTrackIdL_=           HLTEle16Ele12Ele8CaloIdLTrackIdL;
+   fevent_->HLTEle17CaloIdLTrackIdLIsoVL_=               HLTEle17CaloIdLTrackIdLIsoVL;
+   fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_=        HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;
+   fevent_->HLTEle23Ele12CaloIdLTrackIdLIsoVL_=          HLTEle23Ele12CaloIdLTrackIdLIsoVL;
+   fevent_->HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ_=        HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ;
+   fevent_->HLTEle27eta2p1WPLooseGsfTriCentralPFJet30_=  HLTEle27eta2p1WPLooseGsfTriCentralPFJet30;
+   fevent_->HLTMu17Mu8DZ_=                               HLTMu17Mu8DZ;
+   fevent_->HLTMu17TkMu8DZ_=                             HLTMu17TkMu8DZ;
+   fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_=  HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;
+   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVL_=               HLTMu17TrkIsoVVLMu8TrkIsoVVL;
+   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_=             HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;
+   fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVL_=             HLTMu17TrkIsoVVLTkMu8TrkIsoVVL;
+   fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_=   HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;
+                                                                                                     
+   fevent_->nGoodPV_=                                    nGoodPV;
+   fevent_->nPV_=                                        nPV;
+   fevent_->nTrueInteraction_=                           nTrueInteraction;
+ 
 //      fevent_->HLTDoubleMu_   = HLTDoubleMu; 
 //      fevent_->HLTDoubleEl_   = HLTDoubleEl;
 //      fevent_->HLTMuEl_   = HLTMuEl;
@@ -90,7 +122,7 @@ void CATNtuple::Loop()
       {
           if( electrons_pt->at(i)>20.0 && fabs(electrons_eta->at(i))<2.4 &&
               //electrons_idMedium->at(i)==1 &&
-              electrons_isPassConversionVeto->at(i)==1 &&
+              //electrons_isPassConversionVeto->at(i)==1 &&
               !(fabs(electrons_scEta->at(i))>1.4442 && fabs(electrons_scEta->at(i))<1.5660) 
             ) 
           {
@@ -273,7 +305,9 @@ void CATNtuple::Loop()
          fevent_->em_mu1_dr_el_ = em_mu1_dr_el;
          fevent_->em_el2_dr_mu_ = em_el2_dr_mu;
       }
+
 ////////////////////////////////////
+//PFJET
       for(int i=0;i<jets_pt->size();i++)
       {
           if( jets_pt->at(i)>30.0 && fabs(jets_eta->at(i))<2.4 
@@ -337,7 +371,6 @@ void CATNtuple::Loop()
       }
       std::sort(jets_->begin(), jets_->end(), compByCSVJet);
 
-
 //////////////
       int nBJetT=0, nBJetM=0, nBJetL=0, nJet=0;
       for(int i=0;i<jets_->size();i++)
@@ -357,7 +390,95 @@ void CATNtuple::Loop()
       fevent_->nBJetM_=nBJetM;
       fevent_->nBJetL_=nBJetL;
 
-////////////
+////////////////////////
+////////////////////////////////////
+//JETPUPPI
+      for(int i=0;i<jetsPuppi_pt->size();i++)
+      {
+          if( jetsPuppi_pt->at(i)>30.0 && fabs(jetsPuppi_eta->at(i))<2.4 
+            ) 
+          {
+             double pt = jetsPuppi_pt->at(i);
+             double eta = jetsPuppi_eta->at(i);
+             double phi = jetsPuppi_phi->at(i);
+             double mass = jetsPuppi_m->at(i);
+             double CSVInclV2 = jetsPuppi_CSVInclV2->at(i);
+             Jet jet_(pt,eta,phi,mass, CSVInclV2);
+             double minDR=1000.;
+             for(int j=0;j<muonsl_->size();j++ )
+             {
+                 double minDR_= fabs(muonsl_->at(j).vec_.DeltaR(jet_.vec_));
+                 if(minDR_<minDR) minDR=minDR_;
+             }
+             for(int j=0;j<electronsl_->size();j++ )
+             {
+                 double minDR_= fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_));
+                 if(minDR_<minDR) minDR=minDR_;
+             }
+             if(minDR==1000.) minDR=-999; 
+             jet_.setDRl(minDR);
+
+             //jets_->push_back(jet_);
+             bool isFill=true;
+
+             //////////// 1st option
+             //for(int j=0;j<muonsl_->size();j++ )     if(fabs(muonsl_     ->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+             //for(int j=0;j<electronsl_->size();j++ )  if(fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+
+             /////////// 2nd option
+             if(ZmmS)// && !ZeeS && !ZemS) 
+             //if(mm_zmass>20 && (muons_->at(mm_id1).Q_*muons_->at(mm_id2).Q_<0) )
+             {
+                 if(fabs(muons_->at(mm_id1).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id1).Iso_<0.12 ) isFill=false;
+                 if(fabs(muons_->at(mm_id2).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id2).Iso_<0.12 ) isFill=false;
+             }
+             if(ZeeS)
+             //if(ee_zmass>20 && (electrons_->at(ee_id1).Q_*electrons_->at(ee_id2).Q_<0) )
+             {
+                 //if( electrons_->at(ee_id1).Iso_<0.12 && electrons_->at(ee_id2).Iso_<0.12 )
+                 {
+                    if(fabs(electrons_->at(ee_id1).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+                    if(fabs(electrons_->at(ee_id2).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
+                 }
+             }
+             if(ZemS)
+             //if(em_zmass>20 && (muons_->at(em_id1).Q_*electrons_->at(em_id2).Q_<0) )
+             {
+                 //if( muons_->at(em_id1).Iso_<0.12 && electrons_->at(em_id2).Iso_<0.12 ) 
+                 {
+                    if(fabs(muons_    ->at(em_id1).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
+                    if(fabs(electrons_->at(em_id2).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
+                 }
+             }
+
+             if(isFill) jetsPuppi_->push_back(jet_);
+          }
+      }
+      std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByCSVJet);
+
+//////////////
+      int nBJetTPuppi=0, nBJetMPuppi=0, nBJetLPuppi=0, nJetPuppi=0;
+      for(int i=0;i<jetsPuppi_->size();i++)
+      {
+         if(jetsPuppi_->at(i).CSV()>0.970) nBJetT++; // CSVT 0.970
+         if(jetsPuppi_->at(i).CSV()>0.890) nBJetM++; // CSVM 0.890 
+         if(jetsPuppi_->at(i).CSV()>0.605) nBJetL++; // CSVL 0.605 
+         nJetPuppi++;
+         fevent_->jetPuppi_pt_ ->push_back( jetsPuppi_->at(i).Pt() );   
+         fevent_->jetPuppi_eta_->push_back( jetsPuppi_->at(i).Eta() );   
+         fevent_->jetPuppi_phi_->push_back( jetsPuppi_->at(i).Phi() );   
+         fevent_->jetPuppi_csv_->push_back( jetsPuppi_->at(i).CSV() );   
+         fevent_->jetPuppi_drl_->push_back( jetsPuppi_->at(i).DRl() );   
+      } 
+      fevent_->nJetPuppi_=nJetPuppi;
+      fevent_->nBJetTPuppi_=nBJetTPuppi;
+      fevent_->nBJetMPuppi_=nBJetMPuppi;
+      fevent_->nBJetLPuppi_=nBJetLPuppi;
+
+////////////////////////
+
+
+
       fevent_->isMM_ = ((int) (genTtbarLeptonDecay%100)==2); 
       fevent_->isEE_ = ((int) (genTtbarLeptonDecay%10000)==200);
       fevent_->isEM_ = ((int) (genTtbarLeptonDecay%10000)==101);
@@ -376,7 +497,9 @@ void CATNtuple::Loop()
 //////////
       tree_->Fill();
 
-//////////
 
+
+
+///////////////////////
    }
 }

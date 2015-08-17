@@ -13,7 +13,7 @@ gROOT.ProcessLine(".L Lepton.h+");
 gROOT.ProcessLine(".L Jet.h+");
 gROOT.ProcessLine(".L CATNtuple.C+");
 
-from mcsample_cfi import *
+from samples_cfi import *
 
 def makeresult(name):
   f = TFile("../ntuple_" + name + ".root")
@@ -26,5 +26,7 @@ def makeresult(name):
   t.Loop()
   fout.Write()
 
-for i,ii in enumerate(mcsamples):
-  makeresult(ii['name']);
+makeresult("TTJets_MG5")
+
+#for i,ii in enumerate(samples):
+#  makeresult(ii['name'])
