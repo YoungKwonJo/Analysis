@@ -113,6 +113,7 @@ void CATNtuple::Loop()
       muons_->clear();
       electrons_->clear();
       jets_->clear();
+      jetsPuppi_->clear();
 
       muonsl_->clear();
       electronsl_->clear();
