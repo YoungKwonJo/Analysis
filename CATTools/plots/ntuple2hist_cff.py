@@ -38,12 +38,12 @@ def h2_set(name,monitor,monitor2,cutname):
 
 def h_all_maker(tree,mc, monitors, cuts):
   h = []
-  for cutname in cuts:
+  for cutname in cuts["cut"]:
     for i,ii in enumerate(monitors):
-      mon = h1_set(mc['name'],monitors[i],cutname)
-      h1 = h1_maker(tree,mon,cuts[cutname]+" && "+mc['selection'],0)
+      mon = h1_set(mc['name'],monitors[i],cutname+cuts["channel"])
+      h1 = h1_maker(tree,mon,cuts["cut"][cutname]+" && "+mc['selection'],0)
       h.append(copy.deepcopy(h1))
-      cut = cuts[cutname]+" && "+mc['selection']
+      cut = cuts["cut"][cutname]+" && "+mc['selection']
       print "____" + mc['name'] + "_____" + cut + "_____" 
       h1sumw2 = h1_maker(tree,mon,cut,1)
       h.append(copy.deepcopy(h1sumw2))
@@ -51,31 +51,33 @@ def h_all_maker(tree,mc, monitors, cuts):
 
 def h2_all_maker(tree,mc, monitors, cuts):
   h = []
-  for cutname in cuts:
+  for cutname in cuts["cut"]:
     for i,ii in enumerate(monitors):
       for j,jj in enumerate(monitors):
         if i<j:
-          mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname)
-          h2 = h2_maker(tree,mon2,cuts[cutname]+" && "+mc['selection'],0)
+          mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname+cuts["channel"])
+          h2 = h2_maker(tree,mon2,cuts["cut"][cutname]+" && "+mc['selection'],0)
           h.append(copy.deepcopy(h2))
-          h2sumw2 = h2_maker(tree,mon2,cuts[cutname]+" && "+mc['selection'],1)
+          h2sumw2 = h2_maker(tree,mon2,cuts["cut"][cutname]+" && "+mc['selection'],1)
           h.append(copy.deepcopy(h2sumw2))
   return h
 
 def cut_maker(cuts_):
   cuts  = {}
-  for i,cut in enumerate(cuts_):
+  for i,cut in enumerate(cuts_["cut"]):
     if i==0 :
       cuts["S%d"%i]=cut
     else:
       cuts["S%d"%i]= cuts["S%d"%(i-1)] + " && " + cut
-  print cuts
-  return cuts
+  cutsN = {"channel":cuts_["channel"],"cut":cuts}
+  print cutsN
+  return cutsN
 
 def cut_maker2(cuts_):
   cuts  = {}
-  for i,cut in enumerate(cuts_):
+  for i,cut in enumerate(cuts_["cut"]):
       cuts["S%d"%i]=cut
+  cutsN = {"channel":cuts_["channel"],"cut":cuts}
   return cuts
 
 

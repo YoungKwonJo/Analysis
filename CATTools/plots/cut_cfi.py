@@ -19,13 +19,39 @@ mm_zmass = "( abs(91.2-mm_zmass)>15 )"
 ee_zmass = "( abs(91.2-ee_zmass)>15 )"
 em_zmass = "(1)"# "( abs(91.2-em_zmass)>15 )"
 
-cuts = [
-   "1",
-   "(" + mm_lep + " || " + ee_lep + " || " + em_lep + ") ",
-   "(" + mAND(mm_lep,mm_zmass) + " || " + mAND(ee_lep,ee_zmass) + " || " + mAND(em_lep,em_zmass) + ") ",
-   "(met>40 || !(" + mm_lep + " || " + ee_lep + ")) ",
+mm_cuts ={
+"channel": "mm",
+"cut": [
+   "(1)",
+   "(" + mm_lep + ")",
+   "(" + mm_zmass + ")",
+   "(met>40)", 
    "nJet>=4 ",
    "nBJetM>=2", 
    "nBJetT>=2", 
 ]
-
+}
+ee_cuts = {
+"channel": "ee",
+"cut": [
+   "(1)",
+   "(" + ee_lep + ") ",
+   "(" + ee_zmass + ") ",
+   "(met>40) ",
+   "nJet>=4 ",
+   "nBJetM>=2", 
+   "nBJetT>=2", 
+]
+}
+em_cuts = {
+"channel": "em",
+"cut":[
+   "(1)",
+   "(" + em_lep + ") ",
+   "(1)",
+   "(1) ",
+   "nJet>=4 ",
+   "nBJetM>=2", 
+   "nBJetT>=2", 
+]
+}

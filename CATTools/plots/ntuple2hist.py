@@ -29,12 +29,12 @@ for mon22 in monitors2d.keys():
 
 json = {
 "mcsamples" : mcsamples,
+#"datasamples" : datasamples,
 "monitors" : mon1,
+#"monitors" : monitors["Mon1"],
 "monitors2" : mon2,
-#"monitors" : monitors["basicMon" ],
-#"monitors" : monitors["jetMon3" ],
-#"monitors" : mon,
-"cuts" : cuts, 
+"monitors2" : [],
+"cuts" : mm_cuts, 
 "output" : "hist_mon" + arg + ".root"
 }
 
