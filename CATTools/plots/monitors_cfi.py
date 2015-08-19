@@ -2,13 +2,15 @@
 monitors = {
 "Mon1" : [
   #in the figure MET_S0, we will use the event for total-event.
-  { "name":"MET",          "unit":"Missing E_{T} (GeV) ",          "var":"met",      "xbin_set":[60,0,300]     },
+  { "name":"MET",          "unit":"Missing E_{T} (GeV) ",          "var":"met",      "xbin_set":[60,0,300]   },
   { "name":"ZMassMM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"mm_zmass",  "xbin_set":[60,0,300]  },
-  { "name":"ZMassEE",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"ee_zmass",  "xbin_set":[60,0,300]  },
-  { "name":"ZMassEM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"em_zmass",  "xbin_set":[60,0,300]  },
+  { "name":"nGoodPV",      "unit":"# of good vertex ",             "var":"nGoodPV",  "xbin_set":[70,0,70]    },
+  { "name":"nPV",          "unit":"# of vertex ",                  "var":"nPV",      "xbin_set":[70,0,70]    },
+#  { "name":"ZMassEE",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"ee_zmass",  "xbin_set":[60,0,300]  },
+#  { "name":"ZMassEM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"em_zmass",  "xbin_set":[60,0,300]  },
 ],
 "Mon2" : [
-  #{ "name":"MET",          "unit":"Missing E_{T} (GeV) ",          "var":"met",      "xbin_set":[60,0,300]     },
+#  { "name":"MET",          "unit":"Missing E_{T} (GeV) ",          "var":"met",      "xbin_set":[60,0,300]     },
   { "name":"METPHI",       "unit":"Missing E_{T} #phi ",           "var":"metphi",   "xbin_set":[40,-4,4]      },
   { "name":"nBJetL",       "unit":"b-Jet multiplicity loose ",     "var":"nBJetL",   "xbin_set":[8,0,8]      },
   { "name":"nBJetM",       "unit":"b-Jet multiplicity medium ",    "var":"nBJetM",   "xbin_set":[8,0,8]      },

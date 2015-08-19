@@ -432,7 +432,10 @@ def singleplotStack(filename,mon,step,mcsamples):
       hs.Add(h1)
     else :
       h1.SetMaximum(scale*400)
-      h1.SetMinimum(0.5)
+      #if minimum<1:  h1.SetMinimum(minimum*0.5)
+      #else : h1.SetMinimum(0.5)
+      h1.SetMinimum(0.005)
+
       h1.GetYaxis().SetNdivisions(505);
       #h1.GetYaxis().SetLabelFont(42);
       h1.GetYaxis().SetLabelOffset(0.007);
@@ -462,7 +465,7 @@ def singleplotStack(filename,mon,step,mcsamples):
   xxer=[]
   yy=[]
   yyer=[]
-  for i in range(1, hmctot.GetNbinsX()+1 ):
+  for i in range(0, hmctot.GetNbinsX()+2 ):
     yy.append(  float(hmctot.GetBinContent(i)))
     yyer.append(float(hmctot.GetBinError(i)))
     xx.append(  float(hmctot.GetBinCenter(i)))

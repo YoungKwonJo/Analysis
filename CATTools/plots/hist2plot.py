@@ -36,9 +36,20 @@ json = {
 singleplotStack(json['file'],"MET","S0mm",json['mcsamples'])
 singleplotStack(json['file'],"MET","S1mm",json['mcsamples'])
 singleplotStack(json['file'],"MET","S2mm",json['mcsamples'])
+singleplotStack(json['file'],"MET","S3mm",json['mcsamples'])
+singleplotStack(json['file'],"MET","S4mm",json['mcsamples'])
+singleplotStack(json['file'],"MET","S5mm",json['mcsamples'])
 singleplotStack(json['file'],"ZMassMM","S0mm",json['mcsamples'])
 singleplotStack(json['file'],"ZMassMM","S1mm",json['mcsamples'])
 singleplotStack(json['file'],"ZMassMM","S2mm",json['mcsamples'])
+
+singleplotStack(json['file'],"nPV","S0mm",json['mcsamples'])
+singleplotStack(json['file'],"nGoodPV","S0mm",json['mcsamples'])
+singleplotStack(json['file'],"nPV","S1mm",json['mcsamples'])
+singleplotStack(json['file'],"nGoodPV","S1mm",json['mcsamples'])
+singleplotStack(json['file'],"nPV","S2mm",json['mcsamples'])
+singleplotStack(json['file'],"nGoodPV","S2mm",json['mcsamples'])
+
 ######
 #for step in json['cuts']:
 #  for mon in json['monitors']:

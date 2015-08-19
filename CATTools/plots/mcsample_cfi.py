@@ -2,9 +2,9 @@
 from ROOT import *
 
 loc = "../"
-ttbar = "TTJets_MG5"
+#ttbar = "TTJets_MG5"
 #ttbar = "TTJets_aMC"
-#ttbar = "TT_powheg"
+ttbar = "TT_powheg"
 ttcx=815.96
 
 def mAND(aaa,bbb):
