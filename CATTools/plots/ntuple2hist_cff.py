@@ -1,5 +1,7 @@
 from ROOT import *
 import copy
+from array import array
+from math import sqrt
 
 def h1_maker(tree, mon, cut,doSumw2):
   aa=['','_Sumw2']
@@ -322,3 +324,264 @@ def plotTH2F(filename,mon,step,mcsamples):
   c1.Print(output)
   f.Close()
   c1.Close()
+
+
+def singleplotStack(filename,mon,step,mcsamples):
+  f = TFile.Open(filename,"read")
+  c1 = TCanvas( 'c1', '', 500, 500 )
+  gStyle.SetOptFit(1)
+  gStyle.SetOptStat(0)
+  c1.Range(0,0,1,1)
+  c1.SetFillColor(0)
+  c1.SetBorderMode(0)
+  c1.SetBorderSize(2)
+  c1.SetTickx(1)
+  c1.SetTicky(1)
+  c1.SetLeftMargin(0.15)
+  c1.SetRightMargin(0.05)
+  c1.SetBottomMargin(0.15)
+  c1.SetFrameBorderMode(0)
+
+
+  pad1 = TPad("pad1", "",0,0.3,1,1);
+  pad1.Draw()
+  pad1.cd()
+  pad1.Range(-1.072875,-0.39794,5.364372,5.641005)
+  pad1.SetFillColor(0)
+  pad1.SetBorderMode(0)
+  pad1.SetBorderSize(2)
+  pad1.SetLogy()
+  pad1.SetTickx(1)
+  pad1.SetTicky(1)
+  pad1.SetLeftMargin(0.1666667)
+  pad1.SetRightMargin(0.05660377)
+  pad1.SetBottomMargin(0)
+  pad1.SetFrameBorderMode(0)
+  pad1.SetFrameBorderMode(0)
+
+  leg  = make_legend(0.67,0.64, 0.89,0.88)
+  leg2 = make_legend(0.43,0.64, 0.62,0.88)
+  scale=0.
+  jj = 0.
+  bb = 0.
+  b1 = 0.
+  b2 = 0.
+  lumi = 40.028
+  #lumi = 35.028
+  minimum=1.
+  hs = THStack("hs","")
+
+  hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step+"_Sumw2"
+  hmctot = f.Get(hmctotName).Clone("hmctot")
+  hmctot.Reset()
+
+  hdata = hmctot.Clone("hdata")
+
+  for i,mc in enumerate(mcsamples):
+    histnameS = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
+    histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
+    htotname = "h1_"+mc['name']+"_MET_S0mm_Sumw2"
+    #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
+    h1 = f.Get(histname)
+    h2 = f.Get(histnameS)
+    htot = f.Get(htotname)
+    if type(h1) is not TH1F :
+      return
+    #if h1.Integral()>0 and mc['label'].find("DATA")==-1: print mc.keys()
+    h1.GetYaxis().SetTitle("Events")
+    h2.GetYaxis().SetTitle("Events")
+
+    Ntot = htot.Integral()
+    h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
+    h2.AddBinContent(h2.GetNbinsX(),h2.GetBinContent(h2.GetNbinsX()+1))
+    aa = mc['name']
+    if h1.Integral()>0 and mc['label'].find("DATA")==-1:  h1.Scale(mc['cx']/Ntot*lumi)
+    if h2.Integral()>0 and mc['label'].find("DATA")==-1:  h2.Scale(mc['cx']/Ntot*lumi)
+    print mc['label']+":"+str(mc['label'].find("DATA")==-1)
+
+    #h1list.append(copy.deepcopy(h1))
+    #h2list.append(copy.deepcopy(h2))
+    if mc['label'].find("DATA")==-1: hmctot.Add( h2 )
+    else : hdata.Add(h2)
+
+    #if mc['label'].find("DATA")==-1: hmctot = merge(hmctot,h2)
+
+    if ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") ):
+      jj+=h1.Integral()
+      #print jj
+    if aa is "ttbb" :  bb+=h1.Integral()
+    if aa is "ttb"  :  b1+=h1.Integral()
+    if aa is "tt2b" :  b2+=h1.Integral()
+
+    if h1.GetMaximum()>scale: scale=h1.GetMaximum()
+    if h1.GetMinimum()>0 and minimum<h1.GetMinimum(): minimum=h1.GetMinimum()
+  label2 =""
+  Nlabel2=0.
+  #mctotal=0.
+  for i,mc in enumerate(mcsamples):
+    histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
+    h1 = f.Get(histname);
+    h1.SetTitle("")
+    #if i==0:
+    #  h1.SetMaximum(scale*400)
+    #  h1.SetMinimum(0.5)
+    h1.SetStats(0)
+    if mc['label'].find("DATA")==-1: 
+      h1.SetFillColor(mc['color'])
+      h1.SetLineColor(kBlack)
+      hs.Add(h1)
+    else :
+      h1.SetMaximum(scale*400)
+      h1.SetMinimum(0.5)
+      h1.GetYaxis().SetNdivisions(505);
+      #h1.GetYaxis().SetLabelFont(42);
+      h1.GetYaxis().SetLabelOffset(0.007);
+      h1.GetYaxis().SetLabelSize(0.05);
+      h1.GetYaxis().SetTitleSize(0.05);
+      h1.GetYaxis().SetTitleOffset(1.4);
+      h1.Draw()
+
+    #lleng= len("%s"%mc['label'])
+    #rleng= len(" %.0f"%h1.Integral())
+    #lrleng = 22 - lleng - int(rleng/1.8)
+    label = ("%s"%mc['label']) + (" %.0f"%(h1.Integral()+Nlabel2) ).rjust(7)
+    if mc['label'].find("DATA")==-1 and mc['label'] is not label2 and i<6: leg.AddEntry(h1, label, "f")
+    elif mc['label'].find("DATA")==-1 and mc['label'] is not label2 : leg2.AddEntry(h1, label, "f")
+    #else : leg.AddEntry(h1,label,"p")
+    if mc['label'] is label2 : Nlabel2+=h1.Integral()
+    else : Nlabel2=h1.Integral()
+    label2=mc['label']
+
+
+  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
+  labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
+  leg2.AddEntry(hmctot,labeltot,"")
+
+########
+  xx=[]
+  xxer=[]
+  yy=[]
+  yyer=[]
+  for i in range(1, hmctot.GetNbinsX()+1 ):
+    yy.append(  float(hmctot.GetBinContent(i)))
+    yyer.append(float(hmctot.GetBinError(i)))
+    xx.append(  float(hmctot.GetBinCenter(i)))
+    xxer.append(float(hmctot.GetBinWidth(i)/2))
+
+  x   = array("d",xx)
+  xer = array("d",xxer)
+  y   = array("d",yy)
+  yer = array("d",yyer)
+  gr = TGraphErrors(len(x), x,y,xer,yer)
+  gr.SetFillColor(kBlack);
+  gr.SetFillStyle(3144);
+ 
+  hs.SetMinimum(minimum)
+  hs.SetMaximum(hs.GetMaximum()*10)
+
+  hs.Draw("same")
+  gr.Draw("same,2")
+  #hmctot.Draw("same,E2")
+
+  for i,mc in enumerate(mcsamples):
+    histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
+    h1 = f.Get(histname);
+    if mc['label'].find("DATA")>-1:
+      label = ("%s"%mc['label']) + (" %.0f"%h1.Integral()).rjust(8)
+      leg.AddEntry(h1,label,"p")
+      h1.SetMarkerColor(kBlack)
+      h1.SetLineColor(kBlack)
+      h1.SetMarkerStyle(20)
+      h1.SetMarkerSize(1)
+      h1.SetMaximum(scale*400)
+      h1.Draw("same")
+      h1.Draw("sameaxis")
+
+  leg.Draw()
+  leg2.Draw()
+  pad1.SetLogy()
+  #pt = make_banner(0.15,0.73, 0.5, 0.89)
+  bbb = 0.
+  bbbb = 0.
+  if jj>0:  bbb = bb/jj
+  if jj>0:  bbbb = (bb+b1+bb)/jj
+  #pt = make_banner2(0.12,0.66, 0.5, 0.89, bbb,bbbb )
+  #pt.Draw()
+  pad1.Modified()
+  c1.cd()
+
+  pad2 = TPad("pad2", "",0,0,1,0.3)
+  pad2.Draw()
+  pad2.cd()
+  pad2.Range(-1.072875,-1.321429,5.364372,2.25)
+  pad2.SetFillColor(0)
+  pad2.SetBorderMode(0)
+  pad2.SetBorderSize(2)
+  pad2.SetTickx(1)
+  pad2.SetTicky(1)
+  pad2.SetLeftMargin(0.1666667)
+  pad2.SetRightMargin(0.05660377)
+  pad2.SetTopMargin(0.07)
+  pad2.SetBottomMargin(0.37)
+  pad2.SetFrameBorderMode(0)
+  pad2.SetFrameBorderMode(0)
+##############
+  hdata.Divide(hmctot)
+  hdata.SetTitle("")
+#  hdata.GetYaxis().SetTitle("Data/MC")
+  hdata.SetMaximum(2.0)
+  hdata.SetMinimum(0.0)
+##
+  #hdata.GetXaxis().SetBinLabel(2,"1");
+  #hdata.GetXaxis().SetBinLabel(3,"2");
+  #hdata.GetXaxis().SetBinLabel(4,"3");
+  #hdata.GetXaxis().SetBinLabel(5,"#geq4");
+  #hdata.GetXaxis().SetLabelFont(42);
+  hdata.GetXaxis().SetLabelOffset(0.007);
+  hdata.GetXaxis().SetLabelSize(0.1);
+  hdata.GetXaxis().SetTitleSize(0.14);
+  hdata.GetXaxis().SetTitleOffset(1.1);
+  #hdata.GetXaxis().SetTitleFont(42);
+  hdata.GetYaxis().SetTitle("Data/MC");
+  hdata.GetYaxis().SetNdivisions(505);
+  #hdata.GetYaxis().SetLabelFont(42);
+  hdata.GetYaxis().SetLabelOffset(0.007);
+  hdata.GetYaxis().SetLabelSize(0.1);
+  hdata.GetYaxis().SetTitleSize(0.14);
+  hdata.GetYaxis().SetTitleOffset(0.4);
+  #hdata.GetYaxis().SetTitleFont(42);
+  hdata.SetMarkerColor(kBlack)
+  hdata.SetLineColor(kBlack)
+  hdata.SetMarkerStyle(20)
+  hdata.SetMarkerSize(1)
+##
+  hdata.Draw()
+
+###############
+  pad2.Modified()
+  c1.cd()
+  c1.Modified()
+  c1.cd()
+
+  output = "plots/TH1_"+mon+"_"+step+".eps"
+  c1.Print(output)
+  f.Close()
+  c1.Close()
+
+#################
+def merge(h1,h2) :
+  y1=[]
+  y2=[]
+  y1er=[]
+  y2er=[]
+  for i in range(1, h1.GetNbinsX()+1 ):
+    y1.append(  float(h1.GetBinContent(i)))
+    y2.append(  float(h2.GetBinContent(i)))
+    y1er.append(float(h1.GetBinError(i)))
+    y2er.append(float(h2.GetBinError(i)))
+
+  h1.Reset()
+  for i in range(1, h1.GetNbinsX()+1 ):
+    h1.SetBinContent(i,y1[i-1]+y2[i-1])
+    h1.SetBinError(i,sqrt(y1er[i-1]*y1er[i-1]+y2er[i-1]*y2er[i-1]))
+  return h1
