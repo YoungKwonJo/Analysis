@@ -367,7 +367,7 @@ def singleplotStack(filename,mon,step,mcsamples):
   b1 = 0.
   b2 = 0.
   lumi = 40.028
-  #lumi = 35.028
+  #lumi = 10.028
   minimum=1.
   hs = THStack("hs","")
 
@@ -380,7 +380,8 @@ def singleplotStack(filename,mon,step,mcsamples):
   for i,mc in enumerate(mcsamples):
     histnameS = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
-    htotname = "h1_"+mc['name']+"_MET_S0mm_Sumw2"
+    htotname = "h1_"+mc['name']+"_MET_S0"+step[2:4]+"_Sumw2"
+    print htotname
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname)
     h2 = f.Get(histnameS)
@@ -397,7 +398,7 @@ def singleplotStack(filename,mon,step,mcsamples):
     aa = mc['name']
     if h1.Integral()>0 and mc['label'].find("DATA")==-1:  h1.Scale(mc['cx']/Ntot*lumi)
     if h2.Integral()>0 and mc['label'].find("DATA")==-1:  h2.Scale(mc['cx']/Ntot*lumi)
-    print mc['label']+":"+str(mc['label'].find("DATA")==-1)
+    #print mc['label']+":"+str(mc['label'].find("DATA")==-1)
 
     #h1list.append(copy.deepcopy(h1))
     #h2list.append(copy.deepcopy(h2))
@@ -456,7 +457,7 @@ def singleplotStack(filename,mon,step,mcsamples):
     label2=mc['label']
 
 
-  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
+  #print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
   labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
   leg2.AddEntry(hmctot,labeltot,"")
 
