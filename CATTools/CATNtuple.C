@@ -294,11 +294,17 @@ void CATNtuple::Loop()
          }
       }
 
-/////////////////////////////////////
-     if(ZmmPt>ZeePt && ZmmPt>ZemPt) {  ZeeS=false; ZemS =false; }
-     if(ZeePt>ZmmPt && ZeePt>ZemPt) {  ZmmS=false; ZemS =false; }
-     if(ZemPt>ZmmPt && ZemPt>ZeePt) {  ZmmS=false; ZeeS =false; }
-
+///////////////////////////
+      if(ZmmPt>ZeePt && ZmmPt>ZemPt && ZmmS) {  ZeeS=false; ZemS =false; }
+      if(ZeePt>ZmmPt && ZeePt>ZemPt && ZeeS) {  ZmmS=false; ZemS =false; }
+      if(ZemPt>ZmmPt && ZemPt>ZeePt && ZemS) {  ZmmS=false; ZeeS =false; }
+      if(!ZmmS && !ZeeS && !ZemS)
+      {
+          if(ZmmPt>ZeePt && ZmmPt>ZemPt) { ZmmS =true; }
+          if(ZeePt>ZmmPt && ZeePt>ZemPt) { ZeeS =true; }
+          if(ZemPt>ZmmPt && ZemPt>ZeePt) { ZemS =true; }
+      }
+///////////////////////////
       if(ZmmS)
       {
          fevent_->mm_mu1_pt_ = muons_->at(mm_id1).Pt();
