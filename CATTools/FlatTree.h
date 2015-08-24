@@ -40,7 +40,7 @@ public:
   double metNoHFphi_, metNoHF_,    metPfMvaphi_, metPfMva_,   metPuppiphi_, metPuppi_;   
 
   int  mm_mu1_q_, mm_mu2_q_, ee_el1_q_, ee_el2_q_, em_mu1_q_, em_el2_q_;
-  double mm_mu1_dr_el_, mm_mu2_dr_el_, ee_el1_dr_mu_, ee_el2_dr_mu_, em_mu1_dr_el_, em_el2_dr_mu_;
+  //double mm_mu1_dr_el_, mm_mu2_dr_el_, ee_el1_dr_mu_, ee_el2_dr_mu_, em_mu1_dr_el_, em_el2_dr_mu_;
 
   doublesP jet_pt_, jet_eta_, jet_phi_, jet_csv_, jet_drl_; 
   doublesP jetPuppi_pt_, jetPuppi_eta_, jetPuppi_phi_, jetPuppi_csv_, jetPuppi_drl_; 
@@ -185,13 +185,13 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("em_zmass",    &em_zmass_,     "em_zmass/D");
 
   
-   tree_->Branch("mm_mu1_dr_el",&mm_mu1_dr_el_,"mm_mu1_dr_el/D");
+ /*  tree_->Branch("mm_mu1_dr_el",&mm_mu1_dr_el_,"mm_mu1_dr_el/D");
    tree_->Branch("mm_mu2_dr_el",&mm_mu2_dr_el_,"mm_mu2_dr_el/D");
    tree_->Branch("ee_el1_dr_mu",&ee_el1_dr_mu_,"ee_el1_dr_mu/D");
    tree_->Branch("ee_el2_dr_mu",&ee_el2_dr_mu_,"ee_el2_dr_mu/D");
    tree_->Branch("em_mu1_dr_el",&em_mu1_dr_el_,"em_mu1_dr_el/D");
    tree_->Branch("em_el2_dr_mu",&em_el2_dr_mu_,"em_el2_dr_mu/D");
-
+*/
 /////
   tree_->Branch("isMM",  &isMM_, "isMM/I" );
   tree_->Branch("isEE",  &isEE_, "isEE/I" );
@@ -261,7 +261,7 @@ void FlatTree::clear()
    em_mu1_pt_=-99.; em_mu1_eta_=-99.; em_mu1_phi_=-99.; em_mu1_iso_=-99.; em_zmass_=-99.;
    em_el2_pt_=-99.; em_el2_eta_=-99.; em_el2_phi_=-99.; em_el2_iso_=-99.;
 
-   mm_mu1_dr_el_=-99.;  mm_mu2_dr_el_=-99.;  ee_el1_dr_mu_=-99.;  ee_el2_dr_mu_=-99.;  em_mu1_dr_el_=-99.;  em_el2_dr_mu_=-99.; 
+   //mm_mu1_dr_el_=-99.;  mm_mu2_dr_el_=-99.;  ee_el1_dr_mu_=-99.;  ee_el2_dr_mu_=-99.;  em_mu1_dr_el_=-99.;  em_el2_dr_mu_=-99.; 
 
     mm_mu1_q_=-99;  mm_mu2_q_=-99;
     ee_el1_q_=-99;  ee_el2_q_=-99;
