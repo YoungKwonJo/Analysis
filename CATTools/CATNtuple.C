@@ -182,10 +182,10 @@ void CATNtuple::Loop()
 
 /////////////////////
       int Nmu=0, Nel=0, NmuIso=0, NelIso=0;
-      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     NmuIso++;
-      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) NelIso++;
-      for(int i=0;i<muons_->size();i++ )      Nmu++;
-      for(int i=0;i<electrons_->size();i++ )  Nel++;
+      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Pt()>30     && fabs(muons_->at(i).Eta())<2.1     && muons_->at(i).id_>2     && muons_->at(i).Iso_<0.12)     NmuIso++;
+      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Pt()>30 && fabs(electrons_->at(i).Eta())<2.1 && electrons_->at(i).id_>2 && electrons_->at(i).Iso_<0.12) NelIso++;
+      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Pt()>30     && fabs(muons_->at(i).Eta())<2.1     && muons_->at(i).id_>2     )  Nmu++;
+      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Pt()>30 && fabs(electrons_->at(i).Eta())<2.1 && electrons_->at(i).id_>2 )  Nel++;
       fevent_->Nmu_=Nmu;
       fevent_->Nel_=Nel;
       fevent_->NmuIso_=NmuIso;
