@@ -84,12 +84,12 @@ monitors = {
   { "name":"jet4DRl",     "unit":"DR_l of 4th leading Jet ",     "var":"jet_drl[3]",   "xbin_set":[20,0,4]     },
 ],
 "Mon12": [
-  { "name":"lep1DRelMM",   "unit":"Leading lepton DR with electron ",  "var":"mm_mu1_dr_el", "xbin_set":[60,0,3] },
-  { "name":"lep1DRmuEE",   "unit":"Leading lepton DR with muon     ",  "var":"ee_el1_dr_mu", "xbin_set":[60,0,3] },
-  { "name":"lep1DRelEM",   "unit":"Leading lepton DR with electron ",  "var":"em_mu1_dr_el", "xbin_set":[60,0,3] },
-  { "name":"lep2DRelMM",   "unit":"Second lepton DR with electron  ",  "var":"mm_mu2_dr_el", "xbin_set":[60,0,3] },
-  { "name":"lep2DRmuEE",   "unit":"Second lepton DR with muon      ",  "var":"ee_el2_dr_mu", "xbin_set":[60,0,3] },
-  { "name":"lep2DRmuEM",   "unit":"Second lepton DR with muon      ",  "var":"em_el2_dr_mu", "xbin_set":[60,0,3] },
+  #{ "name":"lep1DRelMM",   "unit":"Leading lepton DR with electron ",  "var":"mm_mu1_dr_el", "xbin_set":[60,0,3] },
+  #{ "name":"lep1DRmuEE",   "unit":"Leading lepton DR with muon     ",  "var":"ee_el1_dr_mu", "xbin_set":[60,0,3] },
+  #{ "name":"lep1DRelEM",   "unit":"Leading lepton DR with electron ",  "var":"em_mu1_dr_el", "xbin_set":[60,0,3] },
+  #{ "name":"lep2DRelMM",   "unit":"Second lepton DR with electron  ",  "var":"mm_mu2_dr_el", "xbin_set":[60,0,3] },
+  #{ "name":"lep2DRmuEE",   "unit":"Second lepton DR with muon      ",  "var":"ee_el2_dr_mu", "xbin_set":[60,0,3] },
+  #{ "name":"lep2DRmuEM",   "unit":"Second lepton DR with muon      ",  "var":"em_el2_dr_mu", "xbin_set":[60,0,3] },
 ],
 }
 
