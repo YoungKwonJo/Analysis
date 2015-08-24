@@ -15,8 +15,11 @@ gROOT.ProcessLine(".L CATNtuple.C+");
 
 from samples_cfi import *
 
+loc="root://cms-xrdr.sdfarm.kr:1094///xrd/store/user/youngjo/Cattools/v734_v1"
 def makeresult(name):
-  f = TFile("../ntuple_" + name + ".root")
+  link = loc+"/ntuple_" + name + ".root"
+  print link
+  f = TFile.Open(link)
   atree = f.Get("ntuple/event")
 
   t = CATNtuple(atree)
@@ -26,7 +29,7 @@ def makeresult(name):
   t.Loop()
   fout.Write()
 
-makeresult("TTJets_MG5")
+#makeresult("TTJets_MG5")
 
-#for i,ii in enumerate(samples):
-#  makeresult(ii['name'])
+for i,ii in enumerate(samples):
+  makeresult(ii['name'])
