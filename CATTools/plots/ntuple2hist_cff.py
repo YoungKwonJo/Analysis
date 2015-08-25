@@ -372,6 +372,7 @@ def singleplotStack(filename,mon,step,mcsamples):
   hs = THStack("hs","")
 
   hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step+"_Sumw2"
+  print "hmcTotal: "+hmctotName
   hmctot = f.Get(hmctotName).Clone("hmctot")
   hmctot.Reset()
 
@@ -380,8 +381,9 @@ def singleplotStack(filename,mon,step,mcsamples):
   for i,mc in enumerate(mcsamples):
     histnameS = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
-    htotname = "h1_"+mc['name']+"_MET_S0"+step[2:4]+"_Sumw2"
-    print htotname
+    channel = step[2:4]
+    htotname = "h1_"+mc['name']+"_MET_S0"+channel+"_Sumw2"
+    #print htotname
     #histname = "h1_"+mc['name']+"_"+mon+"_"+step+""
     h1 = f.Get(histname)
     h2 = f.Get(histnameS)
@@ -396,20 +398,23 @@ def singleplotStack(filename,mon,step,mcsamples):
     h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
     h2.AddBinContent(h2.GetNbinsX(),h2.GetBinContent(h2.GetNbinsX()+1))
     aa = mc['name']
-    if h1.Integral()>0 and mc['label'].find("DATA")==-1:  h1.Scale(mc['cx']/Ntot*lumi)
-    if h2.Integral()>0 and mc['label'].find("DATA")==-1:  h2.Scale(mc['cx']/Ntot*lumi)
+
+    isMC = mc['label'].find("DATA")==-1
+    checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl") 
+
+    if h1.Integral()>0 and isMC :  h1.Scale(mc['cx']/Ntot*lumi)
+    if h2.Integral()>0 and isMC :  h2.Scale(mc['cx']/Ntot*lumi)
     #print mc['label']+":"+str(mc['label'].find("DATA")==-1)
 
     #h1list.append(copy.deepcopy(h1))
     #h2list.append(copy.deepcopy(h2))
-    if mc['label'].find("DATA")==-1: hmctot.Add( h2 )
-    else : hdata.Add(h2)
+    if isMC               : hmctot.Add( h2 )
+    elif checkDataChannel : hdata.Add(h2)
 
     #if mc['label'].find("DATA")==-1: hmctot = merge(hmctot,h2)
-
-    if ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") ):
-      jj+=h1.Integral()
-      #print jj
+    isJJ = ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") )
+    if isJJ :  jj+=h1.Integral()
+    #print jj
     if aa is "ttbb" :  bb+=h1.Integral()
     if aa is "ttb"  :  b1+=h1.Integral()
     if aa is "tt2b" :  b2+=h1.Integral()
@@ -427,11 +432,14 @@ def singleplotStack(filename,mon,step,mcsamples):
     #  h1.SetMaximum(scale*400)
     #  h1.SetMinimum(0.5)
     h1.SetStats(0)
-    if mc['label'].find("DATA")==-1: 
+    channel = step[2:4]
+    isMC = mc['label'].find("DATA")==-1
+    checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl") 
+    if isMC : 
       h1.SetFillColor(mc['color'])
       h1.SetLineColor(kBlack)
       hs.Add(h1)
-    else :
+    elif checkDataChannel :
       h1.SetMaximum(scale*400)
       #if minimum<1:  h1.SetMinimum(minimum*0.5)
       #else : h1.SetMinimum(0.5)
@@ -448,12 +456,13 @@ def singleplotStack(filename,mon,step,mcsamples):
     #lleng= len("%s"%mc['label'])
     #rleng= len(" %.0f"%h1.Integral())
     #lrleng = 22 - lleng - int(rleng/1.8)
+    isSameBefore= mc['label'] is not label2
     label = ("%s"%mc['label']) + (" %.0f"%(h1.Integral()+Nlabel2) ).rjust(7)
-    if mc['label'].find("DATA")==-1 and mc['label'] is not label2 and i<6: leg.AddEntry(h1, label, "f")
-    elif mc['label'].find("DATA")==-1 and mc['label'] is not label2 : leg2.AddEntry(h1, label, "f")
-    #else : leg.AddEntry(h1,label,"p")
-    if mc['label'] is label2 : Nlabel2+=h1.Integral()
-    else : Nlabel2=h1.Integral()
+    if isMC and isSameBefore and i<6: leg.AddEntry(h1, label, "f")
+    elif isMC and isSameBefore      : leg2.AddEntry(h1, label, "f")
+
+    if isMC and not isSameBefore : Nlabel2+=h1.Integral()
+    elif isMC : Nlabel2=h1.Integral()
     label2=mc['label']
 
 
@@ -490,7 +499,9 @@ def singleplotStack(filename,mon,step,mcsamples):
   for i,mc in enumerate(mcsamples):
     histname = "h1_"+mc['name']+"_"+mon+"_"+step+"_Sumw2"
     h1 = f.Get(histname);
-    if mc['label'].find("DATA")>-1:
+    channel = step[2:4]
+    checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl") 
+    if checkDataChannel:
       label = ("%s"%mc['label']) + (" %.0f"%h1.Integral()).rjust(8)
       leg.AddEntry(h1,label,"p")
       h1.SetMarkerColor(kBlack)
