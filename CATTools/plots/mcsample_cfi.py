@@ -2,9 +2,9 @@
 from ROOT import *
 
 loc = "../"
-#ttbar = "TTJets_MG5"
-#ttbar = "TTJets_aMC"
-ttbar = "TT_powheg"
+ttbarMG5 = "TTJets_MG5"
+ttbarAMC = "TTJets_aMC"
+ttbarPOW = "TT_powheg"
 ttcx=815.96
 
 def mAND(aaa,bbb):
@@ -35,12 +35,26 @@ ttothers = mAND2(ttotheslist)
 
 mcsamples=[
 
-{"name":"ttbb",  "selection": ttbb,     "file": loc + "result_"+ttbar+".root", "cx":ttcx, "color": kRed,     "lineWidth": 4, "label":"t#bar{t}+b#bar{b}      " },
-{"name":"ttb",   "selection": ttb,      "file": loc + "result_"+ttbar+".root", "cx":ttcx, "color": kOrange,  "lineWidth": 4, "label":"t#bar{t}+b        "      },
-{"name":"tt2b",  "selection": tt2b,     "file": loc + "result_"+ttbar+".root", "cx":ttcx, "color": kCyan,    "lineWidth": 4, "label":"t#bar{t}+2b      "       },
-{"name":"ttcc",  "selection": ttcc,     "file": loc + "result_"+ttbar+".root", "cx":ttcx, "color": kBlue-3,  "lineWidth": 4, "label":"t#bar{t}+c#bar{c}      " },
-{"name":"ttlf",  "selection": ttlf,     "file": loc + "result_"+ttbar+".root", "cx":ttcx, "color": kGreen-3, "lineWidth": 4, "label":"t#bar{t}+lf       "      },
-{"name":"ttot",  "selection": ttothers, "file": loc + "result_"+ttbar+".root", "cx":ttcx, "color": kViolet,    "lineWidth": 4, "label":"t#bar{t} others"         },
+{"name":"MG5ttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kRed,     "lineWidth": 4, "label":"t#bar{t}+b#bar{b}      " },
+{"name":"MG5ttb",   "selection": ttb,      "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kOrange,  "lineWidth": 4, "label":"t#bar{t}+b        "      },
+{"name":"MG5tt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kCyan,    "lineWidth": 4, "label":"t#bar{t}+2b      "       },
+{"name":"MG5ttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kBlue-3,  "lineWidth": 4, "label":"t#bar{t}+c#bar{c}      " },
+{"name":"MG5ttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kGreen-3, "lineWidth": 4, "label":"t#bar{t}+lf       "      },
+{"name":"MG5ttot",  "selection": ttothers, "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kViolet,    "lineWidth": 4, "label":"t#bar{t} others"         },
+
+{"name":"AMCttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kRed,     "lineWidth": 4, "label":"t#bar{t}+b#bar{b}      " },
+{"name":"AMCttb",   "selection": ttb,      "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kOrange,  "lineWidth": 4, "label":"t#bar{t}+b        "      },
+{"name":"AMCtt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kCyan,    "lineWidth": 4, "label":"t#bar{t}+2b      "       },
+{"name":"AMCttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kBlue-3,  "lineWidth": 4, "label":"t#bar{t}+c#bar{c}      " },
+{"name":"AMCttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kGreen-3, "lineWidth": 4, "label":"t#bar{t}+lf       "      },
+{"name":"AMCttot",  "selection": ttothers, "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kViolet,    "lineWidth": 4, "label":"t#bar{t} others"         },
+
+{"name":"POWttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kRed,     "lineWidth": 4, "label":"t#bar{t}+b#bar{b}      " },
+{"name":"POWttb",   "selection": ttb,      "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kOrange,  "lineWidth": 4, "label":"t#bar{t}+b        "      },
+{"name":"POWtt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kCyan,    "lineWidth": 4, "label":"t#bar{t}+2b      "       },
+{"name":"POWttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kBlue-3,  "lineWidth": 4, "label":"t#bar{t}+c#bar{c}      " },
+{"name":"POWttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kGreen-3, "lineWidth": 4, "label":"t#bar{t}+lf       "      },
+{"name":"POWttot",  "selection": ttothers, "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kViolet,    "lineWidth": 4, "label":"t#bar{t} others"         },
 
 {"name":"STbt",   "selection": "(1)", "file": loc + "result_SingleTbar_t.root",  "cx":80.95,  "color": kGray, "lineWidth": 4, "label":"SingleTop"    },
 {"name":"STt",    "selection": "(1)", "file": loc + "result_SingleTop_t.root",   "cx":136.02, "color": kGray, "lineWidth": 4, "label":"SingleTop"    },
@@ -50,13 +64,13 @@ mcsamples=[
 {"name":"WW",     "selection": "(1)", "file": loc + "result_WW.root",            "cx":110.8,  "color": kGray, "lineWidth": 4, "label":"WW          "    },
 {"name":"WZ",     "selection": "(1)", "file": loc + "result_WZ.root",            "cx":66.1,   "color": kGray, "lineWidth": 4, "label":"WZ           "   },
 {"name":"ZZ",     "selection": "(1)", "file": loc + "result_ZZ.root",            "cx":15.4,   "color": kGray, "lineWidth": 4, "label":"ZZ            "   },
-{"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": kGray, "lineWidth": 4, "label":"DYJets    "      },
+{"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": kGray+5, "lineWidth": 4, "label":"DYJets    "      },
 
 #]
 #datasamples=[
 
 {"name":"MuMu", "selection": "(1)", "file": loc + "result_DoubleMuon.root", "color":kBlack, "lineWidth": 4, "label":"DATA     " },
-#{"name":"ElEl", "selection": "(1)", "file": loc + "result_DoubleEG.root",   "color":kBlack, "lineWidth": 4, "label":"DATA     " },
-#{"name":"MuEl", "selection": "(1)", "file": loc + "result_MuonEG.root",     "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+{"name":"ElEl", "selection": "(1)", "file": loc + "result_DoubleEG.root",   "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+{"name":"MuEl", "selection": "(1)", "file": loc + "result_MuonEG.root",     "color":kBlack, "lineWidth": 4, "label":"DATA     " },
 
 ]
