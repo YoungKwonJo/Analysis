@@ -20,14 +20,14 @@ ee_zmass = "( abs(91.2-ee_zmass)>15 )"
 em_zmass = "(1)"# "( abs(91.2-em_zmass)>15 )"
 ##########
 
-preselection = "((CSCTightHaloFilter==1)" +"||"+ "(EcalDeadCellTriggerPrimitiveFilter==1)" +"||"+ "(HBHENoiseFilter==1)" +"||"+ "(eeBadScFilter==1)" +"||"+ "(goodVertices==1))" 
+preselection = "((CSCTightHaloFilter==1)" +"&&"+ "(EcalDeadCellTriggerPrimitiveFilter==1)" +"&&"+ "(HBHENoiseFilter==1)" +"&&"+ "(eeBadScFilter==1)" +"&&"+ "(goodVertices==1))" 
 mm_trigger = "((HLTDoubleEle33CaloIdLGsfTrkIdVL==1)" +"||"+ "(HLTMu17Mu8DZ==1)" +"||"+ "(HLTMu17TkMu8DZ==1)" +"||"+ "(HLTMu17TrkIsoVVLMu8TrkIsoVVL==1)" +"||"+ "(HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ==1)" +"||"+ "(HLTMu17TrkIsoVVLTkMu8TrkIsoVVL==1))"
 
 ee_trigger = "((HLTEle16Ele12Ele8CaloIdLTrackIdL==1)" +"||"+ "(HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ==1)" +"||"+ "(HLTEle23Ele12CaloIdLTrackIdLIsoVL==1)" +"||"+ "(HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ==1))"
 
 
 e_trigger= "((HLTEle27eta2p1WPLooseGsfTriCentralPFJet30==1)" +"||"+ "(HLTEle17CaloIdLTrackIdLIsoVL==1)" +"||"+ "(HLTEle12CaloIdLTrackIdLIsoVL==1))"
-em_trigger=  "(HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL==1)" +"||"+  "(HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL==1)"
+em_trigger=  "((HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL==1)" +"||"+  "(HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL==1))"
 
 
 ##########
@@ -35,7 +35,7 @@ mm_cuts ={
 "channel": "mm",
 "cut": [
    "(1)",
-   preselection,
+#   preselection,
    mm_trigger,
    "(" + mm_lep + ")",
    "(" + mm_zmass + ")",
@@ -49,6 +49,8 @@ ee_cuts = {
 "channel": "ee",
 "cut": [
    "(1)",
+#   preselection,
+   ee_trigger,
    "(" + ee_lep + ") ",
    "(" + ee_zmass + ") ",
    "(met>40) ",
@@ -61,6 +63,8 @@ em_cuts = {
 "channel": "em",
 "cut":[
    "(1)",
+#   preselection,
+   em_trigger,
    "(" + em_lep + ") ",
    "(1)",
    "(1) ",
