@@ -27,16 +27,41 @@ for mon22 in monitors2d.keys():
   if mon22 == ("Mon" + arg) :
     mon2+=monitors2d["Mon" + arg ]
 
-json = {
+jsonMM = {
 "mcsamples" : mcsamples,
 #"datasamples" : datasamples,
 "monitors" : mon1,
 #"monitors" : monitors["Mon1"],
 "monitors2" : mon2,
-"monitors2" : [],
+#"monitors2" : [],
 "cuts" : mm_cuts, 
-"output" : "hist_mon" + arg + ".root"
+"output" : "hist_mon" + arg +mm_cuts["channel"]+ ".root"
 }
 
-makehist(json)
+makehist(jsonMM)
 #makehist2(json)
+
+jsonEE = {
+"mcsamples" : mcsamples,
+#"datasamples" : datasamples,
+"monitors" : mon1,
+#"monitors" : monitors["Mon1"],
+"monitors2" : mon2,
+#"monitors2" : [],
+"cuts" : ee_cuts,
+"output" : "hist_mon" + arg +ee_cuts["channel"]+ ".root"
+}
+makehist(jsonEE)
+
+jsonEM = {
+"mcsamples" : mcsamples,
+#"datasamples" : datasamples,
+"monitors" : mon1,
+#"monitors" : monitors["Mon1"],
+"monitors2" : mon2,
+#"monitors2" : [],
+"cuts" : em_cuts,
+"output" : "hist_mon" + arg +em_cuts["channel"]+ ".root"
+}
+makehist(jsonEM)
+
