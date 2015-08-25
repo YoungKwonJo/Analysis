@@ -6,8 +6,8 @@ monitors = {
   { "name":"ZMassMM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"mm_zmass",  "xbin_set":[60,0,300]  },
   { "name":"nGoodPV",      "unit":"# of good vertex ",             "var":"nGoodPV",  "xbin_set":[70,0,70]    },
   { "name":"nPV",          "unit":"# of vertex ",                  "var":"nPV",      "xbin_set":[70,0,70]    },
-#  { "name":"ZMassEE",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"ee_zmass",  "xbin_set":[60,0,300]  },
-#  { "name":"ZMassEM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"em_zmass",  "xbin_set":[60,0,300]  },
+  { "name":"ZMassEE",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"ee_zmass",  "xbin_set":[60,0,300]  },
+  { "name":"ZMassEM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"em_zmass",  "xbin_set":[60,0,300]  },
 ],
 "Mon2" : [
 #  { "name":"MET",          "unit":"Missing E_{T} (GeV) ",          "var":"met",      "xbin_set":[60,0,300]     },
@@ -84,12 +84,18 @@ monitors = {
   { "name":"jet4DRl",     "unit":"DR_l of 4th leading Jet ",     "var":"jet_drl[3]",   "xbin_set":[20,0,4]     },
 ],
 "Mon12": [
-  #{ "name":"lep1DRelMM",   "unit":"Leading lepton DR with electron ",  "var":"mm_mu1_dr_el", "xbin_set":[60,0,3] },
-  #{ "name":"lep1DRmuEE",   "unit":"Leading lepton DR with muon     ",  "var":"ee_el1_dr_mu", "xbin_set":[60,0,3] },
-  #{ "name":"lep1DRelEM",   "unit":"Leading lepton DR with electron ",  "var":"em_mu1_dr_el", "xbin_set":[60,0,3] },
-  #{ "name":"lep2DRelMM",   "unit":"Second lepton DR with electron  ",  "var":"mm_mu2_dr_el", "xbin_set":[60,0,3] },
-  #{ "name":"lep2DRmuEE",   "unit":"Second lepton DR with muon      ",  "var":"ee_el2_dr_mu", "xbin_set":[60,0,3] },
-  #{ "name":"lep2DRmuEM",   "unit":"Second lepton DR with muon      ",  "var":"em_el2_dr_mu", "xbin_set":[60,0,3] },
+ # { "name":"lep1DRelMM",   "unit":"Leading lepton DR with electron ",  "var":"mm_mu1_dr_el", "xbin_set":[60,0,3] },
+ # { "name":"lep1DRmuEE",   "unit":"Leading lepton DR with muon     ",  "var":"ee_el1_dr_mu", "xbin_set":[60,0,3] },
+ # { "name":"lep1DRelEM",   "unit":"Leading lepton DR with electron ",  "var":"em_mu1_dr_el", "xbin_set":[60,0,3] },
+ # { "name":"lep2DRelMM",   "unit":"Second lepton DR with electron  ",  "var":"mm_mu2_dr_el", "xbin_set":[60,0,3] },
+ # { "name":"lep2DRmuEE",   "unit":"Second lepton DR with muon      ",  "var":"ee_el2_dr_mu", "xbin_set":[60,0,3] },
+ # { "name":"lep2DRmuEM",   "unit":"Second lepton DR with muon      ",  "var":"em_el2_dr_mu", "xbin_set":[60,0,3] },
+],
+"Mon18" : [
+  { "name":"Nmu",         "unit":"number of muon ",              "var":"Nmu",          "xbin_set":[5,0,5]    },
+  { "name":"NmuIso",      "unit":"number of muon ",              "var":"NmuIso",       "xbin_set":[5,0,5]    },
+  { "name":"Nel",         "unit":"number of electron ",          "var":"Nel",          "xbin_set":[5,0,5]    },
+  { "name":"NelIso",      "unit":"number of electron ",          "var":"NelIso",       "xbin_set":[5,0,5]    },
 ],
 }
 
