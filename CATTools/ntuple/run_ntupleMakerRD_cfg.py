@@ -84,7 +84,7 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
         genTtbarLeptonDecay = cms.PSet(src = cms.InputTag("genTtbarLeptonDecay","genTtbarLeptonDecayId")),
         NgenJet = cms.PSet(src = cms.InputTag("genTtbarLeptonDecay","NgenJet")), 
    ),
-    double = cms.PSet(
+    float = cms.PSet(
         puWeight   = cms.PSet(src = cms.InputTag("pileupWeight")),
         puWeightUp = cms.PSet(src = cms.InputTag("pileupWeight", "up")),
         puWeightDn = cms.PSet(src = cms.InputTag("pileupWeight", "dn")),
@@ -97,7 +97,7 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
      #   pvY   = cms.PSet(src = cms.InputTag("recoEventInfo","pvY")),
      #   pvZ   = cms.PSet(src = cms.InputTag("recoEventInfo","pvZ")),
    ),
-    doubles = cms.PSet(
+    floats = cms.PSet(
         pdfWeight = cms.PSet(src = cms.InputTag("pdfWeight")),
     ),
     cands = cms.PSet(

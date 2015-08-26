@@ -11,19 +11,20 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
-import sys
-input =sys.argv[2]
-i = int(input)
-from samples_cfi import samples, my_readFiles 
-readFiles=my_readFiles(samples[i])
-outputname=samples[i]['name']
+#import sys
+#input =sys.argv[2]
+#i = int(input)
+#from samples_cfi import samples, my_readFiles 
+#readFiles=my_readFiles(samples[i])
+#outputname=samples[i]['name']
 
+outputname="test"
 process.source = cms.Source("PoolSource",
-fileNames = readFiles
-#      fileNames = cms.untracked.vstring(
+#fileNames = readFiles
+      fileNames = cms.untracked.vstring(
 #'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/v7-3-4_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150810_214907/0000/catTuple_1.root',
-#'file:/cms/scratch/CAT/TT_TuneCUETP8M1_13TeV-powheg-pythia8/v7-3-6_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v4/150820_215807/0000/catTuple_1.root',
-#      )
+'file:/cms/scratch/CAT/TT_TuneCUETP8M1_13TeV-powheg-pythia8/v7-3-6_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v4/150820_215807/0000/catTuple_1.root',
+      )
 )
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
@@ -81,7 +82,7 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
         genTtbarLeptonDecay = cms.PSet(src = cms.InputTag("genTtbarLeptonDecay","genTtbarLeptonDecayId")),
         NgenJet = cms.PSet(src = cms.InputTag("genTtbarLeptonDecay","NgenJet")), 
    ),
-    double = cms.PSet(
+    float = cms.PSet(
         puWeight   = cms.PSet(src = cms.InputTag("pileupWeight")),
         puWeightUp = cms.PSet(src = cms.InputTag("pileupWeight", "up")),
         puWeightDn = cms.PSet(src = cms.InputTag("pileupWeight", "dn")),
@@ -94,8 +95,8 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
      #   pvY   = cms.PSet(src = cms.InputTag("recoEventInfo","pvY")),
      #   pvZ   = cms.PSet(src = cms.InputTag("recoEventInfo","pvZ")),
    ),
-    doubles = cms.PSet(
-        pdfWeight = cms.PSet(src = cms.InputTag("pdfWeight")),
+    floats = cms.PSet(
+        pdfWeight = cms.PSet(src = cms.InputTag("pdfWeights")),
     ),
     cands = cms.PSet(
         muons = cms.PSet(
