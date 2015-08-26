@@ -45,7 +45,8 @@ def h_all_maker(tree,mc, monitors, cuts, eventweight):
       mon = h1_set(mc['name'],monitors[i],cutname+cuts["channel"])
       h1 = h1_maker(tree,mon,cuts["cut"][cutname]+" && "+mc['selection'],0)
       h.append(copy.deepcopy(h1))
-      cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")*"+eventweight
+      #cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")*("+str(eventweight)+")"
+      cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")"#*("+str(eventweight)+")"
       print "____" + mc['name'] + "_____" + cut + "_____" 
       h1sumw2 = h1_maker(tree,mon,cut,1)
       h.append(copy.deepcopy(h1sumw2))
@@ -58,7 +59,8 @@ def h2_all_maker(tree,mc, monitors, cuts):
       for j,jj in enumerate(monitors):
         if i<j:
           mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname+cuts["channel"])
-          cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")*"+eventweight
+          #cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")*("+str(eventweight)+")"
+          cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")"#*("+str(eventweight)+")"
           h2 = h2_maker(tree,mon2,cut,0)
           h.append(copy.deepcopy(h2))
           h2sumw2 = h2_maker(tree,mon2,cut,1)
