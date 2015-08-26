@@ -1,7 +1,8 @@
 
 from urllib import urlopen
 import csv
-gdocbase = "https://docs.google.com/spreadsheets/d/1rWM3AlFKO8IJVaeoQkWZYWwSvicQ1QCXYSzH74QyZqE"
+#gdocbase = "https://docs.google.com/spreadsheets/d/1rWM3AlFKO8IJVaeoQkWZYWwSvicQ1QCXYSzH74QyZqE"
+gdocbase = "https://docs.google.com/spreadsheets/d/17pa4b86STpzQA6jPJ1xCOqoovvrL6X0iiuSC8yHO5II"
 print "Retrieving dataset info from google doc..."
 print "Source URL =", gdocbase
 csvRD = list(csv.reader(urlopen(gdocbase + "/pub?gid=0&single=true&output=csv").readlines()))
@@ -36,13 +37,15 @@ for l in csvMC[1:]:
 import os,commands
 
 lcgls="lcg-ls -v -b -T srmv2 -D srmv2 --vo cms srm://cms-se.sdfarm.kr:8443/srm/v2/server?SFN=/xrootd"
+cat = "/store/group/CAT/"
+
 www ="samples = [\n"
 for i,mc in enumerate(ds) :
-  bbb = (lcgls + mc['path'] + "/0000/" + " | grep -c catTuple ")
+  bbb = (lcgls +cat+ mc['path'] + "/0000/" + " | grep -c catTuple ")
   #print bbb
   ddd = commands.getoutput(bbb)
   eee = "{\n\"name\": \""  + mc['name'] +"\", \n"
-  eee+= "\"path\": \""  + mc['path'] +"\", \n"
+  eee+= "\"path\": \""  +cat+ mc['path'] +"\", \n"
   #print mc.keys()
   if 'xsec' in mc.keys():  eee+= "\"xsec\":" + str(mc['xsec'])+", \n"
   eee+= "\"entries\": "     + ddd + " \n},\n"
@@ -54,7 +57,7 @@ vvv="""
 def my_readFiles(sample):
   aaa = []
   for i in range(1,sample['entries']+1) :
-    bbb= "root://cms-xrdr.sdfarm.kr:1094///xrd" + mcsample['path'] + "/0000/catTuple_"
+    bbb= "root://cms-xrdr.sdfarm.kr:1094///xrd" + sample['path'] + "/0000/catTuple_"
     bbb+="%d" % (i)
     bbb+=".root"
     print bbb

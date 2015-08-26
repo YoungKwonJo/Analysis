@@ -22,6 +22,7 @@ process.source = cms.Source("PoolSource",
 fileNames = readFiles
 #      fileNames = cms.untracked.vstring(
 #'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/v7-3-4_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150810_214907/0000/catTuple_1.root',
+#'file:/cms/scratch/CAT/TT_TuneCUETP8M1_13TeV-powheg-pythia8/v7-3-6_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v4/150820_215807/0000/catTuple_1.root',
 #      )
 )
 
@@ -175,6 +176,18 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
                 eta = cms.string("eta"),
                 phi = cms.string("phi"),
                 m   = cms.string("mass"),
+
+                shiftedEnDown = cms.string("shiftedEnDown"),
+                shiftedEnUp   = cms.string("shiftedEnUp"),
+                smearedRes    = cms.string("smearedRes"),
+                smearedResDown= cms.string("smearedResDown"),
+                smearedResUp  = cms.string("smearedResUp"),
+                LooseId       = cms.string("LooseId"),
+                TightId       = cms.string("TightId"),
+                looseJetID    = cms.string("looseJetID"),
+                tightJetID    = cms.string("tightJetID"),
+                pileupJetId   = cms.string("pileupJetId"),   
+
                 vtxMass = cms.string("vtxMass"),
                 CSVInclV2 = cms.string("bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')"),
                 #CSVInclV2 = cms.string("bDiscriminator('combinedInclusiveSecondaryVertexV2BJetTags')"),
@@ -196,6 +209,18 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
                 eta = cms.string("eta"),
                 phi = cms.string("phi"),
                 m   = cms.string("mass"),
+
+                shiftedEnDown = cms.string("shiftedEnDown"),
+                shiftedEnUp   = cms.string("shiftedEnUp"),
+                smearedRes    = cms.string("smearedRes"),
+                smearedResDown= cms.string("smearedResDown"),
+                smearedResUp  = cms.string("smearedResUp"),
+                LooseId       = cms.string("LooseId"),
+                TightId       = cms.string("TightId"),
+                looseJetID    = cms.string("looseJetID"),
+                tightJetID    = cms.string("tightJetID"),
+                pileupJetId   = cms.string("pileupJetId"),   
+
                 vtxMass = cms.string("vtxMass"),
                 CSVInclV2 = cms.string("bDiscriminator('pfCombinedInclusiveSecondaryVertexV2BJetTags')"),
                 #CSVInclV2 = cms.string("bDiscriminator('combinedInclusiveSecondaryVertexV2BJetTags')"),
