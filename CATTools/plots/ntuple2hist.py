@@ -27,9 +27,12 @@ for mon22 in monitors2d.keys():
   if mon22 == ("Mon" + arg) :
     mon2+=monitors2d["Mon" + arg ]
 
+mceventweight="pileupWeight"
+
 jsonMM = {
 "mcsamples" : mcsamples,
-#"datasamples" : datasamples,
+"mceventweight": mceventweight,
+"datasamples" : datasamples,
 "monitors" : mon1,
 #"monitors" : monitors["Mon1"],
 "monitors2" : mon2,
@@ -43,7 +46,8 @@ makehist(jsonMM)
 
 jsonEE = {
 "mcsamples" : mcsamples,
-#"datasamples" : datasamples,
+"mceventweight": mceventweight,
+"datasamples" : datasamples,
 "monitors" : mon1,
 #"monitors" : monitors["Mon1"],
 "monitors2" : mon2,
@@ -55,7 +59,8 @@ makehist(jsonEE)
 
 jsonEM = {
 "mcsamples" : mcsamples,
-#"datasamples" : datasamples,
+"mceventweight": mceventweight,
+"datasamples" : datasamples,
 "monitors" : mon1,
 #"monitors" : monitors["Mon1"],
 "monitors2" : mon2,

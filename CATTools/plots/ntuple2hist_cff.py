@@ -38,14 +38,14 @@ def h2_set(name,monitor,monitor2,cutname):
         }
   return mon
 
-def h_all_maker(tree,mc, monitors, cuts):
+def h_all_maker(tree,mc, monitors, cuts, eventweight):
   h = []
   for cutname in cuts["cut"]:
     for i,ii in enumerate(monitors):
       mon = h1_set(mc['name'],monitors[i],cutname+cuts["channel"])
       h1 = h1_maker(tree,mon,cuts["cut"][cutname]+" && "+mc['selection'],0)
       h.append(copy.deepcopy(h1))
-      cut = cuts["cut"][cutname]+" && "+mc['selection']
+      cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")*"+eventweight
       print "____" + mc['name'] + "_____" + cut + "_____" 
       h1sumw2 = h1_maker(tree,mon,cut,1)
       h.append(copy.deepcopy(h1sumw2))
@@ -58,9 +58,10 @@ def h2_all_maker(tree,mc, monitors, cuts):
       for j,jj in enumerate(monitors):
         if i<j:
           mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname+cuts["channel"])
-          h2 = h2_maker(tree,mon2,cuts["cut"][cutname]+" && "+mc['selection'],0)
+          cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")*"+eventweight
+          h2 = h2_maker(tree,mon2,cut,0)
           h.append(copy.deepcopy(h2))
-          h2sumw2 = h2_maker(tree,mon2,cuts["cut"][cutname]+" && "+mc['selection'],1)
+          h2sumw2 = h2_maker(tree,mon2,cut,1)
           h.append(copy.deepcopy(h2sumw2))
   return h
 
@@ -83,23 +84,46 @@ def cut_maker2(cuts_):
   return cuts
 
 
-def ntuple2hist(mcsamples,monitors,cuts):
+#def ntuple2hist(mcsamples,monitors,cuts):
+def ntuple2hist(json,cuts):
   h = []
+  mcsamples = json['mcsamples']
+  mceventweigth = json['mceventweight']
+  datasamples = json['datasamples']
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
     tree = f.myresult
-    h= h+h_all_maker(tree,mcsamples[i],monitors,cuts)
+    h= h+h_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight)
     f.Close()
+  for i,mc in enumerate(datasamples):
+    f = TFile.Open(datasamples[i]['file'],"read")
+    #tree = f.ntuple
+    tree = f.myresult
+    h= h+h_all_maker(tree,datasamples[i],monitors,cuts,1)
+    f.Close()
+
+
   return h
 
-def ntuple2hist2d(mcsamples,monitors,cuts):
+#def ntuple2hist2d(mcsamples,monitors,cuts):
+def ntuple2hist2d(json,cuts):
   h = []
+  mcsamples = json['mcsamples']
+  mceventweigth = json['mceventweight']
+  datasamples = json['datasamples']
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
     tree = f.myresult
-    h= h+h2_all_maker(tree,mcsamples[i],monitors,cuts)
+    h= h+h2_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight)
+    f.Close()
+
+  for i,mc in enumerate(datasamples):
+    f = TFile.Open(mcsamples[i]['file'],"read")
+    #tree = f.ntuple
+    tree = f.myresult
+    h= h+h2_all_maker(tree,datasamples[i],monitors,cuts,1)
     f.Close()
   return h
  

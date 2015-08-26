@@ -66,8 +66,8 @@ mcsamples=[
 {"name":"ZZ",     "selection": "(1)", "file": loc + "result_ZZ.root",            "cx":15.4,   "color": kGray, "lineWidth": 4, "label":"ZZ            "   },
 {"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": kGray+5, "lineWidth": 4, "label":"DYJets    "      },
 
-#]
-#datasamples=[
+]
+datasamples=[
 
 {"name":"MuMu", "selection": "(1)", "file": loc + "result_DoubleMuon.root", "color":kBlack, "lineWidth": 4, "label":"DATA     " },
 {"name":"ElEl", "selection": "(1)", "file": loc + "result_DoubleEG.root",   "color":kBlack, "lineWidth": 4, "label":"DATA     " },
