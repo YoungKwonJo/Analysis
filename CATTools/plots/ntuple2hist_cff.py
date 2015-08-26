@@ -88,7 +88,8 @@ def cut_maker2(cuts_):
 def ntuple2hist(json,cuts):
   h = []
   mcsamples = json['mcsamples']
-  mceventweigth = json['mceventweight']
+  mceventweight = json['mceventweight']
+  monitors=json['monitors']
   datasamples = json['datasamples']
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
@@ -110,7 +111,8 @@ def ntuple2hist(json,cuts):
 def ntuple2hist2d(json,cuts):
   h = []
   mcsamples = json['mcsamples']
-  mceventweigth = json['mceventweight']
+  mceventweight = json['mceventweight']
+  monitors=json['monitors']
   datasamples = json['datasamples']
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
@@ -138,18 +140,18 @@ def makehist(json):
   cuts_  = cut_maker(json['cuts']) #print "cut : %s" % cuts
   h=[]
   if len(json['monitors'])>0 :
-    h += ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+    h += ntuple2hist(json,cuts_)
   if len(json['monitors2'])>0 :
-    h += ntuple2hist2d(json['mcsamples'],json['monitors2'],cuts_)
+    h += ntuple2hist2d(json,cuts_)
   makeoutput(json['output'],h)
 
 def makehist2(json):
   cuts_  = cut_maker2(json['cuts']) #print "cut : %s" % cuts
   h=[]
   if len(json['monitors'])>0 :
-    h += ntuple2hist(json['mcsamples'],json['monitors'],cuts_)
+    h += ntuple2hist(json,cuts_)
   if len(json['monitors2'])>0 :
-    h += ntuple2hist2d(json['mcsamples'],json['monitors2'],cuts_)
+    h += ntuple2hist2d(json,cuts_)
   makeoutput(json['output'],h)
 
 
