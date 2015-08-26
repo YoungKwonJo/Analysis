@@ -2,6 +2,56 @@ import FWCore.ParameterSet.Config as cms
 
 samples = [
 {
+"name": "SingleMuon", 
+"path": "/store/group/CAT/SingleMuon/v7-3-6_Run2015B-17Jul2015-v1/150820_215426", 
+"entries": 24 
+},
+{
+"name": "SingleMuon2", 
+"path": "/store/group/CAT/SingleMuon/v7-3-6_Run2015B-PromptReco-v1/150820_215216", 
+"entries": 57 
+},
+{
+"name": "SingleElectron", 
+"path": "/store/group/CAT/SingleElectron/v7-3-6_Run2015B-17Jul2015-v1/150820_215450", 
+"entries": 24 
+},
+{
+"name": "SingleElectron2", 
+"path": "/store/group/CAT/SingleElectron/v7-3-6_Run2015B-PromptReco-v1/150820_215240", 
+"entries": 77 
+},
+{
+"name": "DoubleEG", 
+"path": "/store/group/CAT/DoubleEG/v7-3-6_Run2015B-17Jul2015-v1/150820_215517", 
+"entries": 106 
+},
+{
+"name": "DoubleEG2", 
+"path": "/store/group/CAT//DoubleEG/v7-3-6_Run2015B-PromptReco-v1/150820_215302", 
+"entries": 100 
+},
+{
+"name": "DoubleMuon", 
+"path": "/store/group/CAT/DoubleMuon/v7-3-6_Run2015B-17Jul2015-v1/150820_215540", 
+"entries": 11 
+},
+{
+"name": "DoubleMuon2", 
+"path": "/store/group/CAT/DoubleMuon/v7-3-6_Run2015B-PromptReco-v1/150820_215326", 
+"entries": 40 
+},
+{
+"name": "MuonEG", 
+"path": "/store/group/CAT/MuonEG/v7-3-6_Run2015B-17Jul2015-v1/150820_215608", 
+"entries": 2 
+},
+{
+"name": "MuonEG2", 
+"path": "/store/group/CAT/MuonEG/v7-3-6_Run2015B-PromptReco-v1/150820_215352", 
+"entries": 30 
+},
+{
 "name": "DYJets", 
 "path": "/store/group/CAT/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/v7-3-6_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/150820_215635", 
 "xsec":6025.2, 
