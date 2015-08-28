@@ -45,22 +45,22 @@ def h_all_maker(tree,mc, monitors, cuts, eventweight):
       mon = h1_set(mc['name'],monitors[i],cutname+cuts["channel"])
       h1 = h1_maker(tree,mon,cuts["cut"][cutname]+" && "+mc['selection'],0)
       h.append(copy.deepcopy(h1))
-      #cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")*("+str(eventweight)+")"
-      cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")"#*("+str(eventweight)+")"
-      print "____" + mc['name'] + "_____" + cut + "_____" 
+      cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")*("+str(eventweight)+")"
+      #cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")"#*("+str(eventweight)+")"
+      #print "____" + mc['name'] + "_____" + cut + "_____" 
       h1sumw2 = h1_maker(tree,mon,cut,1)
       h.append(copy.deepcopy(h1sumw2))
   return h
 
-def h2_all_maker(tree,mc, monitors, cuts):
+def h2_all_maker(tree,mc, monitors, cuts,eventweight):
   h = []
   for cutname in cuts["cut"]:
     for i,ii in enumerate(monitors):
       for j,jj in enumerate(monitors):
         if i<j:
           mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname+cuts["channel"])
-          #cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")*("+str(eventweight)+")"
-          cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")"#*("+str(eventweight)+")"
+          cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")*("+str(eventweight)+")"
+          #cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")"#*("+str(eventweight)+")"
           h2 = h2_maker(tree,mon2,cut,0)
           h.append(copy.deepcopy(h2))
           h2sumw2 = h2_maker(tree,mon2,cut,1)
@@ -75,7 +75,7 @@ def cut_maker(cuts_):
     else:
       cuts["S%d"%i]= cuts["S%d"%(i-1)] + " && " + cut
   cutsN = {"channel":cuts_["channel"],"cut":cuts}
-  print cutsN
+  #print cutsN
   return cutsN
 
 def cut_maker2(cuts_):
@@ -400,7 +400,7 @@ def singleplotStack(filename,mon,step,mcsamples):
   hs = THStack("hs","")
 
   hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step+"_Sumw2"
-  print "hmcTotal: "+hmctotName
+  #print "hmcTotal: "+hmctotName
   hmctot = f.Get(hmctotName).Clone("hmctot")
   hmctot.Reset()
 
