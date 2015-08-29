@@ -67,9 +67,9 @@ json = {
 #singleplotStack(json['file'],"nGoodPV","S4em",json['mcsamples'])
 
 ######
-for step in json['cuts']:
-  for mon in json['monitors']:
-    singleplotStack(json['file'],mon['name'],step,json['mcsamples'])
+#for step in json['cuts']:
+#  for mon in json['monitors']:
+#    singleplotStack(json['file'],mon['name'],step,json['mcsamples'])
     #singleplot(json['file'],mon['name'],step,json['mcsamples'])
     #singleplotlinear(json['file'],mon['name'],step,json['mcsamples'])
 

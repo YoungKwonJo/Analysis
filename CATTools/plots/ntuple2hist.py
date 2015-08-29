@@ -27,7 +27,7 @@ for mon22 in monitors2d.keys():
   if mon22 == ("Mon" + arg) :
     mon2+=monitors2d["Mon" + arg ]
 
-mceventweight="pileupWeight"
+mceventweight="puWeight"
 
 jsonMM = {
 "mcsamples" : mcsamples,

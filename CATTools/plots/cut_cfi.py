@@ -36,7 +36,7 @@ mm_cuts ={
 "cut": [
    "(1)",
 #   preselection,
-   mm_trigger,
+#   mm_trigger,
    "(" + mm_lep + ")",
    "(" + mm_zmass + ")",
    "(met>40)", 
@@ -50,7 +50,7 @@ ee_cuts = {
 "cut": [
    "(1)",
 #   preselection,
-   ee_trigger,
+#   ee_trigger,
    "(" + ee_lep + ") ",
    "(" + ee_zmass + ") ",
    "(met>40) ",
@@ -64,7 +64,7 @@ em_cuts = {
 "cut":[
    "(1)",
 #   preselection,
-   em_trigger,
+#   em_trigger,
    "(" + em_lep + ") ",
    "(1)",
    "(1) ",
