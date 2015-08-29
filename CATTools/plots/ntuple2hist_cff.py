@@ -19,12 +19,12 @@ def h1_set(name,monitor,cutname):
         }
   return mon
 
-def h_all_maker(tree,mc, monitors, cuts, eventweight):
+def h_all_maker(tree,mc, monitors, cuts, eventweight,Ntot):
   h = []
   for cutname in cuts["cut"]:
     for i,ii in enumerate(monitors):
       mon = h1_set(mc['name'],monitors[i],cutname+cuts["channel"])
-      cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")*("+str(eventweight)+")"
+      cut = "("+cuts["cut"][cutname]+" && "+mc['selection'] +")*("+str(eventweight)+"/"+str(Ntot)+")"
       h1 = h1_maker(tree,mon,cut)
       h.append(copy.deepcopy(h1))
   return h
@@ -47,14 +47,14 @@ def h2_set(name,monitor,monitor2,cutname):
         }
   return mon
 
-def h2_all_maker(tree,mc, monitors, cuts,eventweight):
+def h2_all_maker(tree,mc, monitors, cuts,eventweight,Ntot):
   h = []
   for cutname in cuts["cut"]:
     for i,ii in enumerate(monitors):
       for j,jj in enumerate(monitors):
         if i<j:
           mon2 = h2_set(mc['name'],monitors[i],monitors[j],cutname+cuts["channel"])
-          cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")*("+str(eventweight)+")"
+          cut = "("+cuts["cut"][cutname]+" && "+mc['selection']+")*("+str(eventweight)+"/"+str(Ntot)+")"
           h2 = h2_maker(tree,mon2,cut)
           h.append(copy.deepcopy(h2))
   return h
@@ -94,7 +94,12 @@ def ntuple2hist(json,cuts):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
     tree = f.myresult
-    h= h+h_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight)
+
+    htot = f.Get("hNEvent")
+    Ntot = htot.GetBinContent(1)
+    #print "mc:"+mc['name']+":"+str(round(Ntot))
+
+    h= h+h_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight,Ntot)
     f.Close()
   for i,mc in enumerate(datasamples):
     f = TFile.Open(datasamples[i]['file'],"read")
@@ -117,7 +122,12 @@ def ntuple2hist2d(json,cuts):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
     tree = f.myresult
-    h= h+h2_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight)
+
+    htot = f.Get("hNEvent")
+    Ntot = htot.GetBinContent(1)
+    #print "mc:"+mc['name']+":"+str(round(Ntot))
+
+    h= h+h2_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight,Ntot)
     f.Close()
 
   for i,mc in enumerate(datasamples):
@@ -425,13 +435,14 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
     if type(h2) is not TH1F :
       return
 
-    htot = f.Get("hNEvent")
+    #htot = f.Get("hNEvent")
     h2.GetYaxis().SetTitle("Events")
-    Ntot = htot.GetBinContent(1)
-    print "mc:"+mc['name']+":"+str(round(Ntot))
+    #Ntot = htot.GetBinContent(1)
+    #print "mc:"+mc['name']+":"+str(round(Ntot))
 
     h2.AddBinContent(h2.GetNbinsX(),h2.GetBinContent(h2.GetNbinsX()+1))
-    if h2.Integral()>0 :  h2.Scale(mc['cx']/Ntot*lumi)
+    #if h2.Integral()>0 :  h2.Scale(mc['cx']/Ntot*lumi)
+    if h2.Integral()>0 :  h2.Scale(mc['cx']/lumi)
 
     ###############
     aa = mc['name']
