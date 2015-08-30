@@ -69,8 +69,11 @@ mcsamples=[
 ]
 datasamples=[
 
-{"name":"MuMu", "selection": "(1)", "file": loc + "result_DoubleMuon.root", "color":kBlack, "lineWidth": 4, "label":"DATA     " },
-{"name":"ElEl", "selection": "(1)", "file": loc + "result_DoubleEG.root",   "color":kBlack, "lineWidth": 4, "label":"DATA     " },
-{"name":"MuEl", "selection": "(1)", "file": loc + "result_MuonEG.root",     "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+#{"name":"MuMu", "selection": "(1)", "file": loc + "result_DoubleMuon.root", "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+{"name":"MuMu", "selection": "(1)", "file": loc + "result_DoubleMuon2.root", "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+#{"name":"ElEl", "selection": "(1)", "file": loc + "result_DoubleEG.root",   "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+{"name":"ElEl", "selection": "(1)", "file": loc + "result_DoubleEG2.root",   "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+#{"name":"MuEl", "selection": "(1)", "file": loc + "result_MuonEG.root",     "color":kBlack, "lineWidth": 4, "label":"DATA     " },
+{"name":"MuEl", "selection": "(1)", "file": loc + "result_MuonEG2.root",     "color":kBlack, "lineWidth": 4, "label":"DATA     " },
 
 ]

@@ -21,6 +21,7 @@ json = {
 "file": "hist_all.root",
 #"file": "hist_all2.root",
 "mcsamples" : mcsamples,
+"datasamples" : datasamples,
 #"cuts" : ["S0","S1","S2","S3","S4","S5"],
 #"cuts" : ["S0","S1","S2","S3"],
 #"cuts" : ["S0","S1","S2","S3","S4","S5","S6"],

@@ -4,6 +4,9 @@ from array import array
 from math import sqrt
 
 ################
+#log = False
+log = True
+
 def h1_maker(tree, mon, cut):
   h1 =  TH1F( mon['name'], mon['title'], mon['xbin_set'][0],mon['xbin_set'][1],mon['xbin_set'][2])
   h1.GetXaxis().SetTitle(mon['x_name'])
@@ -73,7 +76,7 @@ def cut_maker(cuts_):
     else:
       cuts["S%d"%i]= cuts["S%d"%(i-1)] + " && " + cut
   cutsN = {"channel":cuts_["channel"],"cut":cuts}
-  #print cutsN
+  #if log : print cutsN
   return cutsN
 
 def cut_maker2(cuts_):
@@ -97,7 +100,7 @@ def ntuple2hist(json,cuts):
 
     htot = f.Get("hNEvent")
     Ntot = htot.GetBinContent(1)
-    #print "mc:"+mc['name']+":"+str(round(Ntot))
+    if log : print "total:"+mc['file']+":"+str(round(Ntot))
 
     h= h+h_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight,Ntot)
     f.Close()
@@ -105,7 +108,11 @@ def ntuple2hist(json,cuts):
     f = TFile.Open(datasamples[i]['file'],"read")
     #tree = f.ntuple
     tree = f.myresult
-    h= h+h_all_maker(tree,datasamples[i],monitors,cuts,1)
+    htot = f.Get("hNEvent")
+    Ntot = htot.GetBinContent(1)
+    if log : print "total:"+mc['file']+":"+str(round(Ntot))
+
+    h= h+h_all_maker(tree,datasamples[i],monitors,cuts,1,1)
     f.Close()
 
 
@@ -125,7 +132,7 @@ def ntuple2hist2d(json,cuts):
 
     htot = f.Get("hNEvent")
     Ntot = htot.GetBinContent(1)
-    #print "mc:"+mc['name']+":"+str(round(Ntot))
+    #if log : print "mc:"+mc['name']+":"+str(round(Ntot))
 
     h= h+h2_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight,Ntot)
     f.Close()
@@ -134,7 +141,7 @@ def ntuple2hist2d(json,cuts):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
     tree = f.myresult
-    h= h+h2_all_maker(tree,datasamples[i],monitors,cuts,1)
+    h= h+h2_all_maker(tree,datasamples[i],monitors,cuts,1,1)
     f.Close()
   return h
 
@@ -273,8 +280,8 @@ def plotTH2F(filename,mon,step,mcsamples):
 #########################
 #########################
 #########################
-def myCanvas():
-  c1 = TCanvas( 'c1', '', 500, 500 )
+def myCanvas(name):
+  c1 = TCanvas( name, '', 500, 500 )
 #  gStyle.SetOptFit(1)
 #  gStyle.SetOptStat(0)
   c1.Range(0,0,1,1)
@@ -391,9 +398,10 @@ def myHist2TGraphError(hist1):
 
 
 #####################
-def singleplotStack(filename,mon,step,mcsamples,datasamples):
-  f = TFile.Open(filename,"read")
-  c1 = myCanvas()
+#def singleplotStack(filename,mon,step,mcsamples,datasamples):
+def singleplotStack(f,mon,step,mcsamples,datasamples):
+  #f = TFile.Open(filename,"read")
+  c1 = myCanvas(mon+step)
   #c1 = TCanvas( 'c1', '', 500, 500 )
   gStyle.SetOptFit(1)
   gStyle.SetOptStat(0)
@@ -414,7 +422,7 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
   hs = THStack("hs","")
 
   hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step
-  #print "hmcTotal: "+hmctotName
+  #if log : print "hmcTotal: "+hmctotName
   hmctot = f.Get(hmctotName).Clone("hmctot")
   hmctot.Reset()
   hdata = hmctot.Clone("hdata")
@@ -422,7 +430,7 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
 
   label2 =""
   Nlabel2=0.
-  #print mcsamples
+  #if log : print mcsamples
   #hMCHist  = []
   #mcLegend = []
   for i,mc in enumerate(mcsamples):
@@ -438,17 +446,16 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
     #htot = f.Get("hNEvent")
     h2.GetYaxis().SetTitle("Events")
     #Ntot = htot.GetBinContent(1)
-    #print "mc:"+mc['name']+":"+str(round(Ntot))
 
     h2.AddBinContent(h2.GetNbinsX(),h2.GetBinContent(h2.GetNbinsX()+1))
     #if h2.Integral()>0 :  h2.Scale(mc['cx']/Ntot*lumi)
-    if h2.Integral()>0 :  h2.Scale(mc['cx']/lumi)
+    if h2.Integral()>0 :  h2.Scale(mc['cx']*lumi)
 
     ###############
     aa = mc['name']
     isJJ = ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") )
     if isJJ :  jj+=h2.Integral()
-    #print jj
+    #if log : print jj
     if aa is "ttbb" :  bb+=h2.Integral()
     if aa is "ttb"  :  b1+=h2.Integral()
     if aa is "tt2b" :  b2+=h2.Integral()
@@ -459,6 +466,9 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
     hmctot.Add( h2 )
     hs.Add(h2)
 
+    selEvet=h2.Integral() 
+    selEnts=h2.GetEntries()
+    if log : print "mc:"+mc['file']+":"+str(round(selEvet))+", "+str(selEnts)
     #lleng= len("%s"%mc['label'])
     #rleng= len(" %.0f"%h1.Integral())
     #lrleng = 22 - lleng - int(rleng/1.8)
@@ -484,10 +494,14 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
     h1.GetYaxis().SetTitle("Events")
 
     h1.AddBinContent(h1.GetNbinsX(),h1.GetBinContent(h1.GetNbinsX()+1))
+    selEvet=h1.Integral() 
+    selEnts=h1.GetEntries()
+ 
     aa = mc['name']
     checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
-    if checkDataChannel : hdata.Add(h1)
-
+    if checkDataChannel : 
+      hdata.Add(h1)
+      if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
 ################################
   scale = hmctot.GetMaximum()
   minimum = 0.005
@@ -497,7 +511,7 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
 
   h2data.SetMaximum(scale*400)
   h2data.SetMinimum(minimum)
-  #print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
+  #if log :  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
   labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
   leg2.AddEntry(hmctot,labeltot,"")
   labeldata = ("DATA") + (" %.0f"%h2data.Integral()).rjust(8)
@@ -539,7 +553,8 @@ def singleplotStack(filename,mon,step,mcsamples,datasamples):
 
   output = "plots/TH1_"+mon+"_"+step+".eps"
   c1.Print(output)
-  f.Close()
-  c1.Close()
+  #f.Close()
+  #c1.Close()
 
+  return c1,pad1,pad2,hs,gr,h2data,hdataMC,leg,leg2
 ############################################
