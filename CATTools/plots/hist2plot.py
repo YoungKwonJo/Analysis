@@ -39,34 +39,35 @@ json = {
 
 #########
 #TH1F
-singleplotStack(json['file'],"MET","S0mm",json['mcsamples'],json['datasamples'])
+f = TFile.Open(json['file'],"read")
+singleplotStack(f,"MET","S0mm",json['mcsamples'],json['datasamples'])
 
-#singleplotStack(json['file'],"MET","S1em",json['mcsamples'],json['datasamples'])
-singleplotStack(json['file'],"MET","S1mm",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"MET","S2em",json['mcsamples'],json['datasamples'])
-singleplotStack(json['file'],"MET","S2mm",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"ZMassEM","S2em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"ZMassMM","S2mm",json['mcsamples'],json['datasamples'])
-singleplotStack(json['file'],"MET","S4em",json['mcsamples'],json['datasamples'])
-singleplotStack(json['file'],"MET","S4mm",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"MET","S1em",json['mcsamples'],json['datasamples'])
+singleplotStack(f,"MET","S1mm",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"MET","S2em",json['mcsamples'],json['datasamples'])
+singleplotStack(f,"MET","S2mm",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassEM","S2em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassMM","S2mm",json['mcsamples'],json['datasamples'])
+singleplotStack(f,"MET","S4em",json['mcsamples'],json['datasamples'])
+singleplotStack(f,"MET","S4mm",json['mcsamples'],json['datasamples'])
 
-#singleplotStack(json['file'],"ZMassMM","S0em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"ZMassMM","S1em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"ZMassMM","S2em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"ZMassMM","S3em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"ZMassMM","S4em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"ZMassMM","S5em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassMM","S0em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassMM","S1em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassMM","S2em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassMM","S3em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassMM","S4em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"ZMassMM","S5em",json['mcsamples'],json['datasamples'])
 
-#singleplotStack(json['file'],"nPV"    ,"S0em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"nGoodPV","S0em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"nPV"    ,"S0em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"nGoodPV","S0em",json['mcsamples'],json['datasamples'])
 
-#singleplotStack(json['file'],"nPV"    ,"S1em",json['mcsamples'],json['datasamples'])
-#singleplotStack(json['file'],"nGoodPV","S1em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"nPV"    ,"S1em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"nGoodPV","S1em",json['mcsamples'],json['datasamples'])
 
 ######
 #for step in json['cuts']:
 #  for mon in json['monitors']:
-#    singleplotStack(json['file'],mon['name'],step,json['mcsamples'],json['datasamples'])
+#    singleplotStack(f,mon['name'],step,json['mcsamples'],json['datasamples'])
 
 
 #########
@@ -77,5 +78,5 @@ singleplotStack(json['file'],"MET","S4mm",json['mcsamples'],json['datasamples'])
 #      for j,mon2 in enumerate(mon):
 #        if i<j :
 #          mon_ = mon1['name']+"_"+mon2['name']
-#          plotTH2F(json['file'],mon_,step,json['mcsamples'],json['datasamples'])
+#          plotTH2F(f,mon_,step,json['mcsamples'],json['datasamples'])
 

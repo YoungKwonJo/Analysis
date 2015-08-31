@@ -518,6 +518,7 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   leg.AddEntry(h2data,labeldata,"p")
 
 #########################################
+  h2data.GetYaxis().SetTitle("Events")
   h2data.Draw()
   hs.Draw("same,hist")
   gr = myHist2TGraphError(hmctot)
