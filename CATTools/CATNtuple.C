@@ -228,8 +228,23 @@ void CATNtuple::Loop()
          fevent_->ll_lep2_pdgid_  = leptons_->at(1).pdgid_;
          fevent_->ll_lep2_iso_= leptons_->at(1).Iso_;
          fevent_->ll_zmass_  = ((leptons_->at(0).vec_)+(leptons_->at(1).vec_)).M();
+      
+         if(abs(leptons_->at(0).pdgid_)==13 && leptons_->at(1).pdgid_==11)
+         {
+            fevent_->ll_lep1_pt_ = leptons_->at(1).Pt();
+            fevent_->ll_lep1_eta_= leptons_->at(1).Eta();
+            fevent_->ll_lep1_phi_= leptons_->at(1).Phi();
+            fevent_->ll_lep1_q_  = leptons_->at(1).Q_;
+            fevent_->ll_lep1_pdgid_  = leptons_->at(1).pdgid_;
+            fevent_->ll_lep1_iso_= leptons_->at(1).Iso_;
+            fevent_->ll_lep2_pt_ = leptons_->at(0).Pt();
+            fevent_->ll_lep2_eta_= leptons_->at(0).Eta();
+            fevent_->ll_lep2_phi_= leptons_->at(0).Phi();
+            fevent_->ll_lep2_q_  = leptons_->at(0).Q_;
+            fevent_->ll_lep2_pdgid_  = leptons_->at(0).pdgid_;
+            fevent_->ll_lep2_iso_= leptons_->at(0).Iso_;
+         }
       }
- 
       //for MuMu
       /*
       if(muons_->size()>1)
