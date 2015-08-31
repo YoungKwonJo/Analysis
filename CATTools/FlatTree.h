@@ -27,6 +27,11 @@ public:
   int run_, lumi_, event_;
   double weight_;
 
+  double ll_lep1_pt_, ll_lep1_eta_, ll_lep1_phi_, ll_lep1_iso_, ll_zmass_;
+  double ll_lep2_pt_, ll_lep2_eta_, ll_lep2_phi_, ll_lep2_iso_;
+  int  ll_lep1_q_, ll_lep2_q_;
+  int ll_lep1_pdgid_, ll_lep2_pdgid_, lepton_N_;
+
   double mm_mu1_pt_, mm_mu1_eta_, mm_mu1_phi_, mm_mu1_iso_, mm_zmass_;
   double mm_mu2_pt_, mm_mu2_eta_, mm_mu2_phi_, mm_mu2_iso_;
                                                
@@ -77,6 +82,9 @@ public:
    Int_t           nGoodPV_;
    Int_t           nPV_;
    Int_t           nTrueInteraction_;
+
+   float pdfWeightId1_, pdfWeightId2_, pdfWeightQ_  , pdfWeightX1_ , pdfWeightX2_ , puWeight_; 
+
  
 };
 //#endif
@@ -147,6 +155,21 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("metPuppi",      &metPuppi_,    "metPuppi/D");  
 
 /////
+  tree_->Branch("ll_lep1_pt",   &ll_lep1_pt_,    "ll_lep1_pt/D");
+  tree_->Branch("ll_lep1_eta",  &ll_lep1_eta_,   "ll_lep1_eta/D");
+  tree_->Branch("ll_lep1_phi",  &ll_lep1_phi_,   "ll_lep1_phi/D");
+  tree_->Branch("ll_lep1_q",    &ll_lep1_q_,     "ll_lep1_q/I");
+  tree_->Branch("ll_lep1_iso",  &ll_lep1_iso_,   "ll_lep1_iso/D");
+  tree_->Branch("ll_lep2_pt",   &ll_lep2_pt_,    "ll_lep2_pt/D");
+  tree_->Branch("ll_lep2_eta",  &ll_lep2_eta_,   "ll_lep2_eta/D");
+  tree_->Branch("ll_lep2_phi",  &ll_lep2_phi_,   "ll_lep2_phi/D");
+  tree_->Branch("ll_lep2_q",    &ll_lep2_q_,     "ll_lep2_q/I");
+  tree_->Branch("ll_lep2_iso",  &ll_lep2_iso_,   "ll_lep2_iso/D");
+  tree_->Branch("ll_zmass",     &ll_zmass_,      "ll_zmass/D");
+  tree_->Branch("ll_lep1_pdgid",&ll_lep1_pdgid_,  "ll_lep1_pdgid/I");
+  tree_->Branch("ll_lep2_pdgid",&ll_lep2_pdgid_,  "ll_lep2_pdgid/I");
+  tree_->Branch("lepton_N",&lepton_N_,  "lepton_N/I");
+
 
   tree_->Branch("mm_mu1_pt",   &mm_mu1_pt_,    "mm_mu1_pt/D");
   tree_->Branch("mm_mu1_eta",  &mm_mu1_eta_,   "mm_mu1_eta/D");
@@ -199,6 +222,15 @@ void FlatTree::book(TTree* tree)
 
   tree_->Branch("Category",  &Category_, "Category/I" );
   tree_->Branch("NgenJet",  &NgenJet_, "NgenJet/I" );
+//////
+
+  tree_->Branch("pdfWeightId1",&pdfWeightId1_, "pdfWeightId1/F");
+  tree_->Branch("pdfWeightId2",&pdfWeightId2_, "pdfWeightId2/F");
+  tree_->Branch("pdfWeightQ",  &pdfWeightQ_,   "pdfWeightQ/F");  
+  tree_->Branch("pdfWeightX1", &pdfWeightX1_,  "pdfWeightX1/F"); 
+  tree_->Branch("pdfWeightX2", &pdfWeightX2_,  "pdfWeightX2/F"); 
+  tree_->Branch("puWeight",    &puWeight_,     "puWeight/F");    
+
 
 /////
   tree_->Branch("CSCTightHaloFilter",                         &CSCTightHaloFilter_,                          "CSCTightHaloFilter/O");                         
@@ -253,16 +285,22 @@ void FlatTree::clear()
    met_=-99.0; metphi_=-99.;
    metNoHFphi_=-99.0; metNoHF_=-99.0;    metPfMvaphi_=-99.0; metPfMva_=-99.0;   metPuppiphi_=-99.0; metPuppi_=-99.0;   
 ///
-
+   ll_lep1_pt_=-99.; ll_lep1_eta_=-99.; ll_lep1_phi_=-99.; ll_lep1_iso_=-99.; mm_zmass_=-99.;
+   ll_lep2_pt_=-99.; ll_lep2_eta_=-99.; ll_lep2_phi_=-99.; ll_lep2_iso_=-99.;
+ 
    mm_mu1_pt_=-99.; mm_mu1_eta_=-99.; mm_mu1_phi_=-99.; mm_mu1_iso_=-99.; mm_zmass_=-99.;
    mm_mu2_pt_=-99.; mm_mu2_eta_=-99.; mm_mu2_phi_=-99.; mm_mu2_iso_=-99.;
-   ee_el1_pt_=-99.; ee_el1_eta_=-99.; ee_el1_phi_=-99.; ee_el1_iso_=-99.; ee_zmass_=-99.;
+ 
+  ee_el1_pt_=-99.; ee_el1_eta_=-99.; ee_el1_phi_=-99.; ee_el1_iso_=-99.; ee_zmass_=-99.;
    ee_el2_pt_=-99.; ee_el2_eta_=-99.; ee_el2_phi_=-99.; ee_el2_iso_=-99.;
    em_mu1_pt_=-99.; em_mu1_eta_=-99.; em_mu1_phi_=-99.; em_mu1_iso_=-99.; em_zmass_=-99.;
    em_el2_pt_=-99.; em_el2_eta_=-99.; em_el2_phi_=-99.; em_el2_iso_=-99.;
 
    //mm_mu1_dr_el_=-99.;  mm_mu2_dr_el_=-99.;  ee_el1_dr_mu_=-99.;  ee_el2_dr_mu_=-99.;  em_mu1_dr_el_=-99.;  em_el2_dr_mu_=-99.; 
 
+    ll_lep1_q_=-99;  ll_lep2_q_=-99;
+    ll_lep1_pdgid_=-99;  ll_lep2_pdgid_=-99;
+    lepton_N_=-99;
     mm_mu1_q_=-99;  mm_mu2_q_=-99;
     ee_el1_q_=-99;  ee_el2_q_=-99;
     em_mu1_q_=-99;  em_el2_q_=-99;
@@ -272,7 +310,15 @@ void FlatTree::clear()
   Category_=-99;
   NgenJet_=-99;
 
+////////
+  pdfWeightId1_  =1.;
+  pdfWeightId2_  =1.;
+  pdfWeightQ_    =1.;
+  pdfWeightX1_   =1.;
+  pdfWeightX2_   =1.;
+  puWeight_      =1.;
 ///////
+
   CSCTightHaloFilter_=false;
   EcalDeadCellTriggerPrimitiveFilter_=false;
   HBHENoiseFilter_=false;

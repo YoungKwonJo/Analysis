@@ -8,9 +8,9 @@
 
 class Lepton{
   public:
-   explicit Lepton(double pt, double eta, double phi, double mass, double Iso, int Q , int id)
+   explicit Lepton(double pt, double eta, double phi, double mass, double Iso, int Q , int id, int pdgid)
    {
-      vec_.SetPtEtaPhiM(pt,eta,phi,mass); Iso_=Iso; Q_=Q; id_=id;
+      vec_.SetPtEtaPhiM(pt,eta,phi,mass); Iso_=Iso; Q_=Q; id_=id; pdgid_=pdgid;
    }
    ~Lepton(){}
 
@@ -26,6 +26,7 @@ class Lepton{
    double Iso_;
    int Q_;
    int id_;
+   int pdgid_;
 };
 
 #endif

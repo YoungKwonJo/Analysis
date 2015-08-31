@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Mon Aug 17 13:28:11 2015 by ROOT version 6.02/05
+// Fri Aug 28 16:14:17 2015 by ROOT version 6.02/05
 // from TTree event/event
 // found on file: ../ntuple_TT_powheg.root
 //////////////////////////////////////////////////////////
@@ -13,6 +13,7 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
+#include "vector"
 #include "vector"
 using namespace std;
 
@@ -55,13 +56,13 @@ public :
    Int_t           nTrueInteraction;
    Int_t           pdfWeightId1;
    Int_t           pdfWeightId2;
-   Double_t        pdfWeightQ;
-   Double_t        pdfWeightX1;
-   Double_t        pdfWeightX2;
-   Double_t        puWeight;
-   Double_t        puWeightDn;
-   Double_t        puWeightUp;
-   vector<double>  *pdfWeight;
+   Float_t         pdfWeightQ;
+   Float_t         pdfWeightX1;
+   Float_t         pdfWeightX2;
+   Float_t         puWeight;
+   Float_t         puWeightDn;
+   Float_t         puWeightUp;
+   vector<float>   *pdfWeight;
    vector<double>  *electrons_chIso03;
    vector<double>  *electrons_chIso04;
    vector<double>  *electrons_eta;
@@ -84,20 +85,40 @@ public :
    vector<double>  *electrons_relIso04;
    vector<double>  *electrons_scEta;
    vector<double>  *jets_CSVInclV2;
+   vector<double>  *jets_LooseId;
+   vector<double>  *jets_TightId;
    vector<double>  *jets_eta;
    vector<double>  *jets_hadronFlavour;
+   vector<double>  *jets_looseJetID;
    vector<double>  *jets_m;
    vector<double>  *jets_partonFlavour;
    vector<double>  *jets_phi;
+   vector<double>  *jets_pileupJetId;
    vector<double>  *jets_pt;
+   vector<double>  *jets_shiftedEnDown;
+   vector<double>  *jets_shiftedEnUp;
+   vector<double>  *jets_smearedRes;
+   vector<double>  *jets_smearedResDown;
+   vector<double>  *jets_smearedResUp;
+   vector<double>  *jets_tightJetID;
    vector<double>  *jets_vtxMass;
    vector<double>  *jetsPuppi_CSVInclV2;
+   vector<double>  *jetsPuppi_LooseId;
+   vector<double>  *jetsPuppi_TightId;
    vector<double>  *jetsPuppi_eta;
    vector<double>  *jetsPuppi_hadronFlavour;
+   vector<double>  *jetsPuppi_looseJetID;
    vector<double>  *jetsPuppi_m;
    vector<double>  *jetsPuppi_partonFlavour;
    vector<double>  *jetsPuppi_phi;
+   vector<double>  *jetsPuppi_pileupJetId;
    vector<double>  *jetsPuppi_pt;
+   vector<double>  *jetsPuppi_shiftedEnDown;
+   vector<double>  *jetsPuppi_shiftedEnUp;
+   vector<double>  *jetsPuppi_smearedRes;
+   vector<double>  *jetsPuppi_smearedResDown;
+   vector<double>  *jetsPuppi_smearedResUp;
+   vector<double>  *jetsPuppi_tightJetID;
    vector<double>  *jetsPuppi_vtxMass;
    vector<double>  *met_phi;
    vector<double>  *met_pt;
@@ -220,20 +241,40 @@ public :
    TBranch        *b_electrons_relIso04;   //!
    TBranch        *b_electrons_scEta;   //!
    TBranch        *b_jets_CSVInclV2;   //!
+   TBranch        *b_jets_LooseId;   //!
+   TBranch        *b_jets_TightId;   //!
    TBranch        *b_jets_eta;   //!
    TBranch        *b_jets_hadronFlavour;   //!
+   TBranch        *b_jets_looseJetID;   //!
    TBranch        *b_jets_m;   //!
    TBranch        *b_jets_partonFlavour;   //!
    TBranch        *b_jets_phi;   //!
+   TBranch        *b_jets_pileupJetId;   //!
    TBranch        *b_jets_pt;   //!
+   TBranch        *b_jets_shiftedEnDown;   //!
+   TBranch        *b_jets_shiftedEnUp;   //!
+   TBranch        *b_jets_smearedRes;   //!
+   TBranch        *b_jets_smearedResDown;   //!
+   TBranch        *b_jets_smearedResUp;   //!
+   TBranch        *b_jets_tightJetID;   //!
    TBranch        *b_jets_vtxMass;   //!
    TBranch        *b_jetsPuppi_CSVInclV2;   //!
+   TBranch        *b_jetsPuppi_LooseId;   //!
+   TBranch        *b_jetsPuppi_TightId;   //!
    TBranch        *b_jetsPuppi_eta;   //!
    TBranch        *b_jetsPuppi_hadronFlavour;   //!
+   TBranch        *b_jetsPuppi_looseJetID;   //!
    TBranch        *b_jetsPuppi_m;   //!
    TBranch        *b_jetsPuppi_partonFlavour;   //!
    TBranch        *b_jetsPuppi_phi;   //!
+   TBranch        *b_jetsPuppi_pileupJetId;   //!
    TBranch        *b_jetsPuppi_pt;   //!
+   TBranch        *b_jetsPuppi_shiftedEnDown;   //!
+   TBranch        *b_jetsPuppi_shiftedEnUp;   //!
+   TBranch        *b_jetsPuppi_smearedRes;   //!
+   TBranch        *b_jetsPuppi_smearedResDown;   //!
+   TBranch        *b_jetsPuppi_smearedResUp;   //!
+   TBranch        *b_jetsPuppi_tightJetID;   //!
    TBranch        *b_jetsPuppi_vtxMass;   //!
    TBranch        *b_met_phi;   //!
    TBranch        *b_met_pt;   //!
@@ -309,11 +350,11 @@ public :
 #endif
 
 #ifdef CATNtuple_cxx
-CATNtuple::CATNtuple(TTree *tree)// : fChain(0) 
+CATNtuple::CATNtuple(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
-   /*if (tree == 0) {
+   if (tree == 0) {
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../ntuple_TT_powheg.root");
       if (!f || !f->IsOpen()) {
          f = new TFile("../ntuple_TT_powheg.root");
@@ -321,7 +362,7 @@ CATNtuple::CATNtuple(TTree *tree)// : fChain(0)
       TDirectory * dir = (TDirectory*)f->Get("../ntuple_TT_powheg.root:/ntuple");
       dir->GetObject("event",tree);
 
-   }*/
+   }
    Init(tree);
 }
 
@@ -384,20 +425,40 @@ void CATNtuple::Init(TTree *tree)
    electrons_relIso04 = 0;
    electrons_scEta = 0;
    jets_CSVInclV2 = 0;
+   jets_LooseId = 0;
+   jets_TightId = 0;
    jets_eta = 0;
    jets_hadronFlavour = 0;
+   jets_looseJetID = 0;
    jets_m = 0;
    jets_partonFlavour = 0;
    jets_phi = 0;
+   jets_pileupJetId = 0;
    jets_pt = 0;
+   jets_shiftedEnDown = 0;
+   jets_shiftedEnUp = 0;
+   jets_smearedRes = 0;
+   jets_smearedResDown = 0;
+   jets_smearedResUp = 0;
+   jets_tightJetID = 0;
    jets_vtxMass = 0;
    jetsPuppi_CSVInclV2 = 0;
+   jetsPuppi_LooseId = 0;
+   jetsPuppi_TightId = 0;
    jetsPuppi_eta = 0;
    jetsPuppi_hadronFlavour = 0;
+   jetsPuppi_looseJetID = 0;
    jetsPuppi_m = 0;
    jetsPuppi_partonFlavour = 0;
    jetsPuppi_phi = 0;
+   jetsPuppi_pileupJetId = 0;
    jetsPuppi_pt = 0;
+   jetsPuppi_shiftedEnDown = 0;
+   jetsPuppi_shiftedEnUp = 0;
+   jetsPuppi_smearedRes = 0;
+   jetsPuppi_smearedResDown = 0;
+   jetsPuppi_smearedResUp = 0;
+   jetsPuppi_tightJetID = 0;
    jetsPuppi_vtxMass = 0;
    met_phi = 0;
    met_pt = 0;
@@ -524,20 +585,40 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("electrons_relIso04", &electrons_relIso04, &b_electrons_relIso04);
    fChain->SetBranchAddress("electrons_scEta", &electrons_scEta, &b_electrons_scEta);
    fChain->SetBranchAddress("jets_CSVInclV2", &jets_CSVInclV2, &b_jets_CSVInclV2);
+   fChain->SetBranchAddress("jets_LooseId", &jets_LooseId, &b_jets_LooseId);
+   fChain->SetBranchAddress("jets_TightId", &jets_TightId, &b_jets_TightId);
    fChain->SetBranchAddress("jets_eta", &jets_eta, &b_jets_eta);
    fChain->SetBranchAddress("jets_hadronFlavour", &jets_hadronFlavour, &b_jets_hadronFlavour);
+   fChain->SetBranchAddress("jets_looseJetID", &jets_looseJetID, &b_jets_looseJetID);
    fChain->SetBranchAddress("jets_m", &jets_m, &b_jets_m);
    fChain->SetBranchAddress("jets_partonFlavour", &jets_partonFlavour, &b_jets_partonFlavour);
    fChain->SetBranchAddress("jets_phi", &jets_phi, &b_jets_phi);
+   fChain->SetBranchAddress("jets_pileupJetId", &jets_pileupJetId, &b_jets_pileupJetId);
    fChain->SetBranchAddress("jets_pt", &jets_pt, &b_jets_pt);
+   fChain->SetBranchAddress("jets_shiftedEnDown", &jets_shiftedEnDown, &b_jets_shiftedEnDown);
+   fChain->SetBranchAddress("jets_shiftedEnUp", &jets_shiftedEnUp, &b_jets_shiftedEnUp);
+   fChain->SetBranchAddress("jets_smearedRes", &jets_smearedRes, &b_jets_smearedRes);
+   fChain->SetBranchAddress("jets_smearedResDown", &jets_smearedResDown, &b_jets_smearedResDown);
+   fChain->SetBranchAddress("jets_smearedResUp", &jets_smearedResUp, &b_jets_smearedResUp);
+   fChain->SetBranchAddress("jets_tightJetID", &jets_tightJetID, &b_jets_tightJetID);
    fChain->SetBranchAddress("jets_vtxMass", &jets_vtxMass, &b_jets_vtxMass);
    fChain->SetBranchAddress("jetsPuppi_CSVInclV2", &jetsPuppi_CSVInclV2, &b_jetsPuppi_CSVInclV2);
+   fChain->SetBranchAddress("jetsPuppi_LooseId", &jetsPuppi_LooseId, &b_jetsPuppi_LooseId);
+   fChain->SetBranchAddress("jetsPuppi_TightId", &jetsPuppi_TightId, &b_jetsPuppi_TightId);
    fChain->SetBranchAddress("jetsPuppi_eta", &jetsPuppi_eta, &b_jetsPuppi_eta);
    fChain->SetBranchAddress("jetsPuppi_hadronFlavour", &jetsPuppi_hadronFlavour, &b_jetsPuppi_hadronFlavour);
+   fChain->SetBranchAddress("jetsPuppi_looseJetID", &jetsPuppi_looseJetID, &b_jetsPuppi_looseJetID);
    fChain->SetBranchAddress("jetsPuppi_m", &jetsPuppi_m, &b_jetsPuppi_m);
    fChain->SetBranchAddress("jetsPuppi_partonFlavour", &jetsPuppi_partonFlavour, &b_jetsPuppi_partonFlavour);
    fChain->SetBranchAddress("jetsPuppi_phi", &jetsPuppi_phi, &b_jetsPuppi_phi);
+   fChain->SetBranchAddress("jetsPuppi_pileupJetId", &jetsPuppi_pileupJetId, &b_jetsPuppi_pileupJetId);
    fChain->SetBranchAddress("jetsPuppi_pt", &jetsPuppi_pt, &b_jetsPuppi_pt);
+   fChain->SetBranchAddress("jetsPuppi_shiftedEnDown", &jetsPuppi_shiftedEnDown, &b_jetsPuppi_shiftedEnDown);
+   fChain->SetBranchAddress("jetsPuppi_shiftedEnUp", &jetsPuppi_shiftedEnUp, &b_jetsPuppi_shiftedEnUp);
+   fChain->SetBranchAddress("jetsPuppi_smearedRes", &jetsPuppi_smearedRes, &b_jetsPuppi_smearedRes);
+   fChain->SetBranchAddress("jetsPuppi_smearedResDown", &jetsPuppi_smearedResDown, &b_jetsPuppi_smearedResDown);
+   fChain->SetBranchAddress("jetsPuppi_smearedResUp", &jetsPuppi_smearedResUp, &b_jetsPuppi_smearedResUp);
+   fChain->SetBranchAddress("jetsPuppi_tightJetID", &jetsPuppi_tightJetID, &b_jetsPuppi_tightJetID);
    fChain->SetBranchAddress("jetsPuppi_vtxMass", &jetsPuppi_vtxMass, &b_jetsPuppi_vtxMass);
    fChain->SetBranchAddress("met_phi", &met_phi, &b_met_phi);
    fChain->SetBranchAddress("met_pt", &met_pt, &b_met_pt);
