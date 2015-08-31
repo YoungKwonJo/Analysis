@@ -49,6 +49,7 @@ json = {
 "monitors2" : mon2,
 #"monitors2" : [],
 "cuts" : test_cuts, 
+"cutsQCD" : test_cutsQCD, 
 "output" : "hist_test.root"
 }
 
