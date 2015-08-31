@@ -116,8 +116,29 @@ def ntuple2hist(json,cuts):
     h= h+h_all_maker(tree,datasamples[i],monitors,cuts,1,1)
     f.Close()
 
+  return h
+
+def ntuple2histQCD(json,cutsQCD):
+  h = []
+  #mcsamples = json['mcsamples']
+  mceventweight = json['mceventweight']
+  monitors=json['monitors']
+  #datasamples = json['datasamples']
+  qcdsamples = json['qcdsamples']
+  for i,mc in enumerate(qcdsamples):
+    f = TFile.Open(qcdsamples[i]['file'],"read")
+    #tree = f.ntuple
+    tree = f.myresult
+    htot = f.Get("hNEvent")
+    Ntot = htot.GetBinContent(1)
+    if log : print "total:"+mc['file']+":"+str(round(Ntot))
+
+    h= h+h_all_maker(tree,qcdsamples[i],monitors,cutsQCD,1,1)
+    f.Close()
 
   return h
+
+
 
 ################
 def ntuple2hist2d(json,cuts):
@@ -147,6 +168,22 @@ def ntuple2hist2d(json,cuts):
   return h
 
 
+def ntuple2hist2dQCD(json,cutsQCD):
+  h = []
+  #mcsamples = json['mcsamples']
+  mceventweight = json['mceventweight']
+  monitors2=json['monitors2']
+  #datasamples = json['datasamples']
+  qcdsamples = json['qcdsamples']
+  for i,mc in enumerate(qcdsamples):
+    f = TFile.Open(qcdsamples[i]['file'],"read")
+    #tree = f.ntuple
+    tree = f.myresult
+    h= h+h2_all_maker(tree,qcdsamples[i],monitors2,cutsQCD,1,1)
+    f.Close()
+  return h
+
+
 def makeoutput(outputname, h):
   fout = TFile(outputname,"RECREATE")
   for a in h:
@@ -156,21 +193,27 @@ def makeoutput(outputname, h):
 
 ###############
 def makehist(json):
-  cuts_  = cut_maker(json['cuts']) #print "cut : %s" % cuts
+  cuts_  = cut_maker(json['cuts']) 
+  cutsQCD_  = cut_maker(json['cutsQCD']) 
   h=[]
   if len(json['monitors'])>0 :
     h += ntuple2hist(json,cuts_)
+    #h += ntuple2histQCD(json,cutsQCD_)
   if len(json['monitors2'])>0 :
     h += ntuple2hist2d(json,cuts_)
+    #h += ntuple2hist2dQCD(json,cutsQCD_)
   makeoutput(json['output'],h)
 
 def makehist2(json):
-  cuts_  = cut_maker2(json['cuts']) #print "cut : %s" % cuts
+  cuts_  = cut_maker2(json['cuts']) 
+  cutsQCD_  = cut_maker(json['cutsQCD']) 
   h=[]
   if len(json['monitors'])>0 :
     h += ntuple2hist(json,cuts_)
+    #h += ntuple2histQCD(json,cutsQCD_)
   if len(json['monitors2'])>0 :
     h += ntuple2hist2d(json,cuts_)
+    #h += ntuple2hist2dQCD(json,cutQCD_)
   makeoutput(json['output'],h)
 
 
@@ -214,7 +257,7 @@ def make_banner(xmin,ymin,xmax,ymax):
   pt.SetTextAlign(12)
   pt.AddText("Work in progress")
   #pt.AddText("TTJets_madgraphMLM-pythia8")
-  pt.AddText("madgraphMLM-pythia8")
+  #pt.AddText("madgraphMLM-pythia8")
   pt.AddText("#sqrt{s} = 13 TeV")
   pt.Draw()
 
@@ -516,7 +559,7 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
       #if not (round(selEvet) == round(selEnts)) : return 
 ################################
   scale = hmctot.GetMaximum()
-  minimum = 0.005
+  minimum = 0.00005
 
   h1data = hdata.Clone("h1data")
   h2data = myDataHistSet(h1data)

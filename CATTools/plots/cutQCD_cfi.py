@@ -8,25 +8,25 @@ ee_el2    = "((ee_el2_pt>20) && (abs(ee_el2_eta)<2.4))"
 em_mu1    = "((em_mu1_pt>20) && (abs(em_mu1_eta)<2.4))"
 em_el2    = "((em_el2_pt>20) && (abs(em_el2_eta)<2.4))"
 
-mm_Iso12 = "((abs(mm_mu1_iso)<0.12) && (abs(mm_mu2_iso)<0.12))"
-ee_Iso12 = "((abs(ee_el1_iso)<0.12) && (abs(ee_el2_iso)<0.12))"
-em_Iso12 = "((abs(em_mu1_iso)<0.12) && (abs(em_el2_iso)<0.12))"
-
-mm_NonIso12 = "((abs(mm_mu1_iso)>0.2) && (abs(mm_mu2_iso)>0.2))"
-ee_NonIso12 = "((abs(ee_el1_iso)>0.2) && (abs(ee_el2_iso)>0.2))"
-em_NonIso12 = "((abs(em_mu1_iso)>0.2) && (abs(em_el2_iso)>0.2))"
+mm_mu1Iso = " (abs(mm_mu1_iso)<0.12)"
+mm_mu2Iso = "(abs(mm_mu2_iso)<0.12)"
+ee_el1Iso = "(abs(ee_el1_iso)<0.12)"
+ee_el2Iso = "(abs(ee_el2_iso)<0.12)"
+em_mu2Iso = "(abs(em_mu1_iso)<0.12)"
+em_el2Iso = "(abs(em_el2_iso)<0.12)"
 
 mm_op = "( mm_mu1_q*mm_mu2_q<0)"
 ee_op = "( ee_el1_q*ee_el2_q<0)"
 em_op = "( em_mu1_q*em_el2_q<0)"
 
-mm_lepIso = "(" + mm_mu1 + " && "+mm_mu2 + " && " + mm_op + " && (mm_zmass>20) " + " && " + mm_Iso12  +") "
-ee_lepIso = "(" + ee_el1 + " && "+ee_el2 + " && " + ee_op + " && (ee_zmass>20) " + " && " + ee_Iso12  +") "
-em_lepIso = "(" + em_mu1 + " && "+em_el2 + " && " + em_op + " && (em_zmass>20) " + " && " + em_Iso12  +") "
+mm_lepOp = "(" + mm_mu1 + " && "+mm_mu2 + " && " + mm_op +  " && (mm_zmass>20))"  
+ee_lepOp = "(" + ee_el1 + " && "+ee_el2 + " && " + ee_op +  " && (ee_zmass>20))"  
+em_lepOp = "(" + em_mu1 + " && "+em_el2 + " && " + em_op +  " && (em_zmass>20))"  
 
-mm_lepNonIso = "(" + mm_mu1 + " && "+mm_mu2 + " && " + mm_op + " && (mm_zmass>20) " + " && " + mm_NonIso12  +") "
-ee_lepNonIso = "(" + ee_el1 + " && "+ee_el2 + " && " + ee_op + " && (ee_zmass>20) " + " && " + ee_NonIso12  +") "
-em_lepNonIso = "(" + em_mu1 + " && "+em_el2 + " && " + em_op + " && (em_zmass>20) " + " && " + em_NonIso12  +") "
+mm_lepSs = "(" + mm_mu1 + " && "+mm_mu2 + " && !" + mm_op + " && (mm_zmass>20))" 
+ee_lepSs = "(" + ee_el1 + " && "+ee_el2 + " && !" + ee_op + " && (ee_zmass>20))" 
+em_lepSs = "(" + em_mu1 + " && "+em_el2 + " && !" + em_op + " && (em_zmass>20))" 
+
 
 
 mm_zmass = "( abs(91.2-mm_zmass)>15 )"
@@ -44,13 +44,13 @@ e_trigger= "((HLTEle27eta2p1WPLooseGsfTriCentralPFJet30==1)" +"||"+ "(HLTEle17Ca
 em_trigger=  "((HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL==1)" +"||"+  "(HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL==1))"
 
 ##########
-mm_cuts ={
+mm_cutsOp ={
 "channel": "mm",
 "cut": [
    "(1)",
 #   preselection,
 #   mm_trigger,
-   "(" + mm_lepIso + ")",
+   "(" + mm_lepOp + ")",
    "(" + mm_zmass + ")",
    "(met>40)", 
    "nJet>=4 ",
@@ -58,13 +58,13 @@ mm_cuts ={
    "nBJetT>=2", 
 ]
 }
-ee_cuts = {
+ee_cutsOp = {
 "channel": "ee",
 "cut": [
    "(1)",
 #   preselection,
 #   ee_trigger,
-   "(" + ee_lepIso + ") ",
+   "(" + ee_lepOp + ") ",
    "(" + ee_zmass + ") ",
    "(met>40) ",
    "nJet>=4 ",
@@ -72,13 +72,13 @@ ee_cuts = {
    "nBJetT>=2", 
 ]
 }
-em_cuts = {
+em_cutsOp = {
 "channel": "em",
 "cut":[
    "(1)",
 #   preselection,
 #   em_trigger,
-   "(" + em_lepIso + ") ",
+   "(" + em_lepOp + ") ",
    "(1)",
    "(1) ",
    "nJet>=4 ",
@@ -86,15 +86,13 @@ em_cuts = {
    "nBJetT>=2", 
 ]
 }
-
-##########
-mm_cutsQCD ={
+mm_cutsSs ={
 "channel": "mm",
 "cut": [
    "(1)",
 #   preselection,
 #   mm_trigger,
-   "(" + mm_lepNonIso + ")",
+   "(" + mm_lepSs + ")",
    "(" + mm_zmass + ")",
    "(met>40)", 
    "nJet>=4 ",
@@ -102,13 +100,13 @@ mm_cutsQCD ={
    "nBJetT>=2", 
 ]
 }
-ee_cutsQCD = {
+ee_cutsSs = {
 "channel": "ee",
 "cut": [
    "(1)",
 #   preselection,
 #   ee_trigger,
-   "(" + ee_lepNonIso + ") ",
+   "(" + ee_lepSs + ") ",
    "(" + ee_zmass + ") ",
    "(met>40) ",
    "nJet>=4 ",
@@ -116,13 +114,13 @@ ee_cutsQCD = {
    "nBJetT>=2", 
 ]
 }
-em_cutsQCD = {
+em_cutsSs = {
 "channel": "em",
 "cut":[
    "(1)",
 #   preselection,
 #   em_trigger,
-   "(" + em_lepNonIso + ") ",
+   "(" + em_lepSs + ") ",
    "(1)",
    "(1) ",
    "nJet>=4 ",
