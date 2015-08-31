@@ -6,6 +6,7 @@ from math import sqrt
 ################
 #log = False
 log = True
+useReturn =False
 
 def h1_maker(tree, mon, cut):
   h1 =  TH1F( mon['name'], mon['title'], mon['xbin_set'][0],mon['xbin_set'][1],mon['xbin_set'][2])
@@ -297,8 +298,8 @@ def myCanvas(name):
 
   return c1
 
-def myPad1():
-  pad1 = TPad("pad1", "",0,0.3,1,1);
+def myPad1(name):
+  pad1 = TPad(name, "",0,0.3,1,1)
   pad1.Range(-1.072875,-0.39794,5.364372,5.641005)
   pad1.SetFillColor(0)
   pad1.SetBorderMode(0)
@@ -314,8 +315,10 @@ def myPad1():
 
   return pad1
 
-def myPad2():
-  pad2 = TPad("pad2", "",0,0,1,0.3)
+def myPad2(name):
+  if log :  print "pad2() step0"
+  pad2 = TPad(name, "",0,0,1,0.3)
+  if log :  print "pad2() step1"
   pad2.Range(-1.072875,-1.321429,5.364372,2.25)
   pad2.SetFillColor(0)
   pad2.SetBorderMode(0)
@@ -350,7 +353,8 @@ def myDataHistSet(hdata):
  
   return hdata
 
-def myBottomDataPerMCSet(hdataMC):
+def myBottomDataPerMCSet(hdata):
+  hdataMC = hdata.Clone("hdataMC")
   hdataMC.SetTitle("")
   hdataMC.SetMaximum(2.0)
   hdataMC.SetMinimum(0.0)
@@ -398,16 +402,22 @@ def myHist2TGraphError(hist1):
 
 
 #####################
-#def singleplotStack(filename,mon,step,mcsamples,datasamples):
+def singleplotStack2(filename,mon,step,mcsamples,datasamples):
+  f = TFile.Open(filename,"read")
+  singleplotStack(f,mon,step,mcsamples,datasamples)
+  f.Close()
+
 def singleplotStack(f,mon,step,mcsamples,datasamples):
   #f = TFile.Open(filename,"read")
-  c1 = myCanvas(mon+step)
+  canvasname = mon+step
+  c1 = myCanvas(canvasname)
   #c1 = TCanvas( 'c1', '', 500, 500 )
+  if log : print mon+step
   gStyle.SetOptFit(1)
   gStyle.SetOptStat(0)
 
   #pad1 = TPad("pad1", "",0,0.3,1,1);
-  pad1 = myPad1() 
+  pad1 = myPad1(canvasname+"pad1") 
   pad1.Draw()
   pad1.cd()
 
@@ -499,9 +509,11 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
  
     aa = mc['name']
     checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
-    if checkDataChannel : 
+    checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
+    if checkDataChannel and checkZMass: 
       hdata.Add(h1)
       if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
+      #if not (round(selEvet) == round(selEnts)) : return 
 ################################
   scale = hmctot.GetMaximum()
   minimum = 0.005
@@ -526,6 +538,7 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   h2data.Draw("same")
 #  h2data.Draw("sameaxis")
 
+
   leg.Draw()
   leg2.Draw()
   pad1.SetLogy()
@@ -539,12 +552,19 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   pad1.Modified()
   c1.cd()
 ###########################################
+  if log :  print "pad1 step"
   #pad2 = TPad("pad2", "",0,0,1,0.3)
-  pad2 = myPad2()
+  pad2 = myPad2(canvasname+"pad2")
+
+  if log :  print "pad2 step1"
   pad2.Draw()
   pad2.cd()
   hdata.Divide(hmctot)
+
+  #if log : print "divide start"+str(hdata.Integral())
   hdataMC = myBottomDataPerMCSet(hdata)
+
+  #if log : print "divide end"
   hdataMC.Draw()
 
   pad2.Modified()
@@ -554,8 +574,10 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
 
   output = "plots/TH1_"+mon+"_"+step+".eps"
   c1.Print(output)
+
   #f.Close()
   #c1.Close()
-
-  return c1,pad1,pad2,hs,gr,h2data,hdataMC,leg,leg2
+  if useReturn : return c1,pad1,pad2,hs,gr,h2data,hdataMC,leg,leg2
+  else : c1.Close() 
+    
 ############################################

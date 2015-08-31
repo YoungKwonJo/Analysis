@@ -39,17 +39,17 @@ json = {
 
 #########
 #TH1F
-f = TFile.Open(json['file'],"read")
-singleplotStack(f,"MET","S0mm",json['mcsamples'],json['datasamples'])
+f = json['file'] #TFile.Open(json['file'],"read")
+#singleplotStack(f,"MET","S0mm",json['mcsamples'],json['datasamples'])
 
 #singleplotStack(f,"MET","S1em",json['mcsamples'],json['datasamples'])
-singleplotStack(f,"MET","S1mm",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"MET","S1mm",json['mcsamples'],json['datasamples'])
 #singleplotStack(f,"MET","S2em",json['mcsamples'],json['datasamples'])
-singleplotStack(f,"MET","S2mm",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"MET","S2mm",json['mcsamples'],json['datasamples'])
 #singleplotStack(f,"ZMassEM","S2em",json['mcsamples'],json['datasamples'])
 #singleplotStack(f,"ZMassMM","S2mm",json['mcsamples'],json['datasamples'])
-singleplotStack(f,"MET","S4em",json['mcsamples'],json['datasamples'])
-singleplotStack(f,"MET","S4mm",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"MET","S4em",json['mcsamples'],json['datasamples'])
+#singleplotStack(f,"MET","S4mm",json['mcsamples'],json['datasamples'])
 
 #singleplotStack(f,"ZMassMM","S0em",json['mcsamples'],json['datasamples'])
 #singleplotStack(f,"ZMassMM","S1em",json['mcsamples'],json['datasamples'])
@@ -65,9 +65,9 @@ singleplotStack(f,"MET","S4mm",json['mcsamples'],json['datasamples'])
 #singleplotStack(f,"nGoodPV","S1em",json['mcsamples'],json['datasamples'])
 
 ######
-#for step in json['cuts']:
-#  for mon in json['monitors']:
-#    singleplotStack(f,mon['name'],step,json['mcsamples'],json['datasamples'])
+for step in json['cuts']:
+  for mon in json['monitors']:
+    singleplotStack2(f,mon['name'],step,json['mcsamples'],json['datasamples'])
 
 
 #########
