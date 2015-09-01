@@ -658,7 +658,7 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   #lumi = 10.028
   hs = THStack("hs","")
 
-  hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step
+  hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step+"mm"
   #if log : print "hmcTotal: "+hmctotName
   hmctot = f.Get(hmctotName).Clone("hmctot")
   hmctot.Reset()
@@ -681,10 +681,10 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
     h2ll = f.Get(histnameSmm)
     h2ee = f.Get(histnameSee)
     h2em = f.Get(histnameSem)
-    if type(h2mm) is not TH1F :
+    if type(h2ll) is not TH1F :
       return
 
-    h2ll.AddBinContent(h2mm.GetNbinsX(),h2mm.GetBinContent(h2mm.GetNbinsX()+1))
+    h2ll.AddBinContent(h2ll.GetNbinsX(),h2ll.GetBinContent(h2ll.GetNbinsX()+1))
     h2ee.AddBinContent(h2ee.GetNbinsX(),h2ee.GetBinContent(h2ee.GetNbinsX()+1))
     h2em.AddBinContent(h2em.GetNbinsX(),h2em.GetBinContent(h2em.GetNbinsX()+1))
     #if h2.Integral()>0 :  h2.Scale(mc['cx']/Ntot*lumi)
@@ -740,7 +740,7 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
     h1em = f.Get(histnameSem)
     if type(h1ll) is not TH1F :
       return
-    h1lll.GetYaxis().SetTitle("Events")
+    h1ll.GetYaxis().SetTitle("Events")
 
     h1ll.AddBinContent(h1ll.GetNbinsX(),h1ll.GetBinContent(h1ll.GetNbinsX()+1))
     h1ee.AddBinContent(h1ee.GetNbinsX(),h1ee.GetBinContent(h1ee.GetNbinsX()+1))

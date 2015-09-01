@@ -65,9 +65,9 @@ f = json['file'] #TFile.Open(json['file'],"read")
 #singleplotStack(f,"nGoodPV","S1em",json['mcsamples'],json['datasamples'])
 
 ######
-for step in json['cuts']:
-  for mon in json['monitors']:
-    singleplotStack2(f,mon['name'],step,json['mcsamples'],json['datasamples'])
+#for step in json['cuts']:
+#  for mon in json['monitors']:
+#    singleplotStack2(f,mon['name'],step,json['mcsamples'],json['datasamples'])
 
 
 #########
