@@ -145,7 +145,7 @@ def ntuple2hist2d(json,cuts):
   h = []
   mcsamples = json['mcsamples']
   mceventweight = json['mceventweight']
-  monitors=json['monitors']
+  monitors=json['monitors2']
   datasamples = json['datasamples']
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
