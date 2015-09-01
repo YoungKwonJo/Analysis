@@ -13,14 +13,14 @@ from ROOT import *
 #########
 test_mcsamples=[
 
-{"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": kBlue+5, "lineWidth": 4, "label":"DYJets    "      },
+{"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": kBlue+5,  "label":"DYJets    "      },
 ]
 
 test_cuts={
 "channel": "mm",
 "cut": [
    "(1)",
-   "("+mm_mu1+"&&"+mm_mu2+")",
+   "(" + ll_lepIso+"&&"+mm + ")",
    #"("+mm_op+")",
    #"(" + mm_lep + ")",
    #"(" + mm_zmass + ")",
@@ -29,7 +29,7 @@ test_cuts={
 
 mon1=[
 #  { "name":"MET",          "unit":"Missing E_{T} (GeV) ",          "var":"met",      "xbin_set":[60,0,300]   },
-  { "name":"ZMassMM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"mm_zmass",  "xbin_set":[60,0,300]  },
+  { "name":"ZMass",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"ll_zmass",  "xbin_set":[60,0,300]  },
 ]
 #for mon11 in monitors.keys():
 #  if mon11 == ("Mon" + arg) :
@@ -56,7 +56,7 @@ json = {
 makehist(json)
 
 f = TFile.Open(json['output'],"read")
-c1 = singleplotStack(f,"ZMassMM","S0mm",json['mcsamples'],json['datasamples'])
-c2 = singleplotStack(f,"ZMassMM","S1mm",json['mcsamples'],json['datasamples'])
+c1 = singleplotStack(f,"ZMass","S0mm",json['mcsamples'],json['datasamples'])
+c2 = singleplotStack(f,"ZMass","S1mm",json['mcsamples'],json['datasamples'])
 #c3 = singleplotStack(f,"ZMassMM","S2mm",json['mcsamples'],json['datasamples'])
 
