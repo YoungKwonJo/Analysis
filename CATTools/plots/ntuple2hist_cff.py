@@ -145,7 +145,7 @@ def ntuple2hist2d(json,cuts):
   h = []
   mcsamples = json['mcsamples']
   mceventweight = json['mceventweight']
-  monitors=json['monitors2']
+  monitors=json['monitors']
   datasamples = json['datasamples']
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
@@ -624,9 +624,14 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   else : c1.Close() 
     
 ############################################
+############################################
+##################################################
+##################################################
+############################################
+############################################
 def singleplotStackLL2(filename,mon,step,mcsamples,datasamples):
   f = TFile.Open(filename,"read")
-  singleplotStack(f,mon,step,mcsamples,datasamples)
+  singleplotStackLL(f,mon,step,mcsamples,datasamples)
   f.Close()
 
 def singleplotStackLL(f,mon,step,mcsamples,datasamples):
