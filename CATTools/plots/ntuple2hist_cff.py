@@ -145,7 +145,7 @@ def ntuple2hist2d(json,cuts):
   h = []
   mcsamples = json['mcsamples']
   mceventweight = json['mceventweight']
-  monitors=json['monitors']
+  monitors2=json['monitors2']
   datasamples = json['datasamples']
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
@@ -156,14 +156,14 @@ def ntuple2hist2d(json,cuts):
     Ntot = htot.GetBinContent(1)
     #if log : print "mc:"+mc['name']+":"+str(round(Ntot))
 
-    h= h+h2_all_maker(tree,mcsamples[i],monitors,cuts,mceventweight,Ntot)
+    h= h+h2_all_maker(tree,mcsamples[i],monitors2,cuts,mceventweight,Ntot)
     f.Close()
 
   for i,mc in enumerate(datasamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
     tree = f.myresult
-    h= h+h2_all_maker(tree,datasamples[i],monitors,cuts,1,1)
+    h= h+h2_all_maker(tree,datasamples[i],monitors2,cuts,1,1)
     f.Close()
   return h
 
