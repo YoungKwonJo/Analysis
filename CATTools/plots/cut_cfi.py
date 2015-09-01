@@ -42,7 +42,7 @@ em_zmass = "(1)"# "( abs(91.2-em_zmass)>15 )"
 ##########
 mm="(abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==13)"
 ee="(abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==11)"
-em="((abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==13) or (abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==11))"
+em="((abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==13) || (abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==11))"
 
 preselection = "((CSCTightHaloFilter==1)" +"&&"+ "(EcalDeadCellTriggerPrimitiveFilter==1)" +"&&"+ "(HBHENoiseFilter==1)" +"&&"+ "(eeBadScFilter==1)" +"&&"+ "(goodVertices==1))" 
 mm_trigger = "((HLTDoubleEle33CaloIdLGsfTrkIdVL==1)" +"||"+ "(HLTMu17Mu8DZ==1)" +"||"+ "(HLTMu17TkMu8DZ==1)" +"||"+ "(HLTMu17TrkIsoVVLMu8TrkIsoVVL==1)" +"||"+ "(HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ==1)" +"||"+ "(HLTMu17TrkIsoVVLTkMu8TrkIsoVVL==1))"

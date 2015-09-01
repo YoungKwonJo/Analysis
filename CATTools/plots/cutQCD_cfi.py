@@ -43,7 +43,7 @@ ll_zmass = "( abs(91.2-ll_zmass)>15 )"
 
 mm="(abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==13)"
 ee="(abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==11)"
-em="((abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==13) or (abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==11))"
+em="((abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==13) || (abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==11))"
 
 
 preselection = "((CSCTightHaloFilter==1)" +"&&"+ "(EcalDeadCellTriggerPrimitiveFilter==1)" +"&&"+ "(HBHENoiseFilter==1)" +"&&"+ "(eeBadScFilter==1)" +"&&"+ "(goodVertices==1))" 
