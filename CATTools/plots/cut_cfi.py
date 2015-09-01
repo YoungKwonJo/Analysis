@@ -25,12 +25,12 @@ ll_op = "( ll_lep1_q*ll_lep2_q<0)"
 #ee_op = "( ee_el1_q*ee_el2_q<0)"
 #em_op = "( em_mu1_q*em_el2_q<0)"
 
-ll_lepIso = "(" + ll_mu1 + " && "+ll_mu2 + " && " + ll_op + " && (ll_zmass>20) " + " && " + ll_Iso12  +") "
+ll_lepIso = "(" + ll_lep1 + " && "+ll_lep2 + " && " + ll_op + " && (ll_zmass>20) " + " && " + ll_Iso12  +") "
 #mm_lepIso = "(" + mm_mu1 + " && "+mm_mu2 + " && " + mm_op + " && (mm_zmass>20) " + " && " + mm_Iso12  +") "
 #ee_lepIso = "(" + ee_el1 + " && "+ee_el2 + " && " + ee_op + " && (ee_zmass>20) " + " && " + ee_Iso12  +") "
 #em_lepIso = "(" + em_mu1 + " && "+em_el2 + " && " + em_op + " && (em_zmass>20) " + " && " + em_Iso12  +") "
 
-ll_lepNonIso = "(" + ll_mu1 + " && "+ll_mu2 + " && " + ll_op + " && (ll_zmass>20) " + " && " + ll_NonIso12  +") "
+ll_lepNonIso = "(" + ll_lep1 + " && "+ll_lep2 + " && " + ll_op + " && (ll_zmass>20) " + " && " + ll_NonIso12  +") "
 #mm_lepNonIso = "(" + mm_mu1 + " && "+mm_mu2 + " && " + mm_op + " && (mm_zmass>20) " + " && " + mm_NonIso12  +") "
 #ee_lepNonIso = "(" + ee_el1 + " && "+ee_el2 + " && " + ee_op + " && (ee_zmass>20) " + " && " + ee_NonIso12  +") "
 #em_lepNonIso = "(" + em_mu1 + " && "+em_el2 + " && " + em_op + " && (em_zmass>20) " + " && " + em_NonIso12  +") "mm
