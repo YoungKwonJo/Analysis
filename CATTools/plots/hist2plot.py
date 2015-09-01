@@ -80,3 +80,25 @@ for step in json['cuts']:
 #          mon_ = mon1['name']+"_"+mon2['name']
 #          plotTH2F(f,mon_,step,json['mcsamples'],json['datasamples'])
 
+jsonLL = {
+"file": "hist_all.root",
+#"file": "hist_all2.root",
+"mcsamples" : mcsamples,
+"datasamples" : datasamples,
+#"cuts" : ["S0","S1","S2","S3","S4","S5"],
+#"cuts" : ["S0","S1","S2","S3"],
+#"cuts" : ["S0","S1","S2","S3","S4","S5","S6"],
+"cuts" : [
+"S0","S1","S2","S3","S4","S5","S6",
+   ],
+#"cuts" : ["S6"],
+
+#"monitors" : monitors["jetMon3"]
+"monitors" : mon,
+"monitors2" : mon2
+}
+for step in jsonLL['cuts']:
+  for mon in jsonLL['monitors']:
+    singleplotStackLL2(f,mon['name'],step,jsonLL['mcsamples'],jsonLL['datasamples'])
+
+

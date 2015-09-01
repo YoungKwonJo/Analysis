@@ -624,3 +624,199 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   else : c1.Close() 
     
 ############################################
+def singleplotStackLL2(filename,mon,step,mcsamples,datasamples):
+  f = TFile.Open(filename,"read")
+  singleplotStack(f,mon,step,mcsamples,datasamples)
+  f.Close()
+
+def singleplotStackLL(f,mon,step,mcsamples,datasamples):
+  #f = TFile.Open(filename,"read")
+  canvasname = mon+step
+  c1 = myCanvas(canvasname)
+  #c1 = TCanvas( 'c1', '', 500, 500 )
+  if log : print mon+step
+  gStyle.SetOptFit(1)
+  gStyle.SetOptStat(0)
+
+  #pad1 = TPad("pad1", "",0,0.3,1,1);
+  pad1 = myPad1(canvasname+"pad1") 
+  pad1.Draw()
+  pad1.cd()
+
+  leg  = make_legend(0.67,0.64, 0.89,0.88)
+  leg2 = make_legend(0.43,0.64, 0.62,0.88)
+  jj = 0.
+  bb = 0.
+  b1 = 0.
+  b2 = 0.
+  lumi = 40.028
+  #lumi = 10.028
+  hs = THStack("hs","")
+
+  hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step
+  #if log : print "hmcTotal: "+hmctotName
+  hmctot = f.Get(hmctotName).Clone("hmctot")
+  hmctot.Reset()
+  hdata = hmctot.Clone("hdata")
+
+
+  label2 =""
+  Nlabel2=0.
+  #if log : print mcsamples
+  #hMCHist  = []
+  #mcLegend = []
+  for i,mc in enumerate(mcsamples):
+    isMC = mc['label'].find("DATA")==-1
+    if not isMC: continue
+
+    histnameSmm = "h1_"+mc['name']+"_"+mon+"_"+step+"mm"
+    histnameSee = "h1_"+mc['name']+"_"+mon+"_"+step+"ee"
+    histnameSem = "h1_"+mc['name']+"_"+mon+"_"+step+"em"
+    #channel = step[2:4]
+    h2ll = f.Get(histnameSmm)
+    h2ee = f.Get(histnameSee)
+    h2em = f.Get(histnameSem)
+    if type(h2mm) is not TH1F :
+      return
+
+    h2ll.AddBinContent(h2mm.GetNbinsX(),h2mm.GetBinContent(h2mm.GetNbinsX()+1))
+    h2ee.AddBinContent(h2ee.GetNbinsX(),h2ee.GetBinContent(h2ee.GetNbinsX()+1))
+    h2em.AddBinContent(h2em.GetNbinsX(),h2em.GetBinContent(h2em.GetNbinsX()+1))
+    #if h2.Integral()>0 :  h2.Scale(mc['cx']/Ntot*lumi)
+    h2ll.Add(h2ee)
+    h2ll.Add(h2em)
+
+    if h2ll.Integral()>0 :  h2ll.Scale(mc['cx']*lumi)
+
+    ###############
+    aa = mc['name']
+    isJJ = ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") )
+    if isJJ :  
+      jj+=h2ll.Integral()
+    #if log : print jj
+    if aa is "ttbb" :
+      bb+=h2ll.Integral()
+    if aa is "ttb"  :
+      b1+=h2ll.Integral()
+    if aa is "tt2b" :
+      b2+=h2ll.Integral()
+    ###############
+    h2ll.SetFillColor(mc['color'])
+    h2ll.SetLineColor(kBlack)
+    hmctot.Add( h2ll )
+    hs.Add( h2ll )
+
+    selEvet=h2ll.Integral() 
+    selEnts=h2ll.GetEntries()
+    if log : print "mc:"+mc['file']+":"+str(round(selEvet))+", "+str(selEnts)
+    #lleng= len("%s"%mc['label'])
+    #rleng= len(" %.0f"%h1.Integral())
+    #lrleng = 22 - lleng - int(rleng/1.8)
+    isSameBefore= mc['label'] is not label2
+    label = ("%s"%mc['label']) + (" %.0f"%(h2ll.Integral()+Nlabel2) ).rjust(7)
+    if  isSameBefore and i<6: leg.AddEntry(h2ll, label, "f")
+    elif isSameBefore       : leg2.AddEntry(h2ll, label, "f")
+
+    if  not isSameBefore : Nlabel2+=h2ll.Integral()
+    else                 : Nlabel2=h2ll.Integral()
+    label2=mc['label']
+    #hMCHist.append(copy.deepcopy(h2))
+    #mcLegent.append()
+
+
+  hdata.Reset()
+  for i,mc in enumerate(datasamples):
+    histnameSmm = "h1_"+mc['name']+"_"+mon+"_"+step+"mm"
+    histnameSee = "h1_"+mc['name']+"_"+mon+"_"+step+"ee"
+    histnameSem = "h1_"+mc['name']+"_"+mon+"_"+step+"em"
+    channel = step[2:4]
+    h1ll = f.Get(histnameSmm)
+    h1ee = f.Get(histnameSee)
+    h1em = f.Get(histnameSem)
+    if type(h1ll) is not TH1F :
+      return
+    h1lll.GetYaxis().SetTitle("Events")
+
+    h1ll.AddBinContent(h1ll.GetNbinsX(),h1ll.GetBinContent(h1ll.GetNbinsX()+1))
+    h1ee.AddBinContent(h1ee.GetNbinsX(),h1ee.GetBinContent(h1ee.GetNbinsX()+1))
+    h1em.AddBinContent(h1em.GetNbinsX(),h1em.GetBinContent(h1em.GetNbinsX()+1))
+    h1ll.Add(h1ee)
+    h1ll.Add(h1em)
+
+    selEvet=h1ll.Integral() 
+    selEnts=h1ll.GetEntries()
+ 
+    aa = mc['name']
+    checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
+    checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
+    if checkDataChannel and checkZMass: 
+      hdata.Add(h1ll)
+      if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
+      #if not (round(selEvet) == round(selEnts)) : return 
+################################
+  scale = hmctot.GetMaximum()
+  minimum = 0.00005
+
+  h1data = hdata.Clone("h1data")
+  h2data = myDataHistSet(h1data)
+
+  h2data.SetMaximum(scale*400)
+  h2data.SetMinimum(minimum)
+  #if log :  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
+  labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
+  leg2.AddEntry(hmctot,labeltot,"")
+  labeldata = ("DATA") + (" %.0f"%h2data.Integral()).rjust(8)
+  leg.AddEntry(h2data,labeldata,"p")
+
+#########################################
+  h2data.GetYaxis().SetTitle("Events")
+  h2data.Draw()
+  hs.Draw("same,hist")
+  gr = myHist2TGraphError(hmctot)
+  gr.Draw("same,2")
+  h2data.Draw("same")
+#  h2data.Draw("sameaxis")
+
+
+  leg.Draw()
+  leg2.Draw()
+  pad1.SetLogy()
+  #pt = make_banner(0.15,0.73, 0.5, 0.89)
+  bbb = 0.
+  bbbb = 0.
+  if jj>0:  bbb = bb/jj
+  if jj>0:  bbbb = (bb+b1+bb)/jj
+  #pt = make_banner2(0.12,0.66, 0.5, 0.89, bbb,bbbb )
+  #pt.Draw()
+  pad1.Modified()
+  c1.cd()
+###########################################
+  if log :  print "pad1 step"
+  #pad2 = TPad("pad2", "",0,0,1,0.3)
+  pad2 = myPad2(canvasname+"pad2")
+
+  if log :  print "pad2 step1"
+  pad2.Draw()
+  pad2.cd()
+  hdata.Divide(hmctot)
+
+  #if log : print "divide start"+str(hdata.Integral())
+  hdataMC = myBottomDataPerMCSet(hdata)
+
+  #if log : print "divide end"
+  hdataMC.Draw()
+
+  pad2.Modified()
+  c1.cd()
+  c1.Modified()
+  c1.cd()
+
+  output = "plots/TH1_"+mon+"_"+step+"LL.eps"
+  c1.Print(output)
+
+  #f.Close()
+  #c1.Close()
+  if useReturn : return c1,pad1,pad2,hs,gr,h2data,hdataMC,leg,leg2
+  else : c1.Close() 
+    
+############################################

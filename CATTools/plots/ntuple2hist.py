@@ -39,6 +39,7 @@ jsonMM = {
 "monitors2" : mon2,
 #"monitors2" : [],
 "cuts" : mm_cuts, 
+"cutsQCD" : mm_cutsQCD, 
 "output" : "hist_mon" + arg +mm_cuts["channel"]+ ".root"
 }
 
@@ -54,6 +55,7 @@ jsonEE = {
 "monitors2" : mon2,
 #"monitors2" : [],
 "cuts" : ee_cuts,
+"cutsQCD" : ee_cutsQCD, 
 "output" : "hist_mon" + arg +ee_cuts["channel"]+ ".root"
 }
 makehist(jsonEE)
@@ -67,6 +69,7 @@ jsonEM = {
 "monitors2" : mon2,
 #"monitors2" : [],
 "cuts" : em_cuts,
+"cutsQCD" : em_cutsQCD, 
 "output" : "hist_mon" + arg +em_cuts["channel"]+ ".root"
 }
 makehist(jsonEM)
