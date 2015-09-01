@@ -77,8 +77,9 @@ void CATNtuple::Loop()
       fevent_->metPuppiphi_ =  metPuppi_phi->at(0);
       fevent_->metPuppi_    =  metPuppi_pt->at(0);
 
-      fevent_->event_   = event; 
-      fevent_->lumi_   = lumi; 
+      fevent_->run_   = run; 
+      fevent_->event_ = event; 
+      fevent_->lumi_  = lumi; 
 
 ////////////////////
    fevent_->CSCTightHaloFilter_=                         CSCTightHaloFilter;                        
