@@ -49,14 +49,15 @@ json = {
 "monitors2" : mon2,
 #"monitors2" : [],
 "cuts" : test_cuts, 
-"cutsQCD" : test_cutsQCD, 
+"cutsQCD" : test_cuts, 
 "output" : "hist_test.root"
 }
 
-makehist(json)
+#makehist(json)
 
-f = TFile.Open(json['output'],"read")
-c1 = singleplotStack(f,"ZMass","S0mm",json['mcsamples'],json['datasamples'])
-c2 = singleplotStack(f,"ZMass","S1mm",json['mcsamples'],json['datasamples'])
+#f = TFile.Open(json['output'],"read")
+f = TFile.Open("hist_all.root","read")
+c1 = singleplotStackLL(f,"ZMass","S0",json['mcsamples'],json['datasamples'])
+c2 = singleplotStackLL(f,"ZMass","S1",json['mcsamples'],json['datasamples'])
 #c3 = singleplotStack(f,"ZMassMM","S2mm",json['mcsamples'],json['datasamples'])
 

@@ -552,8 +552,8 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
  
     aa = mc['name']
     checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
-    checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
-    if checkDataChannel and checkZMass: 
+    #checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
+    if checkDataChannel :#and checkZMass: 
       hdata.Add(h1)
       if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
       #if not (round(selEvet) == round(selEnts)) : return 
@@ -659,7 +659,7 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   hs = THStack("hs","")
 
   hmctotName = "h1_"+mcsamples[0]['name']+"_"+mon+"_"+step+"mm"
-  #if log : print "hmcTotal: "+hmctotName
+  if log : print "hmcTotal: "+hmctotName
   hmctot = f.Get(hmctotName).Clone("hmctot")
   hmctot.Reset()
   hdata = hmctot.Clone("hdata")
@@ -752,12 +752,12 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
     selEnts=h1ll.GetEntries()
  
     aa = mc['name']
-    checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
-    checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
-    if checkDataChannel and checkZMass: 
-      hdata.Add(h1ll)
-      if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
-      #if not (round(selEvet) == round(selEnts)) : return 
+    #checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
+    #checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
+    #if checkDataChannel :#and checkZMass: 
+    hdata.Add(h1ll)
+    if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
+    #if not (round(selEvet) == round(selEnts)) : return 
 ################################
   scale = hmctot.GetMaximum()
   minimum = 0.00005

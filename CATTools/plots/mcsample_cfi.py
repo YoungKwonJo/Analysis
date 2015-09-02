@@ -35,19 +35,19 @@ ttothers = mAND2(ttotheslist)
 
 mcsamples=[
 
-{"name":"MG5ttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kRed,      "label":"t#bar{t}+b#bar{b}      " },
-{"name":"MG5ttb",   "selection": ttb,      "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kOrange,   "label":"t#bar{t}+b        "      },
-{"name":"MG5tt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kCyan,     "label":"t#bar{t}+2b      "       },
-{"name":"MG5ttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kBlue-3,   "label":"t#bar{t}+c#bar{c}      " },
-{"name":"MG5ttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kGreen-3,  "label":"t#bar{t}+lf       "      },
-{"name":"MG5ttot",  "selection": ttothers, "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kViolet,   "label":"t#bar{t} others"         },
+#{"name":"MG5ttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kRed,      "label":"t#bar{t}+b#bar{b}      " },
+#{"name":"MG5ttb",   "selection": ttb,      "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kOrange,   "label":"t#bar{t}+b        "      },
+#{"name":"MG5tt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kCyan,     "label":"t#bar{t}+2b      "       },
+#{"name":"MG5ttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kBlue-3,   "label":"t#bar{t}+c#bar{c}      " },
+#{"name":"MG5ttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kGreen-3,  "label":"t#bar{t}+lf       "      },
+#{"name":"MG5ttot",  "selection": ttothers, "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": kViolet,   "label":"t#bar{t} others"         },
 
-{"name":"AMCttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kRed,      "label":"t#bar{t}+b#bar{b}      " },
-{"name":"AMCttb",   "selection": ttb,      "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kOrange,   "label":"t#bar{t}+b        "      },
-{"name":"AMCtt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kCyan,     "label":"t#bar{t}+2b      "       },
-{"name":"AMCttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kBlue-3,   "label":"t#bar{t}+c#bar{c}      " },
-{"name":"AMCttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kGreen-3,  "label":"t#bar{t}+lf       "      },
-{"name":"AMCttot",  "selection": ttothers, "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kViolet,   "label":"t#bar{t} others"         },
+#{"name":"AMCttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kRed,      "label":"t#bar{t}+b#bar{b}      " },
+#{"name":"AMCttb",   "selection": ttb,      "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kOrange,   "label":"t#bar{t}+b        "      },
+#{"name":"AMCtt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kCyan,     "label":"t#bar{t}+2b      "       },
+#{"name":"AMCttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kBlue-3,   "label":"t#bar{t}+c#bar{c}      " },
+#{"name":"AMCttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kGreen-3,  "label":"t#bar{t}+lf       "      },
+#{"name":"AMCttot",  "selection": ttothers, "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": kViolet,   "label":"t#bar{t} others"         },
 
 {"name":"POWttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kRed,      "label":"t#bar{t}+b#bar{b}      " },
 {"name":"POWttb",   "selection": ttb,      "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kOrange,   "label":"t#bar{t}+b        "      },

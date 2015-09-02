@@ -97,8 +97,10 @@ jsonLL = {
 "monitors" : mon,
 "monitors2" : mon2
 }
+
+f1 = jsonLL['file'] #TFile.Open(json['file'],"read")
 for step in jsonLL['cuts']:
   for mon in jsonLL['monitors']:
-    singleplotStackLL2(f,mon['name'],step,jsonLL['mcsamples'],jsonLL['datasamples'])
+    singleplotStackLL2(f1,mon['name'],step,jsonLL['mcsamples'],jsonLL['datasamples'])
 
 
