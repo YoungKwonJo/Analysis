@@ -297,7 +297,7 @@ def addLegendLumi(lumi):
   return tex
 
 def addLegendCMS():
-  tex2 = TLatex(0.2115952,0.8620667,"Work in progress")
+  tex2 = TLatex(0.2015952,0.8620667,"CMS Work in progress")
   #tex2 = TLatex(0.2215952,0.8620667,"Work in progress")
   #tex2 = TLatex(0.2215952,0.8620667,"CMS Preliminary")
   tex2.SetNDC()
