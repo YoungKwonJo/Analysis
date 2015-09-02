@@ -279,14 +279,14 @@ def make_bannerLumi(xmin,ymin,xmax,ymax,lumi):
   #pt.AddText("TTJets_madgraphMLM-pythia8")
   #pt.AddText("madgraphMLM-pythia8")
   lumi2 = str(round(lumi*10)/10)
-  pt.AddText( lumi2+" fb^{-1} at #sqrt{s} = 13 TeV")
+  pt.AddText( lumi2+" pb^{-1} at #sqrt{s} = 13 TeV")
   pt.Draw()
 
   return pt
 def addLegendLumi(lumi):
   lumi2 = str(round(lumi*10)/10)
   #tex = TLatex(0.9760178,0.9146667,lumi2+" fb^{-1} (8 TeV)")
-  tex = TLatex(0.9460178,0.9146667,lumi2+" fb^{-1} (8 TeV)")
+  tex = TLatex(0.9460178,0.9146667,lumi2+" pb^{-1} (8 TeV)")
   tex.SetNDC()
   tex.SetTextAlign(31)
   tex.SetTextFont(42)
@@ -297,7 +297,8 @@ def addLegendLumi(lumi):
   return tex
 
 def addLegendCMS():
-  tex2 = TLatex(0.2215952,0.8620667,"Work in progress")
+  tex2 = TLatex(0.2115952,0.8620667,"Work in progress")
+  #tex2 = TLatex(0.2215952,0.8620667,"Work in progress")
   #tex2 = TLatex(0.2215952,0.8620667,"CMS Preliminary")
   tex2.SetNDC()
   tex2.SetTextAlign(13)
@@ -519,7 +520,8 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   bb = 0.
   b1 = 0.
   b2 = 0.
-  lumi = 40.028
+  #lumi = 40.028
+  lumi = 42.0
   #lumi = 10.028
   hs = THStack("hs","")
 
@@ -709,7 +711,8 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   bb = 0.
   b1 = 0.
   b2 = 0.
-  lumi = 40.028
+  #lumi = 40.028
+  lumi = 42.0
   #lumi = 10.028
   hs = THStack("hs","")
 
