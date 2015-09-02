@@ -2,6 +2,7 @@
 monitors = {
 "Mon1" : [
   { "name":"MET",          "unit":"Missing E_{T} without HF (GeV)","var":"metNoHF",   "xbin_set":[60,0,300]  },
+  { "name":"METpf",        "unit":"Missing E_{T}  (GeV)",          "var":"met",       "xbin_set":[60,0,300]  },
 #  { "name":"ZMassMM",      "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"mm_zmass",  "xbin_set":[60,0,300]  },
   { "name":"ZMass",        "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"ll_zmass",  "xbin_set":[60,0,300]  },
 ],
@@ -14,6 +15,10 @@ monitors = {
 "Mon3" : [
   { "name":"Stat",         "unit":"Stat ",                         "var":"met",       "xbin_set":[1,0,10000]  },
   { "name":"METPHI",       "unit":"Missing E_{T} without HF #phi", "var":"metNoHFphi","xbin_set":[40,-4,4]    },
+],
+"Mon24" : [
+  { "name":"METmva",       "unit":"MVA Missing E_{T}  (GeV)",      "var":"metPfMva",  "xbin_set":[60,0,300]  },
+  { "name":"METPuppi",     "unit":"Puppi Missing E_{T}  (GeV)",    "var":"metPuppi",   "xbin_set":[60,0,300]  },
 ],
 "Mon4" : [
   { "name":"nBJetL",       "unit":"b-Jet multiplicity loose ",     "var":"nBJetL",    "xbin_set":[8,0,8]      },
@@ -132,15 +137,15 @@ monitors = {
 }
 
 monitors2d = {
-"Mon24" : [
+"Mon25" : [
   { "name":"jet1CSV",     "unit":"CSV2 of 1st leading Jet ",     "var":"jet_csv[0]",   "xbin_set":[20,0,1]     },
   { "name":"jet2CSV",     "unit":"CSV2 of 2nd leading Jet ",     "var":"jet_csv[1]",   "xbin_set":[20,0,1]     },
 ],
-"Mon25" : [
+"Mon26" : [
   { "name":"jet3CSV",     "unit":"CSV2 of 3rd leading Jet ",     "var":"jet_csv[2]",   "xbin_set":[20,0,1]     },
   { "name":"jet4CSV",     "unit":"CSV2 of 4th leading Jet ",     "var":"jet_csv[3]",   "xbin_set":[20,0,1]     },
 ],
-"Mon26" : [
+"Mon27" : [
   { "name":"NJet",        "unit":"Jet multiplicity ",             "var":"nJet",     "xbin_set":[10,0,10]    },
 #  { "name":"nBJetL",      "unit":"b-Jet multiplicity loose ",     "var":"nBJetL",   "xbin_set":[8,0,8]      },
   { "name":"nBJetM",      "unit":"b-Jet multiplicity medium ",    "var":"nBJetM",   "xbin_set":[8,0,8]      },

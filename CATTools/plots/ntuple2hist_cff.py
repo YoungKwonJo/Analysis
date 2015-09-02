@@ -263,6 +263,54 @@ def make_banner(xmin,ymin,xmax,ymax):
 
   return pt
 
+def make_bannerLumi(xmin,ymin,xmax,ymax,lumi):
+  #pt = TPaveText(0.15,0.73, 0.5, 0.89,"brNDC");
+  pt = TPaveText(xmin,ymin,xmax,ymax,"brNDC");
+  pt.SetBorderSize(1)
+  pt.SetTextFont(42)
+  pt.SetTextSize(0.04)
+  pt.SetLineColor(0)
+  pt.SetLineStyle(1)
+  pt.SetLineWidth(1)
+  pt.SetFillColor(0)
+  pt.SetFillStyle(1001)
+  pt.SetTextAlign(12)
+  pt.AddText("Work in progress")
+  #pt.AddText("TTJets_madgraphMLM-pythia8")
+  #pt.AddText("madgraphMLM-pythia8")
+  lumi2 = str(round(lumi*10)/10)
+  pt.AddText( lumi2+" fb^{-1} at #sqrt{s} = 13 TeV")
+  pt.Draw()
+
+  return pt
+def addLegendLumi(lumi):
+  lumi2 = str(round(lumi*10)/10)
+  #tex = TLatex(0.9760178,0.9146667,lumi2+" fb^{-1} (8 TeV)")
+  tex = TLatex(0.9460178,0.9146667,lumi2+" fb^{-1} (8 TeV)")
+  tex.SetNDC()
+  tex.SetTextAlign(31)
+  tex.SetTextFont(42)
+  tex.SetTextSize(0.07466666)
+  tex.SetLineWidth(2)
+  tex.Draw()
+
+  return tex
+
+def addLegendCMS():
+  tex2 = TLatex(0.2215952,0.8620667,"Work in progress")
+  #tex2 = TLatex(0.2215952,0.8620667,"CMS Preliminary")
+  tex2.SetNDC()
+  tex2.SetTextAlign(13)
+  tex2.SetTextFont(61)
+  #tex2.SetTextSize(0.09066667) # for CMS as short length
+  tex2.SetTextSize(0.03566667)
+  tex2.SetLineWidth(2)
+  tex2.Draw()
+
+  return tex2
+
+
+
 def make_banner2(xmin,ymin,xmax,ymax,bb,bb2):
   #pt = TPaveText(0.15,0.73, 0.5, 0.89,"brNDC");
   pt = TPaveText(xmin,ymin,xmax,ymax,"brNDC");
@@ -438,7 +486,8 @@ def myHist2TGraphError(hist1):
   yer = array("d",yyer)
   gr = TGraphErrors(len(x), x,y,xer,yer)
   gr.SetFillColor(kBlack);
-  gr.SetFillStyle(3144);
+  #gr.SetFillStyle(3144);
+  gr.SetFillStyle(3005);
 
   return gr
 #####################
@@ -564,7 +613,7 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   h1data = hdata.Clone("h1data")
   h2data = myDataHistSet(h1data)
 
-  h2data.SetMaximum(scale*400)
+  h2data.SetMaximum(scale*4000)
   h2data.SetMinimum(minimum)
   #if log :  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
   labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
@@ -590,8 +639,14 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   bbbb = 0.
   if jj>0:  bbb = bb/jj
   if jj>0:  bbbb = (bb+b1+bb)/jj
+  #pt = make_bannerLumi(0.2,0.76, 0.5, 0.89, lumi )
+  pt = addLegendLumi(lumi)
+  pt2 = addLegendCMS()
+
   #pt = make_banner2(0.12,0.66, 0.5, 0.89, bbb,bbbb )
-  #pt.Draw()
+  pt.Draw()
+  pt2.Draw()
+
   pad1.Modified()
   c1.cd()
 ###########################################
@@ -742,6 +797,19 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
       return
     h1ll.GetYaxis().SetTitle("Events")
 
+    isMuMu = mc['name'].find("MuMu")==-1
+    isElEl = mc['name'].find("ElEl")==-1
+    isMuEl = mc['name'].find("MuEl")==-1
+    if not isMuMu :
+      h1ee.Reset()
+      h1em.Reset()
+    if not isElEl :
+      h1ll.Reset()
+      h1em.Reset()
+    if not isMuEl :
+      h1ee.Reset()
+      h1ll.Reset()
+
     h1ll.AddBinContent(h1ll.GetNbinsX(),h1ll.GetBinContent(h1ll.GetNbinsX()+1))
     h1ee.AddBinContent(h1ee.GetNbinsX(),h1ee.GetBinContent(h1ee.GetNbinsX()+1))
     h1em.AddBinContent(h1em.GetNbinsX(),h1em.GetBinContent(h1em.GetNbinsX()+1))
@@ -765,7 +833,7 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   h1data = hdata.Clone("h1data")
   h2data = myDataHistSet(h1data)
 
-  h2data.SetMaximum(scale*400)
+  h2data.SetMaximum(scale*4000)
   h2data.SetMinimum(minimum)
   #if log :  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
   labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
@@ -791,8 +859,11 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   bbbb = 0.
   if jj>0:  bbb = bb/jj
   if jj>0:  bbbb = (bb+b1+bb)/jj
-  #pt = make_banner2(0.12,0.66, 0.5, 0.89, bbb,bbbb )
-  #pt.Draw()
+  pt = addLegendLumi(lumi)
+  pt2 = addLegendCMS()
+  pt.Draw()
+  pt2.Draw()
+
   pad1.Modified()
   c1.cd()
 ###########################################
