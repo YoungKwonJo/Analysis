@@ -53,7 +53,7 @@ mcsamples=[
 {"name":"POWttb",   "selection": ttb,      "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kOrange,   "label":"t#bar{t}+b        "      },
 {"name":"POWtt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kCyan,     "label":"t#bar{t}+2b      "       },
 {"name":"POWttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kBlue-3,   "label":"t#bar{t}+c#bar{c}      " },
-{"name":"POWttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kGreen-3,  "label":"t#bar{t}+lf        "      },
+{"name":"POWttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kGreen-3,  "label":"t#bar{t}+lf       "      },
 {"name":"POWttot",  "selection": ttothers, "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": kViolet,   "label":"t#bar{t} others"         },
 
 {"name":"STbt",   "selection": "(1)", "file": loc + "result_SingleTbar_t.root",  "cx":80.95,  "color": kGray,   "label":"SingleTop"    },
@@ -61,9 +61,9 @@ mcsamples=[
 {"name":"STbtW",  "selection": "(1)", "file": loc + "result_SingleTbar_tW.root", "cx":35.6,   "color": kGray,   "label":"SingleTop"      },
 {"name":"STtW",   "selection": "(1)", "file": loc + "result_SingleTop_tW.root",  "cx":35.6,   "color": kGray,   "label":"SingleTop"      },
 {"name":"WJets",  "selection": "(1)", "file": loc + "result_WJets.root",         "cx":61526.7,"color": kGray,   "label":"WJets      "       },
-{"name":"WW",     "selection": "(1)", "file": loc + "result_WW.root",            "cx":110.8,  "color": kGray,   "label":"VV            "    },
-{"name":"WZ",     "selection": "(1)", "file": loc + "result_WZ.root",            "cx":66.1,   "color": kGray,   "label":"VV            "   },
-{"name":"ZZ",     "selection": "(1)", "file": loc + "result_ZZ.root",            "cx":15.4,   "color": kGray,   "label":"VV            "   },
+{"name":"WW",     "selection": "(1)", "file": loc + "result_WW.root",            "cx":110.8,  "color": kGray,   "label":"WW          "    },
+{"name":"WZ",     "selection": "(1)", "file": loc + "result_WZ.root",            "cx":66.1,   "color": kGray,   "label":"WZ           "   },
+{"name":"ZZ",     "selection": "(1)", "file": loc + "result_ZZ.root",            "cx":15.4,   "color": kGray,   "label":"ZZ            "   },
 {"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": kGray+5, "label":"DYJets    "      },
 
 ]
@@ -75,11 +75,11 @@ qcdsamples=[
 ]
 datasamples=[
 
-{"name":"MuMu", "selection": "(run>251603)", "file": loc + "result_DoubleMuon.root",  "color":kBlack,  "label":"DATA " },
+{"name":"MuMu", "selection": "(run>251603)", "file": loc + "result_DoubleMuon.root", "color":kBlack,   "label":"DATA " },
 {"name":"MuMu", "selection": "(run<251604)", "file": loc + "result_DoubleMuon2.root", "color":kBlack,  "label":"DATA " },
-{"name":"ElEl", "selection": "(run>251603)", "file": loc + "result_DoubleEG.root",    "color":kBlack,  "label":"DATA " },
+{"name":"ElEl", "selection": "(run>251603)", "file": loc + "result_DoubleEG.root",   "color":kBlack,   "label":"DATA " },
 {"name":"ElEl", "selection": "(run<251604)", "file": loc + "result_DoubleEG2.root",   "color":kBlack,  "label":"DATA " },
-{"name":"MuEl", "selection": "(run>251602)", "file": loc + "result_MuonEG.root",      "color":kBlack,  "label":"DATA " },
+{"name":"MuEl", "selection": "(run>251602)", "file": loc + "result_MuonEG.root",     "color":kBlack,   "label":"DATA " },
 {"name":"MuEl", "selection": "(run<251604)", "file": loc + "result_MuonEG2.root",     "color":kBlack,  "label":"DATA " },
 
 ]
