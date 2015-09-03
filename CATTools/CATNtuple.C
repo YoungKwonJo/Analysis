@@ -151,7 +151,7 @@ void CATNtuple::Loop()
              Lepton el_(pt,eta,phi,mass, relIso04, q,id,q*11);
              //electrons_->push_back(el_);
              //if(electrons_idMedium->at(i)==1) 
-             if(electrons_idTight->at(i)==1) leptons_->push_back(el_);
+             if(electrons_idTight->at(i)==1 && relIso04<0.12) leptons_->push_back(el_);
              if(electrons_idTight->at(i)==1) electrons_->push_back(el_);
              if(electrons_idLoose->at(i)==1 && relIso04<0.12) electronsl_->push_back(el_);
           }
