@@ -7,6 +7,7 @@ from math import sqrt
 log = False
 #log = True
 useReturn =False
+#useReturn =True
 
 def h1_maker(tree, mon, cut):
   h1 =  TH1F( mon['name'], mon['title'], mon['xbin_set'][0],mon['xbin_set'][1],mon['xbin_set'][2])
@@ -286,7 +287,8 @@ def make_bannerLumi(xmin,ymin,xmax,ymax,lumi):
 def addLegendLumi(lumi):
   lumi2 = str(round(lumi*10)/10)
   #tex = TLatex(0.9760178,0.9146667,lumi2+" fb^{-1} (8 TeV)")
-  tex = TLatex(0.9460178,0.9146667,lumi2+" pb^{-1} (8 TeV)")
+  tex = TLatex(0.9380178,0.9146667,lumi2+" pb^{-1} (13 TeV)")
+  #tex = TLatex(0.9360178,0.9146667,lumi2+" pb^{-1} (13 TeV)")
   tex.SetNDC()
   tex.SetTextAlign(31)
   tex.SetTextFont(42)
