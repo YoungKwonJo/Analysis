@@ -18,15 +18,16 @@ from samples_cfi import samples, my_readFiles
 readFiles=my_readFiles(samples[i])
 outputname=samples[i]['name']
 
+#outputname="test"
 process.source = cms.Source("PoolSource",
 fileNames = readFiles
 #      fileNames = cms.untracked.vstring(
-#'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/v7-3-4_RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/150810_214907/0000/catTuple_1.root',
-#'root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/DoubleMuon/v7-3-4_Run2015B-PromptReco-v1/150810_214255/0000/catTuple_1.root',
+#"root://cms-xrdr.sdfarm.kr:1094///xrd/store/group/CAT/DoubleMuon/v7-3-6_Run2015B-17Jul2015-v1/150820_215540/0000/catTuple_1.root",
 #      )
 )
 from FWCore.PythonUtilities import LumiList
-process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt').getVLuminosityBlockRange()
+#process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt').getVLuminosityBlockRange()
+process.source.lumisToProcess = LumiList.LumiList(filename = 'Cert_246908-255031_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt').getVLuminosityBlockRange()
 #https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON_v2.txt
 
 process.nEventsTotal = cms.EDProducer("EventCountProducer")
@@ -36,6 +37,7 @@ process.genTtbarLeptonDecay = cms.EDProducer("GenTtbarLeptonDecay",
     pt = cms.double(10),
     eta = cms.double(2.5)
 )
+
 process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
     failureMode = cms.untracked.string("keep"), # choose one among keep/skip/error
     eventCounters = cms.vstring("nEventsTotal"), #"nEventsTotal", "nEventsClean", "nEventsPAT"),
@@ -48,23 +50,6 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
     ),
     int = cms.PSet(
 
-        HLTDoubleEle33CaloIdLGsfTrkIdVL             =   cms.PSet(src = cms.InputTag("catTrigger", "HLTDoubleEle33CaloIdLGsfTrkIdVL"             )),
-        HLTEle12CaloIdLTrackIdLIsoVL                =   cms.PSet(src = cms.InputTag("catTrigger", "HLTEle12CaloIdLTrackIdLIsoVL"                )),
-        HLTEle16Ele12Ele8CaloIdLTrackIdL            =   cms.PSet(src = cms.InputTag("catTrigger", "HLTEle16Ele12Ele8CaloIdLTrackIdL"            )),
-        HLTEle17CaloIdLTrackIdLIsoVL                =   cms.PSet(src = cms.InputTag("catTrigger", "HLTEle17CaloIdLTrackIdLIsoVL"                )),
-        HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ         =   cms.PSet(src = cms.InputTag("catTrigger", "HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ"         )),
-        HLTEle23Ele12CaloIdLTrackIdLIsoVL           =   cms.PSet(src = cms.InputTag("catTrigger", "HLTEle23Ele12CaloIdLTrackIdLIsoVL"           )),
-        HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ         =   cms.PSet(src = cms.InputTag("catTrigger", "HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ"         )),
-        HLTEle27eta2p1WPLooseGsfTriCentralPFJet30   =   cms.PSet(src = cms.InputTag("catTrigger", "HLTEle27eta2p1WPLooseGsfTriCentralPFJet30"   )),
-        HLTMu17Mu8DZ                                =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu17Mu8DZ"                                )),
-        HLTMu17TkMu8DZ                              =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu17TkMu8DZ"                              )),
-        HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL   =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL"   )),
-        HLTMu17TrkIsoVVLMu8TrkIsoVVL                =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu17TrkIsoVVLMu8TrkIsoVVL"                )),
-        HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ              =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ"              )),
-        HLTMu17TrkIsoVVLTkMu8TrkIsoVVL              =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu17TrkIsoVVLTkMu8TrkIsoVVL"              )),
-        HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL    =   cms.PSet(src = cms.InputTag("catTrigger", "HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL"    )),
-
-
         nGoodPV           =   cms.PSet(src = cms.InputTag("catVertex"   , "nGoodPV"          )),
         nPV               =   cms.PSet(src = cms.InputTag("catVertex"   , "nPV"              )),
 
@@ -72,13 +57,6 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
         pdfWeightId2 =   cms.PSet(src = cms.InputTag("pdfWeight", "id2" )),
 
         nTrueInteraction  =   cms.PSet(src = cms.InputTag("pileupWeight", "nTrueInteraction" )),
-
-        #nVertex   = cms.PSet(src = cms.InputTag("recoEventInfo","pvN")),
-        #HLTDoubleMu = cms.PSet(src = cms.InputTag("recoEventInfo","HLTDoubleMu")),
-        #HLTDoubleEl = cms.PSet(src = cms.InputTag("recoEventInfo","HLTDoubleEl")),
-        #HLTMuEl     = cms.PSet(src = cms.InputTag("recoEventInfo","HLTMuEl")),
-        #HLTSingleMu = cms.PSet(src = cms.InputTag("recoEventInfo","HLTSingleMu")),
-        #HLTSingleEl = cms.PSet(src = cms.InputTag("recoEventInfo","HLTSingleEl")),
 
         genTtbarId = cms.PSet(src = cms.InputTag("GenTtbarCategories","genTtbarId")),
         genTtbarLeptonDecay = cms.PSet(src = cms.InputTag("genTtbarLeptonDecay","genTtbarLeptonDecayId")),
@@ -92,10 +70,6 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
         pdfWeightQ  =   cms.PSet(src = cms.InputTag("pdfWeight", "Q" )),
         pdfWeightX1 =   cms.PSet(src = cms.InputTag("pdfWeight", "x1" )),
         pdfWeightX2 =   cms.PSet(src = cms.InputTag("pdfWeight", "x2" )),
-
-     #   pvX   = cms.PSet(src = cms.InputTag("recoEventInfo","pvX")),
-     #   pvY   = cms.PSet(src = cms.InputTag("recoEventInfo","pvY")),
-     #   pvZ   = cms.PSet(src = cms.InputTag("recoEventInfo","pvZ")),
    ),
     floats = cms.PSet(
         pdfWeight = cms.PSet(src = cms.InputTag("pdfWeight")),
@@ -138,19 +112,19 @@ process.ntuple = cms.EDAnalyzer("GenericNtupleMaker",
                 phi = cms.string("phi"),
                 m   = cms.string("mass"),
                 #relIso = cms.string("relIso"),
-                #idLoose = cms.string("electronID('eidLoose')"),
-                #idTight = cms.string("electronID('eidTight')"),
-                #idMedium2 = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium')"),
-                #idVeto2 = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto')"),
-                #idVeto = cms.string("electronID('cutBasedElectronID-CSA14-PU20bx25-V0-standalone-veto')"),
-                #idMedium2= cms.string("electronID('cutBasedElectronID_CSA14_PU20bx25_V0_standalone_medium')"),
-                #idMedium= cms.string("electronID('cutBasedElectronID-CSA14-PU20bx25-V0-standalone-medium')"),
                 #mva = cms.string("electronID('mvaTrigV0')"),
-                idHEEP51 = cms.string("electronID('heepElectronID-HEEPV51')"),
-                idLoose = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose')"), 
-                idMedium = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium')"), 
-                idTight = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight')"), 
-                idTeto = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto')"),
+                #idHEEP51 = cms.string("electronID('heepElectronID-HEEPV51')"),
+                #idLoose = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose')"), 
+                #idMedium = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium')"), 
+                #idTight = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight')"), 
+                #idVeto = cms.string("electronID('cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto')"),
+                idHEEPV60 = cms.string("electronID('heepElectronID-HEEPV60')"),
+                idLoose = cms.string("electronID('cutBasedElectronID-Spring15-25ns-V1-standalone-loose')"),
+                idMedium = cms.string("electronID('cutBasedElectronID-Spring15-25ns-V1-standalone-medium')"),
+                idTight = cms.string("electronID('cutBasedElectronID-Spring15-25ns-V1-standalone-tight')"),
+                idVeto = cms.string("electronID('cutBasedElectronID-Spring15-25ns-V1-standalone-veto')"),
+                mvaNonTrigWp90 = cms.string("electronID('mvaEleID-Spring15-25ns-nonTrig-V1-wp90')"),
+                mvaNonTrigWp80 = cms.string("electronID('mvaEleID-Spring15-25ns-nonTrig-V1-wp80')"),
                 relIso03 = cms.string("relIso(0.3)"),
                 relIso04 = cms.string("relIso(0.4)"),
                 chIso03 = cms.string("chargedHadronIso(0.3)"),
@@ -402,10 +376,46 @@ process.TFileService = cms.Service("TFileService",
 #    fileName = cms.string("ntuple.root"),
 )
 
+interestedTriggers = [
+    "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",
+    "HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",
+    "HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL",
+    "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",
+    "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ"
+]
+
+for t in interestedTriggers:
+    tNew = t.replace('_', '')
+    setattr(process, 'cat'+tNew, cms.EDProducer("CATTriggerPacker", 
+        src = cms.InputTag("catTrigger"),
+        triggersToMatch = cms.vstring(t),
+    ))
+
+    setattr(process.ntuple.int, tNew, cms.InputTag("cat"+tNew, "or"))
+    setattr(process.ntuple.int, tNew+"old", cms.InputTag("catTrigger", tNew))
+
+process.TFileService = cms.Service("TFileService",
+    fileName = cms.string("ntuple_" + outputname + ".root"),
+)
+#process.out = cms.OutputModule("PoolOutputModule",
+#    fileName = cms.untracked.string('catTuple.root'),
+#    outputCommands = cms.untracked.vstring(
+#   'drop *',
+#   'keep *_*_*_CAT',
+#   'keep *_*_*_Ana',
+#    )
+#)
+#process.outpath = cms.EndPath(process.out)
+
 process.load("CATTools.CatProducer.pseudoTop_cff")
 process.p = cms.Path(
     process.nEventsTotal*
 #    process.genTtbarLeptonDecay*
 #    process.partonTop*
+    process.catHLTEle17Ele12CaloIdLTrackIdLIsoVLDZ*
+    process.catHLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL*
+    process.catHLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL*
+    process.catHLTMu17TrkIsoVVLMu8TrkIsoVVLDZ*
+    process.catHLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ*
     process.ntuple
 )
