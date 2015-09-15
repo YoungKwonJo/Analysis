@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Aug 28 16:14:17 2015 by ROOT version 6.02/05
+// Tue Sep 15 11:08:06 2015 by ROOT version 6.02/05
 // from TTree event/event
 // found on file: ../ntuple_TT_powheg.root
 //////////////////////////////////////////////////////////
@@ -13,7 +13,6 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "vector"
 #include "vector"
 using namespace std;
 
@@ -33,21 +32,6 @@ public :
    Bool_t          HBHENoiseFilter;
    Bool_t          eeBadScFilter;
    Bool_t          goodVertices;
-   Int_t           HLTDoubleEle33CaloIdLGsfTrkIdVL;
-   Int_t           HLTEle12CaloIdLTrackIdLIsoVL;
-   Int_t           HLTEle16Ele12Ele8CaloIdLTrackIdL;
-   Int_t           HLTEle17CaloIdLTrackIdLIsoVL;
-   Int_t           HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;
-   Int_t           HLTEle23Ele12CaloIdLTrackIdLIsoVL;
-   Int_t           HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ;
-   Int_t           HLTEle27eta2p1WPLooseGsfTriCentralPFJet30;
-   Int_t           HLTMu17Mu8DZ;
-   Int_t           HLTMu17TkMu8DZ;
-   Int_t           HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;
-   Int_t           HLTMu17TrkIsoVVLMu8TrkIsoVVL;
-   Int_t           HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;
-   Int_t           HLTMu17TrkIsoVVLTkMu8TrkIsoVVL;
-   Int_t           HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;
    Int_t           NgenJet;
    Int_t           genTtbarId;
    Int_t           genTtbarLeptonDecay;
@@ -56,22 +40,36 @@ public :
    Int_t           nTrueInteraction;
    Int_t           pdfWeightId1;
    Int_t           pdfWeightId2;
+   Int_t           HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;
+   Int_t           HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold;
+   Int_t           HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;
+   Int_t           HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold;
+   Int_t           HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;
+   Int_t           HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold;
+   Int_t           HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ;
+   Int_t           HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold;
+   Int_t           HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;
+   Int_t           HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold;
    Float_t         pdfWeightQ;
    Float_t         pdfWeightX1;
    Float_t         pdfWeightX2;
    Float_t         puWeight;
    Float_t         puWeightDn;
    Float_t         puWeightUp;
+   vector<int>     *TriggerIsPathWithScale;
    vector<float>   *pdfWeight;
    vector<double>  *electrons_chIso03;
    vector<double>  *electrons_chIso04;
    vector<double>  *electrons_eta;
-   vector<double>  *electrons_idHEEP51;
+   vector<double>  *electrons_idHEEPV60;
    vector<double>  *electrons_idLoose;
    vector<double>  *electrons_idMedium;
-   vector<double>  *electrons_idTeto;
    vector<double>  *electrons_idTight;
+   vector<double>  *electrons_idVeto;
    vector<double>  *electrons_m;
+   vector<double>  *electrons_matched;
+   vector<double>  *electrons_mvaNonTrigWp80;
+   vector<double>  *electrons_mvaNonTrigWp90;
    vector<double>  *electrons_nhIso03;
    vector<double>  *electrons_nhIso04;
    vector<double>  *electrons_phIso03;
@@ -137,6 +135,7 @@ public :
    vector<double>  *muons_isTight;
    vector<double>  *muons_isTracker;
    vector<double>  *muons_m;
+   vector<double>  *muons_matched;
    vector<double>  *muons_normalizedChi2;
    vector<double>  *muons_numberOfMatchedStations;
    vector<double>  *muons_numberOfValidMuonHits;
@@ -189,21 +188,6 @@ public :
    TBranch        *b_HBHENoiseFilter;   //!
    TBranch        *b_eeBadScFilter;   //!
    TBranch        *b_goodVertices;   //!
-   TBranch        *b_HLTDoubleEle33CaloIdLGsfTrkIdVL;   //!
-   TBranch        *b_HLTEle12CaloIdLTrackIdLIsoVL;   //!
-   TBranch        *b_HLTEle16Ele12Ele8CaloIdLTrackIdL;   //!
-   TBranch        *b_HLTEle17CaloIdLTrackIdLIsoVL;   //!
-   TBranch        *b_HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;   //!
-   TBranch        *b_HLTEle23Ele12CaloIdLTrackIdLIsoVL;   //!
-   TBranch        *b_HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ;   //!
-   TBranch        *b_HLTEle27eta2p1WPLooseGsfTriCentralPFJet30;   //!
-   TBranch        *b_HLTMu17Mu8DZ;   //!
-   TBranch        *b_HLTMu17TkMu8DZ;   //!
-   TBranch        *b_HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;   //!
-   TBranch        *b_HLTMu17TrkIsoVVLMu8TrkIsoVVL;   //!
-   TBranch        *b_HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;   //!
-   TBranch        *b_HLTMu17TrkIsoVVLTkMu8TrkIsoVVL;   //!
-   TBranch        *b_HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;   //!
    TBranch        *b_NgenJet;   //!
    TBranch        *b_genTtbarId;   //!
    TBranch        *b_genTtbarLeptonDecay;   //!
@@ -212,22 +196,36 @@ public :
    TBranch        *b_nTrueInteraction;   //!
    TBranch        *b_pdfWeightId1;   //!
    TBranch        *b_pdfWeightId2;   //!
+   TBranch        *b_HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;   //!
+   TBranch        *b_HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold;   //!
+   TBranch        *b_HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;   //!
+   TBranch        *b_HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold;   //!
+   TBranch        *b_HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;   //!
+   TBranch        *b_HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold;   //!
+   TBranch        *b_HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ;   //!
+   TBranch        *b_HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold;   //!
+   TBranch        *b_HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;   //!
+   TBranch        *b_HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold;   //!
    TBranch        *b_pdfWeightQ;   //!
    TBranch        *b_pdfWeightX1;   //!
    TBranch        *b_pdfWeightX2;   //!
    TBranch        *b_puWeight;   //!
    TBranch        *b_puWeightDn;   //!
    TBranch        *b_puWeightUp;   //!
+   TBranch        *b_TriggerIsPathWithScale;   //!
    TBranch        *b_pdfWeight;   //!
    TBranch        *b_electrons_chIso03;   //!
    TBranch        *b_electrons_chIso04;   //!
    TBranch        *b_electrons_eta;   //!
-   TBranch        *b_electrons_idHEEP51;   //!
+   TBranch        *b_electrons_idHEEPV60;   //!
    TBranch        *b_electrons_idLoose;   //!
    TBranch        *b_electrons_idMedium;   //!
-   TBranch        *b_electrons_idTeto;   //!
    TBranch        *b_electrons_idTight;   //!
+   TBranch        *b_electrons_idVeto;   //!
    TBranch        *b_electrons_m;   //!
+   TBranch        *b_electrons_matched;   //!
+   TBranch        *b_electrons_mvaNonTrigWp80;   //!
+   TBranch        *b_electrons_mvaNonTrigWp90;   //!
    TBranch        *b_electrons_nhIso03;   //!
    TBranch        *b_electrons_nhIso04;   //!
    TBranch        *b_electrons_phIso03;   //!
@@ -293,6 +291,7 @@ public :
    TBranch        *b_muons_isTight;   //!
    TBranch        *b_muons_isTracker;   //!
    TBranch        *b_muons_m;   //!
+   TBranch        *b_muons_matched;   //!
    TBranch        *b_muons_normalizedChi2;   //!
    TBranch        *b_muons_numberOfMatchedStations;   //!
    TBranch        *b_muons_numberOfValidMuonHits;   //!
@@ -342,7 +341,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop();
+   virtual void     Loop(bool isMC_);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 };
@@ -402,16 +401,20 @@ void CATNtuple::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
+   TriggerIsPathWithScale = 0;
    pdfWeight = 0;
    electrons_chIso03 = 0;
    electrons_chIso04 = 0;
    electrons_eta = 0;
-   electrons_idHEEP51 = 0;
+   electrons_idHEEPV60 = 0;
    electrons_idLoose = 0;
    electrons_idMedium = 0;
-   electrons_idTeto = 0;
    electrons_idTight = 0;
+   electrons_idVeto = 0;
    electrons_m = 0;
+   electrons_matched = 0;
+   electrons_mvaNonTrigWp80 = 0;
+   electrons_mvaNonTrigWp90 = 0;
    electrons_nhIso03 = 0;
    electrons_nhIso04 = 0;
    electrons_phIso03 = 0;
@@ -477,6 +480,7 @@ void CATNtuple::Init(TTree *tree)
    muons_isTight = 0;
    muons_isTracker = 0;
    muons_m = 0;
+   muons_matched = 0;
    muons_normalizedChi2 = 0;
    muons_numberOfMatchedStations = 0;
    muons_numberOfValidMuonHits = 0;
@@ -533,21 +537,6 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("HBHENoiseFilter", &HBHENoiseFilter, &b_HBHENoiseFilter);
    fChain->SetBranchAddress("eeBadScFilter", &eeBadScFilter, &b_eeBadScFilter);
    fChain->SetBranchAddress("goodVertices", &goodVertices, &b_goodVertices);
-   fChain->SetBranchAddress("HLTDoubleEle33CaloIdLGsfTrkIdVL", &HLTDoubleEle33CaloIdLGsfTrkIdVL, &b_HLTDoubleEle33CaloIdLGsfTrkIdVL);
-   fChain->SetBranchAddress("HLTEle12CaloIdLTrackIdLIsoVL", &HLTEle12CaloIdLTrackIdLIsoVL, &b_HLTEle12CaloIdLTrackIdLIsoVL);
-   fChain->SetBranchAddress("HLTEle16Ele12Ele8CaloIdLTrackIdL", &HLTEle16Ele12Ele8CaloIdLTrackIdL, &b_HLTEle16Ele12Ele8CaloIdLTrackIdL);
-   fChain->SetBranchAddress("HLTEle17CaloIdLTrackIdLIsoVL", &HLTEle17CaloIdLTrackIdLIsoVL, &b_HLTEle17CaloIdLTrackIdLIsoVL);
-   fChain->SetBranchAddress("HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ", &HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ, &b_HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ);
-   fChain->SetBranchAddress("HLTEle23Ele12CaloIdLTrackIdLIsoVL", &HLTEle23Ele12CaloIdLTrackIdLIsoVL, &b_HLTEle23Ele12CaloIdLTrackIdLIsoVL);
-   fChain->SetBranchAddress("HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ", &HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ, &b_HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ);
-   fChain->SetBranchAddress("HLTEle27eta2p1WPLooseGsfTriCentralPFJet30", &HLTEle27eta2p1WPLooseGsfTriCentralPFJet30, &b_HLTEle27eta2p1WPLooseGsfTriCentralPFJet30);
-   fChain->SetBranchAddress("HLTMu17Mu8DZ", &HLTMu17Mu8DZ, &b_HLTMu17Mu8DZ);
-   fChain->SetBranchAddress("HLTMu17TkMu8DZ", &HLTMu17TkMu8DZ, &b_HLTMu17TkMu8DZ);
-   fChain->SetBranchAddress("HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL", &HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL, &b_HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL);
-   fChain->SetBranchAddress("HLTMu17TrkIsoVVLMu8TrkIsoVVL", &HLTMu17TrkIsoVVLMu8TrkIsoVVL, &b_HLTMu17TrkIsoVVLMu8TrkIsoVVL);
-   fChain->SetBranchAddress("HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ", &HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ, &b_HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ);
-   fChain->SetBranchAddress("HLTMu17TrkIsoVVLTkMu8TrkIsoVVL", &HLTMu17TrkIsoVVLTkMu8TrkIsoVVL, &b_HLTMu17TrkIsoVVLTkMu8TrkIsoVVL);
-   fChain->SetBranchAddress("HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL", &HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL, &b_HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL);
    fChain->SetBranchAddress("NgenJet", &NgenJet, &b_NgenJet);
    fChain->SetBranchAddress("genTtbarId", &genTtbarId, &b_genTtbarId);
    fChain->SetBranchAddress("genTtbarLeptonDecay", &genTtbarLeptonDecay, &b_genTtbarLeptonDecay);
@@ -556,22 +545,36 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("nTrueInteraction", &nTrueInteraction, &b_nTrueInteraction);
    fChain->SetBranchAddress("pdfWeightId1", &pdfWeightId1, &b_pdfWeightId1);
    fChain->SetBranchAddress("pdfWeightId2", &pdfWeightId2, &b_pdfWeightId2);
+   fChain->SetBranchAddress("HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ", &HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ, &b_HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ);
+   fChain->SetBranchAddress("HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold", &HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold, &b_HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold);
+   fChain->SetBranchAddress("HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL", &HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL, &b_HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL);
+   fChain->SetBranchAddress("HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold", &HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold, &b_HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold);
+   fChain->SetBranchAddress("HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ", &HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ, &b_HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ);
+   fChain->SetBranchAddress("HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold", &HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold, &b_HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold);
+   fChain->SetBranchAddress("HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ", &HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ, &b_HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ);
+   fChain->SetBranchAddress("HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold", &HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold, &b_HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold);
+   fChain->SetBranchAddress("HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL", &HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL, &b_HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL);
+   fChain->SetBranchAddress("HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold", &HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold, &b_HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold);
    fChain->SetBranchAddress("pdfWeightQ", &pdfWeightQ, &b_pdfWeightQ);
    fChain->SetBranchAddress("pdfWeightX1", &pdfWeightX1, &b_pdfWeightX1);
    fChain->SetBranchAddress("pdfWeightX2", &pdfWeightX2, &b_pdfWeightX2);
    fChain->SetBranchAddress("puWeight", &puWeight, &b_puWeight);
    fChain->SetBranchAddress("puWeightDn", &puWeightDn, &b_puWeightDn);
    fChain->SetBranchAddress("puWeightUp", &puWeightUp, &b_puWeightUp);
+   fChain->SetBranchAddress("TriggerIsPathWithScale", &TriggerIsPathWithScale, &b_TriggerIsPathWithScale);
    fChain->SetBranchAddress("pdfWeight", &pdfWeight, &b_pdfWeight);
    fChain->SetBranchAddress("electrons_chIso03", &electrons_chIso03, &b_electrons_chIso03);
    fChain->SetBranchAddress("electrons_chIso04", &electrons_chIso04, &b_electrons_chIso04);
    fChain->SetBranchAddress("electrons_eta", &electrons_eta, &b_electrons_eta);
-   fChain->SetBranchAddress("electrons_idHEEP51", &electrons_idHEEP51, &b_electrons_idHEEP51);
+   fChain->SetBranchAddress("electrons_idHEEPV60", &electrons_idHEEPV60, &b_electrons_idHEEPV60);
    fChain->SetBranchAddress("electrons_idLoose", &electrons_idLoose, &b_electrons_idLoose);
    fChain->SetBranchAddress("electrons_idMedium", &electrons_idMedium, &b_electrons_idMedium);
-   fChain->SetBranchAddress("electrons_idTeto", &electrons_idTeto, &b_electrons_idTeto);
    fChain->SetBranchAddress("electrons_idTight", &electrons_idTight, &b_electrons_idTight);
+   fChain->SetBranchAddress("electrons_idVeto", &electrons_idVeto, &b_electrons_idVeto);
    fChain->SetBranchAddress("electrons_m", &electrons_m, &b_electrons_m);
+   fChain->SetBranchAddress("electrons_matched", &electrons_matched, &b_electrons_matched);
+   fChain->SetBranchAddress("electrons_mvaNonTrigWp80", &electrons_mvaNonTrigWp80, &b_electrons_mvaNonTrigWp80);
+   fChain->SetBranchAddress("electrons_mvaNonTrigWp90", &electrons_mvaNonTrigWp90, &b_electrons_mvaNonTrigWp90);
    fChain->SetBranchAddress("electrons_nhIso03", &electrons_nhIso03, &b_electrons_nhIso03);
    fChain->SetBranchAddress("electrons_nhIso04", &electrons_nhIso04, &b_electrons_nhIso04);
    fChain->SetBranchAddress("electrons_phIso03", &electrons_phIso03, &b_electrons_phIso03);
@@ -637,6 +640,7 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("muons_isTight", &muons_isTight, &b_muons_isTight);
    fChain->SetBranchAddress("muons_isTracker", &muons_isTracker, &b_muons_isTracker);
    fChain->SetBranchAddress("muons_m", &muons_m, &b_muons_m);
+   fChain->SetBranchAddress("muons_matched", &muons_matched, &b_muons_matched);
    fChain->SetBranchAddress("muons_normalizedChi2", &muons_normalizedChi2, &b_muons_normalizedChi2);
    fChain->SetBranchAddress("muons_numberOfMatchedStations", &muons_numberOfMatchedStations, &b_muons_numberOfMatchedStations);
    fChain->SetBranchAddress("muons_numberOfValidMuonHits", &muons_numberOfValidMuonHits, &b_muons_numberOfValidMuonHits);

@@ -8,9 +8,9 @@
 
 class Lepton{
   public:
-   explicit Lepton(double pt, double eta, double phi, double mass, double Iso, int Q , int id, int pdgid)
+   explicit Lepton(double pt, double eta, double phi, double mass, double Iso, int Q , int id, int pdgid, int isMCmatched)
    {
-      vec_.SetPtEtaPhiM(pt,eta,phi,mass); Iso_=Iso; Q_=Q; id_=id; pdgid_=pdgid;
+      vec_.SetPtEtaPhiM(pt,eta,phi,mass); Iso_=Iso; Q_=Q; id_=id; pdgid_=pdgid; isMCmatched_=isMCmatched;
    }
    ~Lepton(){}
 
@@ -27,6 +27,7 @@ class Lepton{
    int Q_;
    int id_;
    int pdgid_;
+   int isMCmatched_;
 };
 
 #endif

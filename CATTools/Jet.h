@@ -13,7 +13,7 @@ class Jet{
       //minDRL_ =minDRL;
    }
    ~Jet(){}
-   void setDRl(double minDRL) {  minDRL_ =minDRL; }
+   //void setDRl(double minDRL) {  minDRL_ =minDRL; }
    double Pt() { return vec_.Pt(); };
    double Eta() { return vec_.Eta(); };
    double Phi() { return vec_.Phi(); };
@@ -23,12 +23,12 @@ class Jet{
    double Pz() { return vec_.Pz(); };
 
    double CSV() { return CSV_;};
-   double DRl() { return minDRL_;};
+   //double DRl() { return minDRL_;};
 //   int flavor() { return flavor_;}  
 //   double DRwithBHadron() { return bHDR_; }
 
    TLorentzVector vec_; 
-   double CSV_, minDRL_;
+   double CSV_;//, minDRL_;
 //   int flavor_;
 //   double bHDR_;
 

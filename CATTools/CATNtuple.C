@@ -32,7 +32,7 @@ bool compByCSVJet(Jet a, Jet b)
 };
 
 
-void CATNtuple::Loop()
+void CATNtuple::Loop(bool isMC_)
 {
    if (fChain == 0) return;
 /////////
@@ -45,8 +45,6 @@ void CATNtuple::Loop()
    JetsP   jets_;         jets_      = new Jets;
    JetsP   jetsPuppi_;    jetsPuppi_ = new Jets;
 
-   LeptonsP muonsl_;        muonsl_     = new Leptons;
-   LeptonsP electronsl_;    electronsl_ = new Leptons;
    LeptonsP leptons_;       leptons_    = new Leptons;
 ///////////
    int aaa=0;
@@ -67,7 +65,11 @@ void CATNtuple::Loop()
       if(aaa%100000==0) cout << "event : " << aaa << endl;      
       //cout << "event : " << aaa << endl;      
 
-      /////
+      fevent_->run_   = run; 
+      fevent_->event_ = event; 
+      fevent_->lumi_  = lumi; 
+
+//////////////////
       fevent_->met_     = met_pt->at(0);
       fevent_->metphi_  = met_phi->at(0);
       fevent_->metNoHFphi_  =  metNoHF_phi->at(0);
@@ -77,55 +79,33 @@ void CATNtuple::Loop()
       fevent_->metPuppiphi_ =  metPuppi_phi->at(0);
       fevent_->metPuppi_    =  metPuppi_pt->at(0);
 
-      fevent_->run_   = run; 
-      fevent_->event_ = event; 
-      fevent_->lumi_  = lumi; 
-
 ////////////////////
    fevent_->CSCTightHaloFilter_=                         CSCTightHaloFilter;                        
    fevent_->EcalDeadCellTriggerPrimitiveFilter_=         EcalDeadCellTriggerPrimitiveFilter;
    fevent_->HBHENoiseFilter_=                            HBHENoiseFilter;
    fevent_->eeBadScFilter_=                              eeBadScFilter;
    fevent_->goodVertices_=                               goodVertices;
-   fevent_->HLTDoubleEle33CaloIdLGsfTrkIdVL_=            HLTDoubleEle33CaloIdLGsfTrkIdVL;
-   fevent_->HLTEle12CaloIdLTrackIdLIsoVL_=               HLTEle12CaloIdLTrackIdLIsoVL;
-   fevent_->HLTEle16Ele12Ele8CaloIdLTrackIdL_=           HLTEle16Ele12Ele8CaloIdLTrackIdL;
-   fevent_->HLTEle17CaloIdLTrackIdLIsoVL_=               HLTEle17CaloIdLTrackIdLIsoVL;
-   fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_=        HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;
-   fevent_->HLTEle23Ele12CaloIdLTrackIdLIsoVL_=          HLTEle23Ele12CaloIdLTrackIdLIsoVL;
-   fevent_->HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ_=        HLTEle23Ele12CaloIdLTrackIdLIsoVLDZ;
-   fevent_->HLTEle27eta2p1WPLooseGsfTriCentralPFJet30_=  HLTEle27eta2p1WPLooseGsfTriCentralPFJet30;
-   fevent_->HLTMu17Mu8DZ_=                               HLTMu17Mu8DZ;
-   fevent_->HLTMu17TkMu8DZ_=                             HLTMu17TkMu8DZ;
-   fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_=  HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;
-   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVL_=               HLTMu17TrkIsoVVLMu8TrkIsoVVL;
-   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_=             HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;
-   fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVL_=             HLTMu17TrkIsoVVLTkMu8TrkIsoVVL;
-   fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_=   HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;
-                                                                                                     
+
+   fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_=             HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;
+   fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_=          HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold;
+   fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_=       HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;
+   fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_=    HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold;
+   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_=                  HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;
+   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_=               HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold;
+   fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_=                HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ;
+   fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_=             HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold;
+   fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_=        HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;
+   fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_=     HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold;
+
    fevent_->nGoodPV_=                                    nGoodPV;
    fevent_->nPV_=                                        nPV;
-   fevent_->nTrueInteraction_=                           nTrueInteraction;
+
 ////////////////////
-   fevent_->pdfWeightId1_  =pdfWeightId1;
-   fevent_->pdfWeightId2_  =pdfWeightId2;
-   fevent_->pdfWeightQ_    =pdfWeightQ  ;
-   fevent_->pdfWeightX1_   =pdfWeightX1 ;
-   fevent_->pdfWeightX2_   =pdfWeightX2 ;
-   fevent_->puWeight_      =puWeight    ; 
-////puWeightDn; //////////////////// 
-//  puWeightUp;     fevent_->HLTDoubleMu_   = HLTDoubleMu; 
-//      fevent_->HLTDoubleEl_   = HLTDoubleEl;
-//      fevent_->HLTMuEl_   = HLTMuEl;
-      //reconstructed level information
       leptons_->clear();
       muons_->clear();
       electrons_->clear();
       jets_->clear();
       jetsPuppi_->clear();
-
-      muonsl_->clear();
-      electronsl_->clear();
       ////////
 
       for(int i=0;i<electrons_pt->size();i++)
@@ -140,20 +120,19 @@ void CATNtuple::Loop()
              double eta = electrons_eta->at(i);
              double phi = electrons_phi->at(i);
              double mass = electrons_m->at(i);
-             double relIso04 = electrons_relIso04->at(i);
-             double q = electrons_q->at(i);
+             double relIso03 = electrons_relIso03->at(i);
+             int q = electrons_q->at(i);
+             int MCmatched = false;
+             if(isMC_) MCmatched = electrons_matched->at(i);
              int id=0;
              if(electrons_idLoose->at(i)==1) id=1;
              if(electrons_idMedium->at(i)==1) id=2;
              if(electrons_idTight->at(i)==1) id=3;
 
 
-             Lepton el_(pt,eta,phi,mass, relIso04, q,id,q*11);
-             //electrons_->push_back(el_);
-             //if(electrons_idMedium->at(i)==1) 
-             if(electrons_idTight->at(i)==1 && relIso04<0.12) leptons_->push_back(el_);
+             Lepton el_(pt,eta,phi,mass, relIso03, q,id,q*11,MCmatched);
+             if(electrons_idTight->at(i)==1 && relIso03<0.12) leptons_->push_back(el_);
              if(electrons_idTight->at(i)==1) electrons_->push_back(el_);
-             if(electrons_idLoose->at(i)==1 && relIso04<0.12) electronsl_->push_back(el_);
           }
       }
       std::sort(electrons_->begin(), electrons_->end(), compByPtLep);
@@ -174,19 +153,18 @@ void CATNtuple::Loop()
              double phi = muons_phi->at(i);
              double mass = muons_m->at(i);
              double relIso04 = muons_relIso04->at(i);
-             double q = muons_q->at(i);
+             int q = muons_q->at(i);
+             int MCmatched = false;
+             if(isMC_) MCmatched = muons_matched->at(i);
 
              int id=0;
              if(muons_isLoose->at(i)==1) id=1;
              //if(muons_isMedium->at(i)==1) id=2;
              if(muons_isTight->at(i)==1) id=3;
 
-             Lepton el_(pt,eta,phi,mass, relIso04, q,id,q*13);
-             //if(muons_isTight->at(i)==1)
+             Lepton el_(pt,eta,phi,mass, relIso04, q,id,q*13,MCmatched);
              if(muons_isTight->at(i)==1) leptons_->push_back(el_);
-             muons_->push_back(el_);
-             if(muons_isLoose->at(i)==1 && relIso04<0.12) muonsl_->push_back(el_);
-             //muons_->push_back(el_);
+             if(muons_isTight->at(i)==1) muons_->push_back(el_);
           }
       }
       std::sort(muons_->begin(), muons_->end(), compByPtLep);
@@ -205,15 +183,8 @@ void CATNtuple::Loop()
 
 ///////////////////
      // dilepton selection
-      //TLorentzVector Zmm, Zee, Zem;
-      double ZmmPt=-1., ZeePt=-1., ZemPt=-1.;
-      double mm_zmass=-1., ee_zmass=-1., em_zmass=-1.;
-      int mm_id1, mm_id2, ee_id1, ee_id2, em_id1, em_id2;
-      //double mm_mu1_dr_el=100., mm_mu2_dr_el=100., ee_el1_dr_mu=100., ee_el2_dr_mu=100., em_mu1_dr_el=100., em_el2_dr_mu=100.;
-      bool ZmmS=false, ZeeS=false, ZemS=false;
       int leptons_N = leptons_->size();
       fevent_->lepton_N_= leptons_N;
-
       if(leptons_N>1)
       {
          fevent_->ll_lep1_pt_ = leptons_->at(0).Pt();
@@ -246,167 +217,11 @@ void CATNtuple::Loop()
             fevent_->ll_lep2_iso_= leptons_->at(0).Iso_;
          }
       }
-      //for MuMu
-      /*
-      if(muons_->size()>1)
-      for(int i=0;i<muons_->size()-1;i++ ) if(muons_->at(i).Pt()>30 && fabs(muons_->at(i).Eta())<2.1 && muons_->at(i).id_>2 && muons_->at(i).Iso_<0.12)
-      for(int j=i+1;j<muons_->size();j++ ) if(muons_->at(j).Pt()>30 && fabs(muons_->at(j).Eta())<2.1 && muons_->at(j).id_>2 && muons_->at(j).Iso_<0.12)
-      if(muons_->at(i).Q_*muons_->at(j).Q_<0)
-      {
-         TLorentzVector Zmm_((muons_->at(i).vec_)+(muons_->at(j).vec_));
-
-         double ZmmPt_ = Zmm_.Pt();
-         double mm_zmass_ = Zmm_.M();
-         if(ZmmPt_>ZmmPt) 
-         //if(ZmmS==false) 
-         {
-             mm_zmass=mm_zmass_; ZmmPt=ZmmPt_;  mm_id1=i; mm_id2=j; ZmmS=true; 
-         }
-      }
-      if(muons_->size()>1 && ZmmS==false)
-      for(int i=0;i<muons_->size()-1;i++ ) if(muons_->at(i).Pt()>30 && fabs(muons_->at(i).Eta())<2.1 && muons_->at(i).id_>2 )
-      for(int j=i+1;j<muons_->size();j++ ) if(muons_->at(j).Pt()>30 && fabs(muons_->at(j).Eta())<2.1 && muons_->at(j).id_>2 )
-      //if(muons_->at(i).Q_*muons_->at(j).Q_<0)
-      {
-         TLorentzVector Zmm_((muons_->at(i).vec_)+(muons_->at(j).vec_));
-
-         double ZmmPt_ = Zmm_.Pt();
-         double mm_zmass_ = Zmm_.M();
-         if(ZmmPt_>ZmmPt) 
-         if(ZmmS==false) 
-         {
-             mm_zmass=mm_zmass_; ZmmPt=ZmmPt_;  mm_id1=i; mm_id2=j;// ZmmS=true; 
-         }
- 
-      }
-
-      //for ElEl
-      if(electrons_->size()>1)
-      for(int i=0;i<electrons_->size()-1;i++ ) if(electrons_->at(i).Pt()>30 && fabs(electrons_->at(i).Eta())<2.1 && electrons_->at(i).id_>2 && electrons_->at(i).Iso_<0.12)
-      for(int j=i+1;j<electrons_->size();j++ ) if(electrons_->at(j).Pt()>30 && fabs(electrons_->at(j).Eta())<2.1 && electrons_->at(j).id_>2 && electrons_->at(j).Iso_<0.12)
-      if(electrons_->at(i).Q_*electrons_->at(j).Q_<0)
-      {
-         TLorentzVector Zee_((electrons_->at(i).vec_)+(electrons_->at(j).vec_));
-         double ZeePt_ = Zee_.Pt();
-         double ee_zmass_ = Zee_.M();
-
-         if(ZeePt_>ZeePt)
-         //if(ZeeS==false)  
-         {
-            ee_zmass=ee_zmass_; ZeePt=ZeePt_; ee_id1=i; ee_id2=j; ZeeS=true; 
-         }
-      }
-      if(electrons_->size()>1 && ZeeS==false)
-      for(int i=0;i<electrons_->size()-1;i++ ) if(electrons_->at(i).Pt()>30 && fabs(electrons_->at(i).Eta())<2.1 && electrons_->at(i).id_>2)
-      for(int j=i+1;j<electrons_->size();j++ ) if(electrons_->at(j).Pt()>30 && fabs(electrons_->at(j).Eta())<2.1 && electrons_->at(j).id_>2)
-      //if(electrons_->at(i).Q_*electrons_->at(j).Q_<0)
-      {
-         TLorentzVector Zee_((electrons_->at(i).vec_)+(electrons_->at(j).vec_));
-         double ZeePt_ = Zee_.Pt();
-         double ee_zmass_ = Zee_.M();
-
-         if(ZeePt_>ZeePt)
-         if(ZeeS==false)  
-         {
-            ee_zmass=ee_zmass_; ZeePt=ZeePt_; ee_id1=i; ee_id2=j; //ZeeS=true; 
-         }
-      }
-
-
-      //for MuEl
-      if(electrons_->size()>0 && muons_->size()>0)
-      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Pt()>30     && fabs(muons_->at(i).Eta())<2.1     && muons_->at(i).id_>2     && muons_->at(i).Iso_<0.12)
-      for(int j=0;j<electrons_->size();j++ ) if(electrons_->at(j).Pt()>30 && fabs(electrons_->at(j).Eta())<2.1 && electrons_->at(j).id_>2 && electrons_->at(j).Iso_<0.12)
-      {
-         TLorentzVector Zem_((muons_->at(i).vec_)+(electrons_->at(j).vec_));
-         double ZemPt_ = Zem_.Pt();
-         double em_zmass_ = Zem_.M();
-
-         if(ZemPt_>ZemPt) 
-         {
-            em_zmass=em_zmass_; ZemPt=ZemPt_;   em_id1=i; em_id2=j; ZemS=true; 
-         }
-      }
-      if(electrons_->size()>0 && muons_->size()>0 && ZemS==false)
-      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Pt()>30     && fabs(muons_->at(i).Eta())<2.1     && muons_->at(i).id_>2     )
-      for(int j=0;j<electrons_->size();j++ ) if(electrons_->at(j).Pt()>30 && fabs(electrons_->at(j).Eta())<2.1 && electrons_->at(j).id_>2 )
-      {
-         TLorentzVector Zem_((muons_->at(i).vec_)+(electrons_->at(j).vec_));
-         double ZemPt_ = Zem_.Pt();
-         double em_zmass_ = Zem_.M();
-
-         if(ZemPt_>ZemPt) 
-         if(ZemS==false) 
-         {
-            em_zmass=em_zmass_; ZemPt=ZemPt_;   em_id1=i; em_id2=j; //ZemS=true; 
-         }
-      }
-
-///////////////////////////
-      if(ZmmPt>ZeePt && ZmmPt>ZemPt && ZmmS) {  ZeeS=false; ZemS =false; }
-      if(ZeePt>ZmmPt && ZeePt>ZemPt && ZeeS) {  ZmmS=false; ZemS =false; }
-      if(ZemPt>ZmmPt && ZemPt>ZeePt && ZemS) {  ZmmS=false; ZeeS =false; }
-      if(!ZmmS && !ZeeS && !ZemS)
-      {
-          if(ZmmPt>ZeePt && ZmmPt>ZemPt) { ZmmS =true; }
-          if(ZeePt>ZmmPt && ZeePt>ZemPt) { ZeeS =true; }
-          if(ZemPt>ZmmPt && ZemPt>ZeePt) { ZemS =true; }
-      }
-///////////////////////////
-      if(ZmmS)
-      {
-         fevent_->mm_mu1_pt_ = muons_->at(mm_id1).Pt();
-         fevent_->mm_mu1_eta_= muons_->at(mm_id1).Eta();
-         fevent_->mm_mu1_phi_= muons_->at(mm_id1).Phi();
-         fevent_->mm_mu1_q_  = muons_->at(mm_id1).Q_;
-         fevent_->mm_mu1_iso_= muons_->at(mm_id1).Iso_;
-         fevent_->mm_mu2_pt_ = muons_->at(mm_id2).Pt();
-         fevent_->mm_mu2_eta_= muons_->at(mm_id2).Eta();
-         fevent_->mm_mu2_phi_= muons_->at(mm_id2).Phi();
-         fevent_->mm_mu2_q_  = muons_->at(mm_id2).Q_;
-         fevent_->mm_mu2_iso_= muons_->at(mm_id2).Iso_;
-         fevent_->mm_zmass_  = mm_zmass;
-         //fevent_->mm_mu1_dr_el_ = mm_mu1_dr_el;
-         //fevent_->mm_mu2_dr_el_ = mm_mu2_dr_el;
-      }
-      if(ZeeS)
-      {
-         fevent_->ee_el1_pt_ = electrons_->at(ee_id1).Pt();
-         fevent_->ee_el1_eta_= electrons_->at(ee_id1).Eta();
-         fevent_->ee_el1_phi_= electrons_->at(ee_id1).Phi();
-         fevent_->ee_el1_q_  = electrons_->at(ee_id1).Q_;
-         fevent_->ee_el1_iso_= electrons_->at(ee_id1).Iso_;
-         fevent_->ee_el2_pt_ = electrons_->at(ee_id2).Pt();
-         fevent_->ee_el2_eta_= electrons_->at(ee_id2).Eta();
-         fevent_->ee_el2_phi_= electrons_->at(ee_id2).Phi();
-         fevent_->ee_el2_q_  = electrons_->at(ee_id2).Q_;
-         fevent_->ee_el2_iso_= electrons_->at(ee_id2).Iso_;
-         fevent_->ee_zmass_  = ee_zmass;
-         //fevent_->ee_el1_dr_mu_ = ee_el1_dr_mu;
-         //fevent_->ee_el2_dr_mu_ = ee_el2_dr_mu;
-      }
-      if(ZemS)
-      {
-         fevent_->em_mu1_pt_ = muons_->at(em_id1).Pt();
-         fevent_->em_mu1_eta_= muons_->at(em_id1).Eta();
-         fevent_->em_mu1_phi_= muons_->at(em_id1).Phi();
-         fevent_->em_mu1_q_  = muons_->at(em_id1).Q_;
-         fevent_->em_mu1_iso_= muons_->at(em_id1).Iso_;
-         fevent_->em_el2_pt_ = electrons_->at(em_id2).Pt();
-         fevent_->em_el2_eta_= electrons_->at(em_id2).Eta();
-         fevent_->em_el2_phi_= electrons_->at(em_id2).Phi();
-         fevent_->em_el2_q_  = electrons_->at(em_id2).Q_;
-         fevent_->em_el2_iso_= electrons_->at(em_id2).Iso_;
-         fevent_->em_zmass_  = em_zmass;
-         //fevent_->em_mu1_dr_el_ = em_mu1_dr_el;
-         //fevent_->em_el2_dr_mu_ = em_el2_dr_mu;
-      }
-      */
 ////////////////////////////////////
 //PFJET
       for(int i=0;i<jets_pt->size();i++)
       {
-          if( jets_pt->at(i)>30.0 && fabs(jets_eta->at(i))<2.4 
+          if( jets_pt->at(i)>20.0 && fabs(jets_eta->at(i))<2.4 
             ) 
           {
              double pt = jets_pt->at(i);
@@ -415,86 +230,51 @@ void CATNtuple::Loop()
              double mass = jets_m->at(i);
              double CSVInclV2 = jets_CSVInclV2->at(i);
              Jet jet_(pt,eta,phi,mass, CSVInclV2);
-             double minDR=1000.;
-             for(int j=0;j<muonsl_->size();j++ )
-             {
-                 double minDR_= fabs(muonsl_->at(j).vec_.DeltaR(jet_.vec_));
-                 if(minDR_<minDR) minDR=minDR_;
-             }
-             for(int j=0;j<electronsl_->size();j++ )
-             {
-                 double minDR_= fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_));
-                 if(minDR_<minDR) minDR=minDR_;
-             }
-             if(minDR==1000.) minDR=-999; 
-             jet_.setDRl(minDR);
-
-             //jets_->push_back(jet_);
              bool isFill=true;
-
-             //////////// 1st option
-             //for(int j=0;j<muonsl_->size();j++ )     if(fabs(muonsl_     ->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-             //for(int j=0;j<electronsl_->size();j++ )  if(fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
              if(leptons_N>0&& fabs(leptons_->at(0).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
              if(leptons_N>1&& fabs(leptons_->at(1).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
  
-             /////////// 2nd option
-             /*
-             if(ZmmS)// && !ZeeS && !ZemS) 
-             //if(mm_zmass>20 && (muons_->at(mm_id1).Q_*muons_->at(mm_id2).Q_<0) )
-             {
-                 if(fabs(muons_->at(mm_id1).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id1).Iso_<0.12 ) isFill=false;
-                 if(fabs(muons_->at(mm_id2).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id2).Iso_<0.12 ) isFill=false;
-             }
-             if(ZeeS)
-             //if(ee_zmass>20 && (electrons_->at(ee_id1).Q_*electrons_->at(ee_id2).Q_<0) )
-             {
-                 //if( electrons_->at(ee_id1).Iso_<0.12 && electrons_->at(ee_id2).Iso_<0.12 )
-                 {
-                    if(fabs(electrons_->at(ee_id1).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-                    if(fabs(electrons_->at(ee_id2).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-                 }
-             }
-             if(ZemS)
-             //if(em_zmass>20 && (muons_->at(em_id1).Q_*electrons_->at(em_id2).Q_<0) )
-             {
-                 //if( muons_->at(em_id1).Iso_<0.12 && electrons_->at(em_id2).Iso_<0.12 ) 
-                 {
-                    if(fabs(muons_    ->at(em_id1).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
-                    if(fabs(electrons_->at(em_id2).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
-                 }
-             }*/
-
              if(isFill) jets_->push_back(jet_);
           }
       }
-      std::sort(jets_->begin(), jets_->end(), compByCSVJet);
+      //std::sort(jets_->begin(), jets_->end(), compByCSVJet);
+      std::sort(jets_->begin(), jets_->end(), compByPtJet);
 
 //////////////
-      int nBJetT=0, nBJetM=0, nBJetL=0, nJet=0;
+      int nBJet20T=0, nBJet20M=0, nBJet20L=0, nJet20=0;
+      int nBJet30T=0, nBJet30M=0, nBJet30L=0, nJet30=0;
       for(int i=0;i<jets_->size();i++)
       {
-         if(jets_->at(i).CSV()>0.970) nBJetT++; // CSVT 0.970
-         if(jets_->at(i).CSV()>0.890) nBJetM++; // CSVM 0.890 
-         if(jets_->at(i).CSV()>0.605) nBJetL++; // CSVL 0.605 
-         nJet++;
+         if(jets_->at(i).CSV()>0.970) nBJet20T++; // CSVT 0.970
+         if(jets_->at(i).CSV()>0.890) nBJet20M++; // CSVM 0.890 
+         if(jets_->at(i).CSV()>0.605) nBJet20L++; // CSVL 0.605 
+         nJet20++;
+         if(jets_->at(i).Pt()>30)
+         {
+           nJet30++;
+           if(jets_->at(i).CSV()>0.970) nBJet30T++; // CSVT 0.970
+           if(jets_->at(i).CSV()>0.890) nBJet30M++; // CSVM 0.890 
+           if(jets_->at(i).CSV()>0.605) nBJet30L++; // CSVL 0.605 
+         } 
          fevent_->jet_pt_ ->push_back( jets_->at(i).Pt() );   
          fevent_->jet_eta_->push_back( jets_->at(i).Eta() );   
          fevent_->jet_phi_->push_back( jets_->at(i).Phi() );   
          fevent_->jet_csv_->push_back( jets_->at(i).CSV() );   
-         fevent_->jet_drl_->push_back( jets_->at(i).DRl() );   
       } 
-      fevent_->nJet_=nJet;
-      fevent_->nBJetT_=nBJetT;
-      fevent_->nBJetM_=nBJetM;
-      fevent_->nBJetL_=nBJetL;
+      fevent_->nJet20_=nJet20;
+      fevent_->nBJet20T_=nBJet20T;
+      fevent_->nBJet20M_=nBJet20M;
+      fevent_->nBJet20L_=nBJet20L;
+      fevent_->nJet30_=nJet30;
+      fevent_->nBJet30T_=nBJet30T;
+      fevent_->nBJet30M_=nBJet30M;
+      fevent_->nBJet30L_=nBJet30L;
 
-////////////////////////
 ////////////////////////////////////
 //JETPUPPI
       for(int i=0;i<jetsPuppi_pt->size();i++)
       {
-          if( jetsPuppi_pt->at(i)>30.0 && fabs(jetsPuppi_eta->at(i))<2.4 
+          if( jetsPuppi_pt->at(i)>20.0 && fabs(jetsPuppi_eta->at(i))<2.4 
             ) 
           {
              double pt = jetsPuppi_pt->at(i);
@@ -503,99 +283,75 @@ void CATNtuple::Loop()
              double mass = jetsPuppi_m->at(i);
              double CSVInclV2 = jetsPuppi_CSVInclV2->at(i);
              Jet jet_(pt,eta,phi,mass, CSVInclV2);
-             double minDR=1000.;
-             for(int j=0;j<muonsl_->size();j++ )
-             {
-                 double minDR_= fabs(muonsl_->at(j).vec_.DeltaR(jet_.vec_));
-                 if(minDR_<minDR) minDR=minDR_;
-             }
-             for(int j=0;j<electronsl_->size();j++ )
-             {
-                 double minDR_= fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_));
-                 if(minDR_<minDR) minDR=minDR_;
-             }
-             if(minDR==1000.) minDR=-999; 
-             jet_.setDRl(minDR);
-
              //jets_->push_back(jet_);
              bool isFill=true;
 
-             //////////// 1st option
-             //for(int j=0;j<muonsl_->size();j++ )     if(fabs(muonsl_     ->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-             //for(int j=0;j<electronsl_->size();j++ )  if(fabs(electronsl_->at(j).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
              if(leptons_N>0&& fabs(leptons_->at(0).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
              if(leptons_N>1&& fabs(leptons_->at(1).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-
-             /////////// 2nd option
-             /*
-             if(ZmmS)// && !ZeeS && !ZemS) 
-             //if(mm_zmass>20 && (muons_->at(mm_id1).Q_*muons_->at(mm_id2).Q_<0) )
-             {
-                 if(fabs(muons_->at(mm_id1).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id1).Iso_<0.12 ) isFill=false;
-                 if(fabs(muons_->at(mm_id2).vec_.DeltaR(jet_.vec_))<0.4 && muons_->at(mm_id2).Iso_<0.12 ) isFill=false;
-             }
-             if(ZeeS)
-             //if(ee_zmass>20 && (electrons_->at(ee_id1).Q_*electrons_->at(ee_id2).Q_<0) )
-             {
-                 //if( electrons_->at(ee_id1).Iso_<0.12 && electrons_->at(ee_id2).Iso_<0.12 )
-                 {
-                    if(fabs(electrons_->at(ee_id1).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-                    if(fabs(electrons_->at(ee_id2).vec_.DeltaR(jet_.vec_))<0.4 ) isFill=false;
-                 }
-             }
-             if(ZemS)
-             //if(em_zmass>20 && (muons_->at(em_id1).Q_*electrons_->at(em_id2).Q_<0) )
-             {
-                 //if( muons_->at(em_id1).Iso_<0.12 && electrons_->at(em_id2).Iso_<0.12 ) 
-                 {
-                    if(fabs(muons_    ->at(em_id1).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
-                    if(fabs(electrons_->at(em_id2).vec_.DeltaR(jet_.vec_))<0.4) isFill=false;
-                 }
-             }*/
 
              if(isFill) jetsPuppi_->push_back(jet_);
           }
       }
-      std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByCSVJet);
+      //std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByCSVJet);
+      std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByPtJet);
 
 //////////////
-      int nBJetTPuppi=0, nBJetMPuppi=0, nBJetLPuppi=0, nJetPuppi=0;
+      int nBJet20TPuppi=0, nBJet20MPuppi=0, nBJet20LPuppi=0, nJet20Puppi=0;
+      int nBJet30TPuppi=0, nBJet30MPuppi=0, nBJet30LPuppi=0, nJet30Puppi=0;
       for(int i=0;i<jetsPuppi_->size();i++)
       {
-         if(jetsPuppi_->at(i).CSV()>0.970) nBJetT++; // CSVT 0.970
-         if(jetsPuppi_->at(i).CSV()>0.890) nBJetM++; // CSVM 0.890 
-         if(jetsPuppi_->at(i).CSV()>0.605) nBJetL++; // CSVL 0.605 
-         nJetPuppi++;
+         if(jetsPuppi_->at(i).CSV()>0.970) nBJet20T++; // CSVT 0.970
+         if(jetsPuppi_->at(i).CSV()>0.890) nBJet20M++; // CSVM 0.890 
+         if(jetsPuppi_->at(i).CSV()>0.605) nBJet20L++; // CSVL 0.605 
+         nJet20Puppi++;
+         if(jetsPuppi_->at(i).Pt()>30)
+         {
+            if(jetsPuppi_->at(i).CSV()>0.970) nBJet30T++; // CSVT 0.970
+            if(jetsPuppi_->at(i).CSV()>0.890) nBJet30M++; // CSVM 0.890 
+            if(jetsPuppi_->at(i).CSV()>0.605) nBJet30L++; // CSVL 0.605 
+            nJet30Puppi++;
+         }
          fevent_->jetPuppi_pt_ ->push_back( jetsPuppi_->at(i).Pt() );   
          fevent_->jetPuppi_eta_->push_back( jetsPuppi_->at(i).Eta() );   
          fevent_->jetPuppi_phi_->push_back( jetsPuppi_->at(i).Phi() );   
          fevent_->jetPuppi_csv_->push_back( jetsPuppi_->at(i).CSV() );   
-         fevent_->jetPuppi_drl_->push_back( jetsPuppi_->at(i).DRl() );   
       } 
-      fevent_->nJetPuppi_=nJetPuppi;
-      fevent_->nBJetTPuppi_=nBJetTPuppi;
-      fevent_->nBJetMPuppi_=nBJetMPuppi;
-      fevent_->nBJetLPuppi_=nBJetLPuppi;
+      fevent_->nJet20Puppi_=nJet20Puppi;
+      fevent_->nBJet20TPuppi_=nBJet20TPuppi;
+      fevent_->nBJet20MPuppi_=nBJet20MPuppi;
+      fevent_->nBJet20LPuppi_=nBJet20LPuppi;
 
+      fevent_->nJet30Puppi_=nJet30Puppi;
+      fevent_->nBJet30TPuppi_=nBJet30TPuppi;
+      fevent_->nBJet30MPuppi_=nBJet30MPuppi;
+      fevent_->nBJet30LPuppi_=nBJet30LPuppi;
 ////////////////////////
 
+      if(isMC_)
+      {
+         fevent_->isMM_ = ((int) (genTtbarLeptonDecay%100)==2); 
+         fevent_->isEE_ = ((int) (genTtbarLeptonDecay%10000)==200);
+         fevent_->isEM_ = ((int) (genTtbarLeptonDecay%10000)==101);
+         
+         int category =0; // 0:tt+lf, 1:tt+cc, 2:tt+bb, 3:tt+2b, 4:tt+b  
+         if(genTtbarId%100 == 0)                   category=0;
+         else if( ((int)(genTtbarId%100)/10) == 4) category=1;
+         else if( ((int)(genTtbarId%100)) == 51)   category=4;
+         else if( ((int)(genTtbarId%100)) == 52)   category=3;
+         else if( ((int)(genTtbarId%100)) == 53)   category=2;
+         else if( ((int)(genTtbarId%100)) == 54)   category=2;
+         else if( ((int)(genTtbarId%100)) == 55)   category=2;
+         fevent_->Category_ =  category;
+         fevent_->NgenJet_ = NgenJet;
 
-
-      fevent_->isMM_ = ((int) (genTtbarLeptonDecay%100)==2); 
-      fevent_->isEE_ = ((int) (genTtbarLeptonDecay%10000)==200);
-      fevent_->isEM_ = ((int) (genTtbarLeptonDecay%10000)==101);
-
-      int category =0; // 0:tt+lf, 1:tt+cc, 2:tt+bb, 3:tt+2b, 4:tt+b  
-      if(genTtbarId%100 == 0)                   category=0;
-      else if( ((int)(genTtbarId%100)/10) == 4) category=1;
-      else if( ((int)(genTtbarId%100)) == 51)   category=4;
-      else if( ((int)(genTtbarId%100)) == 52)   category=3;
-      else if( ((int)(genTtbarId%100)) == 53)   category=2;
-      else if( ((int)(genTtbarId%100)) == 54)   category=2;
-      else if( ((int)(genTtbarId%100)) == 55)   category=2;
-      fevent_->Category_ =  category;
-      fevent_->NgenJet_ = NgenJet;
-
+         fevent_->nTrueInteraction_= nTrueInteraction;
+         fevent_->pdfWeightId1_    = pdfWeightId1;
+         fevent_->pdfWeightId2_    = pdfWeightId2;
+         fevent_->pdfWeightQ_      = pdfWeightQ  ;
+         fevent_->pdfWeightX1_     = pdfWeightX1 ;
+         fevent_->pdfWeightX2_     = pdfWeightX2 ;
+         fevent_->puWeight_        = puWeight    ; 
+      }
 //////////
       tree_->Fill();
 
