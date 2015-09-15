@@ -29,7 +29,10 @@ def makeresult(name,isMC):
   output = "result_" + name + ".root"
   fout = TFile(output,"RECREATE")
   t.Loop(isMC)
+  htotevents = f.Get("ntuple/hNEvent")
+  htotevents.Write()
   fout.Write()
+  f.Close()
 
 #makeresult("TTJets_MG5",True)
 
