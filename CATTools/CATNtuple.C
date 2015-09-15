@@ -201,7 +201,7 @@ void CATNtuple::Loop(bool isMC_)
          fevent_->ll_lep2_iso_= leptons_->at(1).Iso_;
          fevent_->ll_zmass_  = ((leptons_->at(0).vec_)+(leptons_->at(1).vec_)).M();
       
-         if(abs(leptons_->at(0).pdgid_)==13 && leptons_->at(1).pdgid_==11)
+         if(abs(leptons_->at(0).pdgid_)==13 && abs(leptons_->at(1).pdgid_)==11)
          {
             fevent_->ll_lep1_pt_ = leptons_->at(1).Pt();
             fevent_->ll_lep1_eta_= leptons_->at(1).Eta();
