@@ -15,7 +15,12 @@ ii=int(arg)
 if ii>len(monitors)+2 : sys.exit()
 
 mon1=[]
-if ii<len(monitors) :  mon1 += monitors[ii]
+if ii<len(monitors) :
+  mon1 = monitors[ii]
+  #print monitors[ii]
+
+#print str(mon1)
+#sys.exit()
 
 mon2=[]
 iii = ii-len(monitors)+1
