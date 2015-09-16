@@ -24,6 +24,7 @@ ee_trigger = "((HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ==1))"
 em_trigger=  "((HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL==1)" +"||"+  "(HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL==1))"
 
 ##########
+samecut = [ "(nJet30>=2 &&nJet20>=4 ) ",  "nBJet30M>=2", "nBJet30T>=2" ]
 mm_cuts ={
 "channel": "mm",
 "cut": [
@@ -32,10 +33,8 @@ mm_cuts ={
    mm_trigger,
    "(" + ll_lepIso+"&&"+mm + ")",
    "(" + ll_zmass + ")",
-   "(metNoHF>40)", 
-   "nJet>=4 ",
-   "nBJetM>=2", 
-   "nBJetT>=2", 
+   "(metNoHF>40)",
+   samecut[0],samecut[1],samecut[2] 
 ]
 }
 ee_cuts = {
@@ -47,9 +46,7 @@ ee_cuts = {
    "(" + ll_lepIso+"&&"+ee+ ") ",
    "(" + ll_zmass + ") ",
    "(metNoHF>40) ",
-   "nJet>=4 ",
-   "nBJetM>=2", 
-   "nBJetT>=2", 
+   samecut[0],samecut[1],samecut[2] 
 ]
 }
 em_cuts = {
@@ -61,9 +58,7 @@ em_cuts = {
    "(" + ll_lepIso+"&&"+em+ ") ",
    "(1)",
    "(1) ",
-   "nJet>=4 ",
-   "nBJetM>=2", 
-   "nBJetT>=2", 
+   samecut[0],samecut[1],samecut[2] 
 ]
 }
 
@@ -77,9 +72,7 @@ mm_cutsQCD ={
    "(" + ll_lepNonIso+"&&"+mm+ ")",
    "(" + ll_zmass + ")",
    "(metNoHF>40)", 
-   "nJet>=4 ",
-   "nBJetM>=2", 
-   "nBJetT>=2", 
+   samecut[0],samecut[1],samecut[2] 
 ]
 }
 ee_cutsQCD = {
@@ -91,9 +84,7 @@ ee_cutsQCD = {
    "(" + ll_lepNonIso+"&&"+ee+ ") ",
    "(" + ll_zmass + ") ",
    "(metNoHF>40) ",
-   "nJet>=4 ",
-   "nBJetM>=2", 
-   "nBJetT>=2", 
+   samecut[0],samecut[1],samecut[2] 
 ]
 }
 em_cutsQCD = {
@@ -105,8 +96,6 @@ em_cutsQCD = {
    "(" + ll_lepNonIso+"&&"+em + ") ",
    "(1)",
    "(1) ",
-   "nJet>=4 ",
-   "nBJetM>=2", 
-   "nBJetT>=2", 
+   samecut[0],samecut[1],samecut[2] 
 ]
 }
