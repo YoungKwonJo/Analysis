@@ -546,7 +546,8 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   b1 = 0.
   b2 = 0.
   #lumi = 40.028
-  lumi = 42.0
+  #lumi = 42.0
+  lumi = 15.478
   #lumi = 10.028
   hs = THStack("hs","")
 
