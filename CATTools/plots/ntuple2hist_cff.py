@@ -540,11 +540,7 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   pad1.cd()
 
   leg  = make_legend(0.67,0.64, 0.89,0.88)
-  leg2 = make_legend(0.43,0.64, 0.62,0.88)
-  jj = 0.
-  bb = 0.
-  b1 = 0.
-  b2 = 0.
+  leg2 = make_legend(0.43,0.605, 0.62,0.88)
   #lumi = 40.028
   #lumi = 42.0
   lumi = 15.478
@@ -555,16 +551,13 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   #if log : print "hmcTotal: "+hmctotName
   hmctot = f.Get(hmctotName).Clone("hmctot")
   hmcmerge = f.Get(hmctotName).Clone("hmcmerge")
+  hmcSig = f.Get(hmctotName).Clone("hmcSig")
   hmctot.Reset()
   hmcmerge.Reset()
+  hmcSig.Reset()
   hdata = hmctot.Clone("hdata")
 
 
-  #label2 =""
-  #Nlabel2=0.
-  #if log : print mcsamples
-  #hMCHist  = []
-  #mcLegend = []
   for i,mc in enumerate(mcsamples):
     isMC = mc['label'].find("DATA")==-1
     if not isMC: continue
@@ -574,35 +567,22 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
     h2 = f.Get(histnameS)
     if type(h2) is not TH1F :
       return
-
-    #htot = f.Get("hNEvent")
     h2.GetYaxis().SetTitle("Events")
-    #Ntot = htot.GetBinContent(1)
 
     h2.AddBinContent(h2.GetNbinsX(),h2.GetBinContent(h2.GetNbinsX()+1))
     #if h2.Integral()>0 :  h2.Scale(mc['cx']/Ntot*lumi)
     if h2.Integral()>0 :  h2.Scale(mc['cx']*lumi)
 
     ###############
-    aa = mc['name']
-    isJJ = ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") )
-    if isJJ :  jj+=h2.Integral()
-    #if log : print jj
-    if aa is "ttbb" :  bb+=h2.Integral()
-    if aa is "ttb"  :  b1+=h2.Integral()
-    if aa is "tt2b" :  b2+=h2.Integral()
-    ###############
-
-    hmctot.Add( h2 )
+    isTTH = mc['name'].find("ttH")>-1
+    if not isTTH:
+      hmctot.Add( h2 )
     hmcmerge.Add(h2)
     #hs.Add(h2)
 
     selEvet=h2.Integral() 
     selEnts=h2.GetEntries()
     if log : print "mc:"+mc['file']+":"+str(round(selEvet))+", "+str(selEnts)
-    #lleng= len("%s"%mc['label'])
-    #rleng= len(" %.0f"%h1.Integral())
-    #lrleng = 22 - lleng - int(rleng/1.8)
     isSameNext=False
     if i<len(mcsamples)-1 : isSameNext= mc['label'] is mcsamples[i+1]["label"]
     if  (not isSameNext) and i<6: 
@@ -613,7 +593,7 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
       leg.AddEntry(h3, label, "f")
       hs.Add(h3)
       hmcmerge.Reset()
-    elif not isSameNext : 
+    elif not isSameNext and not isTTH : 
       h3=hmcmerge.Clone("h"+mc['name'])
       h3.SetFillColor(mc['color'])
       h3.SetLineColor(kBlack)
@@ -621,11 +601,15 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
       leg2.AddEntry(h3, label, "f")
       hs.Add(h3)
       hmcmerge.Reset()
-
-    #label2=mc['label']
-    #hMCHist.append(copy.deepcopy(h2))
-    #mcLegent.append()
-
+    elif not isSameNext and  isTTH : 
+      h3=hmcmerge.Clone("h"+mc['name'])
+      #h3.SetLineColor(kBlack)
+      hmcSig.Add(h3)
+      hmcSig.SetLineColor(mc['color'])
+      hmcSig.SetTitle(mc['label'])
+#      label = ("%s"%mc['label']) + (" %.0f"%(hmcSig.Integral()) ).rjust(7)
+#      leg2.AddEntry(hmcSig, label, "l")
+      hmcmerge.Reset()
 
   hdata.Reset()
   for i,mc in enumerate(datasamples):
@@ -640,13 +624,10 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
     selEvet=h1.Integral() 
     selEnts=h1.GetEntries()
  
-    aa = mc['name']
     checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
-    #checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
-    if checkDataChannel :#and checkZMass: 
+    if checkDataChannel : 
       hdata.Add(h1)
       if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
-      #if not (round(selEvet) == round(selEnts)) : return 
 ################################
   scale = hmctot.GetMaximum()
   minimum = 0.00005
@@ -656,11 +637,13 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
 
   h2data.SetMaximum(scale*4000)
   h2data.SetMinimum(minimum)
-  #if log :  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
   labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
   leg2.AddEntry(hmctot,labeltot,"")
+  label = ("%s"%hmcSig.GetTitle()) + (" %.0f"%(hmcSig.Integral()) ).rjust(7)
+  leg2.AddEntry(hmcSig, label, "l")
+ 
   labeldata = ("DATA     ") + (" %.0f"%h2data.Integral()).rjust(8)
-  leg2.AddEntry(h2data,labeldata,"p")
+  leg.AddEntry(h2data,labeldata,"p")
 
 #########################################
   h2data.GetYaxis().SetTitle("Events")
@@ -668,6 +651,7 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   hs.Draw("same,hist")
   gr = myHist2TGraphError(hmctot)
   gr.Draw("same,2")
+  hmcSig.Draw("same")
   h2data.Draw("same")
 #  h2data.Draw("sameaxis")
 
@@ -675,16 +659,9 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   leg.Draw()
   leg2.Draw()
   pad1.SetLogy()
-  #pt = make_banner(0.15,0.73, 0.5, 0.89)
-  bbb = 0.
-  bbbb = 0.
-  if jj>0:  bbb = bb/jj
-  if jj>0:  bbbb = (bb+b1+bb)/jj
-  #pt = make_bannerLumi(0.2,0.76, 0.5, 0.89, lumi )
   pt = addLegendLumi(lumi)
   pt2 = addLegendCMS()
   pt3 = addDecayMode(channel)
-  #pt = make_banner2(0.12,0.66, 0.5, 0.89, bbb,bbbb )
   pt.Draw()
   pt2.Draw()
   pt3.Draw()
@@ -701,10 +678,8 @@ def singleplotStack(f,mon,step,mcsamples,datasamples):
   pad2.cd()
   hdata.Divide(hmctot)
 
-  #if log : print "divide start"+str(hdata.Integral())
   hdataMC = myBottomDataPerMCSet(hdata)
 
-  #if log : print "divide end"
   hdataMC.Draw()
 
   pad2.Modified()
@@ -746,13 +721,10 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   pad1.cd()
 
   leg  = make_legend(0.67,0.64, 0.89,0.88)
-  leg2 = make_legend(0.43,0.64, 0.62,0.88)
-  jj = 0.
-  bb = 0.
-  b1 = 0.
-  b2 = 0.
+  leg2 = make_legend(0.43,0.605, 0.62,0.88)
   #lumi = 40.028
-  lumi = 42.0
+  #lumi = 42.0
+  lumi = 15.478
   #lumi = 10.028
   hs = THStack("hs","")
 
@@ -760,16 +732,13 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   if log : print "hmcTotal: "+hmctotName
   hmctot = f.Get(hmctotName).Clone("hmctot")
   hmcmerge = f.Get(hmctotName).Clone("hmcmerge")
+  hmcSig = f.Get(hmctotName).Clone("hmcSig")
   hmctot.Reset()
   hmcmerge.Reset()
+  hmcSig.Reset()
   hdata = hmctot.Clone("hdata")
 
 
-  label2 =""
-  Nlabel2=0.
-  #if log : print mcsamples
-  #hMCHist  = []
-  #mcLegend = []
   for i,mc in enumerate(mcsamples):
     isMC = mc['label'].find("DATA")==-1
     if not isMC: continue
@@ -794,30 +763,17 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
     if h2ll.Integral()>0 :  h2ll.Scale(mc['cx']*lumi)
 
     ###############
-    aa = mc['name']
-    isJJ = ( (aa is "ttbb") or (aa is "ttb") or (aa is "tt2b") or (aa is "ttcc") or (aa is "ttlf") )
-    if isJJ :  
-      jj+=h2ll.Integral()
-    #if log : print jj
-    if aa is "ttbb" :
-      bb+=h2ll.Integral()
-    if aa is "ttb"  :
-      b1+=h2ll.Integral()
-    if aa is "tt2b" :
-      b2+=h2ll.Integral()
-    ###############
     h2ll.SetFillColor(mc['color'])
     h2ll.SetLineColor(kBlack)
-    hmctot.Add( h2ll )
+    isTTH = mc['name'].find("ttH")>-1
+    if not isTTH:
+      hmctot.Add( h2ll )
     hmcmerge.Add(h2ll)
     #hs.Add( h2ll )
 
     selEvet=h2ll.Integral() 
     selEnts=h2ll.GetEntries()
     if log : print "mc:"+mc['file']+":"+str(round(selEvet))+", "+str(selEnts)
-    #lleng= len("%s"%mc['label'])
-    #rleng= len(" %.0f"%h1.Integral())
-    #lrleng = 22 - lleng - int(rleng/1.8)
     isSameNext=False
     if i<len(mcsamples)-1 : isSameNext= mc['label'] is mcsamples[i+1]["label"]
     if  (not isSameNext) and i<6:
@@ -828,7 +784,7 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
       leg.AddEntry(h3, label, "f")
       hs.Add(h3)
       hmcmerge.Reset()
-    elif not isSameNext :
+    elif not isSameNext and not isTTH :
       h3=hmcmerge.Clone("h"+mc['name'])
       h3.SetFillColor(mc['color'])
       h3.SetLineColor(kBlack)
@@ -836,11 +792,15 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
       leg2.AddEntry(h3, label, "f")
       hs.Add(h3)
       hmcmerge.Reset()
-
-    #label2=mc['label']
-    #hMCHist.append(copy.deepcopy(h2))
-    #mcLegent.append()
-
+    elif not isSameNext and  isTTH : 
+      h3=hmcmerge.Clone("h"+mc['name'])
+      #h3.SetLineColor(kBlack)
+      hmcSig.Add(h3)
+      hmcSig.SetLineColor(mc['color'])
+      hmcSig.SetTitle(mc['label'])
+      #label = ("%s"%mc['label']) + (" %.0f"%(hmcSig.Integral()) ).rjust(7)
+      #leg2.AddEntry(hmcSig, label, "l")
+      hmcmerge.Reset()
 
   hdata.Reset()
   for i,mc in enumerate(datasamples):
@@ -877,10 +837,6 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
     selEvet=h1ll.Integral() 
     selEnts=h1ll.GetEntries()
  
-    aa = mc['name']
-    #checkDataChannel = (channel=="mm" and mc['name']=="MuMu") or (channel=="ee" and mc['name']=="ElEl") or (channel=="em" and mc['name']=="MuEl")
-    #checkZMass = ( channel=="mm" and mon=="ZMassMM") or (channel=="ee" and mon=="ZMassEE") or (channel=="em" and mon=="ZMassEM") or (not ( mon=="ZMassMM" or  mon=="ZMassEE" or mon=="ZMassEM"))
-    #if checkDataChannel :#and checkZMass: 
     hdata.Add(h1ll)
     if log : print "data:"+mc['file']+": "+str(round(selEvet))+", "+str(selEnts)
     #if not (round(selEvet) == round(selEnts)) : return 
@@ -896,8 +852,10 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   #if log :  print "dddd"+str(type(hmctot))+("bbbb: %f"%hmctot.Integral())
   labeltot = ("MC Total") + (" %.0f"%hmctot.Integral()).rjust(8)
   leg2.AddEntry(hmctot,labeltot,"")
+  label = ("%s"%hmcSig.GetTitle()) + (" %.0f"%(hmcSig.Integral()) ).rjust(7)
+  leg2.AddEntry(hmcSig, label, "l")
   labeldata = ("DATA     ") + (" %.0f"%h2data.Integral()).rjust(8)
-  leg2.AddEntry(h2data,labeldata,"p")
+  leg.AddEntry(h2data,labeldata,"p")
 
 #########################################
   h2data.GetYaxis().SetTitle("Events")
@@ -905,6 +863,7 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   hs.Draw("same,hist")
   gr = myHist2TGraphError(hmctot)
   gr.Draw("same,2")
+  hmcSig.Draw("same")
   h2data.Draw("same")
 #  h2data.Draw("sameaxis")
 
@@ -912,11 +871,6 @@ def singleplotStackLL(f,mon,step,mcsamples,datasamples):
   leg.Draw()
   leg2.Draw()
   pad1.SetLogy()
-  #pt = make_banner(0.15,0.73, 0.5, 0.89)
-  bbb = 0.
-  bbbb = 0.
-  if jj>0:  bbb = bb/jj
-  if jj>0:  bbbb = (bb+b1+bb)/jj
   pt = addLegendLumi(lumi)
   pt2 = addLegendCMS()
   pt3 = addDecayMode("ll")
