@@ -11,21 +11,17 @@ if len(sys.argv) is 1:
   sys.exit()
 
 arg = sys.argv[1]
-
-mon = []
-for i,ii in enumerate(monitors):
-  #print monitors[ii]
-  mon+=monitors[ii]
+ii=int(arg)
+if ii>len(monitors)+2 : sys.exit()
 
 mon1=[]
-for mon11 in monitors.keys():
-  if mon11 == ("Mon" + arg) :
-    mon1+=monitors["Mon" + arg ]
+if ii<len(monitors) :  mon1 += monitors[ii]
 
 mon2=[]
+iii = ii-len(monitors)+1
 for mon22 in monitors2d.keys():
-  if mon22 == ("Mon" + arg) :
-    mon2+=monitors2d["Mon" + arg ]
+  if mon22 == ("Mon"+str(iii)) :
+    mon2+=monitors2d["Mon" +str(iii)]
 
 #mceventweight="puWeight"
 mceventweight="1"
