@@ -16,7 +16,7 @@ if ii>len(monitors)+2 : sys.exit()
 
 mon1=[]
 if ii<len(monitors) :
-  mon1 = monitors[ii]
+  mon1 = [monitors[ii]]
   #print monitors[ii]
 
 #print str(mon1)
