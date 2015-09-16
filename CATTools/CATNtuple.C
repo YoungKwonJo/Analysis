@@ -110,7 +110,7 @@ void CATNtuple::Loop(bool isMC_)
 
       for(int i=0;i<electrons_pt->size();i++)
       {
-          if( electrons_pt->at(i)>30.0 && fabs(electrons_eta->at(i))<2.1 &&
+          if( electrons_pt->at(i)>20.0 && fabs(electrons_eta->at(i))<2.1 &&
               //electrons_idMedium->at(i)==1 &&
               //electrons_isPassConversionVeto->at(i)==1 &&
               !(fabs(electrons_scEta->at(i))>1.4442 && fabs(electrons_scEta->at(i))<1.5660) 
@@ -131,7 +131,7 @@ void CATNtuple::Loop(bool isMC_)
 
 
              Lepton el_(pt,eta,phi,mass, relIso03, q,id,q*11,MCmatched);
-             if(electrons_idTight->at(i)==1 && relIso03<0.12) leptons_->push_back(el_);
+             if(electrons_idTight->at(i)==1) leptons_->push_back(el_);
              if(electrons_idTight->at(i)==1) electrons_->push_back(el_);
           }
       }
@@ -139,7 +139,7 @@ void CATNtuple::Loop(bool isMC_)
 
       for(int i=0;i<muons_pt->size();i++)
       {
-          if( muons_pt->at(i)>30.0 && fabs(muons_eta->at(i))<2.1 &&
+          if( muons_pt->at(i)>20.0 && fabs(muons_eta->at(i))<2.1 &&
               //muons_isTight->at(i)==1 && 
               muons_isPF->at(i)==1 && muons_isGlobal->at(i)==1 && 
               fabs(muons_dxy->at(i))<0.2 && fabs(muons_dz->at(i))<0.5 &&
@@ -172,10 +172,10 @@ void CATNtuple::Loop(bool isMC_)
 
 /////////////////////
       int Nmu=0, Nel=0, NmuIso=0, NelIso=0;
-      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Pt()>30     && fabs(muons_->at(i).Eta())<2.1     && muons_->at(i).id_>2     && muons_->at(i).Iso_<0.12)     NmuIso++;
-      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Pt()>30 && fabs(electrons_->at(i).Eta())<2.1 && electrons_->at(i).id_>2 && electrons_->at(i).Iso_<0.12) NelIso++;
-      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Pt()>30     && fabs(muons_->at(i).Eta())<2.1     && muons_->at(i).id_>2     )  Nmu++;
-      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Pt()>30 && fabs(electrons_->at(i).Eta())<2.1 && electrons_->at(i).id_>2 )  Nel++;
+      for(int i=0;i<muons_->size();i++ )     if(muons_->at(i).Iso_<0.12)     NmuIso++;
+      for(int i=0;i<electrons_->size();i++ ) if(electrons_->at(i).Iso_<0.12) NelIso++;
+      for(int i=0;i<muons_->size();i++ )       Nmu++;
+      for(int i=0;i<electrons_->size();i++ )   Nel++;
       fevent_->Nmu_=Nmu;
       fevent_->Nel_=Nel;
       fevent_->NmuIso_=NmuIso;
