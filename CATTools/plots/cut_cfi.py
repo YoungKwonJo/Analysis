@@ -1,8 +1,8 @@
 
 from mcsample_cfi import *
 
-ll_lep1    = "((ll_lep1_pt>30) && (abs(ll_lep1_eta)<2.1)) "
-ll_lep2    = "((ll_lep2_pt>30) && (abs(ll_lep2_eta)<2.1))"
+ll_lep1    = "((ll_lep1_pt>20) && (abs(ll_lep1_eta)<2.1)) "
+ll_lep2    = "((ll_lep2_pt>20) && (abs(ll_lep2_eta)<2.1))"
 ll_Iso12 = "((abs(ll_lep1_iso)<0.12) && (abs(ll_lep2_iso)<0.12))"
 ll_NonIso12 = "((abs(ll_lep1_iso)>0.2) && (abs(ll_lep2_iso)>0.2))"
 ll_op = "( ll_lep1_q*ll_lep2_q<0)"
