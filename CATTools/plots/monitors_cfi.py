@@ -1,5 +1,6 @@
 
 monitors = [
+  { "name":"jetCSV4",      "unit":"Sum of CSV2 of 4 Jets ",        "var":"jet_csv[0]+jet_csv[1]+jet_csv[2]+jet_csv[3]",   "xbin_set":[80,0,4]     },
   { "name":"MET",          "unit":"Missing E_{T} without HF (GeV)","var":"metNoHF",   "xbin_set":[60,0,300]  },
   { "name":"METpf",        "unit":"Missing E_{T}  (GeV)",          "var":"met",       "xbin_set":[60,0,300]  },
   { "name":"ZMass",        "unit":"Dilepton mass (GeV/c^{2}) ",    "var":"ll_zmass",  "xbin_set":[60,0,300]  },
