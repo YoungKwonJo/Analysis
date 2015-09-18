@@ -16,8 +16,8 @@ struct FlatTree
   void book(TTree* tree); // book leaves to fill the tree
   void clear();
 
-  typedef std::vector<double> doubles;
-  typedef doubles* doublesP;
+  typedef std::vector<float> floats;
+  typedef floats* floatsP;
 
   typedef std::vector<int> ints;
   typedef ints* intsP;
@@ -25,20 +25,20 @@ struct FlatTree
 public:
   TTree* tree_;
   int run_, lumi_, event_;
-  double weight_, genWeight_, lheWeight_;
+  float weight_, genWeight_, lheWeight_;
 
-  double ll_lep1_pt_, ll_lep1_eta_, ll_lep1_phi_, ll_lep1_iso_, ll_zmass_;
-  double ll_lep2_pt_, ll_lep2_eta_, ll_lep2_phi_, ll_lep2_iso_;
+  float ll_lep1_pt_, ll_lep1_eta_, ll_lep1_phi_, ll_lep1_iso_, ll_zmass_;
+  float ll_lep2_pt_, ll_lep2_eta_, ll_lep2_phi_, ll_lep2_iso_;
   int  ll_lep1_q_, ll_lep2_q_;
   int  ll_lep1_MCmatched_, ll_lep2_MCmatched_;
   int ll_lep1_pdgid_, ll_lep2_pdgid_, lepton_N_;
 
-  double met_, metphi_;
-  double metNoHFphi_, metNoHF_,    metPfMvaphi_, metPfMva_,   metPuppiphi_, metPuppi_;   
+  float met_, metphi_;
+  float metNoHFphi_, metNoHF_,    metPfMvaphi_, metPfMva_,   metPuppiphi_, metPuppi_;   
 
-  doublesP jet_pt_, jet_eta_, jet_phi_, jet_csv_; 
-  doublesP jetPuppi_pt_, jetPuppi_eta_, jetPuppi_phi_, jetPuppi_csv_; 
-  //order pt;
+  floatsP jet_pt_, jet_eta_, jet_phi_, jet_csv_; 
+  floatsP jetPuppi_pt_, jetPuppi_eta_, jetPuppi_phi_, jetPuppi_csv_; 
+  //order csv;
 
   int nBJet20T_, nBJet20M_, nBJet20L_, nJet20_;
   int nBJet30T_, nBJet30M_, nBJet30L_, nJet30_;
@@ -80,15 +80,15 @@ public:
 //#ifdef FlatTree_cxx
 FlatTree::FlatTree()
 {
-   jet_pt_  = new doubles;
-   jet_eta_  = new doubles;
-   jet_phi_  = new doubles;
-   jet_csv_  = new doubles;
+   jet_pt_  = new floats;
+   jet_eta_  = new floats;
+   jet_phi_  = new floats;
+   jet_csv_  = new floats;
 
-   jetPuppi_pt_  = new doubles;
-   jetPuppi_eta_  = new doubles;
-   jetPuppi_phi_  = new doubles;
-   jetPuppi_csv_  = new doubles;
+   jetPuppi_pt_  = new floats;
+   jetPuppi_eta_  = new floats;
+   jetPuppi_phi_  = new floats;
+   jetPuppi_csv_  = new floats;
 
 }
 void FlatTree::book(TTree* tree)
@@ -99,9 +99,9 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("run"  , &run_  , "run/I");
   tree_->Branch("lumi" , &lumi_ , "lumi/I");
   tree_->Branch("event", &event_, "event/I");
-  tree_->Branch("weight", &weight_, "weight/D");
-  tree_->Branch("genWeight", &genWeight_, "genWeight/D");
-  tree_->Branch("lheWeight", &lheWeight_, "lheWeight/D");
+  tree_->Branch("weight", &weight_, "weight/F");
+  tree_->Branch("genWeight", &genWeight_, "genWeight/F");
+  tree_->Branch("lheWeight", &lheWeight_, "lheWeight/F");
 
   tree_->Branch("jet_pt"  , jet_pt_  );
   tree_->Branch("jet_eta"  , jet_eta_  );
@@ -140,30 +140,30 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("NelIso", &NelIso_,  "NelIso/I");
 
 ///////
-  tree_->Branch("met",    &met_,    "met/D");
-  tree_->Branch("metphi", &metphi_, "metphi/D");
+  tree_->Branch("met",    &met_,    "met/F");
+  tree_->Branch("metphi", &metphi_, "metphi/F");
 
-  tree_->Branch("metNoHFphi",    &metNoHFphi_,  "metNoHFphi/D"); 
-  tree_->Branch("metNoHF",       &metNoHF_,     "metNoHF/D");   
-  tree_->Branch("metPfMvaphi",   &metPfMvaphi_, "metPfMvaphi/D");
-  tree_->Branch("metPfMva",      &metPfMva_,    "metPfMva/D");  
-  tree_->Branch("metPuppiphi",   &metPuppiphi_, "metPuppiphi/D");
-  tree_->Branch("metPuppi",      &metPuppi_,    "metPuppi/D");  
+  tree_->Branch("metNoHFphi",    &metNoHFphi_,  "metNoHFphi/F"); 
+  tree_->Branch("metNoHF",       &metNoHF_,     "metNoHF/F");   
+  tree_->Branch("metPfMvaphi",   &metPfMvaphi_, "metPfMvaphi/F");
+  tree_->Branch("metPfMva",      &metPfMva_,    "metPfMva/F");  
+  tree_->Branch("metPuppiphi",   &metPuppiphi_, "metPuppiphi/F");
+  tree_->Branch("metPuppi",      &metPuppi_,    "metPuppi/F");  
 
 /////
-  tree_->Branch("ll_lep1_pt",   &ll_lep1_pt_,    "ll_lep1_pt/D");
-  tree_->Branch("ll_lep1_eta",  &ll_lep1_eta_,   "ll_lep1_eta/D");
-  tree_->Branch("ll_lep1_phi",  &ll_lep1_phi_,   "ll_lep1_phi/D");
+  tree_->Branch("ll_lep1_pt",   &ll_lep1_pt_,    "ll_lep1_pt/F");
+  tree_->Branch("ll_lep1_eta",  &ll_lep1_eta_,   "ll_lep1_eta/F");
+  tree_->Branch("ll_lep1_phi",  &ll_lep1_phi_,   "ll_lep1_phi/F");
   tree_->Branch("ll_lep1_q",    &ll_lep1_q_,     "ll_lep1_q/I");
   tree_->Branch("ll_lep1_MCmatched",    &ll_lep1_MCmatched_,     "ll_lep1_MCmatched/I");
-  tree_->Branch("ll_lep1_iso",  &ll_lep1_iso_,   "ll_lep1_iso/D");
-  tree_->Branch("ll_lep2_pt",   &ll_lep2_pt_,    "ll_lep2_pt/D");
-  tree_->Branch("ll_lep2_eta",  &ll_lep2_eta_,   "ll_lep2_eta/D");
-  tree_->Branch("ll_lep2_phi",  &ll_lep2_phi_,   "ll_lep2_phi/D");
+  tree_->Branch("ll_lep1_iso",  &ll_lep1_iso_,   "ll_lep1_iso/F");
+  tree_->Branch("ll_lep2_pt",   &ll_lep2_pt_,    "ll_lep2_pt/F");
+  tree_->Branch("ll_lep2_eta",  &ll_lep2_eta_,   "ll_lep2_eta/F");
+  tree_->Branch("ll_lep2_phi",  &ll_lep2_phi_,   "ll_lep2_phi/F");
   tree_->Branch("ll_lep2_q",    &ll_lep2_q_,     "ll_lep2_q/I");
   tree_->Branch("ll_lep2_MCmatched",    &ll_lep2_MCmatched_,     "ll_lep2_MCmatched/I");
-  tree_->Branch("ll_lep2_iso",  &ll_lep2_iso_,   "ll_lep2_iso/D");
-  tree_->Branch("ll_zmass",     &ll_zmass_,      "ll_zmass/D");
+  tree_->Branch("ll_lep2_iso",  &ll_lep2_iso_,   "ll_lep2_iso/F");
+  tree_->Branch("ll_zmass",     &ll_zmass_,      "ll_zmass/F");
   tree_->Branch("ll_lep1_pdgid",&ll_lep1_pdgid_,  "ll_lep1_pdgid/I");
   tree_->Branch("ll_lep2_pdgid",&ll_lep2_pdgid_,  "ll_lep2_pdgid/I");
   tree_->Branch("lepton_N",&lepton_N_,  "lepton_N/I");

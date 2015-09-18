@@ -70,14 +70,14 @@ void CATNtuple::Loop(bool isMC_)
       fevent_->lumi_  = lumi; 
 
 //////////////////
-      fevent_->met_     = met_pt->at(0);
-      fevent_->metphi_  = met_phi->at(0);
-      fevent_->metNoHFphi_  =  metNoHF_phi->at(0);
-      fevent_->metNoHF_     =  metNoHF_pt->at(0);
-      fevent_->metPfMvaphi_ =  metPfMva_phi->at(0);
-      fevent_->metPfMva_    =  metPfMva_pt->at(0);
-      fevent_->metPuppiphi_ =  metPuppi_phi->at(0);
-      fevent_->metPuppi_    =  metPuppi_pt->at(0);
+      fevent_->met_     = (float) met_pt->at(0);
+      fevent_->metphi_  = (float) met_phi->at(0);
+      fevent_->metNoHFphi_  = (float)  metNoHF_phi->at(0);
+      fevent_->metNoHF_     = (float)  metNoHF_pt->at(0);
+      fevent_->metPfMvaphi_ = (float)  metPfMva_phi->at(0);
+      fevent_->metPfMva_    = (float)  metPfMva_pt->at(0);
+      fevent_->metPuppiphi_ = (float)  metPuppi_phi->at(0);
+      fevent_->metPuppi_    = (float)  metPuppi_pt->at(0);
 
 ////////////////////
    fevent_->CSCTightHaloFilter_=                         CSCTightHaloFilter;                        
@@ -187,34 +187,34 @@ void CATNtuple::Loop(bool isMC_)
       fevent_->lepton_N_= leptons_N;
       if(leptons_N>1)
       {
-         fevent_->ll_lep1_pt_ = leptons_->at(0).Pt();
-         fevent_->ll_lep1_eta_= leptons_->at(0).Eta();
-         fevent_->ll_lep1_phi_= leptons_->at(0).Phi();
-         fevent_->ll_lep1_q_  = leptons_->at(0).Q_;
+         fevent_->ll_lep1_pt_ = (float) leptons_->at(0).Pt();
+         fevent_->ll_lep1_eta_= (float) leptons_->at(0).Eta();
+         fevent_->ll_lep1_phi_= (float) leptons_->at(0).Phi();
+         fevent_->ll_lep1_q_  =  leptons_->at(0).Q_;
          fevent_->ll_lep1_pdgid_  = leptons_->at(0).pdgid_;
-         fevent_->ll_lep1_iso_= leptons_->at(0).Iso_;
-         fevent_->ll_lep2_pt_ = leptons_->at(1).Pt();
-         fevent_->ll_lep2_eta_= leptons_->at(1).Eta();
-         fevent_->ll_lep2_phi_= leptons_->at(1).Phi();
+         fevent_->ll_lep1_iso_= (float) leptons_->at(0).Iso_;
+         fevent_->ll_lep2_pt_ = (float) leptons_->at(1).Pt();
+         fevent_->ll_lep2_eta_= (float) leptons_->at(1).Eta();
+         fevent_->ll_lep2_phi_= (float) leptons_->at(1).Phi();
          fevent_->ll_lep2_q_  = leptons_->at(1).Q_;
          fevent_->ll_lep2_pdgid_  = leptons_->at(1).pdgid_;
-         fevent_->ll_lep2_iso_= leptons_->at(1).Iso_;
-         fevent_->ll_zmass_  = ((leptons_->at(0).vec_)+(leptons_->at(1).vec_)).M();
+         fevent_->ll_lep2_iso_=(float) leptons_->at(1).Iso_;
+         fevent_->ll_zmass_  =  (float) ((leptons_->at(0).vec_)+(leptons_->at(1).vec_)).M();
       
          if(abs(leptons_->at(0).pdgid_)==13 && abs(leptons_->at(1).pdgid_)==11)
          {
-            fevent_->ll_lep1_pt_ = leptons_->at(1).Pt();
-            fevent_->ll_lep1_eta_= leptons_->at(1).Eta();
-            fevent_->ll_lep1_phi_= leptons_->at(1).Phi();
+            fevent_->ll_lep1_pt_ = (float) leptons_->at(1).Pt();
+            fevent_->ll_lep1_eta_= (float) leptons_->at(1).Eta();
+            fevent_->ll_lep1_phi_= (float) leptons_->at(1).Phi();
             fevent_->ll_lep1_q_  = leptons_->at(1).Q_;
             fevent_->ll_lep1_pdgid_  = leptons_->at(1).pdgid_;
-            fevent_->ll_lep1_iso_= leptons_->at(1).Iso_;
-            fevent_->ll_lep2_pt_ = leptons_->at(0).Pt();
-            fevent_->ll_lep2_eta_= leptons_->at(0).Eta();
-            fevent_->ll_lep2_phi_= leptons_->at(0).Phi();
+            fevent_->ll_lep1_iso_= (float) leptons_->at(1).Iso_;
+            fevent_->ll_lep2_pt_ = (float) leptons_->at(0).Pt();
+            fevent_->ll_lep2_eta_= (float) leptons_->at(0).Eta();
+            fevent_->ll_lep2_phi_= (float) leptons_->at(0).Phi();
             fevent_->ll_lep2_q_  = leptons_->at(0).Q_;
             fevent_->ll_lep2_pdgid_  = leptons_->at(0).pdgid_;
-            fevent_->ll_lep2_iso_= leptons_->at(0).Iso_;
+            fevent_->ll_lep2_iso_= (float) leptons_->at(0).Iso_;
          }
       }
 ////////////////////////////////////
@@ -256,10 +256,10 @@ void CATNtuple::Loop(bool isMC_)
            if(jets_->at(i).CSV()>0.890) nBJet30M++; // CSVM 0.890 
            if(jets_->at(i).CSV()>0.605) nBJet30L++; // CSVL 0.605 
          } 
-         fevent_->jet_pt_ ->push_back( jets_->at(i).Pt() );   
-         fevent_->jet_eta_->push_back( jets_->at(i).Eta() );   
-         fevent_->jet_phi_->push_back( jets_->at(i).Phi() );   
-         fevent_->jet_csv_->push_back( jets_->at(i).CSV() );   
+         fevent_->jet_pt_ ->push_back( (float) jets_->at(i).Pt() );   
+         fevent_->jet_eta_->push_back( (float) jets_->at(i).Eta() );   
+         fevent_->jet_phi_->push_back( (float) jets_->at(i).Phi() );   
+         fevent_->jet_csv_->push_back( (float) jets_->at(i).CSV() );   
       } 
       fevent_->nJet20_=nJet20;
       fevent_->nBJet20T_=nBJet20T;
@@ -311,10 +311,10 @@ void CATNtuple::Loop(bool isMC_)
             if(jetsPuppi_->at(i).CSV()>0.605) nBJet30L++; // CSVL 0.605 
             nJet30Puppi++;
          }
-         fevent_->jetPuppi_pt_ ->push_back( jetsPuppi_->at(i).Pt() );   
-         fevent_->jetPuppi_eta_->push_back( jetsPuppi_->at(i).Eta() );   
-         fevent_->jetPuppi_phi_->push_back( jetsPuppi_->at(i).Phi() );   
-         fevent_->jetPuppi_csv_->push_back( jetsPuppi_->at(i).CSV() );   
+         fevent_->jetPuppi_pt_ ->push_back( (float) jetsPuppi_->at(i).Pt() );   
+         fevent_->jetPuppi_eta_->push_back( (float) jetsPuppi_->at(i).Eta() );   
+         fevent_->jetPuppi_phi_->push_back( (float) jetsPuppi_->at(i).Phi() );   
+         fevent_->jetPuppi_csv_->push_back( (float) jetsPuppi_->at(i).CSV() );   
       } 
       fevent_->nJet20Puppi_=nJet20Puppi;
       fevent_->nBJet20TPuppi_=nBJet20TPuppi;
@@ -349,15 +349,15 @@ void CATNtuple::Loop(bool isMC_)
          fevent_->NgenJet_ = NgenJet;
 
          fevent_->nTrueInteraction_= nTrueInteraction;
-         fevent_->pdfWeightId1_    = pdfWeightId1;
-         fevent_->pdfWeightId2_    = pdfWeightId2;
-         fevent_->pdfWeightQ_      = pdfWeightQ  ;
-         fevent_->pdfWeightX1_     = pdfWeightX1 ;
-         fevent_->pdfWeightX2_     = pdfWeightX2 ;
-         fevent_->puWeight_        = puWeight    ; 
+         fevent_->pdfWeightId1_    = (float) pdfWeightId1;
+         fevent_->pdfWeightId2_    = (float) pdfWeightId2;
+         fevent_->pdfWeightQ_      = (float) pdfWeightQ  ;
+         fevent_->pdfWeightX1_     = (float) pdfWeightX1 ;
+         fevent_->pdfWeightX2_     =(float) pdfWeightX2 ;
+         fevent_->puWeight_        =(float) puWeight    ; 
 
-         fevent_->genWeight_        = genWeight/fabs(genWeight)    ; 
-         fevent_->lheWeight_        = lheWeight/fabs(lheWeight)    ; 
+         fevent_->genWeight_        =(float) genWeight/fabs(genWeight)    ; 
+         fevent_->lheWeight_        =(float) lheWeight/fabs(lheWeight)    ; 
       }
 //////////
       tree_->Fill();
