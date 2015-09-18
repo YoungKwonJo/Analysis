@@ -355,6 +355,9 @@ void CATNtuple::Loop(bool isMC_)
          fevent_->pdfWeightX1_     = pdfWeightX1 ;
          fevent_->pdfWeightX2_     = pdfWeightX2 ;
          fevent_->puWeight_        = puWeight    ; 
+
+         fevent_->genWeight_        = genWeight/fabs(genWeight)    ; 
+         fevent_->lheWeight_        = lheWeight/fabs(lheWeight)    ; 
       }
 //////////
       tree_->Fill();

@@ -53,6 +53,8 @@ public :
    Float_t         pdfWeightQ;
    Float_t         pdfWeightX1;
    Float_t         pdfWeightX2;
+   Float_t         lheWeight;
+   Float_t         genWeight;
    Float_t         puWeight;
    Float_t         puWeightDn;
    Float_t         puWeightUp;
@@ -209,6 +211,8 @@ public :
    TBranch        *b_pdfWeightQ;   //!
    TBranch        *b_pdfWeightX1;   //!
    TBranch        *b_pdfWeightX2;   //!
+   TBranch        *b_genWeight;   //!
+   TBranch        *b_lheWeight;   //!
    TBranch        *b_puWeight;   //!
    TBranch        *b_puWeightDn;   //!
    TBranch        *b_puWeightUp;   //!
@@ -558,6 +562,8 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("pdfWeightQ", &pdfWeightQ, &b_pdfWeightQ);
    fChain->SetBranchAddress("pdfWeightX1", &pdfWeightX1, &b_pdfWeightX1);
    fChain->SetBranchAddress("pdfWeightX2", &pdfWeightX2, &b_pdfWeightX2);
+   fChain->SetBranchAddress("lheWeight", &lheWeight, &b_lheWeight);
+   fChain->SetBranchAddress("genWeight", &genWeight, &b_genWeight);
    fChain->SetBranchAddress("puWeight", &puWeight, &b_puWeight);
    fChain->SetBranchAddress("puWeightDn", &puWeightDn, &b_puWeightDn);
    fChain->SetBranchAddress("puWeightUp", &puWeightUp, &b_puWeightUp);

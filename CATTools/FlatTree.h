@@ -25,7 +25,7 @@ struct FlatTree
 public:
   TTree* tree_;
   int run_, lumi_, event_;
-  double weight_;
+  double weight_, genWeight_, lheWeight_;
 
   double ll_lep1_pt_, ll_lep1_eta_, ll_lep1_phi_, ll_lep1_iso_, ll_zmass_;
   double ll_lep2_pt_, ll_lep2_eta_, ll_lep2_phi_, ll_lep2_iso_;
@@ -45,7 +45,7 @@ public:
   int nBJet20TPuppi_, nBJet20MPuppi_, nBJet20LPuppi_, nJet20Puppi_;
   int nBJet30TPuppi_, nBJet30MPuppi_, nBJet30LPuppi_, nJet30Puppi_;
 
-  int isMM_, isEE_, isEM_, Category_,NgenJet_;
+  int isMM_, isEE_, isEM_, Category_,NgenJet_, Categorytb_;
 
   int Nmu_, Nel_, NmuIso_, NelIso_; 
 //  TH1F* hSumWeight_;
@@ -100,6 +100,8 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("lumi" , &lumi_ , "lumi/I");
   tree_->Branch("event", &event_, "event/I");
   tree_->Branch("weight", &weight_, "weight/D");
+  tree_->Branch("genWeight", &genWeight_, "genWeight/D");
+  tree_->Branch("lheWeight", &lheWeight_, "lheWeight/D");
 
   tree_->Branch("jet_pt"  , jet_pt_  );
   tree_->Branch("jet_eta"  , jet_eta_  );
@@ -172,6 +174,7 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("isEM",  &isEM_, "isEM/I" );
 
   tree_->Branch("Category",  &Category_, "Category/I" );
+  tree_->Branch("Categorytb",  &Categorytb_, "Categorytb/I" );
   tree_->Branch("NgenJet",  &NgenJet_, "NgenJet/I" );
 //////
 
@@ -219,6 +222,8 @@ void FlatTree::clear()
    jetPuppi_csv_->clear();
 
    weight_=1.0;
+   genWeight_=1.0;
+   lheWeight_=1.0;
 
    Nmu_=-99; Nel_=-99;
    NmuIso_=-99; NelIso_=-99;
@@ -241,6 +246,7 @@ void FlatTree::clear()
 ///////
   isMM_=-99; isEE_=-99; isEM_=-99;
   Category_=-99;
+  Categorytb_=-99;
   NgenJet_=-99;
 
 ////////
