@@ -221,7 +221,7 @@ void CATNtuple::Loop(bool isMC_)
 //PFJET
       for(int i=0;i<jets_pt->size();i++)
       {
-          if( jets_pt->at(i)>20.0 && fabs(jets_eta->at(i))<2.4 
+          if( jets_pt->at(i)>30.0 && fabs(jets_eta->at(i))<2.4 
             ) 
           {
              double pt = jets_pt->at(i);
@@ -237,8 +237,8 @@ void CATNtuple::Loop(bool isMC_)
              if(isFill) jets_->push_back(jet_);
           }
       }
-      //std::sort(jets_->begin(), jets_->end(), compByCSVJet);
-      std::sort(jets_->begin(), jets_->end(), compByPtJet);
+      std::sort(jets_->begin(), jets_->end(), compByCSVJet);
+      //std::sort(jets_->begin(), jets_->end(), compByPtJet);
 
 //////////////
       int nBJet20T=0, nBJet20M=0, nBJet20L=0, nJet20=0;
@@ -274,7 +274,7 @@ void CATNtuple::Loop(bool isMC_)
 //JETPUPPI
       for(int i=0;i<jetsPuppi_pt->size();i++)
       {
-          if( jetsPuppi_pt->at(i)>20.0 && fabs(jetsPuppi_eta->at(i))<2.4 
+          if( jetsPuppi_pt->at(i)>30.0 && fabs(jetsPuppi_eta->at(i))<2.4 
             ) 
           {
              double pt = jetsPuppi_pt->at(i);
@@ -292,8 +292,8 @@ void CATNtuple::Loop(bool isMC_)
              if(isFill) jetsPuppi_->push_back(jet_);
           }
       }
-      //std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByCSVJet);
-      std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByPtJet);
+      std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByCSVJet);
+      //std::sort(jetsPuppi_->begin(), jetsPuppi_->end(), compByPtJet);
 
 //////////////
       int nBJet20TPuppi=0, nBJet20MPuppi=0, nBJet20LPuppi=0, nJet20Puppi=0;
@@ -334,6 +334,7 @@ void CATNtuple::Loop(bool isMC_)
          fevent_->isEM_ = ((int) (genTtbarLeptonDecay%10000)==101);
          
          int category =0; // 0:tt+lf, 1:tt+cc, 2:tt+bb, 3:tt+2b, 4:tt+b  
+         int categorytb =0;
          if(genTtbarId%100 == 0)                   category=0;
          else if( ((int)(genTtbarId%100)/10) == 4) category=1;
          else if( ((int)(genTtbarId%100)) == 51)   category=4;
@@ -341,7 +342,10 @@ void CATNtuple::Loop(bool isMC_)
          else if( ((int)(genTtbarId%100)) == 53)   category=2;
          else if( ((int)(genTtbarId%100)) == 54)   category=2;
          else if( ((int)(genTtbarId%100)) == 55)   category=2;
+         categorytb=(int)(genTtbarId/100);
+
          fevent_->Category_ =  category;
+         fevent_->Categorytb_ =  categorytb;
          fevent_->NgenJet_ = NgenJet;
 
          fevent_->nTrueInteraction_= nTrueInteraction;
