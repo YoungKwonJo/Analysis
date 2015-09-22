@@ -63,6 +63,8 @@ public :
    vector<double>  *electrons_chIso03;
    vector<double>  *electrons_chIso04;
    vector<double>  *electrons_eta;
+   vector<double>  *electrons_isPF;
+   vector<double>  *electrons_passConversionVeto;
    vector<double>  *electrons_idHEEPV60;
    vector<double>  *electrons_idLoose;
    vector<double>  *electrons_idMedium;
@@ -221,6 +223,8 @@ public :
    TBranch        *b_electrons_chIso03;   //!
    TBranch        *b_electrons_chIso04;   //!
    TBranch        *b_electrons_eta;   //!
+   TBranch        *b_electrons_isPF;   //!
+   TBranch        *b_electrons_passConversionVeto;   //!
    TBranch        *b_electrons_idHEEPV60;   //!
    TBranch        *b_electrons_idLoose;   //!
    TBranch        *b_electrons_idMedium;   //!
@@ -410,6 +414,8 @@ void CATNtuple::Init(TTree *tree)
    electrons_chIso03 = 0;
    electrons_chIso04 = 0;
    electrons_eta = 0;
+   electrons_isPF = 0;
+   electrons_passConversionVeto = 0;
    electrons_idHEEPV60 = 0;
    electrons_idLoose = 0;
    electrons_idMedium = 0;
@@ -572,6 +578,8 @@ void CATNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("electrons_chIso03", &electrons_chIso03, &b_electrons_chIso03);
    fChain->SetBranchAddress("electrons_chIso04", &electrons_chIso04, &b_electrons_chIso04);
    fChain->SetBranchAddress("electrons_eta", &electrons_eta, &b_electrons_eta);
+   fChain->SetBranchAddress("electrons_isPF", &electrons_isPF, &b_electrons_isPF);
+   fChain->SetBranchAddress("electrons_passConversionVeto", &electrons_passConversionVeto, &b_electrons_passConversionVeto);
    fChain->SetBranchAddress("electrons_idHEEPV60", &electrons_idHEEPV60, &b_electrons_idHEEPV60);
    fChain->SetBranchAddress("electrons_idLoose", &electrons_idLoose, &b_electrons_idLoose);
    fChain->SetBranchAddress("electrons_idMedium", &electrons_idMedium, &b_electrons_idMedium);

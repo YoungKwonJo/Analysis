@@ -37,8 +37,11 @@ void CATNtuple::Loop(bool isMC_)
    if (fChain == 0) return;
 /////////
    TTree *tree_ = new TTree(Form("myresult"),"");
+   TTree *tree2_ = new TTree(Form("myresult2"),"");
    FlatTree* fevent_ = new FlatTree();
+   FlatTree* fevent2_ = new FlatTree();
    fevent_->book(tree_);
+   fevent2_->book(tree2_);
 
    LeptonsP muons_;        muons_     = new Leptons;
    LeptonsP electrons_;    electrons_ = new Leptons;
@@ -110,7 +113,7 @@ void CATNtuple::Loop(bool isMC_)
 
       for(int i=0;i<electrons_pt->size();i++)
       {
-          if( electrons_pt->at(i)>20.0 && fabs(electrons_eta->at(i))<2.1 &&
+          if( electrons_pt->at(i)>20.0 && fabs(electrons_eta->at(i))<2.4 &&
               //electrons_idMedium->at(i)==1 &&
               //electrons_isPassConversionVeto->at(i)==1 &&
               !(fabs(electrons_scEta->at(i))>1.4442 && fabs(electrons_scEta->at(i))<1.5660) 
@@ -139,13 +142,12 @@ void CATNtuple::Loop(bool isMC_)
 
       for(int i=0;i<muons_pt->size();i++)
       {
-          if( muons_pt->at(i)>20.0 && fabs(muons_eta->at(i))<2.1 &&
-              //muons_isTight->at(i)==1 && 
-              muons_isPF->at(i)==1 && muons_isGlobal->at(i)==1 && 
-              fabs(muons_dxy->at(i))<0.2 && fabs(muons_dz->at(i))<0.5 &&
-              muons_normalizedChi2->at(i)<10 && muons_numberOfValidMuonHits->at(i)>0 &&
-              muons_numberOfValidPixelHits->at(i)>0 && muons_numberOfMatchedStations->at(i)>1 
-              //&&  muons_relIso04->at(i)<0.12   
+          if( muons_pt->at(i)>20.0 && fabs(muons_eta->at(i))<2.4 
+              // && muons_isTight->at(i)==1 
+              //&& muons_isPF->at(i)==1 && muons_isGlobal->at(i)==1 && 
+              //fabs(muons_dxy->at(i))<0.2 && fabs(muons_dz->at(i))<0.5 &&
+              //muons_normalizedChi2->at(i)<10 && muons_numberOfValidMuonHits->at(i)>0 &&
+              //muons_numberOfValidPixelHits->at(i)>0 && muons_numberOfMatchedStations->at(i)>1 
             ) 
           {
              double pt = muons_pt->at(i);
@@ -362,8 +364,34 @@ void CATNtuple::Loop(bool isMC_)
 //////////
       tree_->Fill();
 
+      fevent2_->copy(fevent_);
 
+      bool ll_lep1    = ((fevent_->ll_lep1_pt_>20) && (abs(fevent_->ll_lep1_eta_)<2.4));
+      bool ll_lep2    = ((fevent_->ll_lep2_pt_>20) && (abs(fevent_->ll_lep2_eta_)<2.4));
+      bool ll_Iso12   = ((fabs(fevent_->ll_lep1_iso_)<0.12) && (fabs(fevent_->ll_lep2_iso_)<0.12));
+      bool ll_op      = ( fevent_->ll_lep1_q_*fevent_->ll_lep2_q_<0);
+     
+      bool ll_lepIso = ( ll_lep1  &&  ll_lep2  &&  ll_op  && (fevent_->ll_zmass_>20)  &&  ll_Iso12  ) ;
+      bool ll_zmass = ( fabs(91.2-fevent_->ll_zmass_)>15 );
+      bool em_zmass = true;
+      bool metcut = fevent_->metNoHF_>40.;
+      bool mm=(abs(fevent_->ll_lep1_pdgid_)==13&&abs(fevent_->ll_lep2_pdgid_)==13);
+      bool ee=(abs(fevent_->ll_lep1_pdgid_)==11&&abs(fevent_->ll_lep2_pdgid_)==11);
+      bool em=((abs(fevent_->ll_lep1_pdgid_)==11&&abs(fevent_->ll_lep2_pdgid_)==13) || (abs(fevent_->ll_lep1_pdgid_)==13&&abs(fevent_->ll_lep2_pdgid_)==11));
 
+      bool mm_trigger = ( (fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_==1) || (fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_==1) );
+      bool ee_trigger = ( (fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_==1) );
+      bool em_trigger=  ( (fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_==1) || (fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_==1) );
+
+      if(
+         (   ( ((mm_trigger && mm) || (ee_trigger && ee) ) && ll_lepIso && ll_zmass && metcut) 
+          || ( em_trigger && em && ll_lepIso)  
+         )  
+         && (nJet30 >=4)
+      )
+      {
+          tree2_->Fill();
+      }
 
 ///////////////////////
    }
