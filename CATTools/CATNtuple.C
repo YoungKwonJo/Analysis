@@ -134,8 +134,8 @@ void CATNtuple::Loop(bool isMC_)
 
 
              Lepton el_(pt,eta,phi,mass, relIso03, q,id,q*11,MCmatched);
-             if(electrons_idTight->at(i)==1) leptons_->push_back(el_);
-             if(electrons_idTight->at(i)==1) electrons_->push_back(el_);
+             if(electrons_idMedium->at(i)==1) leptons_->push_back(el_);
+             if(electrons_idMedium->at(i)==1) electrons_->push_back(el_);
           }
       }
       std::sort(electrons_->begin(), electrons_->end(), compByPtLep);
