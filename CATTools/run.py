@@ -16,7 +16,7 @@ gROOT.ProcessLine(".L CATNtuple.C+");
 from samples_cfi import *
 
 #loc="root://cms-xrdr.sdfarm.kr:1094///xrd/store/user/youngjo/Cattools/v734_v1"
-loc="root://cms-xrdr.sdfarm.kr:1094///xrd/store/user/youngjo/Cattools/v741"
+loc="root://cms-xrdr.sdfarm.kr:1094///xrd/store/user/youngjo/Cattools/v741genWeightNew"
 #loc="file:/cms/home/youngjo/CMSSW/CATTools/v20150911_25ns_v741/cat74/src/CATTools/CommonTools/test/ttbb/"
 def makeresult(name,isMC):
   link = loc+"/ntuple_" + name + ".root"
