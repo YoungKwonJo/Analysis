@@ -269,13 +269,13 @@ void FlatTree::copy(FlatTree *my_)
    nBJet30L_     =my_->nBJet30L_     ;
    nJet30_       =my_->nJet30_       ;
    nBJet20TPuppi_=my_->nBJet20TPuppi_;
-   nBJet20M_     =my_->nBJet20M_     ;
-   nBJet20L_     =my_->nBJet20L_     ;
-   nJet20_       =my_->nJet20_       ;
+   nBJet20MPuppi_=my_->nBJet20MPuppi_     ;
+   nBJet20LPuppi_=my_->nBJet20LPuppi_     ;
+   nJet20Puppi_  =my_->nJet20Puppi_       ;
    nBJet30TPuppi_=my_->nBJet30TPuppi_;
-   nBJet30M_     =my_->nBJet30M_     ;
-   nBJet30L_     =my_->nBJet30L_     ;
-   nJet30_       =my_->nJet30_       ;
+   nBJet30MPuppi_=my_->nBJet30MPuppi_     ;
+   nBJet30LPuppi_=my_->nBJet30LPuppi_     ;
+   nJet30Puppi_  =my_->nJet30Puppi_       ;
 ///
    met_               =my_->met_               ;
    metphi_            =my_->metphi_            ;
@@ -366,8 +366,8 @@ void FlatTree::clear()
 //
    nBJet20T_=-99; nBJet20M_=-99; nBJet20L_=-99; nJet20_=-99;
    nBJet30T_=-99; nBJet30M_=-99; nBJet30L_=-99; nJet30_=-99;
-   nBJet20TPuppi_=-99; nBJet20M_=-99; nBJet20L_=-99; nJet20_=-99;
-   nBJet30TPuppi_=-99; nBJet30M_=-99; nBJet30L_=-99; nJet30_=-99;
+   nBJet20TPuppi_=-99; nBJet20MPuppi_=-99; nBJet20LPuppi_=-99; nJet20Puppi_=-99;
+   nBJet30TPuppi_=-99; nBJet30MPuppi_=-99; nBJet30LPuppi_=-99; nJet30Puppi_=-99;
 ///
    met_=-99.0; metphi_=-99.;
    metNoHFphi_=-99.0; metNoHF_=-99.0;    metPfMvaphi_=-99.0; metPfMva_=-99.0;   metPuppiphi_=-99.0; metPuppi_=-99.0;   
@@ -461,13 +461,13 @@ void FlatTree::setBranch(TTree* tree)
    tree_->SetBranchAddress("nBJet30L",     &nBJet30L_     );
    tree_->SetBranchAddress("nJet30",       &nJet30_       );
    tree_->SetBranchAddress("nBJet20TPuppi",&nBJet20TPuppi_);
-   tree_->SetBranchAddress("nBJet20M",     &nBJet20M_     );
-   tree_->SetBranchAddress("nBJet20L",     &nBJet20L_     );
-   tree_->SetBranchAddress("nJet20",       &nJet20_       );
+   tree_->SetBranchAddress("nBJet20MPuppi",&nBJet20MPuppi_     );
+   tree_->SetBranchAddress("nBJet20LPuppi",&nBJet20LPuppi_     );
+   tree_->SetBranchAddress("nJet20Puppi",  &nJet20Puppi_       );
    tree_->SetBranchAddress("nBJet30TPuppi",&nBJet30TPuppi_);
-   tree_->SetBranchAddress("nBJet30M",     &nBJet30M_     );
-   tree_->SetBranchAddress("nBJet30L",     &nBJet30L_     );
-   tree_->SetBranchAddress("nJet30",       &nJet30_       );
+   tree_->SetBranchAddress("nBJet30MPuppi",&nBJet30MPuppi_     );
+   tree_->SetBranchAddress("nBJet30LPuppi",&nBJet30LPuppi_     );
+   tree_->SetBranchAddress("nJet30Puppi",  &nJet30Puppi_       );
 ///
    tree_->SetBranchAddress("met",               &met_               );
    tree_->SetBranchAddress("metphi",            &metphi_            );

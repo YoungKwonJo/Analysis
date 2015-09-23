@@ -39,12 +39,15 @@ void CATNtuple::Loop(bool isMC_)
    TTree *tree_ = new TTree(Form("myresult"),"");
    TTree *tree2_ = new TTree(Form("myresult2"),"");
    TTree *tree3_ = new TTree(Form("myresult3"),"");
+   TTree *tree4_ = new TTree(Form("myresult4"),"");
    FlatTree* fevent_ = new FlatTree();
    FlatTree* fevent2_ = new FlatTree();
    FlatTree* fevent3_ = new FlatTree();
+   FlatTree* fevent4_ = new FlatTree();
    fevent_->book(tree_);
    fevent2_->book(tree2_);
    fevent3_->book(tree3_);
+   fevent4_->book(tree4_);
 
    LeptonsP muons_;        muons_     = new Leptons;
    LeptonsP electrons_;    electrons_ = new Leptons;
@@ -369,6 +372,7 @@ void CATNtuple::Loop(bool isMC_)
 
       fevent2_->copy(fevent_);
       fevent3_->copy(fevent_);
+      fevent4_->copy(fevent_);
 
       bool ll_lep1    = ((fevent_->ll_lep1_pt_>20) && (abs(fevent_->ll_lep1_eta_)<2.4));
       bool ll_lep2    = ((fevent_->ll_lep2_pt_>20) && (abs(fevent_->ll_lep2_eta_)<2.4));
@@ -379,6 +383,7 @@ void CATNtuple::Loop(bool isMC_)
       bool ll_zmass = ( fabs(91.2-fevent_->ll_zmass_)>15 );
       bool em_zmass = true;
       bool metcut = fevent_->metNoHF_>40.;
+      bool metPuppicut = fevent_->metPuppi_>40.;
       bool mm=(abs(fevent_->ll_lep1_pdgid_)==13&&abs(fevent_->ll_lep2_pdgid_)==13);
       bool ee=(abs(fevent_->ll_lep1_pdgid_)==11&&abs(fevent_->ll_lep2_pdgid_)==11);
       bool em=((abs(fevent_->ll_lep1_pdgid_)==11&&abs(fevent_->ll_lep2_pdgid_)==13) || (abs(fevent_->ll_lep1_pdgid_)==13&&abs(fevent_->ll_lep2_pdgid_)==11));
@@ -400,6 +405,17 @@ void CATNtuple::Loop(bool isMC_)
       {
           tree3_->Fill();
       }
+      if(
+         (   ( ((mm_trigger && mm) || (ee_trigger && ee) ) && ll_lepIso && ll_zmass && metPuppicut) 
+          || ( em_trigger && em && ll_lepIso)  
+         )  
+         && (nJet30Puppi >=4)
+      )
+      {
+          tree4_->Fill();
+      }
+
+
 
 ///////////////////////
    }
