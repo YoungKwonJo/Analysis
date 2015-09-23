@@ -98,7 +98,7 @@ def ntuple2hist(json,cuts):
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
-    tree = f.myresult
+    tree = f.myresult2
 
     htot = f.Get("hNEvent")
     Ntot = htot.GetBinContent(1)
@@ -109,7 +109,7 @@ def ntuple2hist(json,cuts):
   for i,mc in enumerate(datasamples):
     f = TFile.Open(datasamples[i]['file'],"read")
     #tree = f.ntuple
-    tree = f.myresult
+    tree = f.myresult2
     htot = f.Get("hNEvent")
     Ntot = htot.GetBinContent(1)
     if log : print "total:"+mc['file']+":"+str(round(Ntot))
@@ -129,7 +129,7 @@ def ntuple2histQCD(json,cutsQCD):
   for i,mc in enumerate(qcdsamples):
     f = TFile.Open(qcdsamples[i]['file'],"read")
     #tree = f.ntuple
-    tree = f.myresult
+    tree = f.myresult2
     htot = f.Get("hNEvent")
     Ntot = htot.GetBinContent(1)
     if log : print "total:"+mc['file']+":"+str(round(Ntot))
@@ -151,7 +151,7 @@ def ntuple2hist2d(json,cuts):
   for i,mc in enumerate(mcsamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
-    tree = f.myresult
+    tree = f.myresult2
 
     htot = f.Get("hNEvent")
     Ntot = htot.GetBinContent(1)
@@ -163,7 +163,7 @@ def ntuple2hist2d(json,cuts):
   for i,mc in enumerate(datasamples):
     f = TFile.Open(mcsamples[i]['file'],"read")
     #tree = f.ntuple
-    tree = f.myresult
+    tree = f.myresult2
     h= h+h2_all_maker(tree,datasamples[i],monitors2,cuts,1,1)
     f.Close()
   return h
@@ -179,7 +179,7 @@ def ntuple2hist2dQCD(json,cutsQCD):
   for i,mc in enumerate(qcdsamples):
     f = TFile.Open(qcdsamples[i]['file'],"read")
     #tree = f.ntuple
-    tree = f.myresult
+    tree = f.myresult2
     h= h+h2_all_maker(tree,qcdsamples[i],monitors2,cutsQCD,1,1)
     f.Close()
   return h
