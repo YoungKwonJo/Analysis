@@ -352,6 +352,8 @@ public :
    virtual void     Loop(bool isMC_);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+   virtual float    SF_muon(float pt, float eta);
+   virtual float    SF_electron(float pt, float eta);
 };
 
 #endif

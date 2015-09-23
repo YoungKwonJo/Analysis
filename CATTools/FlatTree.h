@@ -28,6 +28,8 @@ public:
   TTree* tree_;
   int run_, lumi_, event_;
   float weight_, genWeight_, lheWeight_;
+  float leptonweight_, csvweight_;
+
 
   float ll_lep1_pt_, ll_lep1_eta_, ll_lep1_phi_, ll_lep1_iso_, ll_zmass_;
   float ll_lep2_pt_, ll_lep2_eta_, ll_lep2_phi_, ll_lep2_iso_;
@@ -104,6 +106,8 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("weight", &weight_, "weight/F");
   tree_->Branch("genWeight", &genWeight_, "genWeight/F");
   tree_->Branch("lheWeight", &lheWeight_, "lheWeight/F");
+  tree_->Branch("leptonweight", &leptonweight_, "leptonweight/F");
+  tree_->Branch("csvweight",    &csvweight_,    "csvweight/F");
 
   tree_->Branch("jet_pt"  , jet_pt_  );
   tree_->Branch("jet_eta"  , jet_eta_  );
@@ -255,6 +259,8 @@ void FlatTree::copy(FlatTree *my_)
    weight_   =my_->weight_   ;
    genWeight_=my_->genWeight_;
    lheWeight_=my_->lheWeight_;
+   leptonweight_   =my_->leptonweight_   ;
+   csvweight_      =my_->csvweight_   ;
 
    Nmu_          =my_->Nmu_          ;
    Nel_          =my_->Nel_          ;
@@ -360,6 +366,8 @@ void FlatTree::clear()
    weight_=1.0;
    genWeight_=1.0;
    lheWeight_=1.0;
+   leptonweight_=1.0;
+   csvweight_=1.0;
 
    Nmu_=-99; Nel_=-99;
    NmuIso_=-99; NelIso_=-99;
@@ -447,6 +455,8 @@ void FlatTree::setBranch(TTree* tree)
    tree_->SetBranchAddress("weight",   &weight_   );
    tree_->SetBranchAddress("genWeight",&genWeight_);
    tree_->SetBranchAddress("lheWeight",&lheWeight_);
+   tree_->SetBranchAddress("leptonweight",   &leptonweight_   );
+   tree_->SetBranchAddress("csvweight",   &csvweight_   );
 
    tree_->SetBranchAddress("Nmu",          &Nmu_          );
    tree_->SetBranchAddress("Nel",          &Nel_          );

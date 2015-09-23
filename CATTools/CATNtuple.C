@@ -12,6 +12,7 @@
 #include "Jet.h"
 #include "Lepton.h"
 #include "FlatTree.h"
+//#include "CSVWeight.h"
 
 typedef std::vector<Lepton> Leptons;
 typedef Leptons* LeptonsP;
@@ -224,6 +225,14 @@ void CATNtuple::Loop(bool isMC_)
             fevent_->ll_lep2_pdgid_  = leptons_->at(0).pdgid_;
             fevent_->ll_lep2_iso_= (float) leptons_->at(0).Iso_;
          }
+         float lep1weight=1.,lep2weight=1.;
+         if(abs(fevent_->ll_lep1_pdgid_)==13) lep1weight= SF_muon( fevent_->ll_lep1_pt_, fevent_->ll_lep1_eta_); 
+         if(abs(fevent_->ll_lep1_pdgid_)==11) lep1weight= SF_electron( fevent_->ll_lep1_pt_, fevent_->ll_lep1_eta_);
+         if(abs(fevent_->ll_lep2_pdgid_)==13) lep2weight= SF_muon( fevent_->ll_lep2_pt_, fevent_->ll_lep2_eta_); 
+         if(abs(fevent_->ll_lep2_pdgid_)==11) lep2weight= SF_electron( fevent_->ll_lep2_pt_, fevent_->ll_lep2_eta_);
+
+         fevent_->leptonweight_ = lep1weight*lep2weight;
+
       }
 ////////////////////////////////////
 //PFJET
@@ -420,3 +429,28 @@ void CATNtuple::Loop(bool isMC_)
 ///////////////////////
    }
 }
+float CATNtuple::SF_muon(float pt, float eta)
+{
+   if(pt<30 )
+   {
+     if(fabs(eta)<1) return 1.;
+     else            return 1.;
+   }
+   else {
+     if(fabs(eta)<1) return 1.;
+     else            return 1.;
+   }    
+}
+float CATNtuple::SF_electron(float pt, float eta)
+{
+   if(pt<30 )
+   {
+     if(fabs(eta)<1) return 1.;
+     else            return 1.;
+   }
+   else {
+     if(fabs(eta)<1) return 1.;
+     else            return 1.;
+   } 
+}
+
