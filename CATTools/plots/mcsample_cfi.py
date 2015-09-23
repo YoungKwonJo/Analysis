@@ -38,19 +38,19 @@ BCS = [kBlue,kGray,kGreen+2,kViolet,kCyan]
 
 mcsamples=[
 
-#{"name":"MG5ttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[0],      "label":"t#bar{t}+b#bar{b}      " },
-#{"name":"MG5ttb",   "selection": ttb,      "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[1],   "label":"t#bar{t}+b        "      },
-#{"name":"MG5tt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[2],     "label":"t#bar{t}+2b      "       },
-#{"name":"MG5ttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[3],   "label":"t#bar{t}+c#bar{c}      " },
-#{"name":"MG5ttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[4],  "label":"t#bar{t}+lf       "      },
-#{"name":"MG5ttot",  "selection": ttothers, "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[5],   "label":"t#bar{t} others"         },
+{"name":"MG5ttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[0],      "label":"t#bar{t}+b#bar{b}      " },
+{"name":"MG5ttb",   "selection": ttb,      "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[1],   "label":"t#bar{t}+b        "      },
+{"name":"MG5tt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[2],     "label":"t#bar{t}+2b      "       },
+{"name":"MG5ttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[3],   "label":"t#bar{t}+c#bar{c}      " },
+{"name":"MG5ttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[4],  "label":"t#bar{t}+lf       "      },
+{"name":"MG5ttot",  "selection": ttothers, "file": loc + "result_"+ttbarMG5+".root", "cx":ttcx, "color": CS[5],   "label":"t#bar{t} others"         },
 
-#{"name":"AMCttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[0],      "label":"t#bar{t}+b#bar{b}      " },
-#{"name":"AMCttb",   "selection": ttb,      "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[1],   "label":"t#bar{t}+b        "      },
-#{"name":"AMCtt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[2],     "label":"t#bar{t}+2b      "       },
-#{"name":"AMCttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[3],   "label":"t#bar{t}+c#bar{c}      " },
-#{"name":"AMCttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[4],  "label":"t#bar{t}+lf       "      },
-#{"name":"AMCttot",  "selection": ttothers, "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[5],   "label":"t#bar{t} others"         },
+{"name":"AMCttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[0],      "label":"t#bar{t}+b#bar{b}      " },
+{"name":"AMCttb",   "selection": ttb,      "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[1],   "label":"t#bar{t}+b        "      },
+{"name":"AMCtt2b",  "selection": tt2b,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[2],     "label":"t#bar{t}+2b      "       },
+{"name":"AMCttcc",  "selection": ttcc,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[3],   "label":"t#bar{t}+c#bar{c}      " },
+{"name":"AMCttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[4],  "label":"t#bar{t}+lf       "      },
+{"name":"AMCttot",  "selection": ttothers, "file": loc + "result_"+ttbarAMC+".root", "cx":ttcx, "color": CS[5],   "label":"t#bar{t} others"         },
 
 {"name":"POWttbb",  "selection": ttbb,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": CS[0],  "label":"t#bar{t}+b#bar{b}      " },
 {"name":"POWttb",   "selection": ttb,      "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": CS[1],  "label":"t#bar{t}+b        "      },
@@ -59,10 +59,10 @@ mcsamples=[
 {"name":"POWttlf",  "selection": ttlf,     "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": CS[4],  "label":"t#bar{t}+lf        "      },
 {"name":"POWttot",  "selection": ttothers, "file": loc + "result_"+ttbarPOW+".root", "cx":ttcx, "color": CS[5],  "label":"t#bar{t} others"         },
 
-{"name":"TTWlNu", "selection": "(1)", "file": loc + "result_TTWJetsToLNu.root",  "cx":1.152,  "color": BCS[0],   "label":"t#bar{t}W          "    },
-{"name":"TTWqq",  "selection": "(1)", "file": loc + "result_TTWJetsToQQ.root",   "cx":1.152,  "color": BCS[0],   "label":"t#bar{t}W          "    },
-{"name":"TTZll",  "selection": "(1)", "file": loc + "result_TTZToLLNuNu.root",   "cx":2.232,  "color": BCS[0],   "label":"t#bar{t}Z          "    },
-{"name":"TTZqq",  "selection": "(1)", "file": loc + "result_TTZToQQ.root",       "cx":2.232,  "color": BCS[0],   "label":"t#bar{t}Z          "    },
+{"name":"TTWlNu", "selection": "(1)", "file": loc + "result_ttWJetsToLNu.root",  "cx":1.152,  "color": BCS[0],   "label":"t#bar{t}W          "    },
+{"name":"TTWqq",  "selection": "(1)", "file": loc + "result_ttWJetsToQQ.root",   "cx":1.152,  "color": BCS[0],   "label":"t#bar{t}W          "    },
+{"name":"TTZll",  "selection": "(1)", "file": loc + "result_ttZToLLNuNu.root",   "cx":2.232,  "color": BCS[0],   "label":"t#bar{t}Z          "    },
+{"name":"TTZqq",  "selection": "(1)", "file": loc + "result_ttZToQQ.root",       "cx":2.232,  "color": BCS[0],   "label":"t#bar{t}Z          "    },
 
 {"name":"STbt",   "selection": "(1)", "file": loc + "result_SingleTbar_t.root",  "cx":80.95,  "color": BCS[1],   "label":"SingleTop"    },
 {"name":"STt",    "selection": "(1)", "file": loc + "result_SingleTop_t.root",   "cx":136.02, "color": BCS[1],   "label":"SingleTop"    },
@@ -74,8 +74,8 @@ mcsamples=[
 {"name":"ZZ",     "selection": "(1)", "file": loc + "result_ZZ.root",            "cx":15.4,   "color": BCS[1],   "label":"VV            "   },
 {"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": BCS[1], "label":"DYJets    "      },
 
-{"name":"ttH2non", "selection": "(1)", "file": loc + "result_ttHToNonbb.root",  "cx":0.5058,   "color": BCS[2],   "label":"t#bar{t}H         " ,"isStack":False   },
-{"name":"ttH2bb",  "selection": "(1)", "file": loc + "result_ttHTobb.root",     "cx":0.5058,   "color": BCS[2],   "label":"t#bar{t}H         " ,"isStack":False   },
+{"name":"ttH2non", "selection": "(1)", "file": loc + "result_ttH_nonbb.root",  "cx":0.5058,   "color": BCS[2],   "label":"t#bar{t}H         " ,"isStack":False   },
+{"name":"ttH2bb",  "selection": "(1)", "file": loc + "result_ttH_bb.root",     "cx":0.5058,   "color": BCS[2],   "label":"t#bar{t}H         " ,"isStack":False   },
 ]
 qcdsamples=[
 
