@@ -77,6 +77,9 @@ public:
 
    float pdfWeightId1_, pdfWeightId2_, pdfWeightQ_  , pdfWeightX1_ , pdfWeightX2_ , puWeight_; 
    float CutsD_,LikelihoodD_,MLP_,MLPBFGS_,MLPBNN_,BDT_,BDTD_,BDTG_;
+   float CSV_Center_, JES_Up_, JES_Down_, LF_Up_, LF_Down_, HF_Up_, HF_Down_, HF_Stats1_Up_, HF_Stats1_Down_, HF_Stats2_Up_, HF_Stats2_Down_, LF_Stats1_Up_, LF_Stats1_Down_, LF_Stats2_Up_, LF_Stats2_Down_, Charm_Err1_Up_, Charm_Err1_Down_, Charm_Err2_Up_, Charm_Err2_Down_;
+ 
+
  
 };
 //#endif
@@ -223,6 +226,26 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("BDTD",         &BDTD_,         "BDTD/F");
   tree_->Branch("BDTG",         &BDTG_,         "BDTG/F");
 
+  tree->Branch("CSV_Center",          &CSV_Center_,       "CSV_Center/F");          
+  tree->Branch("JES_Up",              &JES_Up_,           "JES_Up/F");          
+  tree->Branch("JES_Down",            &JES_Down_,         "JES_Down/F");
+  tree->Branch("LF_Up",               &LF_Up_,            "LF_Up/F");
+  tree->Branch("LF_Down",             &LF_Down_,          "LF_Down/F");
+  tree->Branch("HF_Up",               &HF_Up_,            "HF_Up/F");
+  tree->Branch("HF_Down",             &HF_Down_,          "HF_Down/F");
+  tree->Branch("HF_Stats1_Up",        &HF_Stats1_Up_,     "HF_Stats1_Up/F");
+  tree->Branch("HF_Stats1_Down",      &HF_Stats1_Down_,   "HF_Stats1_Down/F");
+  tree->Branch("HF_Stats2_Up",        &HF_Stats2_Up_,     "HF_Stats2_Up/F");
+  tree->Branch("HF_Stats2_Down",      &HF_Stats2_Down_,   "HF_Stats2_Down/F");
+  tree->Branch("LF_Stats1_Up",        &LF_Stats1_Up_,     "LF_Stats1_Up/F");
+  tree->Branch("LF_Stats1_Down",      &LF_Stats1_Down_,   "LF_Stats1_Down/F");
+  tree->Branch("LF_Stats2_Up",        &LF_Stats2_Up_,     "LF_Stats2_Up/F");
+  tree->Branch("LF_Stats2_Down",      &LF_Stats2_Down_,   "LF_Stats2_Down/F");
+  tree->Branch("Charm_Err1_Up",       &Charm_Err1_Up_,    "Charm_Err1_Up/F");
+  tree->Branch("Charm_Err1_Down",     &Charm_Err1_Down_,  "Charm_Err1_Down/F");
+  tree->Branch("Charm_Err2_Up",       &Charm_Err2_Up_,    "Charm_Err2_Up/F");
+  tree->Branch("Charm_Err2_Down",     &Charm_Err2_Down_,  "Charm_Err2_Down/F");
+ 
 }
 void FlatTree::copy(FlatTree *my_)
 {
@@ -349,6 +372,26 @@ void FlatTree::copy(FlatTree *my_)
   BDTD_       =my_->BDTD_;
   BDTG_       =my_->BDTG_;
 
+  CSV_Center_=my_->         CSV_Center_;
+  JES_Up_=my_->         JES_Up_;
+  JES_Down_=my_->       JES_Down_;
+  LF_Up_=my_->          LF_Up_;
+  LF_Down_=my_->        LF_Down_;
+  HF_Up_=my_->          HF_Up_;
+  HF_Down_=my_->        HF_Down_;
+  HF_Stats1_Up_=my_->   HF_Stats1_Up_;
+  HF_Stats1_Down_=my_-> HF_Stats1_Down_;
+  HF_Stats2_Up_=my_->   HF_Stats2_Up_;
+  HF_Stats2_Down_=my_-> HF_Stats2_Down_;
+  LF_Stats1_Up_=my_->   LF_Stats1_Up_;
+  LF_Stats1_Down_=my_-> LF_Stats1_Down_;
+  LF_Stats2_Up_=my_->   LF_Stats2_Up_;
+  LF_Stats2_Down_=my_-> LF_Stats2_Down_;
+  Charm_Err1_Up_=my_->  Charm_Err1_Up_;
+  Charm_Err1_Down_=my_->Charm_Err1_Down_;
+  Charm_Err2_Up_=my_->  Charm_Err2_Up_;
+  Charm_Err2_Down_=my_->Charm_Err2_Down_;
+
 }
 
 void FlatTree::clear()
@@ -431,6 +474,26 @@ void FlatTree::clear()
   BDT_        = 99.;
   BDTD_       = 99.;
   BDTG_       = 99.;
+
+  CSV_Center_=1.0;
+  JES_Up_=1.0;
+  JES_Down_=1.0;
+  LF_Up_=1.0;
+  LF_Down_=1.0;
+  HF_Up_=1.0;
+  HF_Down_=1.0;
+  HF_Stats1_Up_=1.0;
+  HF_Stats1_Down_=1.0;
+  HF_Stats2_Up_=1.0;
+  HF_Stats2_Down_=1.0;
+  LF_Stats1_Up_=1.0;
+  LF_Stats1_Down_=1.0;
+  LF_Stats2_Up_=1.0;
+  LF_Stats2_Down_=1.0;
+  Charm_Err1_Up_=1.0;
+  Charm_Err1_Down_=1.0;
+  Charm_Err2_Up_=1.0;
+  Charm_Err2_Down_=1.0;
 
 }
 ///////////
@@ -544,6 +607,26 @@ void FlatTree::setBranch(TTree* tree)
    tree_->SetBranchAddress("BDT",       &BDT_);
    tree_->SetBranchAddress("BDTD",      &BDTD_);
    tree_->SetBranchAddress("BDTG",      &BDTG_);
+
+   tree_->SetBranchAddress("CSV_Center",          &CSV_Center_);
+   tree_->SetBranchAddress("JES_Up",          &JES_Up_);
+   tree_->SetBranchAddress("JES_Down",        &JES_Down_);
+   tree_->SetBranchAddress("LF_Up",           &LF_Up_);
+   tree_->SetBranchAddress("LF_Down",         &LF_Down_);          
+   tree_->SetBranchAddress("HF_Up",           &HF_Up_);
+   tree_->SetBranchAddress("HF_Down",         &HF_Down_);
+   tree_->SetBranchAddress("HF_Stats1_Up",    &HF_Stats1_Up_);
+   tree_->SetBranchAddress("HF_Stats1_Down",  &HF_Stats1_Down_);
+   tree_->SetBranchAddress("HF_Stats2_Up",    &HF_Stats2_Up_);
+   tree_->SetBranchAddress("HF_Stats2_Down",  &HF_Stats2_Down_);
+   tree_->SetBranchAddress("LF_Stats1_Up",    &LF_Stats1_Up_);
+   tree_->SetBranchAddress("LF_Stats1_Down",  &LF_Stats1_Down_);
+   tree_->SetBranchAddress("LF_Stats2_Up",    &LF_Stats2_Up_);
+   tree_->SetBranchAddress("LF_Stats2_Down",  &LF_Stats2_Down_);
+   tree_->SetBranchAddress("Charm_Err1_Up",   &Charm_Err1_Up_);
+   tree_->SetBranchAddress("Charm_Err1_Down", &Charm_Err1_Down_);
+   tree_->SetBranchAddress("Charm_Err2_Up",   &Charm_Err2_Up_);
+   tree_->SetBranchAddress("Charm_Err2_Down", &Charm_Err2_Down_);
 
 }
 

@@ -225,17 +225,44 @@ void CATNtuple::Loop(bool isMC_)
             fevent_->ll_lep2_pdgid_  = leptons_->at(0).pdgid_;
             fevent_->ll_lep2_iso_= (float) leptons_->at(0).Iso_;
          }
-         float lep1weight=1.,lep2weight=1.;
-         if(abs(fevent_->ll_lep1_pdgid_)==13) lep1weight= SF_muon( fevent_->ll_lep1_pt_, fevent_->ll_lep1_eta_); 
-         if(abs(fevent_->ll_lep1_pdgid_)==11) lep1weight= SF_electron( fevent_->ll_lep1_pt_, fevent_->ll_lep1_eta_);
-         if(abs(fevent_->ll_lep2_pdgid_)==13) lep2weight= SF_muon( fevent_->ll_lep2_pt_, fevent_->ll_lep2_eta_); 
-         if(abs(fevent_->ll_lep2_pdgid_)==11) lep2weight= SF_electron( fevent_->ll_lep2_pt_, fevent_->ll_lep2_eta_);
-
-         fevent_->leptonweight_ = lep1weight*lep2weight;
-
+         if(isMC_)
+         {
+            float lep1weight=1.,lep2weight=1.;
+            if(abs(fevent_->ll_lep1_pdgid_)==13) lep1weight= SF_muon( fevent_->ll_lep1_pt_, fevent_->ll_lep1_eta_); 
+            if(abs(fevent_->ll_lep1_pdgid_)==11) lep1weight= SF_electron( fevent_->ll_lep1_pt_, fevent_->ll_lep1_eta_);
+            if(abs(fevent_->ll_lep2_pdgid_)==13) lep2weight= SF_muon( fevent_->ll_lep2_pt_, fevent_->ll_lep2_eta_); 
+            if(abs(fevent_->ll_lep2_pdgid_)==11) lep2weight= SF_electron( fevent_->ll_lep2_pt_, fevent_->ll_lep2_eta_);
+            
+            fevent_->leptonweight_ = lep1weight*lep2weight;
+         }
       }
 ////////////////////////////////////
 //PFJET
+//get_csv_wgt( std::vector<double> jetPts, std::vector<double> jetEtas, std::vector<double> jetCSVs, std::vector<int> jetFlavors, int iSys, double &csvWgtHF, double &csvWgtLF, double &csvWgtCF )
+      if(isMC_)
+      {
+          double csvWgtHF, csvWgtLF, csvWgtCF;
+          fevent_->CSV_Center_      =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour, 0,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->JES_Up_          =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour, 7,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->JES_Down_        =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour, 8,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->LF_Up_           =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour, 9,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->LF_Down_         =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,10,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->HF_Up_           =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,11,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->HF_Down_         =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,12,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->HF_Stats1_Up_    =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,13,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->HF_Stats1_Down_  =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,14,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->HF_Stats2_Up_    =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,15,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->HF_Stats2_Down_  =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,16,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->LF_Stats1_Up_    =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,17,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->LF_Stats1_Down_  =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,18,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->LF_Stats2_Up_    =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,19,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->LF_Stats2_Down_  =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,20,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->Charm_Err1_Up_   =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,21,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->Charm_Err1_Down_ =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,22,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->Charm_Err2_Up_   =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,23,csvWgtHF, csvWgtLF, csvWgtCF);
+          fevent_->Charm_Err2_Down_ =get_csv_wgt(jets_pt,jets_eta,jets_CSVInclV2,jets_partonFlavour,24,csvWgtHF, csvWgtLF, csvWgtCF);
+      }
+
       for(int i=0;i<jets_pt->size();i++)
       {
           if( jets_pt->at(i)>30.0 && fabs(jets_eta->at(i))<2.4 
@@ -452,5 +479,97 @@ float CATNtuple::SF_electron(float pt, float eta)
      if(fabs(eta)<1) return 1.;
      else            return 1.;
    } 
+}
+
+//float CATNtuple::get_csv_wgt( std::vector<double> jetPts, std::vector<double> jetEtas, std::vector<double> jetCSVs, std::vector<int> jetFlavors, 
+float CATNtuple::get_csv_wgt( std::vector<double>* jetPts, std::vector<double>* jetEtas, std::vector<double>* jetCSVs, std::vector<double>* jetFlavors, 
+                                  int iSys, double &csvWgtHF, double &csvWgtLF, double &csvWgtCF ){
+  int iSysHF = 0;
+  switch(iSys){
+  case 7:  iSysHF=1; break; //JESUp
+  case 8:  iSysHF=2; break; //JESDown
+  case 9:  iSysHF=3; break; //LFUp
+  case 10: iSysHF=4; break; //LFDown
+  case 13: iSysHF=5; break; //Stats1Up
+  case 14: iSysHF=6; break; //Stats1Down
+  case 15: iSysHF=7; break; //Stats2Up
+  case 16: iSysHF=8; break; //Stats2Down
+  default : iSysHF = 0; break; //NoSys
+  }
+
+  int iSysC = 0;
+  switch(iSys){
+  case 21: iSysC=1; break;
+  case 22: iSysC=2; break;
+  case 23: iSysC=3; break;
+  case 24: iSysC=4; break;
+  default : iSysC = 0; break;
+  }
+
+  int iSysLF = 0;
+  switch(iSys){
+  case 7:  iSysLF=1; break; //JESUp
+  case 8:  iSysLF=2; break; //JESDown
+  case 11: iSysLF=3; break; //HFUp
+  case 12: iSysLF=4; break; //HFDown
+  case 17: iSysLF=5; break; //Stats1Up
+  case 18: iSysLF=6; break; //Stats1Down
+  case 19: iSysLF=7; break; //Stats2Up
+  case 20: iSysLF=8; break; //Stats2Down
+  default : iSysLF = 0; break; //NoSys
+  }
+
+  double csvWgthf = 1.;
+  double csvWgtC  = 1.;
+  double csvWgtlf = 1.;
+
+  for( int iJet=0; iJet<int(jetPts->size()); iJet++ ){
+
+    double csv = jetCSVs->at(iJet);
+    double jetPt = jetPts->at(iJet);
+    double jetAbsEta = fabs(jetEtas->at(iJet));
+    int flavor = (int) jetFlavors->at(iJet);
+
+    int iPt = -1; int iEta = -1;
+    if (jetPt >=19.99 && jetPt<30) iPt = 0;
+    else if (jetPt >=30 && jetPt<40) iPt = 1;
+    else if (jetPt >=40 && jetPt<60) iPt = 2;
+    else if (jetPt >=60 && jetPt<100) iPt = 3;
+    else if (jetPt >=100 && jetPt<160) iPt = 4;
+    else if (jetPt >=160 && jetPt<10000) iPt = 5;
+    else continue;
+
+    if (jetAbsEta >=0 &&  jetAbsEta<0.8 ) iEta = 0;
+    else if ( jetAbsEta>=0.8 && jetAbsEta<1.6 )  iEta = 1;
+    else if ( jetAbsEta>=1.6 && jetAbsEta<2.41 ) iEta = 2;
+    else continue;
+
+    if (iPt < 0 || iEta < 0) std::cout << "Error, couldn't find Pt, Eta bins for this b-flavor jet, jetPt = " << jetPt << ", jetAbsEta = " << jetAbsEta << std::endl;
+
+    if (abs(flavor) == 5 ){
+      int useCSVBin = (csv>=0.) ? h_csv_wgt_hf[iSysHF][iPt]->FindBin(csv) : 1;
+      double iCSVWgtHF = h_csv_wgt_hf[iSysHF][iPt]->GetBinContent(useCSVBin);
+      if( iCSVWgtHF!=0 ) csvWgthf *= iCSVWgtHF;
+    }
+    else if( abs(flavor) == 4 ){
+      int useCSVBin = (csv>=0.) ? c_csv_wgt_hf[iSysC][iPt]->FindBin(csv) : 1;
+      double iCSVWgtC = c_csv_wgt_hf[iSysC][iPt]->GetBinContent(useCSVBin);
+      if( iCSVWgtC!=0 ) csvWgtC *= iCSVWgtC;
+    }
+    else {
+      if (iPt >=3) iPt=3;       /// [30-40], [40-60] and [60-10000] only 3 Pt bins for lf
+      int useCSVBin = (csv>=0.) ? h_csv_wgt_lf[iSysLF][iPt][iEta]->FindBin(csv) : 1;
+      double iCSVWgtLF = h_csv_wgt_lf[iSysLF][iPt][iEta]->GetBinContent(useCSVBin);
+      if( iCSVWgtLF!=0 ) csvWgtlf *= iCSVWgtLF;
+    }
+  }
+
+  double csvWgtTotal = csvWgthf * csvWgtC * csvWgtlf;
+
+  csvWgtHF = csvWgthf;
+  csvWgtLF = csvWgtlf;
+  csvWgtCF = csvWgtC;
+
+  return (float) csvWgtTotal;
 }
 

@@ -17,6 +17,12 @@ from samples_cfi import *
 
 #loc="root://cms-xrdr.sdfarm.kr:1094///xrd/store/user/youngjo/Cattools/v734_v1"
 loc="root://cms-xrdr.sdfarm.kr:1094///xrd/store/user/youngjo/Cattools/v741genWeightNew"
+inputFileHF="data/csv_rwt_hf_IT_FlatSF_2015_07_27.root"
+inputFileLF="data/csv_rwt_lf_IT_FlatSF_2015_07_27.root"
+f_CSVwgt_HF = TFile.Open(inputFileHF)
+f_CSVwgt_LF = TFile.Open(inputFileLF)
+
+
 #loc="file:/cms/home/youngjo/CMSSW/CATTools/v20150911_25ns_v741/cat74/src/CATTools/CommonTools/test/ttbb/"
 def makeresult(name,isMC):
   link = loc+"/ntuple_" + name + ".root"
@@ -25,6 +31,7 @@ def makeresult(name,isMC):
   atree = f.Get("ntuple/event")
 
   t = CATNtuple(atree)
+  t.fillCSVhistos(f_CSVwgt_HF,f_CSVwgt_LF)
 
   output = "result_" + name + ".root"
   fout = TFile(output,"RECREATE")
