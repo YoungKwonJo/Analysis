@@ -12,7 +12,6 @@
 #include "Jet.h"
 #include "Lepton.h"
 #include "FlatTree.h"
-//#include "CSVWeight.h"
 
 typedef std::vector<Lepton> Leptons;
 typedef Leptons* LeptonsP;
@@ -90,25 +89,15 @@ void CATNtuple::Loop(bool isMC_)
       fevent_->metPuppi_    = (float)  metPuppi_pt->at(0);
 
 ////////////////////
-   fevent_->CSCTightHaloFilter_=                         CSCTightHaloFilter;                        
-   fevent_->EcalDeadCellTriggerPrimitiveFilter_=         EcalDeadCellTriggerPrimitiveFilter;
-   fevent_->HBHENoiseFilter_=                            HBHENoiseFilter;
-   fevent_->eeBadScFilter_=                              eeBadScFilter;
-   fevent_->goodVertices_=                               goodVertices;
 
-   fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_=             HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ;
-   fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_=          HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold;
-   fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_=       HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL;
-   fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_=    HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold;
-   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_=                  HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ;
-   fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_=               HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold;
-   fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_=                HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ;
-   fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_=             HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold;
-   fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_=        HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL;
-   fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_=     HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold;
+   fevent_->filterRECO_      =  filterRECO;
+   fevent_->filterTrigELEL_  =  filterTrigELEL;
+   fevent_->filterTrigMUEL_  =  filterTrigMUEL;
+   fevent_->filterTrigMUMU_  =  filterTrigMUMU;
+   fevent_->partonTopChannel_=  partonTopChannel;
 
-   fevent_->nGoodPV_=                                    nGoodPV;
-   fevent_->nPV_=                                        nPV;
+   fevent_->nGoodPV_ =  nGoodPV;
+   fevent_->nPV_     =  nPV;
 
 ////////////////////
       leptons_->clear();
@@ -135,14 +124,14 @@ void CATNtuple::Loop(bool isMC_)
              int MCmatched = false;
              if(isMC_) MCmatched = electrons_matched->at(i);
              int id=0;
-             if(electrons_idLoose->at(i)==1) id=1;
-             if(electrons_idMedium->at(i)==1) id=2;
-             if(electrons_idTight->at(i)==1) id=3;
+             if(electrons_mvaTight->at(i)==1) id=1;
+             //if(electrons_idMedium->at(i)==1) id=2;
+             //if(electrons_idTight->at(i)==1) id=3;
 
 
              Lepton el_(pt,eta,phi,mass, relIso03, q,id,q*11,MCmatched);
-             if(electrons_idMedium->at(i)==1) leptons_->push_back(el_);
-             if(electrons_idMedium->at(i)==1) electrons_->push_back(el_);
+             if(electrons_mvaTight->at(i)==1) leptons_->push_back(el_);
+             if(electrons_mvaTight->at(i)==1) electrons_->push_back(el_);
           }
       }
       std::sort(electrons_->begin(), electrons_->end(), compByPtLep);
@@ -393,11 +382,11 @@ void CATNtuple::Loop(bool isMC_)
          fevent_->NgenJet_ = NgenJet;
 
          fevent_->nTrueInteraction_= nTrueInteraction;
-         fevent_->pdfWeightId1_    = (float) pdfWeightId1;
-         fevent_->pdfWeightId2_    = (float) pdfWeightId2;
-         fevent_->pdfWeightQ_      = (float) pdfWeightQ  ;
-         fevent_->pdfWeightX1_     = (float) pdfWeightX1 ;
-         fevent_->pdfWeightX2_     =(float) pdfWeightX2 ;
+         fevent_->genWeightId1_    = (float) genWeightId1;
+         fevent_->genWeightId2_    = (float) genWeightId2;
+         fevent_->genWeightQ_      = (float) genWeightQ  ;
+         fevent_->genWeightX1_     = (float) genWeightX1 ;
+         fevent_->genWeightX2_     =(float) genWeightX2 ;
          fevent_->puWeight_        =(float) puWeight    ; 
 
          fevent_->genWeight_        =(float) genWeight/fabs(genWeight)    ; 
@@ -424,11 +413,13 @@ void CATNtuple::Loop(bool isMC_)
       bool ee=(abs(fevent_->ll_lep1_pdgid_)==11&&abs(fevent_->ll_lep2_pdgid_)==11);
       bool em=((abs(fevent_->ll_lep1_pdgid_)==11&&abs(fevent_->ll_lep2_pdgid_)==13) || (abs(fevent_->ll_lep1_pdgid_)==13&&abs(fevent_->ll_lep2_pdgid_)==11));
 
-      bool mm_trigger = ( (fevent_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_==1) || (fevent_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_==1) );
-      bool ee_trigger = ( (fevent_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_==1) );
-      bool em_trigger=  ( (fevent_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_==1) || (fevent_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_==1) );
+                         
+      bool ee_trigger = (filterTrigELEL==1 ); 
+      bool em_trigger = (filterTrigMUEL==1 );
+      bool mm_trigger=  (filterTrigMUMU==1 );
 
-      if( (mm_trigger && mm) || (ee_trigger && ee) || (em_trigger && em) && ll_lepIso )
+      if( (mm_trigger && mm) || (ee_trigger && ee) || (em_trigger && em) && ll_lep1 && ll_lep2 )
+      //if( (mm_trigger && mm) || (ee_trigger && ee) || (em_trigger && em) && ll_lepIso )
       {
           tree2_->Fill();
       }
@@ -482,7 +473,7 @@ float CATNtuple::SF_electron(float pt, float eta)
 }
 
 //float CATNtuple::get_csv_wgt( std::vector<double> jetPts, std::vector<double> jetEtas, std::vector<double> jetCSVs, std::vector<int> jetFlavors, 
-float CATNtuple::get_csv_wgt( std::vector<double>* jetPts, std::vector<double>* jetEtas, std::vector<double>* jetCSVs, std::vector<double>* jetFlavors, 
+float CATNtuple::get_csv_wgt( std::vector<float>* jetPts, std::vector<float>* jetEtas, std::vector<float>* jetCSVs, std::vector<float>* jetFlavors, 
                                   int iSys, double &csvWgtHF, double &csvWgtLF, double &csvWgtCF ){
   int iSysHF = 0;
   switch(iSys){

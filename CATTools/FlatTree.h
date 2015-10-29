@@ -54,28 +54,17 @@ public:
   int Nmu_, Nel_, NmuIso_, NelIso_; 
 //  TH1F* hSumWeight_;
 
-   Bool_t          CSCTightHaloFilter_;
-   Bool_t          EcalDeadCellTriggerPrimitiveFilter_;
-   Bool_t          HBHENoiseFilter_;
-   Bool_t          eeBadScFilter_;
-   Bool_t          goodVertices_;
-
-   Int_t           HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_;
-   Int_t           HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_;
-   Int_t           HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_;
-   Int_t           HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_;
-   Int_t           HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_;
-   Int_t           HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_;
-   Int_t           HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_;
-   Int_t           HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_;
-   Int_t           HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_;
-   Int_t           HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_;
+   Int_t           filterRECO_;
+   Int_t           filterTrigELEL_;
+   Int_t           filterTrigMUEL_;
+   Int_t           filterTrigMUMU_;
+   Int_t           partonTopChannel_;
 
    Int_t           nGoodPV_;
    Int_t           nPV_;
    Int_t           nTrueInteraction_;
 
-   float pdfWeightId1_, pdfWeightId2_, pdfWeightQ_  , pdfWeightX1_ , pdfWeightX2_ , puWeight_; 
+   float genWeightId1_, genWeightId2_, genWeightQ_  , genWeightX1_ , genWeightX2_ , puWeight_; 
    float CutsD_,LikelihoodD_,MLP_,MLPBFGS_,MLPBNN_,BDT_,BDTD_,BDTG_;
    float CSV_Center_, JES_Up_, JES_Down_, LF_Up_, LF_Down_, HF_Up_, HF_Down_, HF_Stats1_Up_, HF_Stats1_Down_, HF_Stats2_Up_, HF_Stats2_Down_, LF_Stats1_Up_, LF_Stats1_Down_, LF_Stats2_Up_, LF_Stats2_Down_, Charm_Err1_Up_, Charm_Err1_Down_, Charm_Err2_Up_, Charm_Err2_Down_;
  
@@ -187,30 +176,21 @@ void FlatTree::book(TTree* tree)
   tree_->Branch("NgenJet",  &NgenJet_, "NgenJet/I" );
 //////
 
-  tree_->Branch("pdfWeightId1",&pdfWeightId1_, "pdfWeightId1/F");
-  tree_->Branch("pdfWeightId2",&pdfWeightId2_, "pdfWeightId2/F");
-  tree_->Branch("pdfWeightQ",  &pdfWeightQ_,   "pdfWeightQ/F");  
-  tree_->Branch("pdfWeightX1", &pdfWeightX1_,  "pdfWeightX1/F"); 
-  tree_->Branch("pdfWeightX2", &pdfWeightX2_,  "pdfWeightX2/F"); 
+  tree_->Branch("genWeightId1",&genWeightId1_, "genWeightId1/F");
+  tree_->Branch("genWeightId2",&genWeightId2_, "genWeightId2/F");
+  tree_->Branch("genWeightQ",  &genWeightQ_,   "genWeightQ/F");  
+  tree_->Branch("genWeightX1", &genWeightX1_,  "genWeightX1/F"); 
+  tree_->Branch("genWeightX2", &genWeightX2_,  "genWeightX2/F"); 
   tree_->Branch("puWeight",    &puWeight_,     "puWeight/F");    
 
 
 /////
-  tree_->Branch("CSCTightHaloFilter",                         &CSCTightHaloFilter_,                          "CSCTightHaloFilter/O");                         
-  tree_->Branch("EcalDeadCellTriggerPrimitiveFilter",         &EcalDeadCellTriggerPrimitiveFilter_,          "EcalDeadCellTriggerPrimitiveFilter/O");
-  tree_->Branch("HBHENoiseFilter",                            &HBHENoiseFilter_,                             "HBHENoiseFilter/O");
-  tree_->Branch("eeBadScFilter",                              &eeBadScFilter_,                               "eeBadScFilter/O");
-  tree_->Branch("goodVertices",                               &goodVertices_,                                "goodVertices/O");
-  tree_->Branch("HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ",             &HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_,             "HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ/I");
-  tree_->Branch("HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold",          &HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_,          "HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold/I");
-  tree_->Branch("HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL",       &HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_,       "HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL/I");
-  tree_->Branch("HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold",    &HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_,    "HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold/I");
-  tree_->Branch("HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ",                  &HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_,                  "HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ/I");
-  tree_->Branch("HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold",               &HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_,               "HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold/I");
-  tree_->Branch("HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ",                &HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_,                "HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ/I");
-  tree_->Branch("HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold",             &HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_,             "HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold/I");
-  tree_->Branch("HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL",        &HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_,        "HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL/I");
-  tree_->Branch("HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold",     &HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_,     "HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold/I");
+
+  tree_->Branch("filterRECO",            &filterRECO_,          "filterRECO/I");
+  tree_->Branch("filterTrigELEL",        &filterTrigELEL_,      "filterTrigELEL/I");
+  tree_->Branch("filterTrigMUEL",        &filterTrigMUEL_,      "filterTrigMUEL/I");
+  tree_->Branch("filterTrigMUMU",        &filterTrigMUMU_,      "filterTrigMUMU/I");
+  tree_->Branch("partonTopChannel",      &partonTopChannel_,    "partonTopChannel/I");
 
   tree_->Branch("nGoodPV",            &nGoodPV_,          "nGoodPV/I");
   tree_->Branch("nPV",                &nPV_,              "nPV/I");
@@ -338,27 +318,19 @@ void FlatTree::copy(FlatTree *my_)
    NgenJet_           =my_->NgenJet_           ;
 
 ////////
-  pdfWeightId1_                                 =my_->pdfWeightId1_                                ;
-  pdfWeightId2_                                 =my_->pdfWeightId2_                                ;
-  pdfWeightQ_                                   =my_->pdfWeightQ_                                  ;
-  pdfWeightX1_                                  =my_->pdfWeightX1_                                 ;
-  pdfWeightX2_                                  =my_->pdfWeightX2_                                 ;
+  genWeightId1_                                 =my_->genWeightId1_                                ;
+  genWeightId2_                                 =my_->genWeightId2_                                ;
+  genWeightQ_                                   =my_->genWeightQ_                                  ;
+  genWeightX1_                                  =my_->genWeightX1_                                 ;
+  genWeightX2_                                  =my_->genWeightX2_                                 ;
   puWeight_                                     =my_->puWeight_                                    ;
-  CSCTightHaloFilter_                           =my_->CSCTightHaloFilter_                          ;
-  EcalDeadCellTriggerPrimitiveFilter_           =my_->EcalDeadCellTriggerPrimitiveFilter_          ;
-  HBHENoiseFilter_                              =my_->HBHENoiseFilter_                             ;
-  eeBadScFilter_                                =my_->eeBadScFilter_                               ;
-  goodVertices_                                 =my_->goodVertices_                                ;
-  HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_          =my_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_         ;
-  HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_       =my_->HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_      ;
-  HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_    =my_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_   ;
-  HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_ =my_->HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_;
-  HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_               =my_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_              ;
-  HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_            =my_->HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_           ;
-  HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_             =my_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_            ;
-  HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_          =my_->HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_         ;
-  HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_     =my_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_    ;
-  HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_  =my_->HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_ ;
+
+  filterRECO_         =my_->filterRECO_;
+  filterTrigELEL_     =my_->filterTrigELEL_;
+  filterTrigMUEL_     =my_->filterTrigMUEL_;
+  filterTrigMUMU_     =my_->filterTrigMUMU_;
+  partonTopChannel_   =my_->partonTopChannel_;
+
   nGoodPV_                                      =my_->nGoodPV_                                     ;
   nPV_                                          =my_->nPV_                                         ;
   nTrueInteraction_                             =my_->nTrueInteraction_                            ;
@@ -437,31 +409,22 @@ void FlatTree::clear()
   NgenJet_=-99;
 
 ////////
-  pdfWeightId1_  =1.;
-  pdfWeightId2_  =1.;
-  pdfWeightQ_    =1.;
-  pdfWeightX1_   =1.;
-  pdfWeightX2_   =1.;
+  genWeightId1_  =1.;
+  genWeightId2_  =1.;
+  genWeightQ_    =1.;
+  genWeightX1_   =1.;
+  genWeightX2_   =1.;
   puWeight_      =1.;
 ///////
+  filterRECO_       =0;
+  filterTrigELEL_   =0;
+  filterTrigMUEL_   =0;
+  filterTrigMUMU_   =0;
+  partonTopChannel_ =-99;
 
-  CSCTightHaloFilter_=false;
-  EcalDeadCellTriggerPrimitiveFilter_=false;
-  HBHENoiseFilter_=false;
-  eeBadScFilter_=false;
-  goodVertices_=false;
 
-  HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_=0;
-  HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_=0;
-  HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_=0;
-  HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_=0;
-  HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_=0;
-  HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_=0;
-  HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_=0;
-  HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_=0;
-  HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_=0;
-  HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_=0;
 
+///////
   nGoodPV_=0;
   nPV_=0;
   nTrueInteraction_=0;
@@ -574,27 +537,19 @@ void FlatTree::setBranch(TTree* tree)
    tree_->SetBranchAddress("NgenJet",           &NgenJet_           );
 
 ////////
-   tree_->SetBranchAddress("pdfWeightId1",                                 &pdfWeightId1_                                );
-   tree_->SetBranchAddress("pdfWeightId2",                                 &pdfWeightId2_                                );
-   tree_->SetBranchAddress("pdfWeightQ",                                   &pdfWeightQ_                                  );
-   tree_->SetBranchAddress("pdfWeightX1",                                  &pdfWeightX1_                                 );
-   tree_->SetBranchAddress("pdfWeightX2",                                  &pdfWeightX2_                                 );
+   tree_->SetBranchAddress("genWeightId1",                                 &genWeightId1_                                );
+   tree_->SetBranchAddress("genWeightId2",                                 &genWeightId2_                                );
+   tree_->SetBranchAddress("genWeightQ",                                   &genWeightQ_                                  );
+   tree_->SetBranchAddress("genWeightX1",                                  &genWeightX1_                                 );
+   tree_->SetBranchAddress("genWeightX2",                                  &genWeightX2_                                 );
    tree_->SetBranchAddress("puWeight",                                     &puWeight_                                    );
-   tree_->SetBranchAddress("CSCTightHaloFilter",                           &CSCTightHaloFilter_                          );
-   tree_->SetBranchAddress("EcalDeadCellTriggerPrimitiveFilter",           &EcalDeadCellTriggerPrimitiveFilter_          );
-   tree_->SetBranchAddress("HBHENoiseFilter",                              &HBHENoiseFilter_                             );
-   tree_->SetBranchAddress("eeBadScFilter",                                &eeBadScFilter_                               );
-   tree_->SetBranchAddress("goodVertices",                                 &goodVertices_                                );
-   tree_->SetBranchAddress("HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ",          &HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ_         );
-   tree_->SetBranchAddress("HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold",       &HLTEle17Ele12CaloIdLTrackIdLIsoVLDZold_      );
-   tree_->SetBranchAddress("HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL",    &HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL_   );
-   tree_->SetBranchAddress("HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold", &HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVLold_);
-   tree_->SetBranchAddress("HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ",               &HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ_              );
-   tree_->SetBranchAddress("HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold",            &HLTMu17TrkIsoVVLMu8TrkIsoVVLDZold_           );
-   tree_->SetBranchAddress("HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ",             &HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ_            );
-   tree_->SetBranchAddress("HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold",          &HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZold_         );
-   tree_->SetBranchAddress("HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL",     &HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL_    );
-   tree_->SetBranchAddress("HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold",  &HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVLold_ );
+
+   tree_->SetBranchAddress("filterRECO",                                   &filterRECO_                                  );
+   tree_->SetBranchAddress("filterTrigELEL",                               &filterTrigELEL_                              );
+   tree_->SetBranchAddress("filterTrigMUEL",                               &filterTrigMUEL_                              );
+   tree_->SetBranchAddress("filterTrigMUMU",                               &filterTrigMUMU_                              );
+   tree_->SetBranchAddress("partonTopChannel",                             &partonTopChannel_                            );
+
    tree_->SetBranchAddress("nGoodPV",                                      &nGoodPV_                                     );
    tree_->SetBranchAddress("nPV",                                          &nPV_                                         );
    tree_->SetBranchAddress("nTrueInteraction",                             &nTrueInteraction_                            );

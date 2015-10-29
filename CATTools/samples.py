@@ -1,28 +1,50 @@
-#import FWCore.ParameterSet.Config as cms
+#!/usr/bin/env python
+import sys, subprocess
 
-samples = [
-{"name": "DoubleEG", },
-{"name": "DoubleMuon", },
-{"name": "MuonEG", },
-{"name": "DYJets", "xsec":6025.2, },
-{"name": "TTJets_MG5", "xsec":832, },
-{"name": "TTJets_aMC", "xsec":832, },
-{"name": "TT_powheg", "xsec":832, },
-{"name": "WW", "xsec":110.8, },
-{"name": "WZ", "xsec":66.1, },
-{"name": "ZZ", "xsec":15.4, },
-{"name": "SingleTbar_tW", "xsec":35.6, },
-{"name": "SingleTop_tW", "xsec":35.6, },
-{"name": "SingleTbar_t", "xsec":80.95, },
-{"name": "SingleTop_t", "xsec":136.02, },
-{"name": "WJets", "xsec":61526.7, },
-{"name": "TT_powheg_scaledown", "xsec":832, },
-{"name": "TT_powheg_scaleup", "xsec":832, },
-{"name": "ttH_bb", "xsec":0.5058, },
-{"name": "ttH_nonbb", "xsec":0.5058, },
-{"name": "ttWJetsToQQ", "xsec":1.152, },
-{"name": "ttWJetsToLNu", "xsec":1.152, },
-{"name": "ttZToLLNuNu", "xsec":2.232, },
-{"name": "ttZToQQ", "xsec":2.232, },
-]
+def subFolders(cmd,path):
+  l = set() 
+  for x in subprocess.check_output(cmd+path, shell=True).strip().split('\n'):
+    xx = x.split()
+    if len(xx) == 0: continue
+    if xx[0][0] not in ('d'): continue
+    xpath = xx[-1]
+    ii = xpath.find(path)
+    if ii==0: xpath = xpath[len(path):]
+    l.add(xpath)
+  return l  
+
+def subFiles(cmd,path):
+  l = set() 
+  for x in subprocess.check_output(cmd+path, shell=True).strip().split('\n'):
+    xx = x.split()
+    if len(xx) == 0: continue
+    if xx[0][0] not in ('-'): continue
+    xpath = xx[-1]
+    ii = xpath.find(path+"/")
+    if ii==0: xpath = xpath[len(path+"/"):]
+    l.add(xpath)
+  return l
+
+def getSamples(cmd,path):
+  l1=subFolders(cmd,path)
+  samples = []
+  for i in l1:
+    l2=subFiles(cmd, path+i)
+    sam = {}
+    sam["name"] = i
+    sam["files"] = l2
+    samples.append(sam)
+  
+  return samples
+
+path = "/xrd/store/user/youngjo/Cattools/v7-4-3/"
+path2 = "/xrootd/store/user/youngjo/Cattools/v7-4-3/"
+cmd ="xrd cms-xrdr.sdfarm.kr ls "
+cmd2 ="ls -all "
+#print cmd
+#print cmd2
+
+samples=getSamples(cmd,path)
+#print str(samples)
+
 
