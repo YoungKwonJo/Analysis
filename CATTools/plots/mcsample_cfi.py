@@ -76,28 +76,41 @@ mcsamples=[
 {"name":"WW",     "selection": GW(), "file": loc + "result_WW.root",            "cx":110.8,  "color": BCS[1],   "label":"VV            "    },
 {"name":"WZ",     "selection": GW(), "file": loc + "result_WZ.root",            "cx":66.1,   "color": BCS[1],   "label":"VV            "   },
 {"name":"ZZ",     "selection": GW(), "file": loc + "result_ZZ.root",            "cx":15.4,   "color": BCS[1],   "label":"VV            "   },
+
 {"name":"DYJets", "selection": GW(), "file": loc + "result_DYJets.root",        "cx":6025.2, "color": BCS[1], "label":"DYJets    "      },
 {"name":"DYJets10", "selection": GW(), "file": loc + "result_DYJets_10to50.root","cx":18271.92, "color": BCS[1], "label":"DYJets    "      },
+
+#{"name":"DYRin", "selection": GW("(ll_zmass-91.2<=15)"), "file": loc + "result_DYJets.root",        "cx":6025.2, "color": BCS[1], "label":"DYJets    "      },
+#{"name":"DYRout", "selection": GW("(ll_zmass-91.2>15)"), "file": loc + "result_DYJets.root","cx":18271.92, "color": BCS[1], "label":"DYJets    "      },
+#{"name":"DYRout", "selection": GW(), "file": loc + "result_DYJets_10to50.root","cx":18271.92, "color": BCS[1], "label":"DYJets    "      },
+
 
 {"name":"ttH2non", "selection": GW(), "file": loc + "result_ttH_nonbb.root",  "cx":0.5058,   "color": BCS[2],   "label":"t#bar{t}H         " ,"isStack":False   },
 {"name":"ttH2bb",  "selection": GW(), "file": loc + "result_ttH_bb.root",     "cx":0.5058,   "color": BCS[2],   "label":"t#bar{t}H         " ,"isStack":False   },
 ]
-qcdsamples=[
 
-{"name":"MuMuQCD", "selection": "(1)", "file": loc + "result_DoubleMuon2.root", "color":kBlack,  "label":"QCD      " },
-{"name":"ElElQCD", "selection": "(1)", "file": loc + "result_DoubleEG2.root",   "color":kBlack,  "label":"QCD      " },
-{"name":"MuElQCD", "selection": "(1)", "file": loc + "result_MuonEG2.root",     "color":kBlack,  "label":"QCD      " },
-]
 datasamples=[
 
-#{"name":"MuMu", "selection": "(1)", "file": loc + "result_DoubleMuon.root",  "color":kBlack,  "label":"DATA " },
-#{"name":"ElEl", "selection": "(1)", "file": loc + "result_DoubleEG.root",    "color":kBlack,  "label":"DATA " },
-#{"name":"MuEl", "selection": "(1)", "file": loc + "result_MuonEG.root",      "color":kBlack,  "label":"DATA " },
 {"name":"MuMu1", "selection": "(1)", "file": loc + "result_DoubleMuon_Run2015C226p1.root",  "color":kBlack,  "label":"DATA " },
 {"name":"MuMu2", "selection": "(1)", "file": loc + "result_DoubleMuon_Run2015D226p1.root",  "color":kBlack,  "label":"DATA " },
 {"name":"ElEl1", "selection": "(1)", "file": loc + "result_DoubleEG_Run2015C226p1.root",    "color":kBlack,  "label":"DATA " },
 {"name":"ElEl2", "selection": "(1)", "file": loc + "result_DoubleEG_Run2015D226p1.root",    "color":kBlack,  "label":"DATA " },
 {"name":"MuEl1", "selection": "(1)", "file": loc + "result_MuonEG_Run2015C226p1.root",      "color":kBlack,  "label":"DATA " },
 {"name":"MuEl2", "selection": "(1)", "file": loc + "result_MuonEG_Run2015D226p1.root",      "color":kBlack,  "label":"DATA " },
+
+#{"name":"mm1Rin", "selection": "(ll_zmass-91.2<=15)", "file": loc + "result_DoubleMuon_Run2015C226p1.root",  "color":kBlack,  "label":"DATA " },
+#{"name":"mm1Rout", "selection": "(ll_zmass-91.2>15)", "file": loc + "result_DoubleMuon_Run2015C226p1.root",  "color":kBlack,  "label":"DATA " },
+#{"name":"mm2Rin", "selection": "(ll_zmass-91.2<=15)", "file": loc + "result_DoubleMuon_Run2015D226p1.root",  "color":kBlack,  "label":"DATA " },
+#{"name":"mm2Rout", "selection": "(ll_zmass-91.2>15)", "file": loc + "result_DoubleMuon_Run2015D226p1.root",  "color":kBlack,  "label":"DATA " },
+
+#{"name":"ee1Rin", "selection": "(ll_zmass-91.2<=15)", "file": loc + "result_DoubleEG_Run2015C226p1.root",    "color":kBlack,  "label":"DATA " },
+#{"name":"ee1Rout", "selection": "(ll_zmass-91.2>15)", "file": loc + "result_DoubleEG_Run2015C226p1.root",    "color":kBlack,  "label":"DATA " },
+#{"name":"ee2Rin", "selection": "(ll_zmass-91.2<=15)", "file": loc + "result_DoubleEG_Run2015D226p1.root",    "color":kBlack,  "label":"DATA " },
+#{"name":"ee2Rout", "selection": "(ll_zmass-91.2>15)", "file": loc + "result_DoubleEG_Run2015D226p1.root",    "color":kBlack,  "label":"DATA " },
+
+#{"name":"em1Rin", "selection": "(ll_zmass-91.2<=15)", "file": loc + "result_MuonEG_Run2015C226p1.root",      "color":kBlack,  "label":"DATA " },
+#{"name":"em1Rout", "selection": "(ll_zmass-91.2>15)", "file": loc + "result_MuonEG_Run2015C226p1.root",      "color":kBlack,  "label":"DATA " },
+#{"name":"em2Rin", "selection": "(ll_zmass-91.2<=15)", "file": loc + "result_MuonEG_Run2015D226p1.root",      "color":kBlack,  "label":"DATA " },
+#{"name":"em2Rout", "selection": "(ll_zmass-91.2>15)", "file": loc + "result_MuonEG_Run2015D226p1.root",      "color":kBlack,  "label":"DATA " },
 
 ]

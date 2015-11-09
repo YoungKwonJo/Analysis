@@ -85,6 +85,10 @@ def cut_maker2(cuts_):
   cutsN = {"channel":cuts_["channel"],"cut":cuts}
   return cuts
 ####################
+####################
+####################
+####################
+####################
 
 def ntuple2hist(json,cuts):
   h = []
@@ -118,28 +122,6 @@ def ntuple2hist(json,cuts):
 
   return h
 
-def ntuple2histQCD(json,cutsQCD):
-  h = []
-  #mcsamples = json['mcsamples']
-  mceventweight = json['mceventweight']
-  monitors=json['monitors']
-  #datasamples = json['datasamples']
-  qcdsamples = json['qcdsamples']
-  for i,mc in enumerate(qcdsamples):
-    f = TFile.Open(qcdsamples[i]['file'],"read")
-    #tree = f.ntuple
-    tree = f.myresult2
-    #htot = f.Get("hNEvent")
-    htot = f.Get("hsumWeight")
-    Ntot = htot.GetBinContent(1)
-    if log : print "total:"+mc['file']+":"+str(round(Ntot))
-
-    h= h+h_all_maker(tree,qcdsamples[i],monitors,cutsQCD,1,1)
-    f.Close()
-
-  return h
-
-
 
 ################
 def ntuple2hist2d(json,cuts):
@@ -166,22 +148,6 @@ def ntuple2hist2d(json,cuts):
     #tree = f.ntuple
     tree = f.myresult2
     h= h+h2_all_maker(tree,datasamples[i],monitors2,cuts,1,1)
-    f.Close()
-  return h
-
-
-def ntuple2hist2dQCD(json,cutsQCD):
-  h = []
-  #mcsamples = json['mcsamples']
-  mceventweight = json['mceventweight']
-  monitors2=json['monitors2']
-  #datasamples = json['datasamples']
-  qcdsamples = json['qcdsamples']
-  for i,mc in enumerate(qcdsamples):
-    f = TFile.Open(qcdsamples[i]['file'],"read")
-    #tree = f.ntuple
-    tree = f.myresult2
-    h= h+h2_all_maker(tree,qcdsamples[i],monitors2,cutsQCD,1,1)
     f.Close()
   return h
 
