@@ -1,7 +1,7 @@
 from ROOT import *
 import copy
 
-from ntuple2hist_cff import *
+from hist2plot_cff import *
 from mcsample_cfi import *
 from monitors_cfi import *
 
@@ -40,11 +40,11 @@ json = {
 #########
 #TH1F
 f = json['file'] #TFile.Open(json['file'],"read")
-#singleplotStack2(f,"MET","S2em",json['mcsamples'],json['datasamples'])
+#singleplotStack2(f,"MET","S2em",json['mcsamples'],json['datasamples'],False)
 ######
-for step in json['cuts']:
-  for mon in json['monitors']:
-    singleplotStack2(f,mon['name'],step,json['mcsamples'],json['datasamples'])
+#for step in json['cuts']:
+#  for mon in json['monitors']:
+#    singleplotStack2(f,mon['name'],step,json['mcsamples'],json['datasamples'],False)
 
 
 #########
@@ -78,6 +78,6 @@ jsonLL = {
 f1 = jsonLL['file'] #TFile.Open(json['file'],"read")
 for step1 in jsonLL['cuts']:
   for mon1 in jsonLL['monitors']:
-    singleplotStackLL2(f1,mon1['name'],step1,jsonLL['mcsamples'],jsonLL['datasamples'])
+    singleplotStackLL2(f1,mon1['name'],step1,jsonLL['mcsamples'],jsonLL['datasamples'],False)
 
 

@@ -7,6 +7,7 @@ ll_Iso12 = "((abs(ll_lep1_iso)<0.12) && (abs(ll_lep2_iso)<0.12))"
 ll_NonIso12 = "((abs(ll_lep1_iso)>0.2) && (abs(ll_lep2_iso)>0.2))"
 ll_op = "( ll_lep1_q*ll_lep2_q<0)"
 
+ll_lep = "(" + ll_lep1 + " && "+ll_lep2 + " && (ll_zmass>20) "+") "
 ll_lepIso = "(" + ll_lep1 + " && "+ll_lep2 + " && " + ll_op + " && (ll_zmass>20) " + " && " + ll_Iso12  +") "
 ll_lepNonIso = "(" + ll_lep1 + " && "+ll_lep2 + " && " + ll_op + " && (ll_zmass>20) " + " && " + ll_NonIso12  +") "
 
@@ -17,11 +18,11 @@ mm="(abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==13)"
 ee="(abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==11)"
 em="((abs(ll_lep1_pdgid)==11&&abs(ll_lep2_pdgid)==13) || (abs(ll_lep1_pdgid)==13&&abs(ll_lep2_pdgid)==11))"
 
-preselection = "((CSCTightHaloFilter==1)" +"&&"+ "(EcalDeadCellTriggerPrimitiveFilter==1)" +"&&"+ "(HBHENoiseFilter==1)" +"&&"+ "(eeBadScFilter==1)" +"&&"+ "(goodVertices==1))" 
+preselection = "(filterRECO==1)" 
 
-mm_trigger = "((HLTMu17TrkIsoVVLMu8TrkIsoVVLDZ==1)"+"||"+"(HLTMu17TrkIsoVVLTkMu8TrkIsoVVLDZ==1))"
-ee_trigger = "((HLTEle17Ele12CaloIdLTrackIdLIsoVLDZ==1))"
-em_trigger=  "((HLTMu17TrkIsoVVLEle12CaloIdLTrackIdLIsoVL==1)" +"||"+  "(HLTMu8TrkIsoVVLEle17CaloIdLTrackIdLIsoVL==1))"
+mm_trigger = "(filterTrigMUMU==1)"
+ee_trigger = "(filterTrigELEL==1)"
+em_trigger=  "(filterTrigMUEL==1)"
 
 ##########
 #samecut = [ "(nJet30>=2 &&nJet20>=4 ) ",  "nBJet30M>=2", "nBJet30T>=2" ]
@@ -32,6 +33,7 @@ mm_cuts ={
    "(1)",
 #   preselection,
    mm_trigger,
+   "("+ll_lep+"&&"+mm+")",
    "(" + ll_lepIso+"&&"+mm + ")",
    "(" + ll_zmass + ")",
    "(metNoHF>40)",
@@ -44,6 +46,7 @@ ee_cuts = {
    "(1)",
 #   preselection,
    ee_trigger,
+   "("+ll_lep+"&&"+ee+")",
    "(" + ll_lepIso+"&&"+ee+ ") ",
    "(" + ll_zmass + ") ",
    "(metNoHF>40) ",
@@ -56,6 +59,7 @@ em_cuts = {
    "(1)",
 #   preselection,
    em_trigger,
+   "("+ll_lep+"&&"+em+")",
    "(" + ll_lepIso+"&&"+em+ ") ",
    "(1)",
    "(1) ",

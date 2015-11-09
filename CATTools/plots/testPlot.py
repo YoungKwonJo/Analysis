@@ -1,6 +1,6 @@
 import sys 
 
-from ntuple2hist_cff import *
+from hist2plot_cff import *
 from mcsample_cfi import * 
 from monitors_cfi import *
 from cut_cfi import *
@@ -14,6 +14,8 @@ from ROOT import *
 test_mcsamples=[
 
 {"name":"DYJets", "selection": "(1)", "file": loc + "result_DYJets.root",        "cx":6025.2, "color": kBlue+5,  "label":"DYJets    "      },
+{"name":"DYJets10", "selection": "(ll_zmass<50)", "file": loc + "result_DYJets_10to50.root","cx":18271.92, "color": kBlue+5, "label":"DYJets    "      },
+
 ]
 
 test_cuts={
@@ -54,10 +56,11 @@ json = {
 }
 
 #makehist(json)
-
 #f = TFile.Open(json['output'],"read")
 f = TFile.Open("hist_all.root","read")
-c1 = singleplotStack(f,"ZMass","S0mm",json['mcsamples'],json['datasamples'])
-c2 = singleplotStackLL(f,"ZMass","S1",json['mcsamples'],json['datasamples'])
+#c1 = singleplotStack(f,"ZMass","S1mm",json['mcsamples'],json['datasamples'],True)
+c2 = singleplotStackLL(f,"ZMass","S2",json['mcsamples'],json['datasamples'],True)
+c3 = singleplotStackLL(f,"lep1Iso","S1",json['mcsamples'],json['datasamples'],True)
+c4 = singleplotStackLL(f,"lep2Iso","S1",json['mcsamples'],json['datasamples'],True)
 #c3 = singleplotStack(f,"ZMassMM","S2mm",json['mcsamples'],json['datasamples'])
 

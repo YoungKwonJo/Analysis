@@ -60,9 +60,9 @@ monitors = [
   { "name":"nBJet30TPuppi",       "unit":"b-Jet30Puppi multiplicity tight ",     "var":"nBJet30TPuppi",    "xbin_set":[6,0,6]      },
   { "name":"Nlep",        "unit":"number of lepton ",            "var":"lepton_N",     "xbin_set":[5,0,5]    },
 #  { "name":"Nmu",         "unit":"number of muon ",              "var":"Nmu",          "xbin_set":[5,0,5]    },
-  { "name":"NmuIso",      "unit":"number of muon ",              "var":"NmuIso",       "xbin_set":[5,0,5]    },
+#  { "name":"NmuIso",      "unit":"number of muon ",              "var":"NmuIso",       "xbin_set":[5,0,5]    },
 #  { "name":"Nel",         "unit":"number of electron ",          "var":"Nel",          "xbin_set":[5,0,5]    },
-  { "name":"NelIso",      "unit":"number of electron ",          "var":"NelIso",       "xbin_set":[5,0,5]    },
+#  { "name":"NelIso",      "unit":"number of electron ",          "var":"NelIso",       "xbin_set":[5,0,5]    },
 ]
 
 monitors2d = {
